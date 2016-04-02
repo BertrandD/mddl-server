@@ -4,7 +4,7 @@ import com.config.Config;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
-import com.gameserver.model.Requirement;
+import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.buildings.Building;
 import com.util.data.xml.IXmlReader;
 import org.w3c.dom.Document;

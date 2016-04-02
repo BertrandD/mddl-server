@@ -2,7 +2,7 @@ package com.gameserver.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Base;
-import com.gameserver.model.items.ItemInstance;
+import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.ItemService;
 import com.util.data.json.View;

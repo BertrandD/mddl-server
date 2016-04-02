@@ -1,6 +1,6 @@
-package com.gameserver.model;
+package com.gameserver.model.commons;
 
-import com.gameserver.model.items.ItemInstance;
+import com.gameserver.model.instances.ItemInstance;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;

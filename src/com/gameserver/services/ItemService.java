@@ -3,7 +3,7 @@ package com.gameserver.services;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.Base;
 import com.gameserver.model.items.Item;
-import com.gameserver.model.items.ItemInstance;
+import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
