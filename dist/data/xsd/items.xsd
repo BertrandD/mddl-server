@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="list">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="creation" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="id" type="xs:normalizedString" use="required" />
+                                                <xs:attribute name="count" type="xs:long" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="building" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="type" use="required">
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string" >
+                                                            <xs:enumeration value="HEADQUARTER" />
+                                                            <xs:enumeration value="STORAGE" />
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="level" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="properties" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="name" use="required">
+                                                    <xs:simpleType>
+                                                        <xs:restriction base="xs:string">
+                                                            <xs:enumeration value="SLOT_CARGO_COUNT" />
+                                                            <xs:enumeration value="SLOT_ENGINE_COUNT" />
+                                                            <xs:enumeration value="SLOT_MODULE_COUNT" />
+                                                            <xs:enumeration value="SLOT_TECHNOLOGY_COUNT" />
+                                                            <xs:enumeration value="SLOT_WEAPON_COUNT" />
+                                                        </xs:restriction>
+                                                    </xs:simpleType>
+                                                </xs:attribute>
+                                                <xs:attribute name="value" type="xs:string" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="name" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="type" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="description" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="rank" use="required">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="NONE" />
+                                    <xs:enumeration value="A" />
+                                    <xs:enumeration value="B" />
+                                    <xs:enumeration value="C" />
+                                    <xs:enumeration value="D" />
+                                    <xs:enumeration value="E" />
+                                    <xs:enumeration value="F" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="useslot" type="xs:integer" use="optional" />
+                        <xs:attribute name="buildTime" type="xs:positiveInteger" use="optional" />
+                        <xs:attribute name="sellable" type="xs:boolean" use="optional"/>
+                        <xs:attribute name="tradable" type="xs:boolean" use="optional" />
+                        <xs:attribute name="disabled" type="xs:boolean" use="optional" />
+                        <xs:attribute name="weight" type="xs:long" use="required" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
