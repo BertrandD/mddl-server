@@ -133,20 +133,29 @@ public class ItemData implements IXmlReader {
         final String type = set.getString("type");
         switch(type.toLowerCase())
         {
-            case "structure":
+            case "common":
             {
-                _structures.put(id, new Structure(set, requirement));
-                break;
+                _commons.put(id, new CommonItem(set, requirement)); break;
             }
             case "cargo":
             {
-                _cargos.put(id, new Cargo(set, requirement));
-                break;
+                _cargos.put(id, new Cargo(set, requirement)); break;
             }
-            case "common":
+            case "engine":
             {
-                _commons.put(id, new CommonItem(set, requirement));
-                break;
+                _engines.put(id, new Engine(set, requirement)); break;
+            }
+            case "module":
+            {
+                _modules.put(id, new Module(set, requirement)); break;
+            }
+            case "structure":
+            {
+                _structures.put(id, new Structure(set, requirement)); break;
+            }
+            case "weapon":
+            {
+                _weapons.put(id, new Weapon(set, requirement)); break;
             }
         }
     }
@@ -163,11 +172,21 @@ public class ItemData implements IXmlReader {
 
     public List<Structure> getStructures(){ return new ArrayList<>( _structures.values()); }
 
+    public CommonItem getCommonItem(String id){
+        return _commons.get(id);
+    }
+
     public Structure getStructure(String id){
         return _structures.get(id);
     }
 
-    public Cargo getCargo(String id) { return _cargos.get(id); }
+    public Cargo getCargo(String id){ return _cargos.get(id); }
+
+    public Engine getEngine(String id){ return _engines.get(id); }
+
+    public Module getModule(String id){ return _modules.get(id); }
+
+    public Weapon getWeapon(String id){ return _weapons.get(id); }
 
     public Item getTemplate(String itemId){
 
