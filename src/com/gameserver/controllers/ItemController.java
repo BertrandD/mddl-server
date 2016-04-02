@@ -76,7 +76,7 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/engine/{id}", method = RequestMethod.GET)
-    public Engine findEngin(@PathVariable("id") String id){
+    public Engine findEngine(@PathVariable("id") String id){
         return ItemData.getInstance().getEngine(id);
     }
 
