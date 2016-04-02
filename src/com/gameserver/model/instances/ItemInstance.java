@@ -1,9 +1,16 @@
-package com.gameserver.model.items;
+package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.model.Attachment;
+import com.gameserver.model.commons.Attachment;
 import com.gameserver.model.Base;
+import com.gameserver.model.items.Cargo;
+import com.gameserver.model.items.CommonItem;
+import com.gameserver.model.items.Engine;
+import com.gameserver.model.items.Item;
+import com.gameserver.model.items.Module;
+import com.gameserver.model.items.Structure;
+import com.gameserver.model.items.Weapon;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;

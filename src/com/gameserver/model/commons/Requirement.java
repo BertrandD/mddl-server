@@ -1,4 +1,4 @@
-package com.gameserver.model;
+package com.gameserver.model.commons;
 
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;

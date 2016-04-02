@@ -1,9 +1,10 @@
-package com.gameserver.model.buildings;
+package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.model.Base;
+import com.gameserver.model.buildings.Building;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;

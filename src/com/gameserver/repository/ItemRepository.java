@@ -1,6 +1,6 @@
 package com.gameserver.repository;
 
-import com.gameserver.model.items.ItemInstance;
+import com.gameserver.model.instances.ItemInstance;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

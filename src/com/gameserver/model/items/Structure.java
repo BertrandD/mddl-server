@@ -1,8 +1,8 @@
 package com.gameserver.model.items;
 
 import com.gameserver.enums.StructureSlot;
-import com.gameserver.model.Requirement;
-import com.gameserver.model.StatsSet;
+import com.gameserver.model.commons.Requirement;
+import com.gameserver.model.commons.StatsSet;
 
 import java.util.HashMap;
 

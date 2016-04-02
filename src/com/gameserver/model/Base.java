@@ -1,7 +1,7 @@
 package com.gameserver.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.gameserver.model.buildings.BuildingInstance;
+import com.gameserver.model.instances.BuildingInstance;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;

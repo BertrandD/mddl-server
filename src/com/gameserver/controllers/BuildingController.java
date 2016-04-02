@@ -3,7 +3,7 @@ package com.gameserver.controllers;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.model.Base;
-import com.gameserver.model.buildings.BuildingInstance;
+import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.util.data.json.View;

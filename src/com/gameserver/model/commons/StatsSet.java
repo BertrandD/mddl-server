@@ -1,4 +1,4 @@
-package com.gameserver.model;
+package com.gameserver.model.commons;
 
 import com.gameserver.interfaces.IParserAdvUtils;
 import com.util.TimeUtil;

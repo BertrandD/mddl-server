@@ -1,7 +1,7 @@
 package com.gameserver.model.buildings;
 
 import com.gameserver.enums.BuildingType;
-import com.gameserver.model.Requirement;
+import com.gameserver.model.commons.Requirement;
 
 /**
  * @author LEBOC Philippe
