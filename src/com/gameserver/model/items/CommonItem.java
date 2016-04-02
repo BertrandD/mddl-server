@@ -6,7 +6,7 @@ import com.gameserver.model.commons.StatsSet;
 /**
  * @author LEBOC Philippe
  */
-public class CommonItem extends Item {
+public class CommonItem extends GameItem {
     public CommonItem(StatsSet set, Requirement requirement) {
         super(set, requirement);
     }

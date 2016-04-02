@@ -7,6 +7,7 @@ import com.gameserver.model.Base;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
+import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Item;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
@@ -38,7 +39,7 @@ public final class ItemInstance
     private long count;
 
     @Transient
-    private Item template;
+    private GameItem template;
 
     @DBRef
     @JsonView(View.Standard.class)
@@ -46,7 +47,7 @@ public final class ItemInstance
 
     public ItemInstance(){}
 
-    public ItemInstance(Base owner, String itemId, long count, Item template)
+    public ItemInstance(Base owner, String itemId, long count, GameItem template)
     {
         setId(null);
         setOwner(owner);
@@ -134,11 +135,11 @@ public final class ItemInstance
         this.count = count;
     }
 
-    public Item getTemplate() {
+    public GameItem getTemplate() {
         return template;
     }
 
-    private void setTemplate(Item template) {
+    private void setTemplate(GameItem template) {
         this.template = template;
     }
 

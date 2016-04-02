@@ -8,7 +8,7 @@ import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.Engine;
-import com.gameserver.model.items.Item;
+import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Module;
@@ -188,7 +188,7 @@ public class ItemData implements IXmlReader {
 
     public Weapon getWeapon(String id){ return _weapons.get(id); }
 
-    public Item getTemplate(String itemId){
+    public GameItem getTemplate(String itemId){
 
         Structure structure = _structures.values().stream().filter((k) -> k.getItemId().equals(itemId)).findFirst().orElse(null);
         if(structure != null) return structure;

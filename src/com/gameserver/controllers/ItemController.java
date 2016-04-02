@@ -4,7 +4,7 @@ import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
-import com.gameserver.model.items.Item;
+import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
@@ -24,8 +24,8 @@ import java.util.List;
 public class ItemController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public HashMap<String, List<? extends Item>> findAll(){
-        final HashMap<String, List<? extends Item>> all = new HashMap<>();
+    public HashMap<String, List<? extends GameItem>> findAll(){
+        final HashMap<String, List<? extends GameItem>> all = new HashMap<>();
         all.put("common", ItemData.getInstance().getCommonItems());
         all.put("cargo", ItemData.getInstance().getCargos());
         all.put("engine", ItemData.getInstance().getEngines());

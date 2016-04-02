@@ -2,6 +2,7 @@ package com.gameserver.services;
 
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.Base;
+import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Item;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.repository.ItemRepository;
@@ -28,7 +29,7 @@ public class ItemService {
     }
 
     public ItemInstance create(Base owner, String itemId, long count){
-        Item tmpl = ItemData.getInstance().getTemplate(itemId);
+        GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
         if(tmpl == null) return null;
         return repository.save(new ItemInstance(owner, itemId, count, tmpl));
     }
