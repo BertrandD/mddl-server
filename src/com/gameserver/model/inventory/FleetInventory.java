@@ -19,11 +19,6 @@ public class FleetInventory extends Inventory{
 
     public FleetInventory(){}
 
-    @Override
-    public long getMaxWeight() {
-        return 0;
-    }
-
     public List<ItemHolder> getItems() {
         return items;
     }
