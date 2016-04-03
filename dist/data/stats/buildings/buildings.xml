@@ -7,7 +7,25 @@
             <item id="102" count="1" />
         </creation>
     </building>
-    <building id="10001" type="STORAGE" name="Storage" maxHealth="10000" maxLevel="50" buildTime="60" description="The Storage building is a important building to increase your storage capacity.">
+    <building id="10001" type="STORAGE" name="Metal Storage" maxHealth="10000" maxLevel="50" buildTime="60" description="The Metal Storage building is a important building to increase your metal storage capacity.">
+        <creation>
+            <item id="100" count="10" />
+            <item id="101" count="10" />
+            <item id="102" count="10" />
+            <building id="10000" level="1" />
+            <!--<technology id="" level="" />-->
+        </creation>
+    </building>
+    <building id="10002" type="STORAGE" name="Crystal Storage" maxHealth="10000" maxLevel="50" buildTime="60" description="The Crystal Storage building is a important building to increase your crystal storage capacity.">
+        <creation>
+            <item id="100" count="10" />
+            <item id="101" count="10" />
+            <item id="102" count="10" />
+            <building id="10000" level="1" />
+            <!--<technology id="" level="" />-->
+        </creation>
+    </building>
+    <building id="10003" type="STORAGE" name="Deuterium Storage" maxHealth="10000" maxLevel="50" buildTime="60" description="The Deuterium Storage building is a important building to increase your deuterium storage capacity.">
         <creation>
             <item id="100" count="10" />
             <item id="101" count="10" />
