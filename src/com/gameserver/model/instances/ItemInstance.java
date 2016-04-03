@@ -2,7 +2,6 @@ package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.model.commons.Attachment;
 import com.gameserver.model.Base;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
