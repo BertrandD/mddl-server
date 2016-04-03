@@ -40,10 +40,6 @@ public final class ItemInstance
     @Transient
     private GameItem template;
 
-    @DBRef
-    @JsonView(View.Standard.class)
-    private Attachment attachments;
-
     public ItemInstance(){}
 
     public ItemInstance(Base owner, String itemId, long count, GameItem template)
@@ -123,18 +119,6 @@ public final class ItemInstance
         return getTemplate() instanceof CommonItem;
     }
 
-    public void addCargo(ItemInstance cargo){
-        if(isStructure()){
-            getAttachments().getCargos().add(cargo);
-        }
-    }
-
-    public void addEngine(ItemInstance engine){
-        if(isStructure()){
-            getAttachments().getEngines().add(engine);
-        }
-    }
-
     // TODO: addModule & addWeapon & addTechnology
 
     public String getId() {
@@ -175,13 +159,5 @@ public final class ItemInstance
 
     private void setTemplate(GameItem template) {
         this.template = template;
-    }
-
-    public Attachment getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(Attachment attachments) {
-        this.attachments = attachments;
     }
 }
