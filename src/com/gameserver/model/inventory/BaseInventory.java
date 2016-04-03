@@ -2,6 +2,7 @@ package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.enums.BuildingType;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.Base;
 import com.util.data.json.View;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -38,6 +40,7 @@ public class BaseInventory extends Inventory {
     private List<ItemHolder> weapons;
 
     public BaseInventory(){
+        setCommons(new ArrayList<>());
         setCargos(new ArrayList<>());
         setEngines(new ArrayList<>());
         setModules(new ArrayList<>());
@@ -47,16 +50,12 @@ public class BaseInventory extends Inventory {
 
     public BaseInventory(Base base){
         setBase(base);
+        setCommons(new ArrayList<>());
         setCargos(new ArrayList<>());
         setEngines(new ArrayList<>());
         setModules(new ArrayList<>());
         setStructures(new ArrayList<>());
         setWeapons(new ArrayList<>());
-    }
-
-    @Override
-    public long getMaxWeight() {
-        return 0; // TODO
     }
 
     @JsonIgnore

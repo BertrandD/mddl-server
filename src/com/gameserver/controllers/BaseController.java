@@ -34,7 +34,7 @@ public class BaseController {
         return baseService.findAll();
     }
 
-    @JsonView(View.Base_OwnerAndBuildings.class)
+    @JsonView({View.Base_Buildings.class})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Base findOne(@PathVariable("id") String id){
         return baseService.findOne(id);

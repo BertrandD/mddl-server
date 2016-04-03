@@ -16,7 +16,8 @@ public class View {
 
     // Bases
     public interface Base_Onwer extends Standard{}
-    public interface Base_OwnerAndBuildings extends Base_Onwer{}
+    public interface Base_Buildings extends Standard{}
+    public interface Base_Inventory extends Standard{}
 
     // BuildingInstance
     public interface BuildingInstance_Base extends Standard{}

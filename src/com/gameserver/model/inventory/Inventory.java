@@ -10,11 +10,6 @@ public abstract class Inventory {
     @Id
     private String id;
 
-    /**
-     * @return the max inventory capacity
-     */
-    public abstract long getMaxWeight();
-
     public String getId() {
         return id;
     }
