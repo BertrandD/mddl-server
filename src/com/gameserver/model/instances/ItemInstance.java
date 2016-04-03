@@ -64,6 +64,41 @@ public final class ItemInstance
         setTemplate(ItemData.getInstance().getTemplate(itemId));
     }
 
+    public Cargo getCargoItem(){
+        if(isCargo()){
+            return (Cargo) getTemplate();
+        }
+        return null;
+    }
+
+    public Engine getEngineItem(){
+        if(isEngine()){
+            return (Engine) getTemplate();
+        }
+        return null;
+    }
+
+    public Module getModuleItem(){
+        if(isModule()){
+            return (Module) getTemplate();
+        }
+        return null;
+    }
+
+    public Structure getStructureItem(){
+        if(isStructure()){
+            return (Structure) getTemplate();
+        }
+        return null;
+    }
+
+    public Weapon getWeaponItem(){
+        if(isWeapon()){
+            return (Weapon) getTemplate();
+        }
+        return null;
+    }
+
     public boolean isCargo(){
         return getTemplate() instanceof Cargo;
     }
