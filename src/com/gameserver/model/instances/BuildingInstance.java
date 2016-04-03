@@ -13,9 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author LEBOC Philippe
- * TODO: Fix building template storage (only id) with a custom converter :
- *      http://docs.spring.io/spring-data/mongodb/docs/1.5.4.RELEASE/reference/html/mapping-chapter.html
- *      http://docs.spring.io/spring-data/mongodb/docs/1.5.4.RELEASE/reference/html/mapping-chapter.html#mapping-configuration
  */
 @Document(collection = "base_buildings")
 public class BuildingInstance {
