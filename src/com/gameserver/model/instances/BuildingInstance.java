@@ -26,6 +26,9 @@ public class BuildingInstance {
     private Base base;
 
     @JsonView(View.Standard.class)
+    private String buildingId;
+
+    @JsonView(View.Standard.class)
     private int currentHealth;
 
     @JsonView(View.Standard.class)
@@ -34,27 +37,23 @@ public class BuildingInstance {
     @Transient
     private Building template;
 
-    @JsonView(View.Standard.class)
-    private BuildingType type;
-
     public BuildingInstance(){}
 
     public BuildingInstance(Base base, Building template) {
-        setId(null);
         setBase(base);
+        setBuildingId(template.getId());
         setCurrentHealth(template.getMaxHp());
         setCurrentLevel(1);
         setTemplate(template);
-        setType(template.getType());
     }
 
-    public BuildingInstance(String id, Base base, BuildingType type, int currentHealth, int currentLevel){
+    public BuildingInstance(String id, Base base, String buildingId, int currentHealth, int currentLevel){
         setId(id);
         setBase(base);
-        setTemplate(BuildingData.getInstance().getBuilding(type));
+        setBuildingId(buildingId);
+        setTemplate(BuildingData.getInstance().getBuilding(buildingId));
         setCurrentHealth(currentHealth);
         setCurrentLevel(currentLevel);
-        setType(type);
     }
 
     public String getId() {
@@ -71,6 +70,14 @@ public class BuildingInstance {
 
     public void setBase(Base base) {
         this.base = base;
+    }
+
+    public String getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(String buildingId) {
+        this.buildingId = buildingId;
     }
 
     public int getCurrentHealth() {
@@ -95,13 +102,5 @@ public class BuildingInstance {
 
     public void setTemplate(Building template) {
         this.template = template;
-    }
-
-    public BuildingType getType() {
-        return type;
-    }
-
-    public void setType(BuildingType type) {
-        this.type = type;
     }
 }

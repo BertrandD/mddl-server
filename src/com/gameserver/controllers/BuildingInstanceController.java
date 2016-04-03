@@ -18,7 +18,6 @@ import java.util.Collection;
 
 /**
  * @author LEBOC Philippe
- * TODO: différencier Building instance & building CONTROLLERS
  */
 @RestController
 @RequestMapping(value = "/building", produces = "application/json")
@@ -44,10 +43,10 @@ public class BuildingInstanceController {
 
     @JsonView(View.BuildingInstance_Base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public BuildingInstance create(@RequestParam(value = "base") String baseId, @RequestParam(value = "building") String template){
+    public BuildingInstance create(@RequestParam(value = "base") String baseId, @RequestParam(value = "building") String templateId){
         Base base = baseService.findOne(baseId);
         if(base == null) return null;
-        BuildingInstance building = buildingService.create(base, BuildingType.valueOf(template.toUpperCase())); // TODO: fix IllegalArgument Exception
+        BuildingInstance building = buildingService.create(base, templateId); // TODO: fix IllegalArgument Exception
         if(building == null) return null;
         base.addBuilding(building);
         baseService.update(base);

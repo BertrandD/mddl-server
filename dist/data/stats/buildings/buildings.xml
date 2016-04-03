@@ -12,7 +12,7 @@
             <item id="100" count="10" />
             <item id="101" count="10" />
             <item id="102" count="10" />
-            <building type="HEADQUARTER" level="1" />
+            <building id="10000" level="1" />
             <!--<technology id="" level="" />-->
         </creation>
     </building>
