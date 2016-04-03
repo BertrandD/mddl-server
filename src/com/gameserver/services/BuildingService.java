@@ -1,14 +1,14 @@
 package com.gameserver.services;
 
 import com.gameserver.data.xml.impl.BuildingData;
-import com.gameserver.enums.BuildingType;
 import com.gameserver.model.Base;
+import com.gameserver.model.buildings.Building;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -23,13 +23,14 @@ public class BuildingService {
         return repository.findOne(id);
     }
 
-    public Collection<BuildingInstance> findAll() {
+    public List<BuildingInstance> findAll() {
         return repository.findAll();
     }
 
-    public BuildingInstance create(Base base, BuildingType template){
-        if(template == null) return null;
-        BuildingInstance p = new BuildingInstance(base, BuildingData.getInstance().getBuilding(template));
+    public BuildingInstance create(Base base, String buildingId){
+        Building b = BuildingData.getInstance().getBuilding(buildingId);
+        if(b == null) return null;
+        BuildingInstance p = new BuildingInstance(base, b);
         return repository.save(p);
     }
 

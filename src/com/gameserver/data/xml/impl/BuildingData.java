@@ -12,16 +12,16 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
  */
 public class BuildingData implements IXmlReader {
 
-    private final HashMap<BuildingType, Building> _buildings = new HashMap<>();
+    private final HashMap<String, Building> _buildings = new HashMap<>();
 
     protected BuildingData(){
         load();
@@ -72,24 +72,28 @@ public class BuildingData implements IXmlReader {
                                     }
                                     else if("building".equalsIgnoreCase(d.getNodeName()))
                                     {
-                                        BuildingType buildingType = parseEnum(battrs, BuildingType.class, "type");
+                                        String buildingId = parseString(battrs, "id");
                                         int buildingLevel = parseInteger(battrs, "level", -1);
-                                        requirement.addBuilding(new BuildingHolder(buildingType, buildingLevel));
+                                        requirement.addBuilding(new BuildingHolder(buildingId, buildingLevel));
                                     }
                                     // TODO: Technology
                                 }
                             }
                         }
 
-                        _buildings.put(type, new Building(id, type, name, description, maxLevel, maxHealth, buildTime, requirement));
+                        _buildings.put(id, new Building(id, type, name, description, maxLevel, maxHealth, buildTime, requirement));
                     }
                 }
             }
         }
     }
 
-    public Building getBuilding(BuildingType type){
-        return _buildings.get(type);
+    public Building getBuilding(String id){
+        return _buildings.get(id);
+    }
+
+    public List<Building> getBuildings(BuildingType type){
+        return _buildings.values().stream().filter(k -> k.getType().equals(type)).collect(Collectors.toList());
     }
 
     public List<Building> getBuildings(){

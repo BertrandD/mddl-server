@@ -1,7 +1,6 @@
 package com.gameserver.controllers;
 
 import com.gameserver.data.xml.impl.BuildingData;
-import com.gameserver.enums.BuildingType;
 import com.gameserver.model.buildings.AbstractBuilding;
 import com.gameserver.model.buildings.Building;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +22,10 @@ public class BuildingController {
         return BuildingData.getInstance().getBuildings();
     }
 
-    @RequestMapping(value = "/building/{type}", method = RequestMethod.GET)
-    public Building findBuilding(@PathVariable("type") String type){
-        BuildingType bt = BuildingType.valueOf(type);
-        return BuildingData.getInstance().getBuilding(bt);
+    @RequestMapping(value = "/building/{id}", method = RequestMethod.GET)
+    public Building findBuilding(@PathVariable("id") String id){
+        Building b = BuildingData.getInstance().getBuilding(id);
+        if(b == null) return null;
+        return b;
     }
 }

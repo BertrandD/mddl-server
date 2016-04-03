@@ -17,15 +17,8 @@
                                         </xs:element>
                                         <xs:element name="building" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
-                                                <xs:attribute name="type" use="required">
-                                                    <xs:simpleType>
-                                                        <xs:restriction base="xs:string" >
-                                                            <xs:enumeration value="HEADQUARTER" />
-                                                            <xs:enumeration value="STORAGE" />
-                                                        </xs:restriction>
-                                                    </xs:simpleType>
-                                                </xs:attribute>
-                                                <xs:attribute name="level" use="required" />
+                                                <xs:attribute name="id" type="xs:normalizedString" use="required" />
+                                                <xs:attribute name="level" type="xs:integer" use="required" />
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
