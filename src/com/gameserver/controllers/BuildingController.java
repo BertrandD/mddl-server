@@ -14,7 +14,7 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @RestController
-@RequestMapping(value = "/building", produces = "application/json")
+@RequestMapping(value = "/building_static", produces = "application/json")
 public class BuildingController {
 
     @RequestMapping(method = RequestMethod.GET)
