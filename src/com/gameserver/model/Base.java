@@ -30,7 +30,10 @@ public class Base
     @DBRef
     @JsonView(View.Base_OwnerAndBuildings.class)
     private List<BuildingInstance> buildings;
-    // ships
+
+    // TODO: store ships
+
+    // TODO: store ItemInstance here ?
 
     public Base(){
         buildings = new ArrayList<>();

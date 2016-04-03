@@ -8,7 +8,6 @@ import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
 import com.gameserver.model.items.GameItem;
-import com.gameserver.model.items.Item;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;

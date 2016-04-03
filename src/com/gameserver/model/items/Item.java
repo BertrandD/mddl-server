@@ -10,7 +10,7 @@ import com.gameserver.model.commons.StatsSet;
 public abstract class Item extends GameItem
 {
     private Rank rank;
-    private int useSlot;
+    private int useSlot; // TODO: move it
     private long buildTime;
 
     public Item(StatsSet set, Requirement requirement)
