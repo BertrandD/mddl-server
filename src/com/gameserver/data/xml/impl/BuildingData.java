@@ -11,8 +11,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -90,8 +92,8 @@ public class BuildingData implements IXmlReader {
         return _buildings.get(type);
     }
 
-    public Collection<Building> getBuildings(){
-        return _buildings.values();
+    public List<Building> getBuildings(){
+        return new ArrayList<>(_buildings.values());
     }
 
     public static BuildingData getInstance()

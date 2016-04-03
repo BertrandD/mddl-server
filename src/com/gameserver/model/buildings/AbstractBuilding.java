@@ -6,7 +6,7 @@ import com.gameserver.model.commons.Requirement;
 /**
  * @author LEBOC Philippe
  */
-abstract class AbstractBuilding {
+public abstract class AbstractBuilding {
 
     private String id;
     private String name;
