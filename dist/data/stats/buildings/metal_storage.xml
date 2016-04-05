@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+    <building id="10001" type="STORAGE" name="Metal Storage" maxHealth="10000" maxLevel="20" buildTime="60" descriptionId="10001">
+        <creations>
+            <creation level="1">
+                <item id="100" count="10" />
+                <item id="101" count="10" />
+                <item id="102" count="10" />
+                <building id="10000" level="1" />
+                <!--<technology id="" level="" />-->
+            </creation>
+            <creation level="2">
+                <item id="100" count="10" />
+                <item id="101" count="10" />
+                <item id="102" count="10" />
+                <building id="10000" level="1" />
+            </creation>
+            <creation level="3">
+                <item id="100" count="10" />
+                <item id="101" count="10" />
+                <item id="102" count="10" />
+                <building id="10000" level="1" />
+            </creation>
+        </creations>
+        <properties>
+            <maxStorage>
+                <set level="1" value="1000" />
+                <set level="2" value="3000" />
+                <set level="3" value="8000" />
+                <set level="4" value="15000" />
+                <set level="5" value="25000" />
+                <set level="6" value="50000" />
+                <set level="7" value="85000" />
+                <set level="8" value="125000" />
+                <set level="9" value="250000" />
+                <set level="10" value="500000" />
+                <set level="11" value="900000" />
+                <set level="12" value="145000" />
+                <set level="13" value="2000000" />
+                <set level="14" value="5000000" />
+                <set level="15" value="12000000" />
+                <set level="16" value="18000000" />
+                <set level="17" value="25000000" />
+                <set level="18" value="40000000" />
+                <set level="19" value="80000000" />
+                <set level="20" value="100000000" />
+            </maxStorage>
+        </properties>
+    </building>
+</list>

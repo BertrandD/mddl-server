@@ -4,8 +4,12 @@ import com.config.Config;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
-import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.buildings.HeadQuarter;
+import com.gameserver.model.buildings.Mine;
+import com.gameserver.model.buildings.Storage;
+import com.gameserver.model.commons.Requirement;
+import com.gameserver.model.commons.StatsSet;
 import com.util.data.xml.IXmlReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -30,15 +34,13 @@ public class BuildingData implements IXmlReader {
     @Override
     public void load() {
         _buildings.clear();
-        parseDatapackFile(Config.DATA_ROOT_DIRECTORY + "stats/buildings/buildings.xml");
+        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/buildings", false);
         LOGGER.info(getClass().getSimpleName() + ": Loaded " + _buildings.size() + " buildings Templates.");
     }
 
     @Override
     public void parseDocument(Document doc)
     {
-        Requirement requirement = null;
-
         for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
         {
             if ("list".equalsIgnoreCase(a.getNodeName()))
@@ -48,44 +50,93 @@ public class BuildingData implements IXmlReader {
                     if ("building".equalsIgnoreCase(b.getNodeName()))
                     {
                         NamedNodeMap attrs = b.getAttributes();
-                        String id = parseString(attrs, "id", null);
-                        BuildingType type = parseEnum(attrs, BuildingType.class, "type");
-                        String name = parseString(attrs, "name", null);
-                        String description = parseString(attrs, "description", null);
-                        int maxHealth = parseInteger(attrs, "maxHealth", -1);
-                        int maxLevel = parseInteger(attrs, "maxLevel", -1);
-                        long buildTime = parseLong(attrs, "buildTime", -1L); // TODO: Default values
+                        final StatsSet set = new StatsSet();
+
+                        for(int i = 0; i < attrs.getLength(); i++)
+                        {
+                            final Node att = attrs.item(i);
+                            set.set(att.getNodeName(), att.getNodeValue());
+                        }
+
+                        final Building building = createBuildingObject(set);
+                        if(building == null) {
+                            LOGGER.info(getClass().getSimpleName()+ " : building cannot be instanciated because building type isnt recognized => null");
+                            continue;
+                        }
 
                         for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
-                            if("creation".equalsIgnoreCase(c.getNodeName()))
+                            if("creations".equalsIgnoreCase(c.getNodeName()))
                             {
-                                requirement = new Requirement();
-                                for(Node d = c.getFirstChild(); d != null ; d = d.getNextSibling())
+                                final HashMap<Integer, Requirement> creations = new HashMap<>();
+                                for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
                                 {
-                                    NamedNodeMap battrs = d.getAttributes();
-                                    if("item".equalsIgnoreCase(d.getNodeName()))
+                                    if("creation".equalsIgnoreCase(d.getNodeName()))
                                     {
-                                        String itemId = parseString(battrs, "id", null);
-                                        long itemCount = parseLong(battrs, "count", -1L);
-                                        requirement.addItem(new ItemHolder(itemId, itemCount));
+                                        attrs = d.getAttributes();
+                                        final int creationLevel = parseInteger(attrs, "level");
+                                        final Requirement requirement = new Requirement();
+
+                                        for(Node e = d.getFirstChild(); e != null ; e = e.getNextSibling())
+                                        {
+                                            attrs = e.getAttributes();
+                                            if("item".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                requirement.addItem(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count", 0L)));
+                                            }
+                                            else if("building".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                requirement.addBuilding(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level", 1)));
+                                            }
+                                            else if("technology".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                // TODO: Technology
+                                                // requirement.addTechnology(new TechnologyHolder(parseString(attrs, "id"), parseInteger(attrs, "level", 1)));
+                                            }
+                                        }
+                                        creations.put(creationLevel, requirement);
                                     }
-                                    else if("building".equalsIgnoreCase(d.getNodeName()))
+                                }
+                                building.setRequirements(creations);
+                            }
+                            else if("properties".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    if("maxStorage".equalsIgnoreCase(d.getNodeName()))
                                     {
-                                        String buildingId = parseString(battrs, "id");
-                                        int buildingLevel = parseInteger(battrs, "level", -1);
-                                        requirement.addBuilding(new BuildingHolder(buildingId, buildingLevel));
+                                        final HashMap<Integer, Long> maxStorage = new HashMap<>();
+                                        for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
+                                        {
+                                            attrs = e.getAttributes();
+                                            if("set".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                maxStorage.put(parseInteger(attrs, "level"), parseLong(attrs, "value"));
+                                            }
+                                        }
+
+                                        ((Storage)building).setCapacityByLevel(maxStorage);
                                     }
-                                    // TODO: Technology
                                 }
                             }
                         }
 
-                        _buildings.put(id, new Building(id, type, name, description, maxLevel, maxHealth, buildTime, requirement));
+                        _buildings.put(set.getString("id"), building);
                     }
                 }
             }
         }
+    }
+
+    private Building createBuildingObject(StatsSet set)
+    {
+        switch (set.getEnum("type", BuildingType.class))
+        {
+            case HEADQUARTER: return new HeadQuarter(set);
+            case STORAGE: return new Storage(set);
+            case MINE: return new Mine(set);
+        }
+        return null;
     }
 
     public Building getBuilding(String id){

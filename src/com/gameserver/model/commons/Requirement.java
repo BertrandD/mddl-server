@@ -14,15 +14,18 @@ public class Requirement {
     private List<ItemHolder> items;
     private List<BuildingHolder> buildings;
     // TODO: Technologies
+    // private List<TechnologyHolder> technologies;
 
     public Requirement() {
         setItems(new ArrayList<>());
         setBuildings(new ArrayList<>());
+        // setTechnologies(new ArrayList<>());
     }
 
     public Requirement(List<ItemHolder> items, List<BuildingHolder> buildings) {
         setItems(items);
         setBuildings(buildings);
+        // setTechnologies(new ArrayList<>());
     }
 
     public List<ItemHolder> getItems() {
