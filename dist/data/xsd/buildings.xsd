@@ -6,19 +6,44 @@
 				<xs:element name="building" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
                         <xs:sequence>
-                            <xs:element name="creation" minOccurs="0" maxOccurs="1">
+                            <xs:element name="creations" minOccurs="1" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:element name="creation" minOccurs="1" maxOccurs="unbounded">
                                             <xs:complexType>
-                                                <xs:attribute name="id" type="xs:normalizedString" use="required" />
-                                                <xs:attribute name="count" type="xs:long" use="required" />
+                                                <xs:sequence>
+                                                    <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="id" type="xs:normalizedString" use="required" />
+                                                            <xs:attribute name="count" type="xs:long" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="building" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="id" type="xs:normalizedString" use="required" />
+                                                            <xs:attribute name="level" type="xs:integer" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="level" type="xs:integer" use="required" />
                                             </xs:complexType>
                                         </xs:element>
-                                        <xs:element name="building" minOccurs="0" maxOccurs="unbounded">
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="properties" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="maxStorage" minOccurs="0" maxOccurs="1">
                                             <xs:complexType>
-                                                <xs:attribute name="id" type="xs:normalizedString" use="required" />
-                                                <xs:attribute name="level" type="xs:integer" use="required" />
+                                                <xs:sequence>
+                                                    <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="level" type="xs:integer" use="required" />
+                                                            <xs:attribute name="value" type="xs:long" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
@@ -28,7 +53,7 @@
                         <xs:attribute name="id" type="xs:normalizedString" use="required" />
                         <xs:attribute name="name" type="xs:normalizedString" use="required" />
                         <xs:attribute name="type" type="xs:normalizedString" use="required" />
-                        <xs:attribute name="description" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="descriptionId" type="xs:normalizedString" use="required" />
                         <xs:attribute name="buildTime" type="xs:positiveInteger" use="required" />
                         <xs:attribute name="maxLevel" type="xs:positiveInteger" use="required"/>
                         <xs:attribute name="maxHealth" type="xs:positiveInteger" use="required" />

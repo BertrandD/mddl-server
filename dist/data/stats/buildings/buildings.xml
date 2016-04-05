@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="10000" type="HEADQUARTER" name="Headquarter" maxHealth="10000" maxLevel="50" buildTime="60" description="The Headquarter is the main building that allow you to manage your base.">
-        <creation>
-            <item id="100" count="1" />
-            <item id="101" count="1" />
-            <item id="102" count="1" />
-        </creation>
+    <building id="10000" type="HEADQUARTER" name="Headquarter" maxHealth="10000" maxLevel="1" buildTime="60" descriptionId="10000">
+        <creations>
+            <creation level="1">
+                <item id="100" count="1" />
+                <item id="101" count="1" />
+                <item id="102" count="1" />
+            </creation>
+        </creations>
     </building>
-    <building id="10001" type="STORAGE" name="Metal Storage" maxHealth="10000" maxLevel="50" buildTime="60" description="The Metal Storage building is a important building to increase your metal storage capacity.">
-        <creation>
-            <item id="100" count="10" />
-            <item id="101" count="10" />
-            <item id="102" count="10" />
-            <building id="10000" level="1" />
-            <!--<technology id="" level="" />-->
-        </creation>
+    <building id="10002" type="STORAGE" name="Crystal Storage" maxHealth="10000" maxLevel="50" buildTime="60" descriptionId="10002">
+        <creations>
+            <creation level="1">
+                <item id="100" count="10" />
+                <item id="101" count="10" />
+                <item id="102" count="10" />
+                <building id="10000" level="1" />
+                <!--<technology id="" level="" />-->
+            </creation>
+        </creations>
     </building>
-    <building id="10002" type="STORAGE" name="Crystal Storage" maxHealth="10000" maxLevel="50" buildTime="60" description="The Crystal Storage building is a important building to increase your crystal storage capacity.">
-        <creation>
-            <item id="100" count="10" />
-            <item id="101" count="10" />
-            <item id="102" count="10" />
-            <building id="10000" level="1" />
-            <!--<technology id="" level="" />-->
-        </creation>
-    </building>
-    <building id="10003" type="STORAGE" name="Deuterium Storage" maxHealth="10000" maxLevel="50" buildTime="60" description="The Deuterium Storage building is a important building to increase your deuterium storage capacity.">
-        <creation>
-            <item id="100" count="10" />
-            <item id="101" count="10" />
-            <item id="102" count="10" />
-            <building id="10000" level="1" />
-            <!--<technology id="" level="" />-->
-        </creation>
+    <building id="10003" type="STORAGE" name="Deuterium Storage" maxHealth="10000" maxLevel="50" buildTime="60" descriptionId="10003">
+        <creations>
+            <creation level="1">
+                <item id="100" count="10" />
+                <item id="101" count="10" />
+                <item id="102" count="10" />
+                <building id="10000" level="1" />
+                <!--<technology id="" level="" />-->
+            </creation>
+        </creations>
     </building>
 </list>
