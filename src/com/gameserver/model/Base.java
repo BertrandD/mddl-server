@@ -2,6 +2,7 @@ package com.gameserver.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.instances.BuildingInstance;
+import com.gameserver.model.vehicles.Ship;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -23,6 +24,8 @@ public class Base
     @JsonView(View.Standard.class)
     private String name;
 
+    // TODO: Generate Coordinates
+
     @DBRef
     @JsonView(View.Base_Onwer.class)
     private Player owner;
@@ -31,10 +34,12 @@ public class Base
     @JsonView({View.Base_Buildings.class})
     private List<BuildingInstance> buildings;
 
-    // TODO: store ships
+    @DBRef
+    private List<Ship> ships;
 
     public Base(){
-        buildings = new ArrayList<>();
+        setBuildings(new ArrayList<>());
+        setShips(new ArrayList<>());
     }
 
     public Base(String name, Player owner)
@@ -43,14 +48,7 @@ public class Base
         setName(name);
         setOwner(owner);
         setBuildings(new ArrayList<>());
-    }
-
-    public Base(String id, String name, Player owner, List<BuildingInstance> buildings)
-    {
-        setId(id);
-        setName(name);
-        setOwner(owner);
-        setBuildings(buildings);
+        setShips(new ArrayList<>());
     }
 
     public String getId() {
@@ -87,5 +85,13 @@ public class Base
 
     public void addBuilding(BuildingInstance building) {
         this.buildings.add(building); // TODO: add check
+    }
+
+    public List<Ship> getShips() {
+        return ships;
+    }
+
+    public void setShips(List<Ship> ships) {
+        this.ships = ships;
     }
 }
