@@ -28,10 +28,10 @@ public class ItemService {
         return repository.findAll();
     }
 
-    public ItemInstance create(Base owner, String itemId, long count){
+    public ItemInstance create(String itemId, long count){
         GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
         if(tmpl == null) return null;
-        return repository.save(new ItemInstance(owner, itemId, count, tmpl));
+        return repository.save(new ItemInstance(itemId, count, tmpl));
     }
 
     public void update(ItemInstance item){

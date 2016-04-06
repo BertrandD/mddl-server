@@ -2,7 +2,6 @@ package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.model.Base;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
@@ -36,7 +35,7 @@ public final class ItemInstance
 
     public ItemInstance(){}
 
-    public ItemInstance(Base owner, String itemId, long count, GameItem template)
+    public ItemInstance(String itemId, long count, GameItem template)
     {
         setId(null);
         setItemId(itemId);
@@ -44,7 +43,7 @@ public final class ItemInstance
         setTemplate(template);
     }
 
-    public ItemInstance(String id, Base owner, String itemId, long count)
+    public ItemInstance(String id, String itemId, long count)
     {
         setId(id);
         setItemId(itemId);
