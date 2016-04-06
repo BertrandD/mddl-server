@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * @author LEBOC Philippe
+ * @deprecated
  */
 @Document(collection = "item_attachments")
 public class Attachment {

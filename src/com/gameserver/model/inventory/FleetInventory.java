@@ -2,6 +2,7 @@ package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.vehicles.Fleet;
 import com.util.data.json.View;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -12,8 +13,8 @@ import java.util.List;
  */
 public class FleetInventory extends Inventory{
 
-    //@DBRef
-    //private Fleet fleet;
+    @DBRef
+    private Fleet fleet;
 
     @DBRef
     @JsonView(View.Standard.class)
@@ -21,14 +22,9 @@ public class FleetInventory extends Inventory{
 
     public FleetInventory(){}
 
-    public List<ItemInstance> getItems() {
-        return items;
+    public FleetInventory(Fleet fleet){
+        setFleet(fleet);
     }
-
-    public void setItems(List<ItemInstance> items) {
-        this.items = items;
-    }
-
 
     @Override
     public boolean isAllowedToStore(ItemInstance item) {
@@ -63,5 +59,21 @@ public class FleetInventory extends Inventory{
     @Override
     public ItemInstance removeAndGet(String id) {
         return null; // TODO
+    }
+
+    public List<ItemInstance> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemInstance> items) {
+        this.items = items;
+    }
+
+    public Fleet getFleet() {
+        return fleet;
+    }
+
+    public void setFleet(Fleet fleet) {
+        this.fleet = fleet;
     }
 }
