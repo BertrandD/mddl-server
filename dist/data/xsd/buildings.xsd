@@ -34,6 +34,18 @@
                             <xs:element name="properties" minOccurs="0" maxOccurs="1">
                                 <xs:complexType>
                                     <xs:sequence>
+                                        <xs:element name="storageFilter" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="item" minOccurs="1" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="id" use="optional" />
+                                                            <xs:attribute name="type" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
                                         <xs:element name="maxStorage" minOccurs="0" maxOccurs="1">
                                             <xs:complexType>
                                                 <xs:sequence>

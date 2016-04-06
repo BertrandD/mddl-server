@@ -2,6 +2,7 @@ package com.gameserver.data.xml.impl;
 
 import com.config.Config;
 import com.gameserver.enums.BuildingType;
+import com.gameserver.enums.ItemType;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.buildings.Building;
@@ -10,6 +11,7 @@ import com.gameserver.model.buildings.Mine;
 import com.gameserver.model.buildings.Storage;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
+import com.gameserver.model.inventory.InventoryFilter;
 import com.util.data.xml.IXmlReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -103,7 +105,28 @@ public class BuildingData implements IXmlReader {
                             {
                                 for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
                                 {
-                                    if("maxStorage".equalsIgnoreCase(d.getNodeName()))
+                                    if("storageFilter".equalsIgnoreCase(d.getNodeName()))
+                                    {
+                                        final InventoryFilter filter = new InventoryFilter();
+                                        for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
+                                        {
+                                            attrs = e.getAttributes();
+                                            if("item".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                final String id = parseString(attrs, "id");
+                                                if(id != null)
+                                                {
+                                                    filter.getIds().add(id);
+                                                }
+                                                else
+                                                {
+                                                    filter.getTypes().add(parseEnum(attrs, ItemType.class, "type"));
+                                                }
+                                            }
+                                        }
+                                        ((Storage)building).setFilter(filter);
+                                    }
+                                    else if("maxStorage".equalsIgnoreCase(d.getNodeName()))
                                     {
                                         final HashMap<Integer, Long> maxStorage = new HashMap<>();
                                         for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())

@@ -1,6 +1,7 @@
 package com.gameserver.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.model.inventory.PlayerInventory;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -23,8 +24,12 @@ public class Player {
     private String name;
 
     @DBRef
-    @JsonView(View.PlayerBases.class)
+    @JsonView(View.Player_Bases.class)
     private List<Base> bases;
+
+    @DBRef
+    @JsonView(View.Player_Inventory.class)
+    private PlayerInventory inventory;
 
     public Player(){
         bases = new ArrayList<>();
@@ -59,11 +64,23 @@ public class Player {
         this.name = name;
     }
 
+    public List<Base> getBases() {
+        return bases;
+    }
+
     public void setBases(List<Base> bases) {
         this.bases = bases;
     }
 
     public void addBase(Base base) {
         this.bases.add(base); // TODO: add check
+    }
+
+    public PlayerInventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(PlayerInventory inventory) {
+        this.inventory = inventory;
     }
 }

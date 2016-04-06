@@ -1,6 +1,7 @@
 package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.model.Player;
 import com.gameserver.model.instances.ItemInstance;
 import com.util.data.json.View;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -10,29 +11,30 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-public class FleetInventory extends Inventory{
+public class PlayerInventory extends Inventory{
 
-    //@DBRef
-    //private Fleet fleet;
+    @DBRef
+    @JsonView(View.Standard.class)
+    private Player owner;
 
     @DBRef
     @JsonView(View.Standard.class)
     private List<ItemInstance> items;
 
-    public FleetInventory(){}
+    public PlayerInventory(){}
 
-    public List<ItemInstance> getItems() {
-        return items;
+    public PlayerInventory(Player player){
+        setOwner(player);
     }
 
-    public void setItems(List<ItemInstance> items) {
-        this.items = items;
-    }
-
-
+    /**
+     * All items are allowed to be stored in PlayerInventory
+     * @param item
+     * @return always true
+     */
     @Override
     public boolean isAllowedToStore(ItemInstance item) {
-        return false;
+        return true;
     }
 
     @Override
@@ -52,16 +54,35 @@ public class FleetInventory extends Inventory{
 
     @Override
     public boolean addItem(ItemInstance item) {
-        return false; // TODO
+        items.add(item); // TODO add checks
+        return true;
     }
 
     @Override
     public boolean removeItem(String id) {
-        return false; // TODO
+        final ItemInstance it = items.stream().filter(k->k.getId().equals(id)).findFirst().get();
+        if(it != null) items.remove(it); // TODO: add checks
+        return true;
     }
 
     @Override
     public ItemInstance removeAndGet(String id) {
         return null; // TODO
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
+    public List<ItemInstance> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemInstance> items) {
+        this.items = items;
     }
 }

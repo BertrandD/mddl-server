@@ -23,6 +23,9 @@
             </creation>
         </creations>
         <properties>
+            <storageFilter>
+                <item id="100" />
+            </storageFilter>
             <maxStorage>
                 <set level="1" value="1000" />
                 <set level="2" value="3000" />

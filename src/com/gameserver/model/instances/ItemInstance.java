@@ -13,22 +13,17 @@ import com.gameserver.model.items.Weapon;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "base_items")
+@Document(collection = "items")
 public final class ItemInstance
 {
     @Id
     @JsonView(View.Standard.class)
     private String id;
-
-    @DBRef
-    @JsonView(View.ItemInstance_Base.class)
-    private Base owner;
 
     @JsonView(View.Standard.class)
     private String itemId;
@@ -44,7 +39,6 @@ public final class ItemInstance
     public ItemInstance(Base owner, String itemId, long count, GameItem template)
     {
         setId(null);
-        setOwner(owner);
         setItemId(itemId);
         setCount(count);
         setTemplate(template);
@@ -53,7 +47,6 @@ public final class ItemInstance
     public ItemInstance(String id, Base owner, String itemId, long count)
     {
         setId(id);
-        setOwner(owner);
         setItemId(itemId);
         setCount(count);
         setTemplate(ItemData.getInstance().getTemplate(itemId));
@@ -94,6 +87,10 @@ public final class ItemInstance
         return null;
     }
 
+    public long getWeight(){
+        return getTemplate().getWeight() * getCount();
+    }
+
     public boolean isCargo(){
         return getTemplate() instanceof Cargo;
     }
@@ -126,14 +123,6 @@ public final class ItemInstance
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Base getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Base owner) {
-        this.owner = owner;
     }
 
     public String getItemId() {

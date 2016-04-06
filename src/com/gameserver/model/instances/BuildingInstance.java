@@ -2,9 +2,10 @@ package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
-import com.gameserver.enums.BuildingType;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.buildings.Storage;
+import com.gameserver.model.inventory.StorageBuildingInventory;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -34,6 +35,10 @@ public class BuildingInstance {
     @JsonView(View.Standard.class)
     private int currentLevel;
 
+    @DBRef
+    @JsonView(View.BuildingInstance_Inventory.class)
+    private StorageBuildingInventory inventory;
+
     @Transient
     private Building template;
 
@@ -54,6 +59,13 @@ public class BuildingInstance {
         setTemplate(BuildingData.getInstance().getBuilding(buildingId));
         setCurrentHealth(currentHealth);
         setCurrentLevel(currentLevel);
+    }
+
+    public Storage getStorageBuilding(){
+        if(getTemplate() instanceof Storage){
+            return (Storage) getTemplate();
+        }
+        return null;
     }
 
     public String getId() {
@@ -102,5 +114,13 @@ public class BuildingInstance {
 
     public void setTemplate(Building template) {
         this.template = template;
+    }
+
+    public StorageBuildingInventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(StorageBuildingInventory inventory) {
+        this.inventory = inventory;
     }
 }

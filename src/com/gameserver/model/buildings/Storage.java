@@ -1,6 +1,7 @@
 package com.gameserver.model.buildings;
 
 import com.gameserver.model.commons.StatsSet;
+import com.gameserver.model.inventory.InventoryFilter;
 
 import java.util.HashMap;
 
@@ -10,6 +11,8 @@ import java.util.HashMap;
 public class Storage extends Building {
 
     private HashMap<Integer, Long> capacityByLevel;
+
+    private InventoryFilter filter;
 
     public Storage(StatsSet set){
         super(set);
@@ -26,5 +29,13 @@ public class Storage extends Building {
 
     public void setCapacityByLevel(HashMap<Integer, Long> capacity) {
         this.capacityByLevel = capacity;
+    }
+
+    public InventoryFilter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(InventoryFilter filter) {
+        this.filter = filter;
     }
 }

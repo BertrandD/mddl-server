@@ -2,7 +2,6 @@ package com.gameserver.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.inventory.BaseInventory;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -34,10 +33,6 @@ public class Base
 
     // TODO: store ships
 
-    @DBRef
-    @JsonView(View.Base_Inventory.class)
-    private BaseInventory inventory;
-
     public Base(){
         buildings = new ArrayList<>();
     }
@@ -48,16 +43,14 @@ public class Base
         setName(name);
         setOwner(owner);
         setBuildings(new ArrayList<>());
-        setInventory(new BaseInventory(this));
     }
 
-    public Base(String id, String name, Player owner, List<BuildingInstance> buildings, BaseInventory inventory)
+    public Base(String id, String name, Player owner, List<BuildingInstance> buildings)
     {
         setId(id);
         setName(name);
         setOwner(owner);
         setBuildings(buildings);
-        setInventory(inventory);
     }
 
     public String getId() {
@@ -94,13 +87,5 @@ public class Base
 
     public void addBuilding(BuildingInstance building) {
         this.buildings.add(building); // TODO: add check
-    }
-
-    public BaseInventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(BaseInventory inventory) {
-        this.inventory = inventory;
     }
 }
