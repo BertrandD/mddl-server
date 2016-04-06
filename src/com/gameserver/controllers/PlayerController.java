@@ -2,6 +2,7 @@ package com.gameserver.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Player;
+import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,16 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    @Autowired
+    private InventoryService inventoryService;
+
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Collection<Player> players(){
         return playerService.findAll();
     }
 
-    @JsonView(View.PlayerBases.class)
+    @JsonView(View.Player_Bases.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Player player(@PathVariable("id") String id){
         return playerService.findOne(id);
@@ -38,7 +42,9 @@ public class PlayerController {
     @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.POST)
     public Player create(@RequestParam(value = "name") String name){
-        return playerService.create(name);
+        Player player = playerService.create(name); // TODO: Check valid name & not used name
+        inventoryService.create(player);
+        return player;
     }
 
     @RequestMapping(method = RequestMethod.DELETE)

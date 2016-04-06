@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;
+import com.gameserver.model.inventory.StorageBuildingInventory;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
+import com.gameserver.services.InventoryService;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +31,9 @@ public class BuildingInstanceController {
     @Autowired
     private BaseService baseService;
 
+    @Autowired
+    private InventoryService inventoryService;
+
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Collection<BuildingInstance> findAll(){
@@ -46,10 +51,17 @@ public class BuildingInstanceController {
     public BuildingInstance create(@RequestParam(value = "base") String baseId, @RequestParam(value = "building") String templateId){
         Base base = baseService.findOne(baseId);
         if(base == null) return null;
-        BuildingInstance building = buildingService.create(base, templateId); // TODO: fix IllegalArgument Exception
+
+        BuildingInstance building = buildingService.create(base, templateId);
         if(building == null) return null;
+
         base.addBuilding(building);
         baseService.update(base);
+
+        if(building.getTemplate().getType().equals(BuildingType.STORAGE)){
+            inventoryService.create(building);
+        }
+
         return building;
     }
 }
