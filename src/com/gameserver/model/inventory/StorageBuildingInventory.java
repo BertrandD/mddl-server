@@ -16,6 +16,7 @@ public class StorageBuildingInventory extends Inventory {
     private ItemInstance item;
 
     @DBRef
+    @JsonView(View.Standard.class)
     private BuildingInstance building;
 
     public StorageBuildingInventory(){}
