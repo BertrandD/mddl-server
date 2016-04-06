@@ -1,9 +1,9 @@
 package com.gameserver.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.gameserver.model.Base;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.services.BaseService;
+import com.gameserver.model.inventory.Inventory;
+import com.gameserver.services.InventoryService;
 import com.gameserver.services.ItemService;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,7 @@ public class ItemInstanceController {
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private BaseService baseService;
+    private InventoryService inventoryService;
 
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -34,7 +33,7 @@ public class ItemInstanceController {
         return itemService.findAll();
     }
 
-    @JsonView(View.ItemInstance_Base.class)
+    @JsonView(View.Standard.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ItemInstance findOne(@PathVariable(value = "id") String id){
         return itemService.findOne(id);
@@ -42,11 +41,11 @@ public class ItemInstanceController {
 
     @JsonView(View.ItemInstance_Base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public ItemInstance create(@RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count, @RequestParam(value = "base") String baseId) {
-        Base base = baseService.findOne(baseId);
-        if(base == null) return null;
-        ItemInstance item = itemService.create(base, itemId, count);
-        //base.addItem(item);
+    public ItemInstance create(@RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count, @RequestParam(value = "inventory") String inventory) {
+        ItemInstance item = itemService.create(itemId, count);
+        Inventory inv = inventoryService.findOne(inventory);
+        inv.addItem(item);
+        inventoryService.update(inv);
         return item;
     }
 }
