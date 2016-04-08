@@ -10,7 +10,7 @@ public abstract class GameItem {
 
     private String itemId;
     private String name;
-    private String description;
+    private int descriptionId;
     private int weight;
     private boolean sellable;
     private boolean tradable;
@@ -20,7 +20,7 @@ public abstract class GameItem {
     public GameItem(StatsSet set, Requirement requirement){
         setItemId(set.getString("id"));
         setName(set.getString("name"));
-        setDescription(set.getString("description"));
+        setDescriptionId(set.getInt("descriptionId"));
         setWeight(set.getInt("weight"));
         setSellable(set.getBoolean("sellable", false));
         setTradable(set.getBoolean("tradable", false));
@@ -45,12 +45,12 @@ public abstract class GameItem {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public int getDescriptionId() {
+        return descriptionId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionId(int descriptionId) {
+        this.descriptionId = descriptionId;
     }
 
     public int getWeight() {

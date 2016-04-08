@@ -1,5 +1,6 @@
 package com.gameserver.model.instances;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.Base;
@@ -12,17 +13,20 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 /**
  * @author LEBOC Philippe
  */
 @Document(collection = "base_buildings")
-public class BuildingInstance {
-
+public class BuildingInstance
+{
     @Id
     @JsonView(View.Standard.class)
     private String id;
 
     @DBRef
+    @JsonManagedReference
     @JsonView(View.BuildingInstance_Base.class)
     private Base base;
 

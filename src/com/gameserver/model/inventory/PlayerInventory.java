@@ -1,11 +1,13 @@
 package com.gameserver.model.inventory;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Player;
 import com.gameserver.model.instances.ItemInstance;
 import com.util.data.json.View;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +16,7 @@ import java.util.List;
 public class PlayerInventory extends Inventory{
 
     @DBRef
+    @JsonManagedReference
     @JsonView(View.Standard.class)
     private Player owner;
 
@@ -21,9 +24,12 @@ public class PlayerInventory extends Inventory{
     @JsonView(View.Standard.class)
     private List<ItemInstance> items;
 
-    public PlayerInventory(){}
+    public PlayerInventory(){
+        items = new ArrayList<>();
+    }
 
     public PlayerInventory(Player player){
+        items = new ArrayList<>();
         setOwner(player);
     }
 

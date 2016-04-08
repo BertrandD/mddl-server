@@ -1,5 +1,7 @@
 package com.gameserver.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.vehicles.Ship;
@@ -27,11 +29,13 @@ public class Base
     // TODO: Generate Coordinates
 
     @DBRef
-    @JsonView(View.Base_Onwer.class)
+    @JsonManagedReference
+    @JsonView(View.Standard.class)
     private Player owner;
 
     @DBRef
-    @JsonView({View.Base_Buildings.class})
+    @JsonBackReference
+    @JsonView(View.Standard.class)
     private List<BuildingInstance> buildings;
 
     @DBRef

@@ -1,5 +1,6 @@
 package com.gameserver.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.util.data.json.View;
@@ -24,11 +25,13 @@ public class Player {
     private String name;
 
     @DBRef
-    @JsonView(View.Player_Bases.class)
+    @JsonBackReference
+    @JsonView(View.Standard.class)
     private List<Base> bases;
 
     @DBRef
-    @JsonView(View.Player_Inventory.class)
+    @JsonBackReference
+    @JsonView(View.Standard.class)
     private PlayerInventory inventory;
 
     public Player(){

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.inventory.StorageBuildingInventory;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.InventoryService;

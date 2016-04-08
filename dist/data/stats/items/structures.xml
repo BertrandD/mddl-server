@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
-    <item id="10000" type="structure" name="ASTI I" rank="A" weight="3000" sellable="true" tradable="true" disabled="false" buildTime="60" description="Base structure used to build a very light Ship.">
+    <item id="10000" type="structure" name="ASTI I" rank="A" weight="3000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
         <creation>
             <item id="100" count="50" />
             <item id="101" count="10" />
@@ -14,7 +14,7 @@
             <set name="SLOT_WEAPON_COUNT" value="0" />
         </properties>
     </item>
-    <item id="10001" type="structure" name="ASTI II" rank="B" weight="5000" sellable="true" tradable="true" disabled="false" buildTime="60" description="Base structure used to build a light Ship.">
+    <item id="10001" type="structure" name="ASTI II" rank="B" weight="5000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
         <creation>
             <item id="100" count="100" />
             <item id="101" count="30" />
@@ -28,7 +28,7 @@
             <set name="SLOT_WEAPON_COUNT" value="1" />
         </properties>
     </item>
-    <item id="10002" type="structure" name="ASTI III" rank="C" weight="8000" sellable="true" tradable="true" disabled="false" buildTime="60" description="Base structure used to build a standard Ship.">
+    <item id="10002" type="structure" name="ASTI III" rank="C" weight="8000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
         <creation>
             <item id="100" count="275" />
             <item id="101" count="45" />
@@ -42,7 +42,7 @@
             <set name="SLOT_WEAPON_COUNT" value="2" />
         </properties>
     </item>
-    <item id="10003" type="structure" name="ASTI IV" rank="D" weight="15000" sellable="true" tradable="true" disabled="false" buildTime="60" description="Base structure used to build a heavy Ship.">
+    <item id="10003" type="structure" name="ASTI IV" rank="D" weight="15000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
         <creation>
             <item id="100" count="600" />
             <item id="101" count="145" />
@@ -56,7 +56,7 @@
             <set name="SLOT_WEAPON_COUNT" value="4" />
         </properties>
     </item>
-    <item id="10004" type="structure" name="ASTI V" rank="E" weight="25000" sellable="true" tradable="true" disabled="false" buildTime="60" description="Base structure used to build a very heavy Ship.">
+    <item id="10004" type="structure" name="ASTI V" rank="E" weight="25000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
         <creation>
             <item id="100" count="1000" />
             <item id="101" count="430" />

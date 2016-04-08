@@ -79,7 +79,7 @@ public class ItemData implements IXmlReader {
                         set.set("rank", parseEnum(attrs, Rank.class, "rank"));
                         set.set("useslot", parseInteger(attrs, "useslot", 0));
                         set.set("weight", parseInteger(attrs, "weight", 0));
-                        set.set("description", parseString(attrs, "description"));
+                        set.set("descriptionId", parseInteger(attrs, "descriptionId"));
                         set.set("sellable", parseBoolean(attrs, "sellable", false));
                         set.set("tradable", parseBoolean(attrs, "tradable", false));
                         set.set("disabled", parseBoolean(attrs, "disabled", false));

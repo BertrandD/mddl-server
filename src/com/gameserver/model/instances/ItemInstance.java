@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author LEBOC Philippe
  */
 @Document(collection = "items")
-public final class ItemInstance
+public class ItemInstance
 {
     @Id
     @JsonView(View.Standard.class)
@@ -30,6 +30,9 @@ public final class ItemInstance
     @JsonView(View.Standard.class)
     private long count;
 
+    @JsonView(View.Standard.class)
+    private long lastRefresh;
+
     @Transient
     private GameItem template;
 
@@ -40,6 +43,7 @@ public final class ItemInstance
         setId(null);
         setItemId(itemId);
         setCount(count);
+        setLastRefresh(System.currentTimeMillis());
         setTemplate(template);
     }
 
@@ -48,6 +52,7 @@ public final class ItemInstance
         setId(id);
         setItemId(itemId);
         setCount(count);
+        setLastRefresh(System.currentTimeMillis());
         setTemplate(ItemData.getInstance().getTemplate(itemId));
     }
 
@@ -114,8 +119,6 @@ public final class ItemInstance
         return getTemplate() instanceof CommonItem;
     }
 
-    // TODO: addModule & addWeapon & addTechnology
-
     public String getId() {
         return id;
     }
@@ -146,5 +149,13 @@ public final class ItemInstance
 
     private void setTemplate(GameItem template) {
         this.template = template;
+    }
+
+    public long getLastRefresh() {
+        return lastRefresh;
+    }
+
+    public void setLastRefresh(long lastRefresh) {
+        this.lastRefresh = lastRefresh;
     }
 }

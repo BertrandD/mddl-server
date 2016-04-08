@@ -5,6 +5,7 @@ import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.PlayerService;
+import com.util.data.json.BaseView;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,13 +29,13 @@ public class BaseController {
     @Autowired
     private PlayerService playerService;
 
-    @JsonView(View.Base_Onwer.class)
+    @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Collection<Base> findAll(){
         return baseService.findAll();
     }
 
-    @JsonView({View.Base_Buildings.class})
+    @JsonView({View.Standard.class})
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Base findOne(@PathVariable("id") String id){
         return baseService.findOne(id);

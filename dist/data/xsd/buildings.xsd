@@ -34,6 +34,19 @@
                             <xs:element name="properties" minOccurs="0" maxOccurs="1">
                                 <xs:complexType>
                                     <xs:sequence>
+                                        <xs:element name="production" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="level" type="xs:integer" use="required" />
+                                                            <xs:attribute name="value" type="xs:long" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="id" type="xs:string" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
                                         <xs:element name="storageFilter" minOccurs="0" maxOccurs="1">
                                             <xs:complexType>
                                                 <xs:sequence>

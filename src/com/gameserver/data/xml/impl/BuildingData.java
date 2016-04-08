@@ -105,7 +105,22 @@ public class BuildingData implements IXmlReader {
                             {
                                 for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
                                 {
-                                    if("storageFilter".equalsIgnoreCase(d.getNodeName()))
+                                    if("production".equalsIgnoreCase(d.getNodeName()))
+                                    {
+                                        attrs = d.getAttributes();
+                                        ((Mine)building).setProduceItemId(parseString(attrs, "id"));
+                                        final HashMap<Integer, Long> productionByLevel = new HashMap<>();
+                                        for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
+                                        {
+                                            if("set".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                attrs = e.getAttributes();
+                                                productionByLevel.put(parseInteger(attrs, "level"), parseLong(attrs, "value"));
+                                            }
+                                        }
+                                        ((Mine)building).setProductionByLevel(productionByLevel);
+                                    }
+                                    else if("storageFilter".equalsIgnoreCase(d.getNodeName()))
                                     {
                                         final InventoryFilter filter = new InventoryFilter();
                                         for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
