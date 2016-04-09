@@ -22,6 +22,7 @@ public class InventoryController {
     @Autowired
     private InventoryService inventoryService;
 
+    @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Inventory> findAll(){
         return inventoryService.findAll();

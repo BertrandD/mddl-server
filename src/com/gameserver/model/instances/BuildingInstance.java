@@ -1,6 +1,7 @@
 package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
@@ -10,11 +11,8 @@ import com.gameserver.model.buildings.Storage;
 import com.gameserver.model.inventory.StorageBuildingInventory;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
 
 /**
  * @author LEBOC Philippe
@@ -45,9 +43,6 @@ public class BuildingInstance
     @JsonView(View.BuildingInstance_Inventory.class)
     private StorageBuildingInventory inventory;
 
-    @Transient
-    private Building template;
-
     public BuildingInstance(){}
 
     public BuildingInstance(Base base, Building template) {
@@ -55,23 +50,19 @@ public class BuildingInstance
         setBuildingId(template.getId());
         setCurrentHealth(template.getMaxHp());
         setCurrentLevel(1);
-        setTemplate(template);
     }
 
-    public BuildingInstance(String id, Base base, String buildingId, int currentHealth, int currentLevel){
-        setId(id);
-        setBase(base);
-        setBuildingId(buildingId);
-        setTemplate(BuildingData.getInstance().getBuilding(buildingId));
-        setCurrentHealth(currentHealth);
-        setCurrentLevel(currentLevel);
-    }
-
+    @JsonIgnore
     public Storage getStorageBuilding(){
         if(getTemplate() instanceof Storage){
             return (Storage) getTemplate();
         }
         return null;
+    }
+
+    @JsonIgnore
+    public Building getTemplate() {
+        return BuildingData.getInstance().getBuilding(buildingId);
     }
 
     public String getId() {
@@ -82,6 +73,7 @@ public class BuildingInstance
         this.id = id;
     }
 
+    @JsonIgnore
     public Base getBase() {
         return base;
     }
@@ -112,14 +104,6 @@ public class BuildingInstance
 
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
-    }
-
-    public Building getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(Building template) {
-        this.template = template;
     }
 
     public StorageBuildingInventory getInventory() {

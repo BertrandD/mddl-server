@@ -20,7 +20,7 @@ public class Storage extends Building {
     }
 
     public long getCapacityByLevel(int level){
-        return capacityByLevel.get(level);
+        return getCapacityByLevel().get(level);
     }
 
     public HashMap<Integer, Long> getCapacityByLevel() {

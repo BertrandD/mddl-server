@@ -29,8 +29,7 @@ public class StorageBuildingInventory extends Inventory {
 
     @Override
     public boolean isAllowedToStore(ItemInstance item) {
-
-        return false; // TODO: Use InventoryFilter
+        return building.getStorageBuilding().getFilter().getIds().contains(item.getItemId());
     }
 
     @Override
