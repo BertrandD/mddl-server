@@ -7,12 +7,14 @@ import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.items.Engine;
 import com.gameserver.model.items.Structure;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 
 /**
  * @author LEBOC Philippe
  */
+@Document(collection = "ships")
 public class Ship extends Vehicle {
 
     private long count;

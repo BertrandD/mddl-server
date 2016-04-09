@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,6 +23,7 @@ public class Player {
     private String id;
 
     @JsonView(View.Standard.class)
+    @Indexed(unique = true)
     private String name;
 
     @DBRef

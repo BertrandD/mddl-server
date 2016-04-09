@@ -1,5 +1,6 @@
 package com.gameserver.model.inventory;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.vehicles.Fleet;
@@ -14,6 +15,7 @@ import java.util.List;
 public class FleetInventory extends Inventory{
 
     @DBRef
+    @JsonManagedReference
     private Fleet fleet;
 
     @DBRef

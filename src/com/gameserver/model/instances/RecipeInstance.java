@@ -1,6 +1,5 @@
 package com.gameserver.model.instances;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.Player;
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "player_recipes")
+@Document(collection = "recipes")
 public class RecipeInstance {
 
     @Id
@@ -87,7 +86,6 @@ public class RecipeInstance {
         this.name = name;
     }
 
-    @JsonIgnore
     public Player getOwner() {
         return owner;
     }
@@ -96,7 +94,6 @@ public class RecipeInstance {
         this.owner = owner;
     }
 
-    @JsonIgnore
     public Structure getStructure() {
         return ItemData.getInstance().getStructure(structureId);
     }
@@ -105,7 +102,6 @@ public class RecipeInstance {
         this.structureId = structureId;
     }
 
-    @JsonIgnore
     public ArrayList<Cargo> getCargos() {
         final ArrayList<Cargo> res = new ArrayList<>();
         cargos.forEach(k -> res.add(ItemData.getInstance().getCargo(k)));
@@ -116,7 +112,6 @@ public class RecipeInstance {
         this.cargos = cargos;
     }
 
-    @JsonIgnore
     public ArrayList<Engine> getEngines() {
         final ArrayList<Engine> res = new ArrayList<>();
         engines.forEach(k -> res.add(ItemData.getInstance().getEngine(k)));
@@ -127,7 +122,6 @@ public class RecipeInstance {
         this.engines = engines;
     }
 
-    @JsonIgnore
     public ArrayList<Module> getModules() {
         final ArrayList<Module> res = new ArrayList<>();
         modules.forEach(k -> res.add(ItemData.getInstance().getModule(k)));
@@ -138,7 +132,6 @@ public class RecipeInstance {
         this.modules = modules;
     }
 
-    @JsonIgnore
     public ArrayList<String> getTechnologies() {
         // TODO: create Technology entity
         return null;
@@ -148,7 +141,6 @@ public class RecipeInstance {
         this.technologies = technologies;
     }
 
-    @JsonIgnore
     public ArrayList<Weapon> getWeapons() {
         final ArrayList<Weapon> res = new ArrayList<>();
         weapons.forEach(k -> res.add(ItemData.getInstance().getWeapon(k)));

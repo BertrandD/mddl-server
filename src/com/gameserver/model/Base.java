@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "player_bases")
+@Document(collection = "bases")
 public class Base
 {
     @Id

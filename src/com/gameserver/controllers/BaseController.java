@@ -5,7 +5,6 @@ import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.PlayerService;
-import com.util.data.json.BaseView;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

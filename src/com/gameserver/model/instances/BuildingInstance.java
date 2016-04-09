@@ -1,5 +1,6 @@
 package com.gameserver.model.instances;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
@@ -18,7 +19,7 @@ import java.util.Date;
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "base_buildings")
+@Document(collection = "buildings")
 public class BuildingInstance
 {
     @Id
@@ -40,6 +41,7 @@ public class BuildingInstance
     private int currentLevel;
 
     @DBRef
+    @JsonBackReference
     @JsonView(View.BuildingInstance_Inventory.class)
     private StorageBuildingInventory inventory;
 

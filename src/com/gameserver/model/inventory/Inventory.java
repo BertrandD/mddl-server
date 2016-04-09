@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "Inventories")
+@Document(collection = "inventories")
 public abstract class Inventory {
 
     @Id

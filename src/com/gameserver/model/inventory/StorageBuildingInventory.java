@@ -1,5 +1,6 @@
 package com.gameserver.model.inventory;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
@@ -16,6 +17,7 @@ public class StorageBuildingInventory extends Inventory {
     private ItemInstance item;
 
     @DBRef
+    @JsonManagedReference
     @JsonView(View.Standard.class)
     private BuildingInstance building;
 

@@ -1,11 +1,13 @@
 package com.gameserver.model.vehicles;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.gameserver.enums.VehicleMission;
 import com.gameserver.interfaces.IFleet;
 import com.gameserver.model.commons.Coordinates;
 import com.gameserver.model.inventory.FleetInventory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Document(collection = "fleets")
 public class Fleet implements IFleet {
 
     @Id
@@ -25,6 +28,7 @@ public class Fleet implements IFleet {
     private VehicleMission mission;
 
     @DBRef
+    @JsonBackReference
     private FleetInventory inventory;
 
     @DBRef
