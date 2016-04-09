@@ -20,6 +20,10 @@ public class PlayerService {
         return playerRepository.findOne(id);
     }
 
+    public Player findOneByName(String name) {
+        return playerRepository.findByName(name);
+    }
+
     public Collection<Player> findAll() {
         return playerRepository.findAll();
     }

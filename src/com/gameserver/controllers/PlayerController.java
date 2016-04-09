@@ -42,7 +42,8 @@ public class PlayerController {
     @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.POST)
     public Player create(@RequestParam(value = "name") String name){
-        Player player = playerService.create(name); // TODO: Check valid name & not used name
+        if(playerService.findOneByName(name) != null) return null;
+        Player player = playerService.create(name); // TODO: Check valid name
         inventoryService.create(player);
         return player;
     }

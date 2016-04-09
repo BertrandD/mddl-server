@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * @author LEBOC Philippe
  */
 public interface PlayerRepository extends MongoRepository<Player, String> {
-    Player findByPlayerName();
+    Player findByName(String name);
 }
