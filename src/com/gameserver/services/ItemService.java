@@ -1,9 +1,9 @@
 package com.gameserver.services;
 
-import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.model.buildings.Mine;
+import com.gameserver.enums.ItemType;
 import com.gameserver.model.instances.BuildingInstance;
+import com.gameserver.model.inventory.BuildingInventory;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.repository.ItemRepository;
@@ -18,11 +18,16 @@ import java.util.List;
 @Service
 public class ItemService {
 
+    // Resources ids
+    private static final String METAL = "100";
+    private static final String CRYSTAL = "101";
+    private static final String DEUTHERIUM = "102";
+
     @Autowired
     ItemRepository repository;
 
     @Autowired
-    BuildingService buildingService;
+    InventoryService inventoryService;
 
     public ItemInstance findOne(String id){
         return repository.findOne(id);
@@ -35,7 +40,8 @@ public class ItemService {
     public ItemInstance create(String itemId, long count){
         GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
         if(tmpl == null) return null;
-        return repository.save(new ItemInstance(itemId, count, tmpl));
+
+        return repository.save(new ItemInstance(itemId, count));
     }
 
     public void update(ItemInstance item){
@@ -44,15 +50,50 @@ public class ItemService {
 
     public ItemInstance refresh(ItemInstance item)
     {
-        long diffTime = (System.currentTimeMillis() - item.getLastRefresh()) / 1000; // seconds
+        if(item.getType().equals(ItemType.RESOURCE)) return refreshResource(item);
+
+        final long diffTime = (System.currentTimeMillis() - item.getLastRefresh()) / 1000; // seconds
         if(diffTime > 0)
         {
-            // TODO: Find a fix
-            Mine metalMine = (Mine)BuildingData.getInstance().getBuilding("10004");
-            long units = metalMine.getProductionByLevel().get(5);
+            switch(item.getType())
+            {
+                case COMMON:
+                case CARGO:
+                case ENGINE:
+                case MODULE:
+                case STRUCTURE:
+                case WEAPON:
+            }
+            update(item);
+        }
+        return item;
+    }
 
-            item.setCount(item.getCount() + ((units/3600) * diffTime));
-            item.setLastRefresh(System.currentTimeMillis());
+    public ItemInstance refreshResource(ItemInstance item){
+        final long diffTime = (System.currentTimeMillis() - item.getLastRefresh()) / 1000; // seconds
+        if(diffTime > 0)
+        {
+            switch(item.getItemId())
+            {
+                case METAL:
+                {
+                    final BuildingInstance metalmine = ((BuildingInventory)item.getInventory()).getBuilding();
+                    if(metalmine != null) {
+                        final long units = metalmine.getMineBuilding().getProductionByLevel().get(metalmine.getCurrentLevel());
+                        item.setCount(item.getCount() + ((units / 3600) * diffTime));
+                        item.setLastRefresh(System.currentTimeMillis());
+                    }
+                    break;
+                }
+                case CRYSTAL:
+                {
+                    break;
+                }
+                case DEUTHERIUM:
+                {
+                    break;
+                }
+            }
             update(item);
         }
         return item;

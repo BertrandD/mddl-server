@@ -1,5 +1,6 @@
 package com.gameserver.model.items;
 
+import com.gameserver.enums.ItemType;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 
@@ -10,6 +11,7 @@ public abstract class GameItem {
 
     private String itemId;
     private String name;
+    private ItemType type;
     private int descriptionId;
     private int weight;
     private boolean sellable;
@@ -20,6 +22,7 @@ public abstract class GameItem {
     public GameItem(StatsSet set, Requirement requirement){
         setItemId(set.getString("id"));
         setName(set.getString("name"));
+        setType(set.getEnum("type", ItemType.class, ItemType.NONE));
         setDescriptionId(set.getInt("descriptionId"));
         setWeight(set.getInt("weight"));
         setSellable(set.getBoolean("sellable", false));
@@ -43,6 +46,14 @@ public abstract class GameItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
     }
 
     public int getDescriptionId() {

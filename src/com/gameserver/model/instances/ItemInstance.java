@@ -1,7 +1,10 @@
 package com.gameserver.model.instances;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.enums.ItemType;
+import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
@@ -11,7 +14,7 @@ import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -28,32 +31,28 @@ public class ItemInstance
     private String itemId;
 
     @JsonView(View.Standard.class)
+    private ItemType type;
+
+    @JsonView(View.Standard.class)
     private long count;
 
     @JsonView(View.Standard.class)
     private long lastRefresh;
 
-    @Transient
-    private GameItem template;
+    @JsonView(View.itemInstance_inventory.class)
+    @JsonBackReference
+    @DBRef
+    private Inventory inventory;
 
     public ItemInstance(){}
 
-    public ItemInstance(String itemId, long count, GameItem template)
+    public ItemInstance(String itemId, long count)
     {
-        setId(null);
         setItemId(itemId);
+        setType(getTemplate().getType());
         setCount(count);
         setLastRefresh(System.currentTimeMillis());
-        setTemplate(template);
-    }
-
-    public ItemInstance(String id, String itemId, long count)
-    {
-        setId(id);
-        setItemId(itemId);
-        setCount(count);
-        setLastRefresh(System.currentTimeMillis());
-        setTemplate(ItemData.getInstance().getTemplate(itemId));
+        setInventory(null);
     }
 
     public Cargo getCargoItem(){
@@ -89,6 +88,10 @@ public class ItemInstance
             return (Weapon) getTemplate();
         }
         return null;
+    }
+
+    public GameItem getTemplate() {
+        return ItemData.getInstance().getTemplate(getItemId());
     }
 
     public long getWeight(){
@@ -135,6 +138,14 @@ public class ItemInstance
         this.itemId = itemId;
     }
 
+    public ItemType getType() {
+        return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
+    }
+
     public long getCount() {
         return count;
     }
@@ -143,19 +154,19 @@ public class ItemInstance
         this.count = count;
     }
 
-    public GameItem getTemplate() {
-        return template;
-    }
-
-    private void setTemplate(GameItem template) {
-        this.template = template;
-    }
-
     public long getLastRefresh() {
         return lastRefresh;
     }
 
     public void setLastRefresh(long lastRefresh) {
         this.lastRefresh = lastRefresh;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }

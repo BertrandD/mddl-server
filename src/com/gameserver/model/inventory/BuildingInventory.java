@@ -7,23 +7,29 @@ import com.gameserver.model.instances.ItemInstance;
 import com.util.data.json.View;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.HashMap;
+
 /**
  * @author LEBOC Philippe
  */
-public class StorageBuildingInventory extends Inventory {
+public class BuildingInventory extends Inventory {
 
     @DBRef
+    @JsonManagedReference
     @JsonView(View.Standard.class)
-    private ItemInstance item;
+    private HashMap<String, ItemInstance> items;
 
     @DBRef
     @JsonManagedReference
     @JsonView(View.Standard.class)
     private BuildingInstance building;
 
-    public StorageBuildingInventory(){}
+    public BuildingInventory(){
+        setItems(new HashMap<>());
+    }
 
-    public StorageBuildingInventory(BuildingInstance building){
+    public BuildingInventory(BuildingInstance building){
+        setItems(new HashMap<>());
         setBuilding(building);
     }
 
@@ -39,8 +45,12 @@ public class StorageBuildingInventory extends Inventory {
 
     @Override
     public long getCurrentCapacityCharge() {
-        if(item != null) return item.getWeight();
-        return 0;
+        long weight = 0;
+        for(ItemInstance item : items.values())
+        {
+            weight += item.getWeight();
+        }
+        return weight;
     }
 
     @Override
@@ -50,17 +60,19 @@ public class StorageBuildingInventory extends Inventory {
 
     @Override
     public boolean addItem(ItemInstance item) {
+        if(isAllowedToStore(item)) {
+            if (getItems().isEmpty() && getFreeCapacity() >= item.getWeight()) {
+                getItems().put(item.getItemId(), item);
+                // TODO: addItem(ItemInstance item, boolean force) => if capacity < item.weight (because item.count very high) add and destoy the rest
+                return true;
+            }
 
-        if(getItem() == null && isAllowedToStore(item)){
-            setItem(item); // TODO Check capacity before add
-            return true;
-        }
-
-        if(item.getItemId().equals(getItem().getItemId())){
-            if(getFreeCapacity() > getCurrentCapacityCharge() + (item.getWeight())){
-                getItem().setCount(getItem().getCount() + item.getCount());
-                // TODO save ItemInstance with new "count" to database
-                // TODO delete added item from database
+            // Override count if exist
+            final ItemInstance it = items.get(item.getItemId());
+            if (it != null) {
+                if (getFreeCapacity() > getCurrentCapacityCharge() + item.getWeight()) {
+                    it.setCount(it.getCount() + item.getCount());
+                }
                 return true;
             }
         }
@@ -77,12 +89,12 @@ public class StorageBuildingInventory extends Inventory {
         return null; // TODO
     }
 
-    public ItemInstance getItem() {
-        return item;
+    public HashMap<String, ItemInstance> getItems() {
+        return items;
     }
 
-    public void setItem(ItemInstance item) {
-        this.item = item;
+    public void setItems(HashMap<String, ItemInstance> items) {
+        this.items = items;
     }
 
     public BuildingInstance getBuilding() {

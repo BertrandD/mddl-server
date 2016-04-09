@@ -2,8 +2,6 @@ package com.gameserver.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.Inventory;
-import com.gameserver.services.InventoryService;
 import com.gameserver.services.ItemService;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +33,6 @@ public class ItemInstanceController {
     @Autowired
     private ItemService itemService;
 
-    @Autowired
-    private InventoryService inventoryService;
-
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Collection<ItemInstance> findAll(){
@@ -55,13 +50,10 @@ public class ItemInstanceController {
         return item;
     }
 
-    @JsonView(View.ItemInstance_Base.class)
+    @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.POST)
-    public ItemInstance create(@RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count, @RequestParam(value = "inventory") String inventory) {
+    public ItemInstance create(@RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count, @RequestParam(value = "base") String baseId) {
         ItemInstance item = itemService.create(itemId, count);
-        Inventory inv = inventoryService.findOne(inventory);
-        inv.addItem(item);
-        inventoryService.update(inv);
         return item;
     }
 }

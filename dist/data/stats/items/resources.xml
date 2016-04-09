@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
-    <item id="100" type="common" name="Metal" rank="NONE" weight="1" sellable="true" tradable="true" disabled="false" descriptionId="100" />
-    <item id="101" type="common" name="Crystal" rank="NONE" weight="2" sellable="true" tradable="true" disabled="false" descriptionId="101" />
-    <item id="102" type="common" name="Deuterium" rank="NONE" weight="3" sellable="true" tradable="true" disabled="false" descriptionId="102" />
+    <item id="100" type="RESOURCE" name="Metal" rank="NONE" weight="1" sellable="true" tradable="true" disabled="false" descriptionId="100" />
+    <item id="101" type="RESOURCE" name="Crystal" rank="NONE" weight="2" sellable="true" tradable="true" disabled="false" descriptionId="101" />
+    <item id="102" type="RESOURCE" name="Deuterium" rank="NONE" weight="3" sellable="true" tradable="true" disabled="false" descriptionId="102" />
 </list>

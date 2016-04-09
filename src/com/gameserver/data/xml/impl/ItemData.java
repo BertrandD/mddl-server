@@ -1,7 +1,7 @@
 package com.gameserver.data.xml.impl;
 
 import com.config.Config;
-import com.gameserver.enums.BuildingType;
+import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Rank;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
@@ -74,7 +74,7 @@ public class ItemData implements IXmlReader {
                         final StatsSet set = new StatsSet();
 
                         set.set("id", parseString(attrs, "id"));
-                        set.set("type", parseString(attrs, "type"));
+                        set.set("type", parseEnum(attrs, ItemType.class, "type"));
                         set.set("name", parseString(attrs, "name"));
                         set.set("rank", parseEnum(attrs, Rank.class, "rank"));
                         set.set("useslot", parseInteger(attrs, "useslot", 0));
@@ -130,9 +130,10 @@ public class ItemData implements IXmlReader {
     private void makeItem(StatsSet set, Requirement requirement)
     {
         final String id = set.getString("id");
-        final String type = set.getString("type");
-        switch(type.toLowerCase())
+        final ItemType type = set.getEnum("type", ItemType.class, ItemType.NONE);
+        switch(type.name().toLowerCase())
         {
+            case "resource":
             case "common":
             {
                 _commons.put(id, new CommonItem(set, requirement)); break;

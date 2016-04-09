@@ -7,8 +7,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.buildings.Mine;
 import com.gameserver.model.buildings.Storage;
-import com.gameserver.model.inventory.StorageBuildingInventory;
+import com.gameserver.model.inventory.BuildingInventory;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -26,7 +27,7 @@ public class BuildingInstance
 
     @DBRef
     @JsonManagedReference
-    @JsonView(View.BuildingInstance_Base.class)
+    @JsonView(View.buildingInstance_base.class)
     private Base base;
 
     @JsonView(View.Standard.class)
@@ -40,8 +41,8 @@ public class BuildingInstance
 
     @DBRef
     @JsonBackReference
-    @JsonView(View.BuildingInstance_Inventory.class)
-    private StorageBuildingInventory inventory;
+    @JsonView(View.buildingInstance_inventory.class)
+    private BuildingInventory inventory;
 
     public BuildingInstance(){}
 
@@ -52,7 +53,7 @@ public class BuildingInstance
         setCurrentLevel(1);
     }
 
-    @JsonIgnore
+    @JsonView(View.buildingInstance_full.class)
     public Storage getStorageBuilding(){
         if(getTemplate() instanceof Storage){
             return (Storage) getTemplate();
@@ -60,7 +61,15 @@ public class BuildingInstance
         return null;
     }
 
-    @JsonIgnore
+    @JsonView(View.buildingInstance_full.class)
+    public Mine getMineBuilding(){
+        if(getTemplate() instanceof Mine){
+            return (Mine) getTemplate();
+        }
+        return null;
+    }
+
+    @JsonView(View.buildingInstance_full.class)
     public Building getTemplate() {
         return BuildingData.getInstance().getBuilding(buildingId);
     }
@@ -106,11 +115,11 @@ public class BuildingInstance
         this.currentLevel = currentLevel;
     }
 
-    public StorageBuildingInventory getInventory() {
+    public BuildingInventory getInventory() {
         return inventory;
     }
 
-    public void setInventory(StorageBuildingInventory inventory) {
+    public void setInventory(BuildingInventory inventory) {
         this.inventory = inventory;
     }
 }
