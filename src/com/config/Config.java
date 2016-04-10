@@ -18,6 +18,7 @@ public final class Config {
     // Variable Definitions
     // --------------------------------------------------
     public static String DATA_ROOT_DIRECTORY;
+    public static long MAX_PLAYER_INVENTORY_CAPACITY;
 
 
 
@@ -29,5 +30,6 @@ public final class Config {
         final PropertiesParser general = new PropertiesParser(GENERAL_CONFIG_FILE);
 
         DATA_ROOT_DIRECTORY = general.getString("DataRootDirectory", "../../dist/data");
+        MAX_PLAYER_INVENTORY_CAPACITY = general.getLong("MaxPlayerInventoryCapacity", 1000000000);
     }
 }
