@@ -1,5 +1,6 @@
 package com.gameserver.model.inventory;
 
+import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Player;
@@ -8,6 +9,7 @@ import com.util.data.json.View;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,16 +22,12 @@ public class PlayerInventory extends Inventory{
     @JsonView(View.Standard.class)
     private Player owner;
 
-    @DBRef
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> items;
-
     public PlayerInventory(){
-        items = new ArrayList<>();
+        setItems(new HashMap<>());
     }
 
     public PlayerInventory(Player player){
-        items = new ArrayList<>();
+        setItems(new HashMap<>());
         setOwner(player);
     }
 
@@ -55,25 +53,7 @@ public class PlayerInventory extends Inventory{
 
     @Override
     public long getFreeCapacity() {
-        return 0;
-    }
-
-    @Override
-    public boolean addItem(ItemInstance item) {
-        items.add(item); // TODO add checks
-        return true;
-    }
-
-    @Override
-    public boolean removeItem(String id) {
-        final ItemInstance it = items.stream().filter(k->k.getId().equals(id)).findFirst().get();
-        if(it != null) items.remove(it); // TODO: add checks
-        return true;
-    }
-
-    @Override
-    public ItemInstance removeAndGet(String id) {
-        return null; // TODO
+        return Config.MAX_PLAYER_INVENTORY_CAPACITY;
     }
 
     public Player getOwner() {
@@ -82,13 +62,5 @@ public class PlayerInventory extends Inventory{
 
     public void setOwner(Player owner) {
         this.owner = owner;
-    }
-
-    public List<ItemInstance> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ItemInstance> items) {
-        this.items = items;
     }
 }

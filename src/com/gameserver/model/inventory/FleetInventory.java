@@ -7,6 +7,7 @@ import com.gameserver.model.vehicles.Fleet;
 import com.util.data.json.View;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,13 +19,12 @@ public class FleetInventory extends Inventory{
     @JsonManagedReference
     private Fleet fleet;
 
-    @DBRef
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> items;
-
-    public FleetInventory(){}
+    public FleetInventory(){
+        setItems(new HashMap<>());
+    }
 
     public FleetInventory(Fleet fleet){
+        setItems(new HashMap<>());
         setFleet(fleet);
     }
 
@@ -46,29 +46,6 @@ public class FleetInventory extends Inventory{
     @Override
     public long getFreeCapacity() {
         return 0;
-    }
-
-    @Override
-    public boolean addItem(ItemInstance item) {
-        return false; // TODO
-    }
-
-    @Override
-    public boolean removeItem(String id) {
-        return false; // TODO
-    }
-
-    @Override
-    public ItemInstance removeAndGet(String id) {
-        return null; // TODO
-    }
-
-    public List<ItemInstance> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ItemInstance> items) {
-        this.items = items;
     }
 
     public Fleet getFleet() {
