@@ -32,6 +32,8 @@
                                                 <xs:attribute name="name" use="required">
                                                     <xs:simpleType>
                                                         <xs:restriction base="xs:string">
+                                                            <xs:enumeration value="power" />
+                                                            <xs:enumeration value="capacity" />
                                                             <xs:enumeration value="SLOT_CARGO_COUNT" />
                                                             <xs:enumeration value="SLOT_ENGINE_COUNT" />
                                                             <xs:enumeration value="SLOT_MODULE_COUNT" />

@@ -10,7 +10,7 @@ public final class Config {
     // --------------------------------------------------
     // Initialization File Definitions
     // --------------------------------------------------
-    public static final String DEV_CONFIG_DIRECTORY = "../../dist/";
+    public static final String DEV_CONFIG_DIRECTORY = "dist/";
     public static final String PROD_CONFIG_DIRECTORY = "";
 
     public static final String SERVER_CONFIG_FILE = "Config/Server.properties";

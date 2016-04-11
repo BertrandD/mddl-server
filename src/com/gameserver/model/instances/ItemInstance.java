@@ -1,6 +1,8 @@
 package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
@@ -12,10 +14,15 @@ import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
+import com.gameserver.services.ItemService;
+import com.util.Utils;
 import com.util.data.json.View;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author LEBOC Philippe
@@ -23,6 +30,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "items")
 public class ItemInstance
 {
+    @Autowired
+    @JsonIgnoreProperties
+    private ItemService service;
+
     @Id
     @JsonView(View.Standard.class)
     private String id;
@@ -53,6 +64,15 @@ public class ItemInstance
         setCount(count);
         setLastRefresh(System.currentTimeMillis());
         setInventory(null);
+    }
+
+    @PostConstruct
+    @Deprecated
+    public void init(){
+        Utils.println("ItemInstance @initialize started.");
+        if(getType().equals(ItemType.RESOURCE)){
+            service.refresh(this);
+        }
     }
 
     public Cargo getCargoItem(){

@@ -36,7 +36,8 @@ public class ItemInstanceController {
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Collection<ItemInstance> findAll(){
-        return itemService.findAll();
+        final List<ItemInstance> items = itemService.findAll();
+        return items;
     }
 
     @JsonView(View.Standard.class)
@@ -44,9 +45,9 @@ public class ItemInstanceController {
     public ItemInstance findOne(@PathVariable(value = "id") String id){
         ItemInstance item = itemService.findOne(id);
         if(item == null) return null;
-        if(resources.contains(item.getItemId())){
+        /*if(resources.contains(item.getItemId())){
             item = itemService.refresh(item);
-        }
+        }*/
         return item;
     }
 

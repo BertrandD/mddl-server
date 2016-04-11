@@ -3,10 +3,10 @@ package com.gameserver.services;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.inventory.BuildingInventory;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.repository.ItemRepository;
+import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,12 +77,14 @@ public class ItemService {
             {
                 case METAL:
                 {
-                    final BuildingInstance metalmine = ((BuildingInventory)item.getInventory()).getBuilding();
+                    Utils.println("WORKS !");
+                    item.setLastRefresh(System.currentTimeMillis());
+                    /*final BuildingInstance metalmine = null; // TODO since 10 april 2016 at 19h26
                     if(metalmine != null) {
                         final long units = metalmine.getMineBuilding().getProductionByLevel().get(metalmine.getCurrentLevel());
                         item.setCount(item.getCount() + ((units / 3600) * diffTime));
                         item.setLastRefresh(System.currentTimeMillis());
-                    }
+                    }*/
                     break;
                 }
                 case CRYSTAL:

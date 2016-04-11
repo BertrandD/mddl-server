@@ -60,15 +60,22 @@ public abstract class Inventory {
 
     public boolean addItem(ItemInstance item){
         if(isAllowedToStore(item)) {
-            if (getItems().isEmpty() && getFreeCapacity() >= item.getWeight()) {
-                getItems().put(item.getItemId(), item);
-                // TODO: addItem(ItemInstance item, boolean force) => if capacity < item.weight (because item.count very high) add and destoy the rest
+            if (getItems().isEmpty())
+            {
+                if(getFreeCapacity() >= item.getWeight()) {
+                    getItems().put(item.getItemId(), item);
+                } else {
+                    final long storable = (getFreeCapacity() / item.getTemplate().getWeight());
+                    item.setCount(storable);
+                    getItems().put(item.getId(), item);
+                }
                 return true;
             }
 
             // Override count if exist
             final ItemInstance it = getItems().get(item.getItemId());
             if (it != null) {
+                // TODO: store items if (FreeCapacity > 0 and item.wieght() > freeCapacity())
                 if (getFreeCapacity() > getCurrentCapacityCharge() + item.getWeight()) {
                     it.setCount(it.getCount() + item.getCount());
                 }

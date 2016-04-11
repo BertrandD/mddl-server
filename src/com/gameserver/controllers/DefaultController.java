@@ -1,14 +1,21 @@
 package com.gameserver.controllers;
 
+import com.gameserver.enums.BuildingType;
+import com.gameserver.model.Base;
+import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.ItemService;
 import com.gameserver.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -45,5 +52,20 @@ public class DefaultController {
         baseService.deleteAll();
         playerService.deleteAll();
         return true;
+    }
+
+    @RequestMapping(value = "/header/{id}", produces = "application/json")
+    public List<ItemInstance> headerInfo(@PathVariable("id") String id) {
+        Base base = baseService.findOne(id);
+        if(base == null) return null;
+
+        // Get resources
+        final List<ItemInstance> resources = new ArrayList<>();
+        base.getBuildings().stream().filter(k->k.getTemplate().getType().equals(BuildingType.STORAGE)).forEach(t->{
+            for(final ItemInstance inst : t.getInventory().getItems().values()){
+                resources.add(itemService.refreshResource(inst));
+            }
+        });
+        return resources;
     }
 }
