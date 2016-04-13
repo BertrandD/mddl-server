@@ -1,5 +1,6 @@
 package com.gameserver.model;
 
+import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.inventory.PlayerInventory;
@@ -27,6 +28,10 @@ public class Player {
     private String name;
 
     @DBRef
+    @JsonView(View.Standard.class)
+    private Account account;
+
+    @DBRef
     @JsonBackReference
     @JsonView(View.Standard.class)
     private List<Base> bases;
@@ -40,17 +45,17 @@ public class Player {
         bases = new ArrayList<>();
     }
 
-    public Player(String name)
+    public Player(Account account, String name)
     {
-        setId(null);
         setName(name);
+        setAccount(account);
         setBases(new ArrayList<>());
     }
 
-    public Player(String id, String name, List<Base> bases){
-        setId(id);
+    public Player(String name)
+    {
         setName(name);
-        setBases(bases);
+        setBases(new ArrayList<>());
     }
 
     public String getId() {
@@ -59,6 +64,14 @@ public class Player {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public String getName() {
