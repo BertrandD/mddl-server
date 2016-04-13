@@ -1,5 +1,7 @@
 package com.gameserver.controllers;
 
+import com.auth.Account;
+import com.auth.AccountService;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.ItemInstance;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -22,6 +25,9 @@ import java.util.List;
  */
 @RestController
 public class DefaultController {
+
+    @Autowired
+    AccountService accountService;
 
     @Autowired
     BaseService baseService;
@@ -52,6 +58,11 @@ public class DefaultController {
         baseService.deleteAll();
         playerService.deleteAll();
         return true;
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
+    public Account registerPost(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
+        return accountService.create(username, password);
     }
 
     @RequestMapping(value = "/header/{id}", produces = "application/json")

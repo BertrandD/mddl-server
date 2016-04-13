@@ -1,5 +1,6 @@
 package com.gameserver.services;
 
+import com.auth.Account;
 import com.gameserver.repository.PlayerRepository;
 import com.gameserver.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
-    public Player create(String name){
-        Player p = new Player(name);
+    public Player create(Account account, String name){
+        Player p = new Player(account, name);
         return playerRepository.save(p);
     }
 

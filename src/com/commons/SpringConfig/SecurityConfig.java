@@ -1,11 +1,17 @@
 package com.commons.SpringConfig;
 
+import com.auth.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * @author LEBOC Philippe
@@ -14,6 +20,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	AccountService accountService;
+
+	@Autowired
+	public void configureGlobal( AuthenticationManagerBuilder auth ) throws Exception {
+		// The authentication provider below uses MongoDB to store SHA1 hashed passwords
+		// To see how to configure users for the example below, please see the README file
+		auth
+			.userDetailsService(accountService)
+			.passwordEncoder(new BCryptPasswordEncoder());
+			//.passwordEncoder(new ShaPasswordEncoder());
+	}
 
 	@Override
 	public void configure( WebSecurity web ) throws Exception
@@ -29,8 +48,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.anyRequest().permitAll()
+				.antMatchers("/login**").permitAll()
+				.antMatchers("/login", "/logout", "/", "/register").permitAll()
+				.anyRequest().authenticated()
+			.and()
+				.formLogin()
+				.usernameParameter("username")
+				.passwordParameter("password")
+				.loginProcessingUrl( "/login")
+				.defaultSuccessUrl("/", true)
+				.failureUrl("/fail")
+				.successHandler(new MySimpleUrlAuthenticationSuccessHandler())
+			.and()
+				.logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.deleteCookies("JSESSIONID", "SESSION", "SESSIONID", "SSID")
+				.invalidateHttpSession( true )
 			.and()
 			.httpBasic().and().csrf().disable();
+	}
+
+	@Autowired
+	public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
+		builder.userDetailsService(accountService);
+	}
+
+	@Override
+	protected UserDetailsService userDetailsService() {
+		return accountService;
 	}
 }
