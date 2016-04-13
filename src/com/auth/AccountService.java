@@ -53,4 +53,13 @@ public class AccountService implements UserDetailsService {
         Utils.println("New account : "+username+" with role USER");
         return account;
     }
+
+    public boolean validateToken(String token) {
+        return false;
+    }
+
+    public Account getUserFromToken(String token) {
+        // TODO : ici faut faire une requête mongo pour récupérer le user (ou account, j'ai pas bien compris la différence) qui correspond au token
+        return null;
+    }
 }
