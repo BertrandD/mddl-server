@@ -7,7 +7,7 @@ import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,9 +43,8 @@ public class PlayerController {
 
     @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.POST)
-    public Player create(Authentication authentication, @RequestParam(value = "name") String name){
+    public Player create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
         if(playerService.findOneByName(name) != null) return null;
-        final Account account = (Account)authentication.getPrincipal();
         Player player = playerService.create(account, name); // TODO: Check valid name
         inventoryService.create(player);
         return player;

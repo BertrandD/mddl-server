@@ -33,6 +33,10 @@ public class AccountService implements UserDetailsService {
         }
     }
 
+    public Account findByUsername(String username){
+        return accountRepository.findByUsername(username);
+    }
+
     public List<Account> findAll(){
         return accountRepository.findAll();
     }

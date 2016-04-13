@@ -2,23 +2,19 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.auth.AccountService;
-import com.gameserver.enums.BuildingType;
-import com.gameserver.model.Base;
-import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.ItemService;
 import com.gameserver.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -61,22 +57,15 @@ public class DefaultController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
-    public Account registerPost(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
+    public Account register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
+        final Account account = accountService.findByUsername(username);
+        if(account != null) return null;
         return accountService.create(username, password);
     }
 
-    @RequestMapping(value = "/header/{id}", produces = "application/json")
-    public List<ItemInstance> headerInfo(@PathVariable("id") String id) {
-        Base base = baseService.findOne(id);
-        if(base == null) return null;
-
-        // Get resources
-        final List<ItemInstance> resources = new ArrayList<>();
-        base.getBuildings().stream().filter(k->k.getTemplate().getType().equals(BuildingType.STORAGE)).forEach(t->{
-            for(final ItemInstance inst : t.getInventory().getItems().values()){
-                resources.add(itemService.refreshResource(inst));
-            }
-        });
-        return resources;
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/about/me", method = RequestMethod.GET, produces = "application/json")
+    public Account aboutMe(@AuthenticationPrincipal Account account){
+        return account;
     }
 }

@@ -9,12 +9,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     protected final Log logger = LogFactory.getLog(this.getClass());
@@ -27,8 +29,9 @@ public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHan
 
     // API
     @Override
+    @ResponseStatus(value = HttpStatus.OK)
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException {
-        handle(request, response, authentication);
+        //handle(request, response, authentication);
         clearAuthenticationAttributes(request);
     }
 
