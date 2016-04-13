@@ -16,12 +16,12 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     protected final Log logger = LogFactory.getLog(this.getClass());
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    protected MySimpleUrlAuthenticationSuccessHandler() {
+    protected UrlAuthenticationSuccessHandler() {
         super();
     }
 

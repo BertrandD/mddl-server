@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginProcessingUrl( "/login")
 				.defaultSuccessUrl("/", true)
 				.failureUrl("/fail")
-				.successHandler(new MySimpleUrlAuthenticationSuccessHandler())
+				.successHandler(new UrlAuthenticationSuccessHandler())
 			.and()
 				.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
