@@ -43,7 +43,7 @@ public class DefaultController {
     @RequestMapping(value = "/", produces = "application/json")
     public String index()
     {
-        return "index";
+        return "{\"status\": \"ok\"}";
     }
 
     @RequestMapping(value = "/reset", method = RequestMethod.GET, produces = "application/json")
