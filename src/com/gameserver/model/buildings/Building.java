@@ -1,8 +1,10 @@
 package com.gameserver.model.buildings;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
+import com.util.data.json.View;
 
 import java.util.HashMap;
 
@@ -11,14 +13,31 @@ import java.util.HashMap;
  */
 public abstract class Building {
 
+    @JsonView(View.Standard.class)
     private String id;
+
+    @JsonView(View.Standard.class)
     private String name;
+
+    @JsonView(View.Standard.class)
     private String descriptionId;
+
+    @JsonView(View.Standard.class)
     private BuildingType type;
+
+    @JsonView(View.Standard.class)
     private int maxLevel;
+
+    @JsonView(View.Standard.class)
     private int maxHp;
+
+    @JsonView(View.Standard.class)
     private long buildTime;
+
+    @JsonView(View.Standard.class)
     private boolean disabled;
+
+    @JsonView(View.Standard.class)
     private HashMap<Integer, Requirement> requirements;
 
     public Building(StatsSet set){

@@ -2,6 +2,7 @@ package com.gameserver.controllers;
 
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.buildings.Building;
+import com.util.data.json.Response.JsonResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,14 +18,14 @@ import java.util.List;
 public class BuildingController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<? extends Building> findAll(){
-        return BuildingData.getInstance().getBuildings();
+    public JsonResponse findAll(){
+        return new JsonResponse(BuildingData.getInstance().getBuildings());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Building findBuilding(@PathVariable("id") String id){
+    public JsonResponse findBuilding(@PathVariable("id") String id){
         Building b = BuildingData.getInstance().getBuilding(id);
         if(b == null) return null;
-        return b;
+        return new JsonResponse(b);
     }
 }
