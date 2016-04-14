@@ -1,5 +1,8 @@
 package com.util.data.json.Response;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 /**
  * @author Bertrand
  */
@@ -7,7 +10,7 @@ public class JsonResponse {
 
     private JsonResponseType status;
     private Object payload;
-    private Metadata metadata;
+    private HashMap<String, Object> metadata;
 
     public JsonResponse(JsonResponseType status){
         setStatus(status);
@@ -18,13 +21,21 @@ public class JsonResponse {
     public JsonResponse(JsonResponseType status, String message) {
         setStatus(status);
         setPayload(null);
-        setMetadata(new Metadata(message));
+        HashMap<String, Object> meta = new HashMap<String, Object>();
+        meta.put("message", message);
+        setMetadata(meta);
     }
 
-    public JsonResponse(JsonResponseType status, Object payload, String message) {
+    public JsonResponse(JsonResponseType status, HashMap<String, Object> metadata) {
         setStatus(status);
+        setPayload(null);
+        setMetadata(metadata);
+    }
+
+    public JsonResponse(Object payload) {
+        setStatus(JsonResponseType.SUCCESS);
         setPayload(payload);
-        setMetadata(new Metadata(message));
+        setMetadata(null);
     }
 
     public JsonResponseType getStatus() {
@@ -43,21 +54,13 @@ public class JsonResponse {
         this.payload = payload;
     }
 
-    public Metadata getMetadata() {
+    public HashMap<String, Object> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Metadata metadata) {
+    public void setMetadata(HashMap<String, Object> metadata) {
         this.metadata = metadata;
     }
 
-    class Metadata{
-        private String message;
-        Metadata(String message){
-            this.message = message;
-        }
-        public String getMessage() {
-            return message;
-        }
-    }
+
 }

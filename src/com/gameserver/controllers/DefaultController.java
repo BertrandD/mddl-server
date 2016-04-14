@@ -20,6 +20,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.UUID;
 
 
@@ -79,7 +80,10 @@ public class DefaultController implements ErrorController{
 
         account.setToken(UUID.randomUUID().toString());
 
-        return new JsonResponse(JsonResponseType.SUCCESS, "Token : " + account.getToken());
+        HashMap<String, Object> meta = new HashMap<>();
+        meta.put("token", account.getToken());
+
+        return new JsonResponse(JsonResponseType.SUCCESS, meta);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
