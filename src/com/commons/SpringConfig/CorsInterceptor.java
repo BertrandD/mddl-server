@@ -21,7 +21,7 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
         response.setHeader(CREDENTIALS_NAME, "true");
         response.setHeader(ORIGIN_NAME, "*");
         response.setHeader(METHODS_NAME, "GET, OPTIONS, POST, PUT, DELETE");
-        response.setHeader(HEADERS_NAME, "Origin, X-Requested-With, Content-Type, Accept");
+        response.setHeader(HEADERS_NAME, "Origin, X-Requested-With, Content-Type, Accept, X-auth-token");
         response.setHeader(MAX_AGE_NAME, "3600");
         return true;
     }
