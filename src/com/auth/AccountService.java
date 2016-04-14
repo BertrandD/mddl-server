@@ -63,7 +63,7 @@ public class AccountService implements UserDetailsService {
         return accountRepository.findByToken(token);
     }
 
-    public Account update(Account account) {
+    public void update(Account account) {
         accountRepository.save(account);
     }
 }
