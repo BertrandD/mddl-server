@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author LEBOC Philippe
@@ -46,7 +47,7 @@ public class AccountService implements UserDetailsService {
         final List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        Account account = new Account(username, passwordEncoder.encode(password), roles, null, null);
+        Account account = new Account(username, passwordEncoder.encode(password), roles, null, null, UUID.randomUUID().toString());
         account = accountRepository.save(account);
 
         if(account == null) return null;
@@ -55,11 +56,10 @@ public class AccountService implements UserDetailsService {
     }
 
     public boolean validateToken(String token) {
-        return false;
+        return true;
     }
 
     public Account getUserFromToken(String token) {
-        // TODO : ici faut faire une requête mongo pour récupérer le user (ou account, j'ai pas bien compris la différence) qui correspond au token
-        return null;
+        return accountRepository.findByToken(token);
     }
 }

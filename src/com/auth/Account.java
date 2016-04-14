@@ -23,11 +23,15 @@ public class Account extends User
     @JsonView(View.Standard.class)
     private List<Player> players;
 
-    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, List<Player> players)
+    @JsonView(View.Standard.class)
+    private String token;
+
+    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, List<Player> players, String token)
     {
         super(username, password, authorities);
         setId(id);
         setPlayers(players);
+        setToken(token);
     }
 
     public String getId() {
@@ -44,5 +48,13 @@ public class Account extends User
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
