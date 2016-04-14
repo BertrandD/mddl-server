@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/messages.xsd">
+    <messages id="1000">
+        <message lang="FR" text="Nom d'utilisateur inconnu" />
+        <message lang="EN" text="Username not found" />
+    </messages>
+    <messages id="1001">
+        <message lang="FR" text="Ce compte existe déjà" />
+        <message lang="EN" text="Account already exist" />
+    </messages>
+</list>
