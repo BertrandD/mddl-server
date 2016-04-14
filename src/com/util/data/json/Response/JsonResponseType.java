@@ -5,7 +5,7 @@ package com.util.data.json.Response;
  */
 public enum JsonResponseType {
     ERROR("error"),
-    SUCCESS("success");
+    SUCCESS("ok");
 
     private String name;
 

@@ -7,40 +7,40 @@ import java.util.HashMap;
  */
 public class JsonResponse {
 
-    private JsonResponseType status;
+    private String status;
     private Object payload;
     private HashMap<String, Object> metadata;
 
     public JsonResponse(JsonResponseType status){
-        setStatus(status);
+        setStatus(status.getName());
         setPayload(null);
         setMetadata(null);
     }
 
     public JsonResponse(JsonResponseType status, String message) {
-        setStatus(status);
+        setStatus(status.getName());
         setPayload(null);
         setMetadata(new HashMap<>());
         getMetadata().put("message", message);
     }
 
     public JsonResponse(JsonResponseType status, HashMap<String, Object> metadata) {
-        setStatus(status);
+        setStatus(status.getName());
         setPayload(null);
         setMetadata(metadata);
     }
 
     public JsonResponse(Object payload) {
-        setStatus(JsonResponseType.SUCCESS);
+        setStatus(JsonResponseType.SUCCESS.getName());
         setPayload(payload);
         setMetadata(null);
     }
 
-    public JsonResponseType getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    private void setStatus(JsonResponseType status) {
+    private void setStatus(String status) {
         this.status = status;
     }
 
