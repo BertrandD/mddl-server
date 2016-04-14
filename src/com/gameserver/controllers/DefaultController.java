@@ -21,6 +21,9 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.UUID;
+
 
 /**
  * @author LEBOC Philippe
@@ -77,6 +80,14 @@ public class DefaultController implements ErrorController{
         if(!passwordEncoder.matches(password, account.getPassword())) return new JsonResponse(JsonResponseType.ERROR, "Invalid credentials");
 
         return new JsonResponse(JsonResponseType.SUCCESS, new MetaHolder("token", account.getToken()));
+    }
+
+    @RequestMapping(value = "/invalidate", method = RequestMethod.GET, produces = "application/json")
+    public JsonResponse logout(@AuthenticationPrincipal Account account)
+    {
+        account.setToken(UUID.randomUUID().toString());
+        accountService.update(account);
+        return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")

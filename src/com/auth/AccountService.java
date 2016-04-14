@@ -62,4 +62,8 @@ public class AccountService implements UserDetailsService {
     public Account getUserFromToken(String token) {
         return accountRepository.findByToken(token);
     }
+
+    public Account update(Account account) {
+        accountRepository.save(account);
+    }
 }
