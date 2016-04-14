@@ -6,16 +6,25 @@ package com.util.data.json.Response;
 public class JsonResponse {
 
     private JsonResponseType status;
-    private String message;
+    private Object payload;
+    private Metadata metadata;
 
     public JsonResponse(JsonResponseType status){
         setStatus(status);
-        setMessage(null);
+        setPayload(null);
+        setMetadata(null);
     }
 
     public JsonResponse(JsonResponseType status, String message) {
         setStatus(status);
-        setMessage(message);
+        setPayload(null);
+        setMetadata(new Metadata(message));
+    }
+
+    public JsonResponse(JsonResponseType status, Object payload, String message) {
+        setStatus(status);
+        setPayload(payload);
+        setMetadata(new Metadata(message));
     }
 
     public JsonResponseType getStatus() {
@@ -26,11 +35,29 @@ public class JsonResponse {
         this.status = status;
     }
 
-    public String getMessage() {
-        return message;
+    public Object getPayload() {
+        return payload;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setPayload(Object payload) {
+        this.payload = payload;
+    }
+
+    public Metadata getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Metadata metadata) {
+        this.metadata = metadata;
+    }
+
+    class Metadata{
+        private String message;
+        Metadata(String message){
+            this.message = message;
+        }
+        public String getMessage() {
+            return message;
+        }
     }
 }
