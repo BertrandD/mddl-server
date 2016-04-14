@@ -1,7 +1,6 @@
 package com.util.data.json.Response;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * @author Bertrand
@@ -21,9 +20,8 @@ public class JsonResponse {
     public JsonResponse(JsonResponseType status, String message) {
         setStatus(status);
         setPayload(null);
-        HashMap<String, Object> meta = new HashMap<String, Object>();
-        meta.put("message", message);
-        setMetadata(meta);
+        setMetadata(new HashMap<>());
+        getMetadata().put("message", message);
     }
 
     public JsonResponse(JsonResponseType status, HashMap<String, Object> metadata) {
@@ -42,7 +40,7 @@ public class JsonResponse {
         return status;
     }
 
-    public void setStatus(JsonResponseType status) {
+    private void setStatus(JsonResponseType status) {
         this.status = status;
     }
 
@@ -50,7 +48,7 @@ public class JsonResponse {
         return payload;
     }
 
-    public void setPayload(Object payload) {
+    private void setPayload(Object payload) {
         this.payload = payload;
     }
 
@@ -58,7 +56,7 @@ public class JsonResponse {
         return metadata;
     }
 
-    public void setMetadata(HashMap<String, Object> metadata) {
+    private void setMetadata(HashMap<String, Object> metadata) {
         this.metadata = metadata;
     }
 

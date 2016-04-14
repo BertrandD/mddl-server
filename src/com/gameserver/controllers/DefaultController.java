@@ -80,7 +80,7 @@ public class DefaultController implements ErrorController{
 
         account.setToken(UUID.randomUUID().toString());
 
-        HashMap<String, Object> meta = new HashMap<>();
+        final HashMap<String, Object> meta = new HashMap<>();
         meta.put("token", account.getToken());
 
         return new JsonResponse(JsonResponseType.SUCCESS, meta);
@@ -101,7 +101,7 @@ public class DefaultController implements ErrorController{
 
     @RequestMapping(value = ERROR_PATH, produces = "application/json")
     public JsonResponse error(HttpServletRequest request) {
-        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
+        final RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         return new JsonResponse(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
     }
 
