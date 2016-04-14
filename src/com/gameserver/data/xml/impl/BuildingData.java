@@ -13,6 +13,7 @@ import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.inventory.InventoryFilter;
 import com.util.data.xml.IXmlReader;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  */
 public class BuildingData implements IXmlReader {
 
+    private final Logger LOGGER = Logger.getLogger(getClass().getSimpleName());
     private final HashMap<String, Building> _buildings = new HashMap<>();
 
     protected BuildingData(){
