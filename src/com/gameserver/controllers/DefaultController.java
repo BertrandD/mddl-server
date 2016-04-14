@@ -88,16 +88,16 @@ public class DefaultController implements ErrorController{
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
-    public Account register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
+    public JsonResponse register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
         final Account account = accountService.findByUsername(username);
         if(account != null) return null;
-        return accountService.create(username, password);
+        return new JsonResponse(accountService.create(username, password));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/about/me", method = RequestMethod.GET, produces = "application/json")
-    public Account aboutMe(@AuthenticationPrincipal Account account){
-        return account;
+    public JsonResponse aboutMe(@AuthenticationPrincipal Account account){
+        return new JsonResponse(account);
     }
 
     @RequestMapping(value = ERROR_PATH, produces = "application/json")
