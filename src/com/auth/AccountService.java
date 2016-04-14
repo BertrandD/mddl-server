@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author LEBOC Philippe
@@ -46,11 +47,19 @@ public class AccountService implements UserDetailsService {
         final List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        Account account = new Account(username, passwordEncoder.encode(password), roles, null, null);
+        Account account = new Account(username, passwordEncoder.encode(password), roles, null, null, UUID.randomUUID().toString());
         account = accountRepository.save(account);
 
         if(account == null) return null;
         Utils.println("New account : "+username+" with role USER");
         return account;
+    }
+
+    public boolean validateToken(String token) {
+        return true;
+    }
+
+    public Account getUserFromToken(String token) {
+        return accountRepository.findByToken(token);
     }
 }
