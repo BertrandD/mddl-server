@@ -15,7 +15,8 @@ import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
 import com.util.data.xml.IXmlReader;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -29,8 +30,7 @@ import java.util.List;
  */
 public class ItemData implements IXmlReader {
 
-    private final Logger LOGGER = Logger.getLogger(getClass().getSimpleName());
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ItemData.class.getSimpleName());
     private final HashMap<String, Structure> _structures = new HashMap<>();
     private final HashMap<String, Cargo> _cargos = new HashMap<>();
     private final HashMap<String, Engine> _engines = new HashMap<>();
