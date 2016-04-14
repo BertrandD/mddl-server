@@ -78,8 +78,6 @@ public class DefaultController implements ErrorController{
 
         if(!passwordEncoder.matches(password, account.getPassword())) return new JsonResponse(JsonResponseType.ERROR, "Invalid credentials");
 
-        account.setToken(UUID.randomUUID().toString());
-
         final HashMap<String, Object> meta = new HashMap<>();
         meta.put("token", account.getToken());
 
