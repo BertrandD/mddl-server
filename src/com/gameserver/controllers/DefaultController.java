@@ -7,7 +7,8 @@ import com.gameserver.services.BuildingService;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.ItemService;
 import com.gameserver.services.PlayerService;
-import com.util.data.json.JsonErrorResponse;
+import com.util.data.json.Response.JsonResponse;
+import com.util.data.json.Response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -53,9 +54,9 @@ public class DefaultController implements ErrorController{
     PlayerService playerService;
 
     @RequestMapping(value = "/", produces = "application/json")
-    public String index()
+    public JsonResponse index()
     {
-        return "{\"status\": \"ok\"}";
+        return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/reset", method = RequestMethod.GET, produces = "application/json")
@@ -66,6 +67,12 @@ public class DefaultController implements ErrorController{
         baseService.deleteAll();
         playerService.deleteAll();
         return true;
+    }
+
+    @RequestMapping(value = "/login", produces = "application/json")
+    public JsonResponse login()
+    {
+        return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
@@ -82,9 +89,9 @@ public class DefaultController implements ErrorController{
     }
 
     @RequestMapping(value = ERROR_PATH, produces = "application/json")
-    public JsonErrorResponse error(HttpServletRequest request) {
+    public JsonResponse error(HttpServletRequest request) {
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        return new JsonErrorResponse(errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
+        return new JsonResponse(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
     }
 
     @Override
