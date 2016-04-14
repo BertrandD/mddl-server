@@ -43,13 +43,14 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             if (accountService.validateToken(token)) {
                 // determine the user based on the (already validated) token
                 Account account = accountService.getUserFromToken(token);
-                Utils.println("account found !" + account.getId());
-                // build an Authentication object with the user's info
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
-                // set the authentication into the SecurityContext
-                SecurityContextHolder.getContext().setAuthentication(authManager.authenticate(authentication));
+                if (account != null) {
+                    // build an Authentication object with the user's info
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
+                    // set the authentication into the SecurityContext
+                    SecurityContextHolder.getContext().setAuthentication(authManager.authenticate(authentication));
+                }
             } else {
                 Utils.println("Invalid token !");
             }
