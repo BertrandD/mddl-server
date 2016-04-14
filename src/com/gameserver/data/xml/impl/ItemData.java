@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class ItemData implements IXmlReader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ItemData.class.getSimpleName());
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
     private final HashMap<String, Structure> _structures = new HashMap<>();
     private final HashMap<String, Cargo> _cargos = new HashMap<>();
     private final HashMap<String, Engine> _engines = new HashMap<>();

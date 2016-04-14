@@ -3,6 +3,7 @@ package com;
 import com.config.Config;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.impl.SystemMessageData;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -19,8 +20,9 @@ public class Application {
         }
 
         Config.load(MODE);
-        BuildingData.getInstance();
+        SystemMessageData.getInstance();
         ItemData.getInstance();
+        BuildingData.getInstance();
 
         System.setProperty("spring.config.location", MODE+Config.APPLICATION_CONFIG_LOCATION);
         SpringApplication.run(Application.class, args);
