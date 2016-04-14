@@ -9,38 +9,39 @@ public class JsonResponse {
 
     private String status;
     private Object payload;
-    private HashMap<String, Object> metadata;
+    private final HashMap<String, Object> metadata = new HashMap<>();
+
+    public JsonResponse(){}
 
     public JsonResponse(JsonResponseType status){
         setStatus(status.getName());
         setPayload(null);
-        setMetadata(null);
     }
 
     public JsonResponse(JsonResponseType status, String message) {
         setStatus(status.getName());
         setPayload(null);
-        setMetadata(new HashMap<>());
         getMetadata().put("message", message);
     }
 
-    public JsonResponse(JsonResponseType status, HashMap<String, Object> metadata) {
+    public JsonResponse(JsonResponseType status, MetaHolder... metadatas) {
         setStatus(status.getName());
         setPayload(null);
-        setMetadata(metadata);
+        for(MetaHolder holder : metadatas){
+            addMetadata(holder.getKey(), holder.getObject());
+        }
     }
 
     public JsonResponse(Object payload) {
         setStatus(JsonResponseType.SUCCESS.getName());
         setPayload(payload);
-        setMetadata(null);
     }
 
     public String getStatus() {
         return status;
     }
 
-    private void setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -48,7 +49,7 @@ public class JsonResponse {
         return payload;
     }
 
-    private void setPayload(Object payload) {
+    public void setPayload(Object payload) {
         this.payload = payload;
     }
 
@@ -56,9 +57,7 @@ public class JsonResponse {
         return metadata;
     }
 
-    private void setMetadata(HashMap<String, Object> metadata) {
-        this.metadata = metadata;
+    public void addMetadata(String key, Object value){
+        getMetadata().put(key, value);
     }
-
-
 }
