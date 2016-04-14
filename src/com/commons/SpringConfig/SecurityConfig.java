@@ -55,10 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 			.and()
 			.authorizeRequests()
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/login**").permitAll()
-				.antMatchers(HttpMethod.OPTIONS, "/login**").permitAll()
 				.antMatchers(HttpMethod.POST, "/login", "/logout", "/", "/register").permitAll()
-				.antMatchers(HttpMethod.OPTIONS, "/login", "/logout", "/", "/register").permitAll()
 				.anyRequest().authenticated()
 			.and()
 			.httpBasic().and().csrf().disable();
