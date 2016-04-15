@@ -9,7 +9,7 @@ public class JsonResponse {
 
     private String status;
     private Object payload;
-    private final HashMap<String, Object> metadata = new HashMap<>();
+    private final HashMap<String, Object> meta = new HashMap<>();
 
     public JsonResponse(){}
 
@@ -21,7 +21,7 @@ public class JsonResponse {
     public JsonResponse(JsonResponseType status, String message) {
         setStatus(status.getName());
         setPayload(null);
-        getMetadata().put("message", message);
+        getMeta().put("message", message);
     }
 
     public JsonResponse(JsonResponseType status, MetaHolder... metadatas) {
@@ -53,11 +53,11 @@ public class JsonResponse {
         this.payload = payload;
     }
 
-    public HashMap<String, Object> getMetadata() {
-        return metadata;
+    public HashMap<String, Object> getMeta() {
+        return meta;
     }
 
     public void addMetadata(String key, Object value){
-        getMetadata().put(key, value);
+        getMeta().put(key, value);
     }
 }
