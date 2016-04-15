@@ -14,7 +14,7 @@ public final class Config {
     public static final String PROD_CONFIG_DIRECTORY = "";
 
     public static final String APPLICATION_CONFIG_LOCATION = "config/application.properties";
-    public static final String GENERAL_CONFIG_FILE = "config/General.properties";
+    public static final String GENERAL_CONFIG_FILE = "config/general.properties";
 
     // --------------------------------------------------
     // Variable Definitions
