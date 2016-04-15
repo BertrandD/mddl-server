@@ -1,10 +1,16 @@
 package com.gameserver.controllers;
 
 import com.auth.Account;
+import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.enums.Lang;
 import com.gameserver.model.Player;
+import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
+import com.util.data.json.Response.JsonResponse;
+import com.util.data.json.Response.JsonResponseType;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,11 +49,24 @@ public class PlayerController {
 
     @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.POST)
-    public Player create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
+    public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
         if(playerService.findOneByName(name) != null) return null;
-        Player player = playerService.create(account, name); // TODO: Check valid name
+
+        // Check if name is forbidden (Like 'fuck', 'admin', ...)
+        if (Config.FORBIDDEN_NAMES.length > 1)
+        {
+            for (String st : Config.FORBIDDEN_NAMES)
+            {
+                if (name.toLowerCase().contains(st.toLowerCase()))
+                {
+                    return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(Lang.EN, SystemMessageId.FORBIDDEN_NAME));
+                }
+            }
+        }
+
+        Player player = playerService.create(account, name);
         inventoryService.create(player);
-        return player;
+        return new JsonResponse(player);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)

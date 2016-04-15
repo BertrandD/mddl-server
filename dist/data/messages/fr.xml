@@ -4,5 +4,6 @@
         <message id="username_not_found" text="Nom d'utilisateur inconnu" />
         <message id="account_already_exist" text="Ce compte existe déjà" />
         <message id="incorrect_credentials" text="Mot de passe incorrect" />
+        <message id="forbidden_name" text="Ce nom est interdit" />
     </messages>
 </list>
