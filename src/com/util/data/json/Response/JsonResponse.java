@@ -1,5 +1,8 @@
 package com.util.data.json.Response;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.util.data.json.View;
+
 import java.util.HashMap;
 
 /**
@@ -7,9 +10,14 @@ import java.util.HashMap;
  */
 public class JsonResponse {
 
+    @JsonView(View.Standard.class)
     private String status;
+
+    @JsonView(View.Standard.class)
     private Object payload;
-    private final HashMap<String, Object> meta = new HashMap<>();
+
+    @JsonView(View.Standard.class)
+    private final HashMap<String, Object> metadata = new HashMap<>();
 
     public JsonResponse(){}
 
@@ -21,7 +29,7 @@ public class JsonResponse {
     public JsonResponse(JsonResponseType status, String message) {
         setStatus(status.getName());
         setPayload(null);
-        getMeta().put("message", message);
+        getMetadata().put("message", message);
     }
 
     public JsonResponse(JsonResponseType status, MetaHolder... metadatas) {
@@ -53,11 +61,11 @@ public class JsonResponse {
         this.payload = payload;
     }
 
-    public HashMap<String, Object> getMeta() {
-        return meta;
+    public HashMap<String, Object> getMetadata() {
+        return metadata;
     }
 
     public void addMetadata(String key, Object value){
-        getMeta().put(key, value);
+        getMetadata().put(key, value);
     }
 }

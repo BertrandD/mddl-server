@@ -13,6 +13,7 @@ import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-
 /**
  * @author LEBOC Philippe
  */
 @RestController
+@PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/player", produces = "application/json")
 public class PlayerController {
 
@@ -36,21 +36,26 @@ public class PlayerController {
     private InventoryService inventoryService;
 
     @JsonView(View.Standard.class)
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Collection<Player> players(){
-        return playerService.findAll();
+    public JsonResponse players(){
+        return new JsonResponse(playerService.findAll());
     }
 
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Player player(@PathVariable("id") String id){
-        return playerService.findOne(id);
+    public JsonResponse player(@PathVariable("id") String id){
+        final SystemMessageData SM = SystemMessageData.getInstance();
+        final Player player = playerService.findOne(id);
+        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(Lang.EN, SystemMessageId.PLAYER_NOT_FOUND));
+        return new JsonResponse(player);
     }
 
     @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
-        if(playerService.findOneByName(name) != null) return null;
+        final SystemMessageData SM = SystemMessageData.getInstance();
+        if(playerService.findOneByName(name) != null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(Lang.EN, SystemMessageId.USERNAME_ALREADY_EXIST));
 
         // Check if name is forbidden (Like 'fuck', 'admin', ...)
         if (Config.FORBIDDEN_NAMES.length > 1)
@@ -59,16 +64,17 @@ public class PlayerController {
             {
                 if (name.toLowerCase().contains(st.toLowerCase()))
                 {
-                    return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(Lang.EN, SystemMessageId.FORBIDDEN_NAME));
+                    return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(Lang.EN, SystemMessageId.FORBIDDEN_NAME));
                 }
             }
         }
 
-        Player player = playerService.create(account, name);
+        final Player player = playerService.create(account, name);
         inventoryService.create(player);
         return new JsonResponse(player);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.DELETE)
     public void delete(@RequestParam("id") String id){
         playerService.delete(id);

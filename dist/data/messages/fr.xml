@@ -2,8 +2,10 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/messages.xsd">
     <messages lang="FR">
         <message id="username_not_found" text="Nom d'utilisateur inconnu" />
+        <message id="username_already_exist" text="Nom d'utilisateur déjà utilisé" />
         <message id="account_already_exist" text="Ce compte existe déjà" />
         <message id="incorrect_credentials" text="Mot de passe incorrect" />
         <message id="forbidden_name" text="Ce nom est interdit" />
+        <message id="player_not_found" text="Ce joueur n'existe pas" />
     </messages>
 </list>
