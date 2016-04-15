@@ -17,7 +17,7 @@ public class JsonResponse {
     private Object payload;
 
     @JsonView(View.Standard.class)
-    private final HashMap<String, Object> metadata = new HashMap<>();
+    private final HashMap<String, Object> meta = new HashMap<>();
 
     public JsonResponse(){}
 
@@ -29,14 +29,14 @@ public class JsonResponse {
     public JsonResponse(JsonResponseType status, String message) {
         setStatus(status.getName());
         setPayload(null);
-        getMetadata().put("message", message);
+        getMeta().put("message", message);
     }
 
-    public JsonResponse(JsonResponseType status, MetaHolder... metadatas) {
+    public JsonResponse(JsonResponseType status, MetaHolder... metas) {
         setStatus(status.getName());
         setPayload(null);
-        for(MetaHolder holder : metadatas){
-            addMetadata(holder.getKey(), holder.getObject());
+        for(MetaHolder holder : metas){
+            addMeta(holder.getKey(), holder.getObject());
         }
     }
 
@@ -61,11 +61,11 @@ public class JsonResponse {
         this.payload = payload;
     }
 
-    public HashMap<String, Object> getMetadata() {
-        return metadata;
+    public HashMap<String, Object> getMeta() {
+        return meta;
     }
 
-    public void addMetadata(String key, Object value){
-        getMetadata().put(key, value);
+    public void addMeta(String key, Object value){
+        getMeta().put(key, value);
     }
 }
