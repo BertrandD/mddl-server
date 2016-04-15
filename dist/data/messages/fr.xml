@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/messages.xsd">
+    <messages lang="FR">
+        <message id="username_not_found" text="Nom d'utilisateur inconnu" />
+        <message id="account_already_exist" text="Ce compte existe déjà" />
+        <message id="incorrect_credentials" text="Mot de passe incorrect" />
+    </messages>
+</list>

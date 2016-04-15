@@ -2,7 +2,6 @@ package com.gameserver.data.xml.impl;
 
 import com.config.Config;
 import com.gameserver.enums.Lang;
-import com.gameserver.model.commons.SystemMessage;
 import com.util.data.xml.IXmlReader;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -17,7 +16,8 @@ import java.util.HashMap;
 public class SystemMessageData implements IXmlReader {
 
     private final Logger LOGGER = Logger.getLogger(getClass().getSimpleName());
-    private final HashMap<Integer, SystemMessage> _messages = new HashMap<>();
+    private final HashMap<String, String> _english = new HashMap<>();
+    private final HashMap<String, String> _french = new HashMap<>();
 
     protected SystemMessageData(){
         load();
@@ -25,9 +25,11 @@ public class SystemMessageData implements IXmlReader {
 
     @Override
     public void load() {
-        _messages.clear();
+        _english.clear();
+        _french.clear();
         parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "messages", false);
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _messages.size() + " System Messages.");
+        LOGGER.info(" Loaded " + _english.size() + " English System Messages.");
+        LOGGER.info(" Loaded " + _french.size() + " French System Messages.");
     }
 
     @Override
@@ -37,18 +39,31 @@ public class SystemMessageData implements IXmlReader {
                 for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling()) {
                     if ("messages".equalsIgnoreCase(b.getNodeName())) {
                         NamedNodeMap attrs = b.getAttributes();
-                        final int id = parseInteger(attrs, "id");
-                        final SystemMessage message = new SystemMessage(id);
+                        final Lang lang = parseEnum(attrs, Lang.class, "lang");
+                        final HashMap<String, String> current = getMessages(lang);
                         for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling()){
                             if("message".equalsIgnoreCase(c.getNodeName())){
                                 attrs = c.getAttributes();
-                                message.addMessage(parseEnum(attrs, Lang.class, "lang"), parseString(attrs, "text", null));
+                                final String id = parseString(attrs, "id");
+                                final String text = parseString(attrs, "text", null);
+                                current.put(id, text);
                             }
                         }
-                        _messages.put(id, message);
                     }
                 }
             }
+        }
+    }
+
+    public String getMessage(Lang lang, String id){
+        return getMessages(lang).get(id);
+    }
+
+    public HashMap<String, String> getMessages(Lang lang){
+        switch(lang){
+            case EN: return _english;
+            case FR: return _french;
+            default: return null;
         }
     }
 

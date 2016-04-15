@@ -2,6 +2,9 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.auth.AccountService;
+import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.enums.Lang;
+import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.*;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
@@ -21,7 +24,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.UUID;
 
 
@@ -73,11 +75,12 @@ public class DefaultController implements ErrorController{
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public JsonResponse login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password)
     {
+        final SystemMessageData SystemMessage = SystemMessageData.getInstance();
         final Account account = accountService.findByUsername(username);
         final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(account == null) return new JsonResponse(JsonResponseType.ERROR, "Username not found");
+        if(account == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.USERNAME_NOT_FOUND));
 
-        if(!passwordEncoder.matches(password, account.getPassword())) return new JsonResponse(JsonResponseType.ERROR, "Invalid credentials");
+        if(!passwordEncoder.matches(password, account.getPassword())) return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.INCORRECT_CREDENTIALS));
 
         return new JsonResponse(JsonResponseType.SUCCESS, new MetaHolder("token", account.getToken()));
     }
@@ -93,7 +96,7 @@ public class DefaultController implements ErrorController{
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
     public JsonResponse register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
         final Account account = accountService.findByUsername(username);
-        if(account != null) return new JsonResponse(JsonResponseType.ERROR, "Account already exist !");
+        if(account != null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(Lang.EN, SystemMessageId.ACCOUNT_ALREADY_EXIST));
         return new JsonResponse(accountService.create(username, password));
     }
 
