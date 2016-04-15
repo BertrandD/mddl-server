@@ -20,6 +20,7 @@ public final class Config {
     // Variable Definitions
     // --------------------------------------------------
     public static String DATA_ROOT_DIRECTORY;
+    public static String[] FORBIDDEN_NAMES;
     public static long MAX_PLAYER_INVENTORY_CAPACITY;
 
     // --------------------------------------------------
@@ -30,6 +31,7 @@ public final class Config {
         final PropertiesParser general = new PropertiesParser(MODE+GENERAL_CONFIG_FILE);
 
         DATA_ROOT_DIRECTORY = general.getString("DataRootDirectory", "data/");
+        FORBIDDEN_NAMES = general.getString("ForbiddenNames", "").split(",");
         MAX_PLAYER_INVENTORY_CAPACITY = general.getLong("MaxPlayerInventoryCapacity", 1000000000);
     }
 }
