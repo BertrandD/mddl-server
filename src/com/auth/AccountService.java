@@ -1,5 +1,6 @@
 package com.auth;
 
+import com.gameserver.enums.Lang;
 import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +35,10 @@ public class AccountService implements UserDetailsService {
         }
     }
 
+    public Account findOne(String id){
+        return accountRepository.findOne(id);
+    }
+
     public Account findByUsername(String username){
         return accountRepository.findByUsername(username);
     }
@@ -47,7 +52,7 @@ public class AccountService implements UserDetailsService {
         final List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        Account account = new Account(username, passwordEncoder.encode(password), roles, null, null, UUID.randomUUID().toString());
+        Account account = new Account(username, passwordEncoder.encode(password), roles, null, Lang.EN, null, UUID.randomUUID().toString());
         account = accountRepository.save(account);
 
         if(account == null) return null;

@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,22 +40,22 @@ public class DefaultController implements ErrorController{
     private ErrorAttributes errorAttributes;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    BaseService baseService;
+    private BaseService baseService;
 
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
     @Autowired
-    BuildingService buildingService;
+    private BuildingService buildingService;
 
     @Autowired
-    InventoryService inventoryService;
+    private InventoryService inventoryService;
 
     @Autowired
-    PlayerService playerService;
+    private PlayerService playerService;
 
     @RequestMapping(value = "/", produces = "application/json")
     public JsonResponse index()
@@ -110,6 +111,17 @@ public class DefaultController implements ErrorController{
     @RequestMapping(value = "/about/me", method = RequestMethod.GET, produces = "application/json")
     public JsonResponse aboutMe(@AuthenticationPrincipal Account account){
         return new JsonResponse(account);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/lang/{lang}", method = RequestMethod.POST, produces = "application/json")
+    public JsonResponse changeLanguage(@AuthenticationPrincipal Account account, @PathVariable(value = "lang") String lang){
+        final Lang newLang = Lang.valueOf(lang.toUpperCase()); // TODO: Exception
+        final Account currentAccount = accountService.findOne(account.getId());
+        account.setLang(newLang);
+        currentAccount.setLang(newLang);
+        accountService.update(currentAccount);
+        return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = ERROR_PATH, produces = "application/json")

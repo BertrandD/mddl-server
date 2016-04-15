@@ -44,10 +44,10 @@ public class PlayerController {
 
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public JsonResponse player(@PathVariable("id") String id){
+    public JsonResponse player(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
         final SystemMessageData SM = SystemMessageData.getInstance();
         final Player player = playerService.findOne(id);
-        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(Lang.EN, SystemMessageId.PLAYER_NOT_FOUND));
+        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(account.getLang(), SystemMessageId.PLAYER_NOT_FOUND));
         return new JsonResponse(player);
     }
 
@@ -55,7 +55,7 @@ public class PlayerController {
     @RequestMapping(method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
         final SystemMessageData SM = SystemMessageData.getInstance();
-        if(playerService.findOneByName(name) != null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(Lang.EN, SystemMessageId.USERNAME_ALREADY_EXIST));
+        if(playerService.findOneByName(name) != null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST));
 
         // Check if name is forbidden (Like 'fuck', 'admin', ...)
         if (Config.FORBIDDEN_NAMES.length > 1)
@@ -64,7 +64,7 @@ public class PlayerController {
             {
                 if (name.toLowerCase().contains(st.toLowerCase()))
                 {
-                    return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(Lang.EN, SystemMessageId.FORBIDDEN_NAME));
+                    return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(account.getLang(), SystemMessageId.FORBIDDEN_NAME));
                 }
             }
         }

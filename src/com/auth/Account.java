@@ -1,6 +1,7 @@
 package com.auth;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.enums.Lang;
 import com.gameserver.model.Player;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
@@ -19,6 +20,9 @@ public class Account extends User
     @Id
     private String id;
 
+    @JsonView(View.Standard.class)
+    private Lang lang;
+
     @DBRef
     @JsonView(View.Standard.class)
     private List<Player> players;
@@ -26,10 +30,11 @@ public class Account extends User
     @JsonView(View.Standard.class)
     private String token;
 
-    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, List<Player> players, String token)
+    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, Lang lang, List<Player> players, String token)
     {
         super(username, password, authorities);
         setId(id);
+        setLang(lang);
         setPlayers(players);
         setToken(token);
     }
@@ -40,6 +45,14 @@ public class Account extends User
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(Lang lang) {
+        this.lang = lang;
     }
 
     public List<Player> getPlayers() {
