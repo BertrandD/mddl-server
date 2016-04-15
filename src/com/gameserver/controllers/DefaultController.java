@@ -8,7 +8,6 @@ import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.*;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
-import com.util.data.json.Response.MetaHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -24,6 +23,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 
@@ -73,16 +73,22 @@ public class DefaultController implements ErrorController{
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    public JsonResponse login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password)
+    public JsonResponse login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response)
     {
         final SystemMessageData SystemMessage = SystemMessageData.getInstance();
         final Account account = accountService.findByUsername(username);
         final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(account == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.USERNAME_NOT_FOUND));
+        if(account == null) {
+            response.setStatus(401);
+            return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.USERNAME_NOT_FOUND));
+        }
 
-        if(!passwordEncoder.matches(password, account.getPassword())) return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.INCORRECT_CREDENTIALS));
+        if(!passwordEncoder.matches(password, account.getPassword())) {
+            response.setStatus(401);
+            return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.INCORRECT_CREDENTIALS));
+        }
 
-        return new JsonResponse(JsonResponseType.SUCCESS, new MetaHolder("token", account.getToken()));
+        return new JsonResponse(account);
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET, produces = "application/json")
