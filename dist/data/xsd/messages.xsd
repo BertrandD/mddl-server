@@ -8,20 +8,20 @@
                         <xs:sequence>
                             <xs:element name="message" minOccurs="1" maxOccurs="unbounded">
                                 <xs:complexType>
-                                    <xs:attribute name="lang" use="required">
-                                        <xs:simpleType>
-                                            <xs:restriction base="xs:string">
-                                                <xs:enumeration value="EN" />
-                                                <xs:enumeration value="FR" />
-                                                <xs:enumeration value="CH" />
-                                            </xs:restriction>
-                                        </xs:simpleType>
-                                    </xs:attribute>
+                                    <xs:attribute name="id" type="xs:string" use="required" />
                                     <xs:attribute name="text" type="xs:string" use="required" />
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="id" type="xs:integer" use="required" />
+                        <xs:attribute name="lang" use="required">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="EN" />
+                                    <xs:enumeration value="FR" />
+                                    <xs:enumeration value="CH" />
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
