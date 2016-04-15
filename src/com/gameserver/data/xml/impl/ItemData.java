@@ -36,6 +36,7 @@ public class ItemData implements IXmlReader {
     private final HashMap<String, Engine> _engines = new HashMap<>();
     private final HashMap<String, Module> _modules = new HashMap<>();
     private final HashMap<String, Weapon> _weapons = new HashMap<>();
+    private final HashMap<String, CommonItem> _resources = new HashMap<>();
     private final HashMap<String, CommonItem> _commons = new HashMap<>();
 
     protected ItemData(){
@@ -49,15 +50,17 @@ public class ItemData implements IXmlReader {
         _engines.clear();
         _modules.clear();
         _weapons.clear();
+        _resources.clear();
         _commons.clear();
         parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/items", false);
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _structures.size() + " structures templates.");
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _cargos.size() + " cargos templates.");
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _engines.size() + " engines templates.");
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _modules.size() + " modules templates.");
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _weapons.size() + " weapons templates.");
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _commons.size() + " commons templates.");
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + (_structures.size() + _cargos.size() + _engines.size() + _modules.size() + _weapons.size() + _commons.size()) + " items in total.");
+        LOGGER.info("Loaded " + _structures.size() + " structures templates.");
+        LOGGER.info("Loaded " + _cargos.size() + " cargos templates.");
+        LOGGER.info("Loaded " + _engines.size() + " engines templates.");
+        LOGGER.info("Loaded " + _modules.size() + " modules templates.");
+        LOGGER.info("Loaded " + _weapons.size() + " weapons templates.");
+        LOGGER.info("Loaded "+ _resources.size() + " resources templates.");
+        LOGGER.info("Loaded " + _commons.size() + " commons templates.");
+        LOGGER.info("Loaded " + (_structures.size() + _cargos.size() + _engines.size() + _modules.size() + _weapons.size() + _commons.size()) + " items in total.");
     }
 
     @Override
@@ -137,6 +140,9 @@ public class ItemData implements IXmlReader {
         switch(type.name().toLowerCase())
         {
             case "resource":
+            {
+                _resources.put(id, new CommonItem(set, null)); break;
+            }
             case "common":
             {
                 _commons.put(id, new CommonItem(set, requirement)); break;
@@ -164,6 +170,8 @@ public class ItemData implements IXmlReader {
         }
     }
 
+    public List<CommonItem> getResources() { return new ArrayList<>(_resources.values()); }
+
     public List<CommonItem> getCommonItems() { return new ArrayList<>(_commons.values()); }
 
     public List<Cargo> getCargos() { return new ArrayList<>(_cargos.values()); }
@@ -175,6 +183,8 @@ public class ItemData implements IXmlReader {
     public List<Weapon> getWeapons() { return new ArrayList<>(_weapons.values()); }
 
     public List<Structure> getStructures(){ return new ArrayList<>( _structures.values()); }
+
+    public CommonItem getResource(String id) { return _resources.get(id); }
 
     public CommonItem getCommonItem(String id){
         return _commons.get(id);
@@ -199,6 +209,15 @@ public class ItemData implements IXmlReader {
 
         Cargo cargo = _cargos.values().stream().filter(k -> k.getItemId().equals(itemId)).findFirst().orElse(null);
         if(cargo != null) return cargo;
+
+        Engine engine = _engines.values().stream().filter(k -> k.getItemId().equals(itemId)).findFirst().orElse(null);
+        if(engine != null) return engine;
+
+        Module module = _modules.values().stream().filter(k -> k.getItemId().equals(itemId)).findFirst().orElse(null);
+        if(module != null) return module;
+
+        Weapon weapon = _weapons.values().stream().filter(k -> k.getItemId().equals(itemId)).findFirst().orElse(null);
+        if(weapon != null) return weapon;
 
         CommonItem common = _commons.values().stream().filter(k -> k.getItemId().equals(itemId)).findFirst().orElse(null);
         if(common != null) return common;

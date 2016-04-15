@@ -39,7 +39,7 @@ public class BuildingData implements IXmlReader {
     public void load() {
         _buildings.clear();
         parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/buildings", false);
-        LOGGER.info(getClass().getSimpleName() + ": Loaded " + _buildings.size() + " buildings Templates.");
+        LOGGER.info("Loaded " + _buildings.size() + " buildings Templates.");
     }
 
     @Override
