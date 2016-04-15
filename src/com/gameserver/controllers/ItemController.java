@@ -8,6 +8,7 @@ import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
+import com.util.data.json.Response.JsonResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,15 +25,20 @@ import java.util.List;
 public class ItemController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public HashMap<String, List<? extends GameItem>> findAll(){
+    public JsonResponse findAll(){
         final HashMap<String, List<? extends GameItem>> all = new HashMap<>();
-        all.put("common", ItemData.getInstance().getCommonItems());
-        all.put("cargo", ItemData.getInstance().getCargos());
-        all.put("engine", ItemData.getInstance().getEngines());
-        all.put("module", ItemData.getInstance().getModules());
-        all.put("structure", ItemData.getInstance().getStructures());
-        all.put("weapon", ItemData.getInstance().getWeapons());
-        return all;
+
+        ItemData itemData = ItemData.getInstance();
+
+        all.put("COMMON", itemData.getCommonItems());
+        all.put("CARGO", itemData.getCargos());
+        all.put("ENGINE", itemData.getEngines());
+        all.put("MODULE", itemData.getModules());
+        all.put("RESOURCE", itemData.getResources());
+        all.put("STRUCTURE", itemData.getStructures());
+        all.put("WEAPON", itemData.getWeapons());
+
+        return new JsonResponse(all);
     }
 
     @RequestMapping(value = "/common", method = RequestMethod.GET)
