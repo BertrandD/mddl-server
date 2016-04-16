@@ -4,9 +4,11 @@ import com.config.Config;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.data.xml.impl.SystemMessageData;
+import org.jsondoc.spring.boot.starter.EnableJSONDoc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@EnableJSONDoc
 @SpringBootApplication
 public class Application {
     public static void main(String[] args)

@@ -32,6 +32,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-starter-security")
 	compile ('org.springframework.session:spring-session:1.2.0.RC1')
+	compile ('org.jsondoc:spring-boot-starter-jsondoc:1.2.13')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
