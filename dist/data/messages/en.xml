@@ -7,5 +7,6 @@
         <message id="incorrect_credentials" text="Incorrect credentials" />
         <message id="forbidden_name" text="Forbidden name" />
         <message id="player_not_found" text="Player not found" />
+        <message id="base_not_found" text="Base not found" />
     </messages>
 </list>

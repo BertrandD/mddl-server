@@ -11,6 +11,7 @@ public class View {
     public interface Standard{}
 
     // Player
+    public interface player_account extends Standard{}
     public interface player_bases extends Standard{}
     public interface player_inventory extends Standard{}
 

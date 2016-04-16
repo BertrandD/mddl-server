@@ -110,7 +110,8 @@ public class DefaultController implements ErrorController{
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/about/me", method = RequestMethod.GET, produces = "application/json")
     public JsonResponse aboutMe(@AuthenticationPrincipal Account account){
-        return new JsonResponse(account);
+        Account reqAccount = accountService.findOne(account.getId());
+        return new JsonResponse(reqAccount);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

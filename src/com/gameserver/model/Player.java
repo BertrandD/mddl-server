@@ -28,7 +28,7 @@ public class Player {
     private String name;
 
     @DBRef
-    @JsonView(View.Standard.class)
+    @JsonView(View.player_account.class)
     private Account account;
 
     @DBRef

@@ -2,6 +2,7 @@ package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.interfaces.IInventory;
 import com.gameserver.model.instances.ItemInstance;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
@@ -14,7 +15,7 @@ import java.util.HashMap;
  * @author LEBOC Philippe
  */
 @Document(collection = "inventories")
-public abstract class Inventory {
+public abstract class Inventory implements IInventory{
 
     @Id
     @JsonView(View.Standard.class)
