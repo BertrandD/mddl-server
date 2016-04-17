@@ -37,7 +37,7 @@ public class BaseController {
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
-        Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayuer());
+        Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
         if(currentPlayer == null) return new JsonResponse(JsonResponseType.ERROR, "Choose a player"); // TODO SystemMessage
         return new JsonResponse(currentPlayer.getBases());
     }

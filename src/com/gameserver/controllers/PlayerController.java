@@ -76,10 +76,10 @@ public class PlayerController {
         inventoryService.create(player);
 
         account.addPlayer(player.getId());
-        account.setCurrentPlayuer(player.getId());
+        account.setCurrentPlayer(player.getId());
 
         playerAccount.addPlayer(player.getId());
-        playerAccount.setCurrentPlayuer(player.getId());
+        playerAccount.setCurrentPlayer(player.getId());
 
         accountService.update(playerAccount);
         return new JsonResponse(player);

@@ -27,18 +27,18 @@ public class Account extends User
     private List<String> players;
 
     @JsonIgnore
-    private String currentPlayuer;
+    private String currentPlayer;
 
     @JsonView(View.Standard.class)
     private String token;
 
-    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, Lang lang, List<String> players, String currentPlayuer, String token)
+    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, Lang lang, List<String> players, String currentPlayer, String token)
     {
         super(username, password, authorities);
         setId(id);
         setLang(lang);
         setPlayers(players == null ? new ArrayList<>() : players);
-        setCurrentPlayuer(currentPlayuer);
+        setCurrentPlayer(currentPlayer);
         setToken(token);
     }
 
@@ -72,12 +72,12 @@ public class Account extends User
     }
 
     @JsonIgnore
-    public String getCurrentPlayuer() {
-        return currentPlayuer;
+    public String getCurrentPlayer() {
+        return currentPlayer;
     }
 
-    public void setCurrentPlayuer(String currentPlayuer) {
-        this.currentPlayuer = currentPlayuer;
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public String getToken() {
