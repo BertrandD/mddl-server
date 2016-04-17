@@ -19,6 +19,11 @@ public class Storage extends Building {
         setCapacityByLevel(new HashMap<>());
     }
 
+    @Override
+    public String calcRequirement() {
+        return null;
+    }
+
     public long getCapacityByLevel(int level){
         return getCapacityByLevel().get(level);
     }

@@ -17,6 +17,11 @@ public class Mine extends Building {
         setProductionByLevel(new HashMap<>());
     }
 
+    @Override
+    public String calcRequirement() {
+        return null;
+    }
+
     public String getProduceItemId() {
         return produceItemId;
     }

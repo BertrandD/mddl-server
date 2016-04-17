@@ -1,6 +1,5 @@
 package com.gameserver.model.instances;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -9,7 +8,6 @@ import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.Mine;
 import com.gameserver.model.buildings.Storage;
-import com.gameserver.model.inventory.BuildingInventory;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -34,22 +32,13 @@ public class BuildingInstance
     private String buildingId;
 
     @JsonView(View.Standard.class)
-    private int currentHealth;
-
-    @JsonView(View.Standard.class)
     private int currentLevel;
-
-    @DBRef
-    @JsonBackReference
-    @JsonView(View.buildingInstance_inventory.class)
-    private BuildingInventory inventory;
 
     public BuildingInstance(){}
 
     public BuildingInstance(Base base, Building template) {
         setBase(base);
         setBuildingId(template.getId());
-        setCurrentHealth(template.getMaxHp());
         setCurrentLevel(1);
     }
 
@@ -99,27 +88,11 @@ public class BuildingInstance
         this.buildingId = buildingId;
     }
 
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
     public int getCurrentLevel() {
         return currentLevel;
     }
 
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
-    }
-
-    public BuildingInventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(BuildingInventory inventory) {
-        this.inventory = inventory;
     }
 }

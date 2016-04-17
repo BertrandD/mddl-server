@@ -28,13 +28,18 @@ public class Player {
     private String name;
 
     @DBRef
-    @JsonView(View.Standard.class)
+    @JsonView(View.player_account.class)
     private Account account;
 
     @DBRef
     @JsonBackReference
     @JsonView(View.Standard.class)
     private List<Base> bases;
+
+    @DBRef
+    @JsonBackReference
+    @JsonView(View.Standard.class)
+    private Base currentBase;
 
     @DBRef
     @JsonBackReference
@@ -49,12 +54,6 @@ public class Player {
     {
         setName(name);
         setAccount(account);
-        setBases(new ArrayList<>());
-    }
-
-    public Player(String name)
-    {
-        setName(name);
         setBases(new ArrayList<>());
     }
 
@@ -92,6 +91,14 @@ public class Player {
 
     public void addBase(Base base) {
         this.bases.add(base); // TODO: add check
+    }
+
+    public Base getCurrentBase() {
+        return currentBase;
+    }
+
+    public void setCurrentBase(Base currentBase) {
+        this.currentBase = currentBase;
     }
 
     public PlayerInventory getInventory() {

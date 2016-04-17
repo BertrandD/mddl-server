@@ -1,10 +1,10 @@
 package com.gameserver.controllers;
 
 import com.auth.Account;
+import com.auth.AccountService;
 import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.SystemMessageData;
-import com.gameserver.enums.Lang;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.InventoryService;
@@ -26,24 +26,27 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/player", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class PlayerController {
 
     @Autowired
     private PlayerService playerService;
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private InventoryService inventoryService;
 
     @JsonView(View.Standard.class)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public JsonResponse players(){
-        return new JsonResponse(playerService.findAll());
+    @RequestMapping(value = "/me/player", method = RequestMethod.GET)
+    public JsonResponse players(@AuthenticationPrincipal Account pAccount){
+        final Account account = accountService.findOne(pAccount.getId());
+        return new JsonResponse(playerService.findByAccount(account));
     }
 
     @JsonView(View.Standard.class)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
     public JsonResponse player(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
         final SystemMessageData SM = SystemMessageData.getInstance();
         final Player player = playerService.findOne(id);
@@ -52,7 +55,7 @@ public class PlayerController {
     }
 
     @JsonView(View.Standard.class)
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/player", method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
         final SystemMessageData SM = SystemMessageData.getInstance();
         if(playerService.findOneByName(name) != null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST));
@@ -68,9 +71,17 @@ public class PlayerController {
                 }
             }
         }
-
+        final Account playerAccount = accountService.findOne(account.getId());
         final Player player = playerService.create(account, name);
         inventoryService.create(player);
+
+        account.addPlayer(player.getId());
+        account.setCurrentPlayuer(player.getId());
+
+        playerAccount.addPlayer(player.getId());
+        playerAccount.setCurrentPlayuer(player.getId());
+
+        accountService.update(playerAccount);
         return new JsonResponse(player);
     }
 

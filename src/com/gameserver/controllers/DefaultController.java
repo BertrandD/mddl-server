@@ -2,12 +2,14 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.auth.AccountService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.*;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
+import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -15,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,8 +75,7 @@ public class DefaultController implements ErrorController{
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    public JsonResponse login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response)
-    {
+    public JsonResponse login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
         final SystemMessageData SystemMessage = SystemMessageData.getInstance();
         final Account account = accountService.findByUsername(username);
         final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -93,8 +93,7 @@ public class DefaultController implements ErrorController{
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET, produces = "application/json")
-    public JsonResponse logout(@AuthenticationPrincipal Account account)
-    {
+    public JsonResponse logout(@AuthenticationPrincipal Account account) {
         account.setToken(UUID.randomUUID().toString());
         accountService.update(account);
         return new JsonResponse(JsonResponseType.SUCCESS);
@@ -108,14 +107,16 @@ public class DefaultController implements ErrorController{
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/about/me", method = RequestMethod.GET, produces = "application/json")
+    @JsonView(View.Standard.class)
+    @RequestMapping(value = "/me", method = RequestMethod.GET, produces = "application/json")
     public JsonResponse aboutMe(@AuthenticationPrincipal Account account){
-        return new JsonResponse(account);
+        final Account reqAccount = accountService.findOne(account.getId());
+        return new JsonResponse(reqAccount);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/lang/{lang}", method = RequestMethod.POST, produces = "application/json")
-    public JsonResponse changeLanguage(@AuthenticationPrincipal Account account, @PathVariable(value = "lang") String lang){
+    @RequestMapping(value = "/lang", method = RequestMethod.POST, produces = "application/json")
+    public JsonResponse changeLanguage(@AuthenticationPrincipal Account account, @RequestParam(value = "lang") String lang){
         final Lang newLang = Lang.valueOf(lang.toUpperCase()); // TODO: Exception
         final Account currentAccount = accountService.findOne(account.getId());
         account.setLang(newLang);

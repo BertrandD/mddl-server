@@ -1,10 +1,8 @@
 package com.gameserver.services;
 
 import com.gameserver.model.Player;
-import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.model.inventory.BuildingInventory;
 import com.gameserver.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,7 @@ public class InventoryService {
     private PlayerService playerService;
 
     @Autowired
-    private BuildingService buildingService;
+    private BaseService baseService;
 
     public Inventory findOne(String id){
         return repository.findOne(id);
@@ -39,14 +37,6 @@ public class InventoryService {
         inventory = repository.save(inventory);
         player.setInventory(inventory);
         playerService.update(player);
-        return inventory;
-    }
-
-    public Inventory create(BuildingInstance building){
-        BuildingInventory inventory = new BuildingInventory(building);
-        inventory = repository.save(inventory);
-        building.setInventory(inventory);
-        buildingService.update(building);
         return inventory;
     }
 

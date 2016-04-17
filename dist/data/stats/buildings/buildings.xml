@@ -1,34 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="10000" type="HEADQUARTER" name="Headquarter" maxHealth="10000" maxLevel="1" buildTime="60" descriptionId="10000">
-        <creations>
-            <creation level="1">
-                <item id="100" count="1" />
-                <item id="101" count="1" />
-                <item id="102" count="1" />
-            </creation>
-        </creations>
-    </building>
-    <building id="10002" type="STORAGE" name="Crystal Storage" maxHealth="10000" maxLevel="50" buildTime="60" descriptionId="10002">
-        <creations>
-            <creation level="1">
-                <item id="100" count="10" />
-                <item id="101" count="10" />
-                <item id="102" count="10" />
-                <building id="10000" level="1" />
-                <!--<technology id="" level="" />-->
-            </creation>
-        </creations>
-    </building>
-    <building id="10003" type="STORAGE" name="Deuterium Storage" maxHealth="10000" maxLevel="50" buildTime="60" descriptionId="10003">
-        <creations>
-            <creation level="1">
-                <item id="100" count="10" />
-                <item id="101" count="10" />
-                <item id="102" count="10" />
-                <building id="10000" level="1" />
-                <!--<technology id="" level="" />-->
-            </creation>
-        </creations>
-    </building>
+    <building id="headquarter" type="HEADQUARTER" name="Headquarter" maxLevel="5" descriptionId="building_" />
+    <building id="storage_metal" type="STORAGE" name="Metal Storage" maxLevel="5" descriptionId="building_" />
+    <building id="storage_crystal" type="STORAGE" name="Crystal Storage" maxLevel="5" descriptionId="building_" />
 </list>
