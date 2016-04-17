@@ -1,14 +1,14 @@
 package com.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.Lang;
-import com.gameserver.model.Player;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,19 +23,22 @@ public class Account extends User
     @JsonView(View.Standard.class)
     private Lang lang;
 
-    @DBRef
-    @JsonView(View.Standard.class)
-    private List<Player> players;
+    @JsonIgnore
+    private List<String> players;
+
+    @JsonIgnore
+    private String currentPlayuer;
 
     @JsonView(View.Standard.class)
     private String token;
 
-    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, Lang lang, List<Player> players, String token)
+    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, Lang lang, List<String> players, String currentPlayuer, String token)
     {
         super(username, password, authorities);
         setId(id);
         setLang(lang);
-        setPlayers(players);
+        setPlayers(players == null ? new ArrayList<>() : players);
+        setCurrentPlayuer(currentPlayuer);
         setToken(token);
     }
 
@@ -55,12 +58,26 @@ public class Account extends User
         this.lang = lang;
     }
 
-    public List<Player> getPlayers() {
+    @JsonIgnore
+    public List<String> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(List<String> players) {
         this.players = players;
+    }
+
+    public void addPlayer(String player){
+        getPlayers().add(player);
+    }
+
+    @JsonIgnore
+    public String getCurrentPlayuer() {
+        return currentPlayuer;
+    }
+
+    public void setCurrentPlayuer(String currentPlayuer) {
+        this.currentPlayuer = currentPlayuer;
     }
 
     public String getToken() {
@@ -69,5 +86,39 @@ public class Account extends User
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @JsonView(View.Standard.class)
+    public Collection<GrantedAuthority> getAuthorities() {
+        return super.getAuthorities();
+    }
+
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @JsonView(View.Standard.class)
+    public String getUsername() {
+        return super.getUsername();
+    }
+
+    public boolean isEnabled() {
+        return super.isEnabled();
+    }
+
+    public boolean isAccountNonExpired() {
+        return super.isAccountNonExpired();
+    }
+
+    public boolean isAccountNonLocked() {
+        return super.isAccountNonLocked();
+    }
+
+    public boolean isCredentialsNonExpired() {
+        return super.isCredentialsNonExpired();
+    }
+
+    public void eraseCredentials() {
+        super.eraseCredentials();
     }
 }

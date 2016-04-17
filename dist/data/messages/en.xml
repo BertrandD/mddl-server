@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/messages.xsd">
     <messages lang="EN">
+        <!-- Account -->
         <message id="username_not_found" text="Username not found" />
         <message id="username_already_exist" text="Username already exist" />
         <message id="account_already_exist" text="Account already exist" />
         <message id="incorrect_credentials" text="Incorrect credentials" />
+        <!-- Commons -->
         <message id="forbidden_name" text="Forbidden name" />
+        <!-- Player -->
         <message id="player_not_found" text="Player not found" />
+        <!-- Base -->
         <message id="base_not_found" text="Base not found" />
     </messages>
 </list>

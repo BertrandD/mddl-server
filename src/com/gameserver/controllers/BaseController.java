@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/base", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class BaseController {
 
     @Autowired
@@ -35,27 +35,30 @@ public class BaseController {
     private PlayerService playerService;
 
     @JsonView(View.Standard.class)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public JsonResponse findAll(){
-        return new JsonResponse(baseService.findAll());
+    @RequestMapping(value = "/me/base", method = RequestMethod.GET)
+    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
+        Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayuer());
+        if(currentPlayer == null) return new JsonResponse(JsonResponseType.ERROR, "Choose a player"); // TODO SystemMessage
+        return new JsonResponse(currentPlayer.getBases());
     }
 
     @JsonView({View.Standard.class})
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
     public JsonResponse findOne(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
+        // TODO: check this base owner
         final Base base = baseService.findOne(id);
         if(base == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(account.getLang(), SystemMessageId.BASE_NOT_FOUND));
         return new JsonResponse(base);
     }
 
     @JsonView(View.Standard.class)
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/base", method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name, @RequestParam(value = "player") String playerId) {
-        Player player = playerService.findOne(playerId);
+        final Player player = playerService.findOne(playerId);
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(account.getLang(), SystemMessageId.PLAYER_NOT_FOUND));
-        Base base = baseService.create(name, player);
+        final Base base = baseService.create(name, player);
         player.addBase(base);
+        player.setCurrentBase(base);
         playerService.update(player);
         return new JsonResponse(base);
     }

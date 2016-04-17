@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -27,6 +28,10 @@ public class PlayerService {
 
     public Collection<Player> findAll() {
         return playerRepository.findAll();
+    }
+
+    public List<Player> findByAccount(Account account){
+        return playerRepository.findByAccount(account);
     }
 
     public Player create(Account account, String name){
