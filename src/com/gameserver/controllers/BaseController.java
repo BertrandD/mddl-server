@@ -39,7 +39,7 @@ public class BaseController {
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
         final SystemMessageData SM = SystemMessageData.getInstance();
         if(pAccount.getCurrentPlayer() == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER));
-        Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
+        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
         if(currentPlayer == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER));
         return new JsonResponse(currentPlayer.getBases());
     }
