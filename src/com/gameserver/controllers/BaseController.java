@@ -37,18 +37,23 @@ public class BaseController {
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
-        if(pAccount.getCurrentPlayer() == null) return new JsonResponse(JsonResponseType.ERROR, "Choose a player"); // TODO SystemMessage
+        final SystemMessageData SM = SystemMessageData.getInstance();
+        if(pAccount.getCurrentPlayer() == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER));
         Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
-        if(currentPlayer == null) return new JsonResponse(JsonResponseType.ERROR, "Choose a player"); // TODO SystemMessage
+        if(currentPlayer == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER));
         return new JsonResponse(currentPlayer.getBases());
     }
 
-    @JsonView({View.Standard.class})
+    @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
     public JsonResponse findOne(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
-        // TODO: check this base owner
+        // TODO: check base owner
         final Base base = baseService.findOne(id);
         if(base == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(account.getLang(), SystemMessageId.BASE_NOT_FOUND));
+
+        // Update current player base
+        base.getOwner().setCurrentBase(base);
+        playerService.update(base.getOwner());
         return new JsonResponse(base);
     }
 

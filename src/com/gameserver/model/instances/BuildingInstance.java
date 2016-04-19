@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.Mine;
 import com.gameserver.model.buildings.Storage;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,7 +27,7 @@ public class BuildingInstance
 
     @DBRef
     @JsonManagedReference
-    @JsonView(View.buildingInstance_base.class)
+    @JsonView(View.Standard.class)
     private Base base;
 
     @JsonView(View.Standard.class)
@@ -33,6 +35,10 @@ public class BuildingInstance
 
     @JsonView(View.Standard.class)
     private int currentLevel;
+
+    @Transient
+    @JsonIgnore
+    private Lang lang = Lang.EN;
 
     public BuildingInstance(){}
 
@@ -60,7 +66,9 @@ public class BuildingInstance
 
     @JsonView(View.buildingInstance_full.class)
     public Building getTemplate() {
-        return BuildingData.getInstance().getBuilding(buildingId);
+        final Building building = BuildingData.getInstance().getBuilding(buildingId);
+        building.setLang(getLang());
+        return building;
     }
 
     public String getId() {
@@ -94,5 +102,14 @@ public class BuildingInstance
 
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
+    }
+
+    @JsonIgnore
+    private Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(Lang lang) {
+        this.lang = lang;
     }
 }

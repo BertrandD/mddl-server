@@ -8,9 +8,20 @@
         <message id="incorrect_credentials" text="Mot de passe incorrect" />
         <!-- Commons -->
         <message id="forbidden_name" text="Ce nom est interdit" />
+        <message id="choose_player" text="Sélectionnez un personnage" />
         <!-- Player -->
         <message id="player_not_found" text="Ce joueur n'existe pas" />
         <!-- Base -->
         <message id="base_not_found" text="Cette base n'existe pas" />
+        <!-- Buildings -->
+        <message id="building_not_found" text="Le batiment n'existe pas" />
+        <!-- Buildings names -->
+        <message id="building_headquarter_n" text="Quartier général" />
+        <message id="building_storage_metal_n" text="Hangar de métal" />
+        <message id="building_storage_crystal_n" text="Hangar de crystal" />
+        <!-- Buildings descriptions -->
+        <message id="building_headquarter_d" text="Le quartier général est le batiment principal de votre base. Il vous permet la gestion complète de celle-ci." />
+        <message id="building_storage_metal_d" text="Le hangar de métal augmente la capacité de stockage de métal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
+        <message id="building_storage_crystal_d" text="Le hangar de crystal augmente la capacité de stockage de crystal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
     </messages>
 </list>

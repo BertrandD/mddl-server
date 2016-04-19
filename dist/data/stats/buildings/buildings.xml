@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="headquarter" type="HEADQUARTER" name="Headquarter" maxLevel="5" descriptionId="building_" />
-    <building id="storage_metal" type="STORAGE" name="Metal Storage" maxLevel="5" descriptionId="building_" />
-    <building id="storage_crystal" type="STORAGE" name="Crystal Storage" maxLevel="5" descriptionId="building_" />
+    <building id="headquarter" type="HEADQUARTER" nameId="building_headquarter_n" maxLevel="5" descriptionId="building_headquarter_d" />
+    <building id="storage_metal" type="STORAGE" nameId="building_storage_metal_n" maxLevel="5" descriptionId="building_storage_metal_d" />
+    <building id="storage_crystal" type="STORAGE" nameId="building_storage_crystal_n" maxLevel="5" descriptionId="building_storage_crystal_d" />
 </list>

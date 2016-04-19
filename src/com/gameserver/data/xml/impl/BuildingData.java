@@ -3,6 +3,7 @@ package com.gameserver.data.xml.impl;
 import com.config.Config;
 import com.gameserver.enums.BuildingType;
 import com.gameserver.enums.ItemType;
+import com.gameserver.enums.Lang;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.buildings.Building;
@@ -95,6 +96,12 @@ public class BuildingData implements IXmlReader {
 
     public List<Building> getBuildings(){
         return new ArrayList<>(_buildings.values());
+    }
+
+    public List<Building> getBuildings(Lang lang){
+        final List<Building> buildings = new ArrayList<>(_buildings.values());
+        buildings.forEach(k->k.setLang(lang));
+        return buildings;
     }
 
     public static BuildingData getInstance()

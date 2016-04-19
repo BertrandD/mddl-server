@@ -1,9 +1,13 @@
 package com.gameserver.model.buildings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.BuildingType;
+import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.StatsSet;
 import com.util.data.json.View;
+import org.springframework.data.annotation.Transient;
 
 /**
  * @author LEBOC Philippe
@@ -13,10 +17,10 @@ public abstract class Building {
     @JsonView(View.Standard.class)
     private String id;
 
-    @JsonView(View.Standard.class)
-    private String name;
+    @JsonIgnore
+    private String nameId;
 
-    @JsonView(View.Standard.class)
+    @JsonIgnore
     private String descriptionId;
 
     @JsonView(View.Standard.class)
@@ -25,9 +29,13 @@ public abstract class Building {
     @JsonView(View.Standard.class)
     private int maxLevel;
 
+    @Transient
+    @JsonIgnore
+    private Lang lang = Lang.EN;
+
     public Building(StatsSet set){
         setId(set.getString("id"));
-        setName(set.getString("name"));
+        setNameId(set.getString("nameId"));
         setType(set.getEnum("type", BuildingType.class));
         setDescriptionId(set.getString("descriptionId"));
         setMaxLevel(set.getInt("maxLevel", 1));
@@ -43,12 +51,18 @@ public abstract class Building {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    @JsonIgnore
+    private String getNameId() {
+        return nameId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameId(String nameId) {
+        this.nameId = nameId;
+    }
+
+    @JsonView(View.Standard.class)
+    public String getName(){
+        return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
     }
 
     public BuildingType getType() {
@@ -59,6 +73,7 @@ public abstract class Building {
         this.type = type;
     }
 
+    @JsonIgnore
     public String getDescriptionId() {
         return descriptionId;
     }
@@ -67,11 +82,25 @@ public abstract class Building {
         this.descriptionId = descriptionId;
     }
 
+    @JsonView(View.Standard.class)
+    public String getDescription(){
+        return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
+    }
+
     public int getMaxLevel() {
         return maxLevel;
     }
 
     public void setMaxLevel(int maxlevel) {
         this.maxLevel = maxlevel;
+    }
+
+    @JsonIgnore
+    private Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(Lang lang) {
+        this.lang = lang;
     }
 }

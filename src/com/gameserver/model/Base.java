@@ -151,6 +151,7 @@ public final class Base implements IInventory
         this.owner = owner;
     }
 
+    @JsonView(View.Standard.class)
     public List<BuildingInstance> getBuildings() {
         return buildings;
     }
@@ -171,7 +172,7 @@ public final class Base implements IInventory
         this.ships = ships;
     }
 
-    // INVENTOY
+    // INVENTORIES
 
     public List<ItemInstance> getMetal() {
         return metal;

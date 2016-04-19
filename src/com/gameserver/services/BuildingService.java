@@ -23,6 +23,8 @@ public class BuildingService {
         return repository.findOne(id);
     }
 
+    public BuildingInstance findByBaseAndId(Base base, String id) { return repository.findByBaseAndId(base, id); }
+
     public List<BuildingInstance> findAll() {
         return repository.findAll();
     }

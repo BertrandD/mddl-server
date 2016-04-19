@@ -2,8 +2,10 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
+import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
@@ -19,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-
 /**
  * @author LEBOC Philippe
  */
@@ -32,39 +32,43 @@ public class BuildingInstanceController {
     private BuildingService buildingService;
 
     @Autowired
-    private BaseService baseService;
+    private PlayerService playerService;
 
     @Autowired
-    private PlayerService playerService;
+    private BaseService baseService;
 
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Collection<BuildingInstance> findAll(){
-        return buildingService.findAll();
+    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
+        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
+        return new JsonResponse(currentPlayer.getCurrentBase().getBuildings());
     }
 
     @JsonView(View.buildingInstance_full.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public BuildingInstance findOne(@PathVariable("id") String id){
-        return buildingService.findOne(id);
+    public JsonResponse findOne(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
+        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
+        final BuildingInstance building = buildingService.findByBaseAndId(currentPlayer.getCurrentBase(), id);
+        if(building == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND));
+        building.setLang(pAccount.getLang());
+        return new JsonResponse(building);
     }
 
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
-        Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
-        Base base = currentPlayer.getCurrentBase();
-        if(base == null) return new JsonResponse(JsonResponseType.ERROR, "Player base not found !");
+    public BuildingInstance create(@RequestParam(value = "base") String baseId, @RequestParam(value = "building") String templateId){
+        final Base base = baseService.findOne(baseId);
+        if(base == null) return null;
 
-        BuildingInstance building = buildingService.create(base, templateId);
-        if(building == null) return new JsonResponse(JsonResponseType.ERROR, "Can not create base !");
+        final BuildingInstance building = buildingService.create(base, templateId);
+        if(building == null) return null;
 
         base.addBuilding(building);
         baseService.update(base);
 
         // TODO
 
-        return new JsonResponse(building);
+        return building;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
