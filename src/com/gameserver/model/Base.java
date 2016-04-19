@@ -37,7 +37,7 @@ public final class Base implements IInventory
     private Player owner;
 
     @DBRef
-    @JsonBackReference
+    @JsonManagedReference
     @JsonView(View.Standard.class)
     private List<BuildingInstance> buildings;
 

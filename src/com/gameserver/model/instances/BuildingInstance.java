@@ -1,7 +1,7 @@
 package com.gameserver.model.instances;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.enums.Lang;
@@ -26,7 +26,7 @@ public class BuildingInstance
     private String id;
 
     @DBRef
-    @JsonManagedReference
+    @JsonBackReference
     @JsonView(View.Standard.class)
     private Base base;
 
