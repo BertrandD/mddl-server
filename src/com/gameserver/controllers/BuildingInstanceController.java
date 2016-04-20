@@ -56,15 +56,14 @@ public class BuildingInstanceController {
 
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public BuildingInstance create(@RequestParam(value = "base") String baseId, @RequestParam(value = "building") String templateId){
-        final Base base = baseService.findOne(baseId);
-        if(base == null) return null;
+    public BuildingInstance create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
+        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
 
-        final BuildingInstance building = buildingService.create(base, templateId);
+        final BuildingInstance building = buildingService.create(currentPlayer.getCurrentBase(), templateId);
         if(building == null) return null;
 
-        base.addBuilding(building);
-        baseService.update(base);
+        currentPlayer.getCurrentBase().addBuilding(building);
+        baseService.update(currentPlayer.getCurrentBase());
 
         // TODO
 
