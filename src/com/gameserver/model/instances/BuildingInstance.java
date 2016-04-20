@@ -36,6 +36,9 @@ public class BuildingInstance
     @JsonView(View.Standard.class)
     private int currentLevel;
 
+    @JsonView(View.Standard.class)
+    private long endsAt;
+
     @Transient
     @JsonIgnore
     private Lang lang = Lang.EN;
@@ -45,7 +48,8 @@ public class BuildingInstance
     public BuildingInstance(Base base, Building template) {
         setBase(base);
         setBuildingId(template.getId());
-        setCurrentLevel(1);
+        setCurrentLevel(0);
+        setEndsAt(System.currentTimeMillis()+15000); // TODO fix me
     }
 
     @JsonView(View.buildingInstance_full.class)
@@ -102,6 +106,14 @@ public class BuildingInstance
 
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
+    }
+
+    public long getEndsAt() {
+        return endsAt;
+    }
+
+    public void setEndsAt(long endsAt) {
+        this.endsAt = endsAt;
     }
 
     @JsonIgnore

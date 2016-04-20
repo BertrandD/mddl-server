@@ -14,6 +14,7 @@ import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author LEBOC Philippe
  */
 @RestController
+@PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/building", produces = "application/json")
 public class BuildingInstanceController {
 
@@ -65,7 +67,20 @@ public class BuildingInstanceController {
         currentPlayer.getCurrentBase().addBuilding(building);
         baseService.update(currentPlayer.getCurrentBase());
 
-        // TODO
+        buildingService.ScheduleUpgrade(building);
+
+        return new JsonResponse(building);
+    }
+
+    @JsonView(View.buildingInstance_base.class)
+    @RequestMapping(method = RequestMethod.PUT)
+    public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String id){
+        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
+        final Base base = currentPlayer.getCurrentBase();
+        BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
+        if(building == null) return null; // TODO: System Message
+
+        buildingService.ScheduleUpgrade(building);
 
         return new JsonResponse(building);
     }

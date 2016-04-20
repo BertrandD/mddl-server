@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -153,7 +154,12 @@ public final class Base implements IInventory
 
     @JsonView(View.Standard.class)
     public List<BuildingInstance> getBuildings() {
-        return buildings;
+        return buildings.stream().filter(k->k.getEndsAt() == 0).collect(Collectors.toList());
+    }
+
+    @JsonView(View.Standard.class)
+    public List<BuildingInstance> getBuildingQueue() {
+        return buildings.stream().filter(k->k.getEndsAt() > 0).collect(Collectors.toList());
     }
 
     public void setBuildings(List<BuildingInstance> buildings) {

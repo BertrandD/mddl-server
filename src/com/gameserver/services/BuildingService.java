@@ -5,9 +5,12 @@ import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.repository.BuildingRepository;
+import com.gameserver.tasks.BuildingUpdater;
+import com.gameserver.tasks.ThreadPoolManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +40,17 @@ public class BuildingService {
     }
 
     public void update(BuildingInstance p){ repository.save(p); }
+
+    public void ScheduleUpgrade(BuildingInstance building){
+        // TODO: how is managed build time (for each level) ?
+        // TODO: insert to database and recover scheduled tasks when restart
+        long endupgrade = System.currentTimeMillis() + 30000;
+        if(building.getEndsAt() > 0){
+            endupgrade = building.getEndsAt() + 30000; // TODO: build Time: default 30 sec
+        }
+
+        ThreadPoolManager.getInstance().schedule(new BuildingUpdater(this, building), new Date(endupgrade));
+    }
 
     public void deleteAll(){
         repository.deleteAll();
