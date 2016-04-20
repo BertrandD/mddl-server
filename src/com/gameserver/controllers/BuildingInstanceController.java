@@ -56,7 +56,7 @@ public class BuildingInstanceController {
 
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public BuildingInstance create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
+    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
         final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
 
         final BuildingInstance building = buildingService.create(currentPlayer.getCurrentBase(), templateId);
@@ -67,7 +67,7 @@ public class BuildingInstanceController {
 
         // TODO
 
-        return building;
+        return new JsonResponse(building);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
