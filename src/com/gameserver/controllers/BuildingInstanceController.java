@@ -46,6 +46,8 @@ public class BuildingInstanceController {
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
+        final Base base = player.getCurrentBase();
+        if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
         final Map<String, List<BuildingInstance>> allBuildings = new HashMap<>();
         allBuildings.put("buildings", player.getCurrentBase().getBuildings());
         allBuildings.put("buildingQueue", player.getCurrentBase().getBuildingQueue());
@@ -73,7 +75,7 @@ public class BuildingInstanceController {
         final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
         if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
 
-        final BuildingInstance building = buildingService.create(player.getCurrentBase(), templateId);
+        final BuildingInstance building = buildingService.create(base, templateId);
         if(building == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_CANNOT_CREATE);
 
         base.addBuilding(building);
@@ -85,7 +87,7 @@ public class BuildingInstanceController {
     }
 
     @JsonView(View.buildingInstance_base.class)
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/upgrade", method = RequestMethod.POST)
     public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String id){
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         final Base base = player.getCurrentBase();
