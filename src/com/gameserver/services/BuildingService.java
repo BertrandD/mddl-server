@@ -3,14 +3,13 @@ package com.gameserver.services;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.tasks.mongo.BuildingTask;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.repository.BuildingRepository;
-import com.gameserver.tasks.BuildingUpdater;
-import com.gameserver.tasks.ThreadPoolManager;
+import com.gameserver.manager.BuildingTaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,13 +19,21 @@ import java.util.List;
 public class BuildingService {
 
     @Autowired
-    BuildingRepository repository;
+    private BuildingRepository repository;
+
+    @Autowired
+    private BuildingTaskService buildingTaskService;
+
+    @Autowired
+    private BuildingTaskManager buildingTaskManager;
 
     public BuildingInstance findOne(String id){
         return repository.findOne(id);
     }
 
     public BuildingInstance findByBaseAndId(Base base, String id) { return repository.findByBaseAndId(base, id); }
+
+    public BuildingInstance findByBaseAndBuildingId(Base base, String buildingId) { return repository.findByBaseAndBuildingId(base, buildingId); }
 
     public List<BuildingInstance> findAll() {
         return repository.findAll();
@@ -43,13 +50,23 @@ public class BuildingService {
 
     public void ScheduleUpgrade(BuildingInstance building){
         // TODO: how is managed build time (for each level) ?
-        // TODO: insert to database and recover scheduled tasks when restart
+        // TODO: Recover scheduled tasks when restart
+
+        BuildingTask newTask;
+        final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
         long endupgrade = System.currentTimeMillis() + 30000;
-        if(building.getEndsAt() > 0){
-            endupgrade = building.getEndsAt() + 30000; // TODO: build Time: default 30 sec
+
+        if(lastInQueue == null){
+            newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel()+1);
+        }else{
+            endupgrade = lastInQueue.getEndsAt() + 30000; // TODO: build Time: default 30 sec
+            newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel()+1);
         }
 
-        ThreadPoolManager.getInstance().schedule(new BuildingUpdater(this, building), new Date(endupgrade));
+        building.setIsInQueue(true);
+        update(building);
+
+        buildingTaskManager.notifyNewTask(newTask);
     }
 
     public void deleteAll(){

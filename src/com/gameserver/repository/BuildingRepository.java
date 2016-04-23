@@ -9,4 +9,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface BuildingRepository extends MongoRepository<BuildingInstance, String> {
     BuildingInstance findByBaseAndId(Base base, String id);
+    BuildingInstance findByBaseAndBuildingId(Base base, String buildingId);
 }

@@ -1,4 +1,4 @@
-package com.gameserver.tasks;
+package com.gameserver.manager;
 
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;
