@@ -3,6 +3,7 @@ package com.gameserver.controllers;
 import com.auth.Account;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.commons.SystemMessageId;
 import com.util.data.json.Response.JsonResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,8 +27,8 @@ public class BuildingController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public JsonResponse findBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
-        Building b = BuildingData.getInstance().getBuilding(id);
-        if(b == null) return null; // TODO system message
+        final Building b = BuildingData.getInstance().getBuilding(id);
+        if(b == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.STATIC_BUILDING_DOESNT_EXIST);
         b.setLang(pAccount.getLang());
         return new JsonResponse(b);
     }

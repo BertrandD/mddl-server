@@ -50,7 +50,6 @@ public class BuildingService {
 
     public void ScheduleUpgrade(BuildingInstance building){
         // TODO: how is managed build time (for each level) ?
-        // TODO: Recover scheduled tasks when restart
 
         BuildingTask newTask;
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());

@@ -1,6 +1,9 @@
 package com.util.data.json.Response;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.enums.Lang;
+import com.gameserver.model.commons.SystemMessageId;
 import com.util.data.json.View;
 
 import java.util.HashMap;
@@ -24,6 +27,18 @@ public class JsonResponse {
     public JsonResponse(JsonResponseType status){
         setStatus(status.getName());
         setPayload(null);
+    }
+
+    public JsonResponse(Lang lang, String messageId){
+        setStatus(JsonResponseType.ERROR.getName());
+        setPayload(null);
+        getMeta().put("message", SystemMessageData.getInstance().getMessage(lang, messageId));
+    }
+
+    public JsonResponse(JsonResponseType type, Lang lang, String messageId){
+        setStatus(type.getName());
+        setPayload(null);
+        getMeta().put("message", SystemMessageData.getInstance().getMessage(lang, messageId));
     }
 
     public JsonResponse(JsonResponseType status, String message) {

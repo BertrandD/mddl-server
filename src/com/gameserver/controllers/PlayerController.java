@@ -4,13 +4,11 @@ import com.auth.Account;
 import com.auth.AccountService;
 import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
-import com.util.data.json.Response.JsonResponseType;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,17 +46,15 @@ public class PlayerController {
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
     public JsonResponse player(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
-        final SystemMessageData SM = SystemMessageData.getInstance();
         final Player player = playerService.findOne(id);
-        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(account.getLang(), SystemMessageId.PLAYER_NOT_FOUND));
+        if(player == null) return new JsonResponse(account.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
         return new JsonResponse(player);
     }
 
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/player", method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
-        final SystemMessageData SM = SystemMessageData.getInstance();
-        if(playerService.findOneByName(name) != null) return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST));
+        if(playerService.findOneByName(name) != null) return new JsonResponse(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST);
 
         // Check if name is forbidden (Like 'fuck', 'admin', ...)
         if (Config.FORBIDDEN_NAMES.length > 1)
@@ -67,7 +63,7 @@ public class PlayerController {
             {
                 if (name.toLowerCase().contains(st.toLowerCase()))
                 {
-                    return new JsonResponse(JsonResponseType.ERROR, SM.getMessage(account.getLang(), SystemMessageId.FORBIDDEN_NAME));
+                    return new JsonResponse(account.getLang(), SystemMessageId.FORBIDDEN_NAME);
                 }
             }
         }
@@ -83,11 +79,5 @@ public class PlayerController {
 
         accountService.update(playerAccount);
         return new JsonResponse(player);
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(method = RequestMethod.DELETE)
-    public void delete(@RequestParam("id") String id){
-        playerService.delete(id);
     }
 }
