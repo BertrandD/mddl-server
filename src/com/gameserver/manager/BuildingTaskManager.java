@@ -38,13 +38,22 @@ public class BuildingTaskManager {
 
     public void notifyNewTask(BuildingTask task){
         tasks.add(task);
+
+        if(scheduledFuture != null){
+            if(task.getEndsAt() < currentTask.getEndsAt()){
+                scheduledFuture.cancel(false);
+                scheduledFuture = null;
+            }
+        }
+
         start();
     }
 
     public void start(){
         if(tasks.isEmpty()) return;
 
-        if(scheduledFuture == null){
+        if(scheduledFuture == null)
+        {
             final BuildingTask task = tasks.stream().sorted((o1, o2) -> (int)o1.compareToAsc(o2)).findFirst().orElse(null);
             if(task == null) return;
 
