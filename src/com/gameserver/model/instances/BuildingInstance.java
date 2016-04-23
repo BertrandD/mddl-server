@@ -37,7 +37,7 @@ public class BuildingInstance
     private int currentLevel;
 
     @JsonView(View.Standard.class)
-    private long endsAt;
+    private boolean isInQueue;
 
     @Transient
     @JsonIgnore
@@ -49,23 +49,6 @@ public class BuildingInstance
         setBase(base);
         setBuildingId(template.getId());
         setCurrentLevel(0);
-        setEndsAt(System.currentTimeMillis()+15000); // TODO fix me
-    }
-
-    @JsonView(View.buildingInstance_full.class)
-    public Storage getStorageBuilding(){
-        if(getTemplate() instanceof Storage){
-            return (Storage) getTemplate();
-        }
-        return null;
-    }
-
-    @JsonView(View.buildingInstance_full.class)
-    public Mine getMineBuilding(){
-        if(getTemplate() instanceof Mine){
-            return (Mine) getTemplate();
-        }
-        return null;
     }
 
     @JsonView(View.buildingInstance_full.class)
@@ -108,12 +91,12 @@ public class BuildingInstance
         this.currentLevel = currentLevel;
     }
 
-    public long getEndsAt() {
-        return endsAt;
+    public void setIsInQueue(boolean isInQueue) {
+        this.isInQueue = isInQueue;
     }
 
-    public void setEndsAt(long endsAt) {
-        this.endsAt = endsAt;
+    public boolean isInQueue() {
+        return isInQueue;
     }
 
     @JsonIgnore
@@ -123,5 +106,14 @@ public class BuildingInstance
 
     public void setLang(Lang lang) {
         this.lang = lang;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof BuildingInstance) {
+            final BuildingInstance building = (BuildingInstance)o;
+            return (this.id.equals(building.id));
+        }
+        return false;
     }
 }

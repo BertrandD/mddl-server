@@ -22,6 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author LEBOC Philippe
  */
@@ -42,15 +47,18 @@ public class BuildingInstanceController {
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
-        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
-        return new JsonResponse(currentPlayer.getCurrentBase().getBuildings());
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        final Map<String, List<BuildingInstance>> allBuildings = new HashMap<>();
+        allBuildings.put("buildings", player.getCurrentBase().getBuildings());
+        allBuildings.put("buildingQueue", player.getCurrentBase().getBuildingQueue());
+        return new JsonResponse(allBuildings);
     }
 
     @JsonView(View.buildingInstance_full.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public JsonResponse findOne(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
-        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
-        final BuildingInstance building = buildingService.findByBaseAndId(currentPlayer.getCurrentBase(), id);
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        final BuildingInstance building = buildingService.findByBaseAndId(player.getCurrentBase(), id);
         if(building == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND));
         building.setLang(pAccount.getLang());
         return new JsonResponse(building);
@@ -59,13 +67,20 @@ public class BuildingInstanceController {
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
-        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if(player == null) return new JsonResponse("No player selected !"); // TODO: System Message;
 
-        final BuildingInstance building = buildingService.create(currentPlayer.getCurrentBase(), templateId);
+        final Base base = player.getCurrentBase();
+        if(base == null) return new JsonResponse("Choose a base."); // TODO: System Message;
+
+        final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(player.getCurrentBase(), templateId);
+        if(hasBuilding != null) return new JsonResponse("Building already exist !"); // TODO: System Message;
+
+        final BuildingInstance building = buildingService.create(player.getCurrentBase(), templateId);
         if(building == null) return null;
 
-        currentPlayer.getCurrentBase().addBuilding(building);
-        baseService.update(currentPlayer.getCurrentBase());
+        base.addBuilding(building);
+        baseService.update(base);
 
         buildingService.ScheduleUpgrade(building);
 
@@ -73,20 +88,19 @@ public class BuildingInstanceController {
     }
 
     @JsonView(View.buildingInstance_base.class)
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/upgrade", method = RequestMethod.POST)
     public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String id){
-        final Player currentPlayer = playerService.findOne(pAccount.getCurrentPlayer());
-        final Base base = currentPlayer.getCurrentBase();
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        final Base base = player.getCurrentBase();
+
         BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
-        if(building == null) return null; // TODO: System Message
+        if(building == null){
+            building = base.getBuildingQueue().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
+            if(building == null) return null; // TODO: System Message
+        }
 
         buildingService.ScheduleUpgrade(building);
 
         return new JsonResponse(building);
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void remove(@PathVariable("id") String id){
-        buildingService.delete(id);
     }
 }

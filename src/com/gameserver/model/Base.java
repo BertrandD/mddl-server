@@ -1,6 +1,5 @@
 package com.gameserver.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -154,12 +153,12 @@ public final class Base implements IInventory
 
     @JsonView(View.Standard.class)
     public List<BuildingInstance> getBuildings() {
-        return buildings.stream().filter(k->k.getEndsAt() == 0).collect(Collectors.toList());
+        return buildings.stream().filter(k -> !k.isInQueue()).collect(Collectors.toList());
     }
 
     @JsonView(View.Standard.class)
     public List<BuildingInstance> getBuildingQueue() {
-        return buildings.stream().filter(k->k.getEndsAt() > 0).collect(Collectors.toList());
+        return buildings.stream().filter(BuildingInstance::isInQueue).collect(Collectors.toList());
     }
 
     public void setBuildings(List<BuildingInstance> buildings) {
