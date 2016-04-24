@@ -7,7 +7,6 @@ import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
-import com.util.Utils;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
