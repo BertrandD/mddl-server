@@ -87,8 +87,8 @@ public class BuildingInstanceController {
     }
 
     @JsonView(View.buildingInstance_base.class)
-    @RequestMapping(value = "/upgrade", method = RequestMethod.POST)
-    public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String id){
+    @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.POST)
+    public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         final Base base = player.getCurrentBase();
 
