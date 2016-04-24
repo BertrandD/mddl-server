@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author LEBOC Philippe
  */
@@ -48,10 +44,7 @@ public class BuildingInstanceController {
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
         final Base base = player.getCurrentBase();
         if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
-        final Map<String, List<BuildingInstance>> allBuildings = new HashMap<>();
-        allBuildings.put("buildings", player.getCurrentBase().getBuildings());
-        allBuildings.put("buildingQueue", player.getCurrentBase().getBuildingQueue());
-        return new JsonResponse(allBuildings);
+        return new JsonResponse(base.getBuildings());
     }
 
     @JsonView(View.buildingInstance_full.class)
@@ -94,8 +87,7 @@ public class BuildingInstanceController {
 
         BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
         if(building == null){
-            building = base.getBuildingQueue().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
-            if(building == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
+            return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
         }
 
         buildingService.ScheduleUpgrade(building);
