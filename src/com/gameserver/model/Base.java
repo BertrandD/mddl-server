@@ -153,12 +153,7 @@ public final class Base implements IInventory
 
     @JsonView(View.Standard.class)
     public List<BuildingInstance> getBuildings() {
-        return buildings.stream().filter(k -> k.getEndsAt() < 0).collect(Collectors.toList());
-    }
-
-    @JsonView(View.Standard.class)
-    public List<BuildingInstance> getBuildingQueue() {
-        return buildings.stream().filter(k->k.getEndsAt() >= 0).collect(Collectors.toList());
+        return buildings;
     }
 
     public void setBuildings(List<BuildingInstance> buildings) {
