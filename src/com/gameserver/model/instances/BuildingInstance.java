@@ -115,9 +115,9 @@ public class BuildingInstance
     }
 
     @JsonView(View.Standard.class)
-    public Object getBuildTime(){
+    public long getBuildTime(){
         final String func = getTemplate().getBuildTimeFunc().replace("$level", ""+(getCurrentLevel()+1));
-        return Evaluator.getInstance().eval(func);
+        return ((Number)Evaluator.getInstance().eval(func)).longValue() * 1000;
     }
 
     @JsonView(View.Standard.class)

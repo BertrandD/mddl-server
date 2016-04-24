@@ -51,18 +51,16 @@ public class BuildingService {
     }
 
     public void ScheduleUpgrade(BuildingInstance building){
-        // TODO: how is managed build time (for each level) ?
-
         BuildingTask newTask;
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
-        long endupgrade = System.currentTimeMillis() + 30000;
+        long endupgrade = System.currentTimeMillis() + building.getBuildTime();
 
         if(lastInQueue == null){
             building.setEndsAt(endupgrade);
             update(building);
             newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel()+1);
         }else{
-            endupgrade = lastInQueue.getEndsAt() + 30000; // TODO: build Time: default 30 sec
+            endupgrade = lastInQueue.getEndsAt() + building.getBuildTime();
             newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel()+1);
         }
 
