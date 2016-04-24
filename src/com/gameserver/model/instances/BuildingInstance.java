@@ -7,13 +7,17 @@ import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.model.buildings.Mine;
-import com.gameserver.model.buildings.Storage;
+import com.util.Utils;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.util.HashMap;
 
 /**
  * @author LEBOC Philippe
@@ -106,6 +110,30 @@ public class BuildingInstance
 
     public void setLang(Lang lang) {
         this.lang = lang;
+    }
+
+    @JsonIgnore
+    public String reqMetal() {
+        return getTemplate().getReqMetalFunc().replace("$level", "" + (getCurrentLevel()+1));
+    }
+
+    @JsonView(View.Standard.class)
+    public HashMap<String, Object> requirements(){
+        final HashMap<String, Object> result = new HashMap<>();
+        final ScriptEngineManager manager = new ScriptEngineManager();
+        final ScriptEngine se = manager.getEngineByName("js");
+
+        try
+        {
+            result.put("metal", se.eval(reqMetal()));
+            // result.put("anotherResource", se.eval(reqAnotherResource()));
+        }
+        catch(ScriptException e)
+        {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override

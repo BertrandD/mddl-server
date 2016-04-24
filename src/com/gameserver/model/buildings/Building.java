@@ -29,6 +29,9 @@ public abstract class Building {
     @JsonView(View.Standard.class)
     private int maxLevel;
 
+    @JsonView(View.Standard.class)
+    private String reqMetalFunc;
+
     @Transient
     @JsonIgnore
     private Lang lang = Lang.EN;
@@ -39,9 +42,8 @@ public abstract class Building {
         setType(set.getEnum("type", BuildingType.class));
         setDescriptionId(set.getString("descriptionId"));
         setMaxLevel(set.getInt("maxLevel", 1));
+        setReqMetalFunc(set.getString("reqMetalFunc", null));
     }
-
-    public abstract String calcRequirement();
 
     public String getId() {
         return id;
@@ -93,6 +95,14 @@ public abstract class Building {
 
     public void setMaxLevel(int maxlevel) {
         this.maxLevel = maxlevel;
+    }
+
+    public String getReqMetalFunc() {
+        return reqMetalFunc;
+    }
+
+    public void setReqMetalFunc(String func) {
+        this.reqMetalFunc = func;
     }
 
     @JsonIgnore
