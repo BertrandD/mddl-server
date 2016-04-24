@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -26,18 +24,14 @@ public class BuildingTaskManager {
 
     private ScheduledFuture<?> scheduledFuture;
 
-    private static List<BuildingTask> tasks = new ArrayList<>();
-
     private BuildingTask currentTask;
 
     @PostConstruct
     private void load(){
-        setTasks(buildingTaskService.findAll());
         start();
     }
 
     public void notifyNewTask(BuildingTask task){
-        tasks.add(task);
 
         if(scheduledFuture != null){
             if(task.getEndsAt() < currentTask.getEndsAt()){
@@ -50,12 +44,13 @@ public class BuildingTaskManager {
     }
 
     public void start(){
-        if(tasks.isEmpty()) return;
-
         if(scheduledFuture == null)
         {
-            final BuildingTask task = tasks.stream().sorted((o1, o2) -> (int)o1.compareToAsc(o2)).findFirst().orElse(null);
+            final BuildingTask task = buildingTaskService.findFirstByOrderByEndsAtAsc();
             if(task == null) return;
+
+            task.getBuilding().setEndsAt(task.getEndsAt());
+            buildingService.update(task.getBuilding());
 
             scheduledFuture = ThreadPoolManager.getInstance().schedule(new Upgrade(), new Date(task.getEndsAt()));
 
@@ -66,21 +61,16 @@ public class BuildingTaskManager {
     }
 
     public void restart(BuildingTask task){
-        tasks.remove(task);
         buildingTaskService.delete(task);
 
         if(buildingTaskService.findByBuilding(task.getBuilding().getId()).isEmpty()){
-            task.getBuilding().setIsInQueue(false);
+            task.getBuilding().setEndsAt(-1);
             buildingService.update(task.getBuilding());
         }
 
         scheduledFuture = null;
         currentTask = null;
         start();
-    }
-
-    public void setTasks(List<BuildingTask> tasks) {
-        BuildingTaskManager.tasks = tasks;
     }
 
     public BuildingTask getCurrentTask() {

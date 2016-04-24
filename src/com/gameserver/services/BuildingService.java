@@ -46,7 +46,9 @@ public class BuildingService {
         return repository.save(p);
     }
 
-    public void update(BuildingInstance p){ repository.save(p); }
+    public void update(BuildingInstance p) {
+        repository.save(p);
+    }
 
     public void ScheduleUpgrade(BuildingInstance building){
         // TODO: how is managed build time (for each level) ?
@@ -56,14 +58,13 @@ public class BuildingService {
         long endupgrade = System.currentTimeMillis() + 30000;
 
         if(lastInQueue == null){
+            building.setEndsAt(endupgrade);
+            update(building);
             newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel()+1);
         }else{
             endupgrade = lastInQueue.getEndsAt() + 30000; // TODO: build Time: default 30 sec
             newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel()+1);
         }
-
-        building.setIsInQueue(true);
-        update(building);
 
         buildingTaskManager.notifyNewTask(newTask);
     }

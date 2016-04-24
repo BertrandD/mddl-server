@@ -37,7 +37,7 @@ public class BuildingInstance
     private int currentLevel;
 
     @JsonView(View.Standard.class)
-    private boolean isInQueue;
+    private long endsAt;
 
     @Transient
     @JsonIgnore
@@ -91,12 +91,12 @@ public class BuildingInstance
         this.currentLevel = currentLevel;
     }
 
-    public void setIsInQueue(boolean isInQueue) {
-        this.isInQueue = isInQueue;
+    public long getEndsAt() {
+        return endsAt;
     }
 
-    public boolean isInQueue() {
-        return isInQueue;
+    public void setEndsAt(long endsAt) {
+        this.endsAt = endsAt;
     }
 
     @JsonIgnore
