@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class BuildingTask {
 
     @Id
+    @JsonView(View.Standard.class)
     private String id;
 
     @DBRef
