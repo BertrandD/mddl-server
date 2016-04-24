@@ -50,6 +50,7 @@ public class BuildingTaskManager {
             if(task == null) return;
 
             task.getBuilding().setEndsAt(task.getEndsAt());
+            task.getBuilding().setStartedAt(System.currentTimeMillis());
             buildingService.update(task.getBuilding());
 
             scheduledFuture = ThreadPoolManager.getInstance().schedule(new Upgrade(), new Date(task.getEndsAt()));

@@ -8,9 +8,9 @@
         <message id="incorrect_credentials" text="Mot de passe incorrect" />
         <!-- Commons -->
         <message id="forbidden_name" text="Ce nom est interdit" />
-        <message id="choose_player" text="Sélectionnez un personnage" />
         <!-- Player -->
         <message id="player_not_found" text="Ce joueur n'existe pas" />
+        <message id="choose_player" text="Sélectionnez un personnage" />
         <!-- Base -->
         <message id="base_not_found" text="Cette base n'existe pas" />
         <!-- Static buildings -->

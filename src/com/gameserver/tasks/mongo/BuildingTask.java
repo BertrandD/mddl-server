@@ -2,6 +2,7 @@ package com.gameserver.tasks.mongo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
@@ -19,6 +20,10 @@ public class BuildingTask {
 
     @DBRef
     @JsonIgnore
+    private Base base;
+
+    @DBRef
+    @JsonIgnore
     private BuildingInstance building;
 
     @JsonView(View.Standard.class)
@@ -29,7 +34,8 @@ public class BuildingTask {
 
     public BuildingTask(){}
 
-    public BuildingTask(BuildingInstance building, long endsAt, int level){
+    public BuildingTask(Base base, BuildingInstance building, long endsAt, int level){
+        setBase(base);
         setBuilding(building);
         setEndsAt(endsAt);
         setLevel(level);
@@ -46,6 +52,15 @@ public class BuildingTask {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @JsonIgnore
+    public Base getBase() {
+        return base;
+    }
+
+    public void setBase(Base base) {
+        this.base = base;
     }
 
     @JsonIgnore

@@ -40,6 +40,9 @@ public class BuildingInstance
     @JsonView(View.Standard.class)
     private long endsAt;
 
+    @JsonView(View.Standard.class)
+    private long startedAt;
+
     @Transient
     @JsonIgnore
     private Lang lang = Lang.EN;
@@ -50,6 +53,7 @@ public class BuildingInstance
         setBase(base);
         setBuildingId(template.getId());
         setCurrentLevel(0);
+        setStartedAt(-1);
     }
 
     @JsonView(View.buildingInstance_full.class)
@@ -98,6 +102,14 @@ public class BuildingInstance
 
     public void setEndsAt(long endsAt) {
         this.endsAt = endsAt;
+    }
+
+    public long getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(long startedAt) {
+        this.startedAt = startedAt;
     }
 
     @JsonIgnore

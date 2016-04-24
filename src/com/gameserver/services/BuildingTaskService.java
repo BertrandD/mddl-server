@@ -28,6 +28,8 @@ public class BuildingTaskService {
     public List<BuildingTask> findByBuilding(String id) { return repository.findByBuilding(id); }
     public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) { return repository.findByBuildingOrderByEndsAtAsc(id); }
 
+    public List<BuildingTask> findByBaseOrderByEndsAtAsc(String id) { return repository.findByBaseOrderByEndsAtAsc(id); }
+
     public BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id){
         return repository.findFirstByBuildingOrderByEndsAtAsc(id);
     }
@@ -37,7 +39,7 @@ public class BuildingTaskService {
     }
 
     public BuildingTask create(BuildingInstance building, long timestamp, int level){
-        return repository.save(new BuildingTask(building, timestamp, level));
+        return repository.save(new BuildingTask(building.getBase(), building, timestamp, level));
     }
 
     public void delete(BuildingTask o){

@@ -6,6 +6,7 @@ import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.BaseService;
+import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.View;
@@ -32,6 +33,9 @@ public class BaseController {
     @Autowired
     private PlayerService playerService;
 
+    @Autowired
+    private BuildingTaskService buildingTaskService;
+
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
@@ -51,7 +55,10 @@ public class BaseController {
         // Update current player base
         base.getOwner().setCurrentBase(base);
         playerService.update(base.getOwner());
-        return new JsonResponse(base);
+
+        final JsonResponse response = new JsonResponse(base);
+        response.addMeta("queues", buildingTaskService.findByBaseOrderByEndsAtAsc(base.getId()));
+        return response;
     }
 
     @JsonView(View.Standard.class)
