@@ -30,6 +30,9 @@ public abstract class Building {
     private int maxLevel;
 
     @JsonView(View.Standard.class)
+    private String buildTimeFunc;
+
+    @JsonView(View.Standard.class)
     private String reqMetalFunc;
 
     @Transient
@@ -42,6 +45,7 @@ public abstract class Building {
         setType(set.getEnum("type", BuildingType.class));
         setDescriptionId(set.getString("descriptionId"));
         setMaxLevel(set.getInt("maxLevel", 1));
+        setBuildTimeFunc(set.getString("buildTimeFunc", null));
         setReqMetalFunc(set.getString("reqMetalFunc", null));
     }
 
@@ -95,6 +99,14 @@ public abstract class Building {
 
     public void setMaxLevel(int maxlevel) {
         this.maxLevel = maxlevel;
+    }
+
+    public String getBuildTimeFunc() {
+        return buildTimeFunc;
+    }
+
+    public void setBuildTimeFunc(String buildTimeFunc) {
+        this.buildTimeFunc = buildTimeFunc;
     }
 
     public String getReqMetalFunc() {

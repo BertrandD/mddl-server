@@ -7,15 +7,13 @@ import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
+import com.util.Evaluator;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.util.HashMap;
 
 /**
@@ -117,21 +115,15 @@ public class BuildingInstance
     }
 
     @JsonView(View.Standard.class)
+    public Object getBuildTime(){
+        final String func = getTemplate().getBuildTimeFunc().replace("$level", ""+(getCurrentLevel()+1));
+        return Evaluator.getInstance().eval(func);
+    }
+
+    @JsonView(View.Standard.class)
     public HashMap<String, Object> requirements(){
         final HashMap<String, Object> result = new HashMap<>();
-        final ScriptEngineManager manager = new ScriptEngineManager();
-        final ScriptEngine se = manager.getEngineByName("js");
-
-        try
-        {
-            result.put("metal", se.eval(reqMetal()));
-            // result.put("anotherResource", se.eval(reqAnotherResource()));
-        }
-        catch(ScriptException e)
-        {
-            e.printStackTrace();
-        }
-
+        result.put("metal", Evaluator.getInstance().eval(reqMetal()));
         return result;
     }
 
