@@ -8,7 +8,9 @@ import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
+import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.PlayerService;
+import com.gameserver.tasks.mongo.BuildingTask;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author LEBOC Philippe
  */
@@ -30,6 +34,9 @@ public class BuildingInstanceController {
 
     @Autowired
     private BuildingService buildingService;
+
+    @Autowired
+    private BuildingTaskService buildingTaskService;
 
     @Autowired
     private PlayerService playerService;
@@ -91,7 +98,10 @@ public class BuildingInstanceController {
         }
 
         buildingService.ScheduleUpgrade(building);
+        List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
 
-        return new JsonResponse(building);
+        JsonResponse response = new JsonResponse(building);
+        response.addMeta("queue", tasks);
+        return response;
     }
 }

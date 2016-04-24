@@ -26,6 +26,7 @@ public class BuildingTaskService {
     }
 
     public List<BuildingTask> findByBuilding(String id) { return repository.findByBuilding(id); }
+    public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) { return repository.findByBuildingOrderByEndsAtAsc(id); }
 
     public BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id){
         return repository.findFirstByBuildingOrderByEndsAtAsc(id);

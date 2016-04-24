@@ -13,4 +13,5 @@ public interface BuildingTaskRepository extends MongoRepository<BuildingTask, St
     BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id);
     BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id);
     List<BuildingTask> findByBuilding(String id);
+    List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id);
 }
