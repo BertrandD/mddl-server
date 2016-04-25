@@ -24,7 +24,7 @@ public class BuildingTask {
     private Base base;
 
     @DBRef
-    @JsonIgnore
+    @JsonView(View.Standard.class)
     private BuildingInstance building;
 
     @JsonView(View.Standard.class)
@@ -64,7 +64,6 @@ public class BuildingTask {
         this.base = base;
     }
 
-    @JsonIgnore
     public BuildingInstance getBuilding() {
         return building;
     }
