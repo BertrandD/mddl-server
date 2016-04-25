@@ -50,7 +50,6 @@ public class BuildingTaskManager {
             if(task == null) return;
 
             task.getBuilding().setEndsAt(task.getEndsAt());
-            task.getBuilding().setStartedAt(System.currentTimeMillis());
             buildingService.update(task.getBuilding());
 
             scheduledFuture = ThreadPoolManager.getInstance().schedule(new Upgrade(), new Date(task.getEndsAt()));
@@ -66,7 +65,12 @@ public class BuildingTaskManager {
 
         if(buildingTaskService.findByBuilding(task.getBuilding().getId()).isEmpty()){
             task.getBuilding().setEndsAt(-1);
+            task.getBuilding().setStartedAt(-1);
             buildingService.update(task.getBuilding());
+        }else{
+            final BuildingTask bTask = buildingTaskService.findFirstByBuildingOrderByEndsAtAsc(task.getBuilding().getId());
+            bTask.getBuilding().setStartedAt(System.currentTimeMillis());
+            buildingService.update(bTask.getBuilding());
         }
 
         scheduledFuture = null;
