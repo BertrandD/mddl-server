@@ -57,7 +57,7 @@ public class BaseController {
         playerService.update(base.getOwner());
 
         final JsonResponse response = new JsonResponse(base);
-        response.addMeta("queues", buildingTaskService.findByBaseOrderByEndsAtAsc(base.getId()));
+        response.addMeta("queue", buildingTaskService.findByBaseOrderByEndsAtAsc(base.getId()));
         return response;
     }
 
