@@ -7,14 +7,13 @@ import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.commons.Requirement;
 import com.util.Evaluator;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.HashMap;
 
 /**
  * @author LEBOC Philippe
@@ -47,7 +46,8 @@ public class BuildingInstance
     @JsonIgnore
     private Lang lang = Lang.EN;
 
-    public BuildingInstance(){}
+    public BuildingInstance(){
+    }
 
     public BuildingInstance(Base base, Building template) {
         setBase(base);
@@ -121,22 +121,22 @@ public class BuildingInstance
         this.lang = lang;
     }
 
-    @JsonIgnore
-    public String reqMetal() {
-        return getTemplate().getReqMetalFunc().replace("$level", "" + (getCurrentLevel()+1));
+    @JsonView(View.Standard.class)
+    public Requirement getRequirements() {
+        // Warning: attr level is permanently edited. TODO: find another way | clone() don't work with JsonMapping
+        Requirement requirement = getTemplate().getRequirements(getCurrentLevel() + 1);
+        if(requirement != null)
+        {
+            requirement.setLevel(getCurrentLevel()+1);
+        }
+
+        return requirement;
     }
 
     @JsonView(View.Standard.class)
-    public long getBuildTime(){
+    public long getBuildTime() {
         final String func = getTemplate().getBuildTimeFunc().replace("$level", ""+(getCurrentLevel()+1));
         return ((Number)Evaluator.getInstance().eval(func)).longValue() * 1000;
-    }
-
-    @JsonView(View.Standard.class)
-    public HashMap<String, Object> requirements(){
-        final HashMap<String, Object> result = new HashMap<>();
-        result.put("metal", Evaluator.getInstance().eval(reqMetal()));
-        return result;
     }
 
     @Override

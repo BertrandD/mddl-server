@@ -1,10 +1,10 @@
 package com.gameserver.data.xml.impl;
 
 import com.config.Config;
-import com.gameserver.enums.BuildingType;
-import com.gameserver.enums.ItemType;
+import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
 import com.gameserver.holders.BuildingHolder;
+import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.HeadQuarter;
@@ -12,7 +12,6 @@ import com.gameserver.model.buildings.Mine;
 import com.gameserver.model.buildings.Storage;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
-import com.gameserver.model.inventory.InventoryFilter;
 import com.util.data.xml.IXmlReader;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -68,6 +67,43 @@ public class BuildingData implements IXmlReader {
                             continue;
                         }
 
+                        for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
+                        {
+                            if("requirements".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    attrs = d.getAttributes();
+                                    if("requirement".equalsIgnoreCase(d.getNodeName()))
+                                    {
+                                        final int level = parseInteger(attrs, "level");
+                                        final Requirement requirement = new Requirement();
+                                        for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
+                                        {
+                                            attrs = e.getAttributes();
+                                            if("function".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                requirement.addFunction(new FuncHolder(parseString(attrs, "id"), parseString(attrs, "val")));
+                                            }
+                                            else if("item".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                requirement.addItem(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count")));
+                                            }
+                                            else if("building".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                requirement.addBuilding(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
+                                            }
+                                            else if("technology".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                LOGGER.info("Technology requirement cannot be parsed: TODO."); // TODO
+                                            }
+                                        }
+                                        building.addRequirements(level, requirement);
+                                    }
+                                }
+                            }
+                        }
+
                         _buildings.put(set.getString("id"), building);
                     }
                 }
@@ -77,11 +113,11 @@ public class BuildingData implements IXmlReader {
 
     private Building createBuildingObject(StatsSet set)
     {
-        switch (set.getEnum("type", BuildingType.class))
+        switch (set.getEnum("type", BuildingCategory.class))
         {
             case HEADQUARTER: return new HeadQuarter(set);
             case STORAGE: return new Storage(set);
-            case MINE: return new Mine(set);
+            case PRODUCTION: return new Mine(set);
         }
         return null;
     }
@@ -90,7 +126,7 @@ public class BuildingData implements IXmlReader {
         return _buildings.get(id);
     }
 
-    public List<Building> getBuildings(BuildingType type){
+    public List<Building> getBuildings(BuildingCategory type){
         return _buildings.values().stream().filter(k -> k.getType().equals(type)).collect(Collectors.toList());
     }
 

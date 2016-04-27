@@ -35,6 +35,9 @@ public final class Base implements IInventory
     @JsonView(View.Standard.class)
     private Player owner;
 
+    @JsonView(View.Standard.class)
+    private String[] positions;
+
     @DBRef
     @JsonManagedReference
     @JsonView(View.Standard.class)
@@ -148,6 +151,14 @@ public final class Base implements IInventory
 
     public void setOwner(Player owner) {
         this.owner = owner;
+    }
+
+    public String[] getPositions() {
+        return positions;
+    }
+
+    public void setPositions(String[] positions) {
+        this.positions = positions;
     }
 
     @JsonView(View.Standard.class)

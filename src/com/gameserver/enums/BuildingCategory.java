@@ -3,9 +3,9 @@ package com.gameserver.enums;
 /**
  * @author LEBOC Philippe
  */
-public enum BuildingType {
+public enum BuildingCategory {
     NONE,
     HEADQUARTER,
-    MINE,
+    PRODUCTION,
     STORAGE
 }

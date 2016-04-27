@@ -3,11 +3,14 @@ package com.gameserver.model.buildings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.SystemMessageData;
-import com.gameserver.enums.BuildingType;
+import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
+import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Transient;
+
+import java.util.HashMap;
 
 /**
  * @author LEBOC Philippe
@@ -24,7 +27,7 @@ public abstract class Building {
     private String descriptionId;
 
     @JsonView(View.Standard.class)
-    private BuildingType type;
+    private BuildingCategory type;
 
     @JsonView(View.Standard.class)
     private int maxLevel;
@@ -33,7 +36,7 @@ public abstract class Building {
     private String buildTimeFunc;
 
     @JsonView(View.Standard.class)
-    private String reqMetalFunc;
+    private HashMap<Integer, Requirement> requirements;
 
     @Transient
     @JsonIgnore
@@ -42,11 +45,11 @@ public abstract class Building {
     public Building(StatsSet set){
         setId(set.getString("id"));
         setNameId(set.getString("nameId"));
-        setType(set.getEnum("type", BuildingType.class));
+        setType(set.getEnum("type", BuildingCategory.class));
         setDescriptionId(set.getString("descriptionId"));
         setMaxLevel(set.getInt("maxLevel", 1));
         setBuildTimeFunc(set.getString("buildTimeFunc", null));
-        setReqMetalFunc(set.getString("reqMetalFunc", null));
+        setRequirements(new HashMap<>());
     }
 
     public String getId() {
@@ -71,11 +74,11 @@ public abstract class Building {
         return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
     }
 
-    public BuildingType getType() {
+    public BuildingCategory getType() {
         return type;
     }
 
-    public void setType(BuildingType type) {
+    public void setType(BuildingCategory type) {
         this.type = type;
     }
 
@@ -109,12 +112,20 @@ public abstract class Building {
         this.buildTimeFunc = buildTimeFunc;
     }
 
-    public String getReqMetalFunc() {
-        return reqMetalFunc;
+    public HashMap<Integer, Requirement> getRequirements() {
+        return requirements;
     }
 
-    public void setReqMetalFunc(String func) {
-        this.reqMetalFunc = func;
+    public void setRequirements(HashMap<Integer, Requirement> requirements) {
+        this.requirements = requirements;
+    }
+
+    public void addRequirements(int level, Requirement req){
+        requirements.put(level, req);
+    }
+
+    public Requirement getRequirements(int level){
+        return getRequirements().get(level);
     }
 
     @JsonIgnore
