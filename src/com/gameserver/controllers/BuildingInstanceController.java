@@ -4,6 +4,7 @@ import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
+import com.gameserver.model.buildings.Building;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.services.BaseService;
@@ -101,7 +102,10 @@ public class BuildingInstanceController {
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
         }
 
-        if(building.getCurrentLevel() >= building.getTemplate().getMaxLevel()){
+        final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
+        final Building template = building.getTemplate();
+        if(building.getCurrentLevel() >= template.getMaxLevel() ||
+            (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())){
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_MAX_LEVEL_REACHED);
         }
 
