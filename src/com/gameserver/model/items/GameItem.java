@@ -12,22 +12,18 @@ public abstract class GameItem {
     private String itemId;
     private String name;
     private ItemType type;
-    private int descriptionId;
-    private int weight;
-    private boolean sellable;
-    private boolean tradable;
-    private boolean disabled;
+    private String descriptionId;
+    private long weight;
+    private long volume;
     private Requirement requirement;
 
     public GameItem(StatsSet set, Requirement requirement){
         setItemId(set.getString("id"));
         setName(set.getString("name"));
         setType(set.getEnum("type", ItemType.class, ItemType.NONE));
-        setDescriptionId(set.getInt("descriptionId"));
-        setWeight(set.getInt("weight"));
-        setSellable(set.getBoolean("sellable", false));
-        setTradable(set.getBoolean("tradable", false));
-        setDisabled(set.getBoolean("disabled"));
+        setDescriptionId(set.getString("descriptionId"));
+        setWeight(set.getLong("weight"));
+        setVolume(set.getLong("volume"));
 
         setRequirement(requirement);
     }
@@ -56,44 +52,28 @@ public abstract class GameItem {
         this.type = type;
     }
 
-    public int getDescriptionId() {
+    public String getDescriptionId() {
         return descriptionId;
     }
 
-    public void setDescriptionId(int descriptionId) {
+    public void setDescriptionId(String descriptionId) {
         this.descriptionId = descriptionId;
     }
 
-    public int getWeight() {
+    public long getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(long weight) {
         this.weight = weight;
     }
 
-    public boolean isSellable() {
-        return sellable;
+    public long getVolume() {
+        return volume;
     }
 
-    public void setSellable(boolean sellable) {
-        this.sellable = sellable;
-    }
-
-    public boolean isTradable() {
-        return tradable;
-    }
-
-    public void setTradable(boolean tradable) {
-        this.tradable = tradable;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
+    public void setVolume(long volume) {
+        this.volume = volume;
     }
 
     public Requirement getRequirement() {
