@@ -20,6 +20,7 @@ public final class SystemMessageId {
 
     // base
     public static final String BASE_NOT_FOUND = "base_not_found";
+    public static final String BASE_POSITION_ALREADY_TAKEN = "base_position_already_taken";
 
     // static building
     public static final String STATIC_BUILDING_DOESNT_EXIST = "static_building_doesnt_exist";
@@ -28,5 +29,6 @@ public final class SystemMessageId {
     public static final String BUILDING_CANNOT_CREATE = "building_cannot_create";
     public static final String BUILDING_NOT_FOUND = "building_not_found";
     public static final String BUILDING_ALREADY_EXIST = "building_already_exist";
+    public static final String BUILDING_MAX_LEVEL_REACHED = "building_max_level_reached";
 
 }

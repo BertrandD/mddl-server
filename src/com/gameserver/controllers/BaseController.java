@@ -64,11 +64,15 @@ public class BaseController {
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/base", method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
-        Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
+
+        // TODO: Base creation conditions.
+
         final Base base = baseService.create(name, player);
         player.addBase(base);
         player.setCurrentBase(base);
+
         playerService.update(player);
         return new JsonResponse(base);
     }

@@ -13,12 +13,14 @@
         <message id="choose_player" text="Choose a player" />
         <!-- Base -->
         <message id="base_not_found" text="Base not found" />
+        <message id="base_position_already_taken" text="The position is already taken" />
         <!-- Static buildings -->
         <message id="static_building_doesnt_exist" text="The requested building doesn't exist !" />
         <!-- Buildings -->
         <message id="building_cannot_create" text="Cannot create the building" />
         <message id="building_not_found" text="Building not found" />
         <message id="building_already_exist" text="Building already exist" />
+        <message id="building_max_level_reached" text="Max building level reached." />
         <!-- Buildings names -->
         <message id="building_headquarter_n" text="Headquarter" />
         <message id="building_storage_metal_n" text="Metal storage" />

@@ -90,7 +90,7 @@ public class Player {
     }
 
     public void addBase(Base base) {
-        this.bases.add(base); // TODO: add check
+        this.bases.add(base);
     }
 
     public Base getCurrentBase() {

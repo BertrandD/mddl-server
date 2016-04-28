@@ -36,7 +36,7 @@ public final class Base implements IInventory
     private Player owner;
 
     @JsonView(View.Standard.class)
-    private String[] positions;
+    private HashMap<Integer, String> buildingPositions;
 
     @DBRef
     @JsonManagedReference
@@ -85,6 +85,7 @@ public final class Base implements IInventory
     public Base(){
         setBuildings(new ArrayList<>());
         setShips(new ArrayList<>());
+        setBuildingPositions(new HashMap<>());
 
         // Inventory
         setMetal(new ArrayList<>());
@@ -103,6 +104,7 @@ public final class Base implements IInventory
         setOwner(owner);
         setBuildings(new ArrayList<>());
         setShips(new ArrayList<>());
+        setBuildingPositions(new HashMap<>());
 
         // Inventory
         setMetal(new ArrayList<>());
@@ -153,12 +155,12 @@ public final class Base implements IInventory
         this.owner = owner;
     }
 
-    public String[] getPositions() {
-        return positions;
+    public HashMap<Integer, String> getBuildingPositions() {
+        return buildingPositions;
     }
 
-    public void setPositions(String[] positions) {
-        this.positions = positions;
+    public void setBuildingPositions(HashMap<Integer, String> buildingPositions) {
+        this.buildingPositions = buildingPositions;
     }
 
     @JsonView(View.Standard.class)
@@ -170,8 +172,9 @@ public final class Base implements IInventory
         this.buildings = buildings;
     }
 
-    public void addBuilding(BuildingInstance building) {
-        this.buildings.add(building); // TODO: add check
+    public void addBuilding(BuildingInstance building, int position) {
+        this.buildings.add(building);
+        this.buildingPositions.put(position, building.getId());
     }
 
     public List<Ship> getShips() {

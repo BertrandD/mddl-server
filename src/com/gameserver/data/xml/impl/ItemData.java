@@ -89,7 +89,7 @@ public class ItemData implements IXmlReader {
                         set.set("sellable", parseBoolean(attrs, "sellable", false));
                         set.set("tradable", parseBoolean(attrs, "tradable", false));
                         set.set("disabled", parseBoolean(attrs, "disabled", false));
-                        set.set("buildtime", parseLong(attrs, "buildTime", -1L)); // TODO: Default values
+                        set.set("buildtime", parseLong(attrs, "buildTime"));
 
                         for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
@@ -102,13 +102,13 @@ public class ItemData implements IXmlReader {
                                     if("item".equalsIgnoreCase(d.getNodeName()))
                                     {
                                         String itemId = parseString(battrs, "id");
-                                        long itemCount = parseLong(battrs, "count", -1L);
+                                        long itemCount = parseLong(battrs, "count");
                                         requirement.addItem(new ItemHolder(itemId, itemCount));
                                     }
                                     else if("building".equalsIgnoreCase(d.getNodeName()))
                                     {
                                         String buildingId = parseString(battrs, "id");
-                                        int buildingLevel = parseInteger(battrs, "level", -1);
+                                        int buildingLevel = parseInteger(battrs, "level");
                                         requirement.addBuilding(new BuildingHolder(buildingId, buildingLevel));
                                     }
                                     // TODO: Technology

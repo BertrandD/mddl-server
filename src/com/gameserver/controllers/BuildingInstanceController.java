@@ -67,7 +67,7 @@ public class BuildingInstanceController {
 
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
+    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId, @RequestParam(value = "position") int position){
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
 
@@ -78,7 +78,11 @@ public class BuildingInstanceController {
         final BuildingInstance building = buildingService.create(base, templateId);
         if(building == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_CANNOT_CREATE);
 
-        base.addBuilding(building);
+        if(base.getBuildingPositions().containsKey(position)){
+            return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_POSITION_ALREADY_TAKEN);
+        }
+
+        base.addBuilding(building, position);
         baseService.update(base);
 
         buildingService.ScheduleUpgrade(building);
@@ -95,6 +99,10 @@ public class BuildingInstanceController {
         BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
         if(building == null){
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
+        }
+
+        if(building.getCurrentLevel() >= building.getTemplate().getMaxLevel()){
+            return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_MAX_LEVEL_REACHED);
         }
 
         buildingService.ScheduleUpgrade(building);
