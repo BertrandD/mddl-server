@@ -34,11 +34,11 @@
                                                         <xs:restriction base="xs:string">
                                                             <xs:enumeration value="power" />
                                                             <xs:enumeration value="capacity" />
-                                                            <xs:enumeration value="SLOT_CARGO_COUNT" />
-                                                            <xs:enumeration value="SLOT_ENGINE_COUNT" />
-                                                            <xs:enumeration value="SLOT_MODULE_COUNT" />
-                                                            <xs:enumeration value="SLOT_TECHNOLOGY_COUNT" />
-                                                            <xs:enumeration value="SLOT_WEAPON_COUNT" />
+                                                            <xs:enumeration value="slot_cargo" />
+                                                            <xs:enumeration value="slot_engine" />
+                                                            <xs:enumeration value="slot_module" />
+                                                            <xs:enumeration value="slot_technology" />
+                                                            <xs:enumeration value="slot_weapon" />
                                                         </xs:restriction>
                                                     </xs:simpleType>
                                                 </xs:attribute>
@@ -49,8 +49,8 @@
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="id" type="xs:normalizedString" use="required" />
-                        <xs:attribute name="nameId" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="id" type="xs:string" use="required" />
+                        <xs:attribute name="nameId" type="xs:string" use="required" />
                         <xs:attribute name="type" type="xs:normalizedString" use="required" />
                         <xs:attribute name="descriptionId" type="xs:string" use="required" />
                         <xs:attribute name="rank" use="optional">
@@ -66,7 +66,7 @@
                                 </xs:restriction>
                             </xs:simpleType>
                         </xs:attribute>
-                        <xs:attribute name="buildTime" type="xs:positiveInteger" use="optional" />
+                        <xs:attribute name="buildTime" type="xs:long" use="optional" />
                         <xs:attribute name="weight" type="xs:long" use="optional" />
                         <xs:attribute name="volume" type="xs:long" use="optional" />
                     </xs:complexType>
