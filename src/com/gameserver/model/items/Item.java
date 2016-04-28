@@ -11,12 +11,15 @@ public abstract class Item extends GameItem
 {
     private Rank rank;
     private long buildTime;
+    private Requirement requirement;
 
     public Item(StatsSet set, Requirement requirement)
     {
-        super(set, requirement);
-        setRank(set.getEnum("rank", Rank.class));
+        super(set);
+        setRank(set.getEnum("rank", Rank.class, Rank.NONE));
         setBuildTime(set.getLong("buildTime"));
+
+        setRequirement(requirement);
     }
 
     public Rank getRank() {
@@ -33,5 +36,13 @@ public abstract class Item extends GameItem
 
     public void setBuildTime(long buildTime) {
         this.buildTime = buildTime;
+    }
+
+    public Requirement getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(Requirement requirement) {
+        this.requirement = requirement;
     }
 }

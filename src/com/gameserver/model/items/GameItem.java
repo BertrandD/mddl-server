@@ -15,17 +15,14 @@ public abstract class GameItem {
     private String descriptionId;
     private long weight;
     private long volume;
-    private Requirement requirement;
 
-    public GameItem(StatsSet set, Requirement requirement){
+    public GameItem(StatsSet set){
         setItemId(set.getString("id"));
-        setName(set.getString("name"));
+        setName(set.getString("nameId"));
         setType(set.getEnum("type", ItemType.class, ItemType.NONE));
         setDescriptionId(set.getString("descriptionId"));
         setWeight(set.getLong("weight"));
         setVolume(set.getLong("volume"));
-
-        setRequirement(requirement);
     }
 
     public String getItemId() {
@@ -74,13 +71,5 @@ public abstract class GameItem {
 
     public void setVolume(long volume) {
         this.volume = volume;
-    }
-
-    public Requirement getRequirement() {
-        return requirement;
-    }
-
-    public void setRequirement(Requirement requirement) {
-        this.requirement = requirement;
     }
 }
