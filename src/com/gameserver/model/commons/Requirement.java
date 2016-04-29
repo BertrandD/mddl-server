@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Requirement {
 
-    @JsonIgnore
+    @JsonView(View.Standard.class)
     private List<FuncHolder> functions;
 
     @JsonView(View.Standard.class)

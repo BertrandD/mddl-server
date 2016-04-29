@@ -138,11 +138,11 @@ public class ItemData implements IXmlReader {
         {
             case "resource":
             {
-                _resources.put(id, new CommonItem(set, null)); break;
+                _resources.put(id, new CommonItem(set)); break;
             }
             case "common":
             {
-                _commons.put(id, new CommonItem(set, requirement)); break;
+                _commons.put(id, new CommonItem(set)); break;
             }
             case "cargo":
             {

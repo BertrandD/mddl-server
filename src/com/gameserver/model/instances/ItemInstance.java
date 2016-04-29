@@ -1,12 +1,8 @@
 package com.gameserver.model.instances;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
-import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
@@ -14,15 +10,9 @@ import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
-import com.gameserver.services.ItemService;
-import com.util.Utils;
 import com.util.data.json.View;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author LEBOC Philippe
@@ -30,10 +20,6 @@ import javax.annotation.PostConstruct;
 @Document(collection = "items")
 public class ItemInstance
 {
-    @Autowired
-    @JsonIgnoreProperties
-    private ItemService service;
-
     @Id
     @JsonView(View.Standard.class)
     private String id;
@@ -42,18 +28,10 @@ public class ItemInstance
     private String itemId;
 
     @JsonView(View.Standard.class)
-    private ItemType type;
-
-    @JsonView(View.Standard.class)
     private long count;
 
     @JsonView(View.Standard.class)
-    private long lastRefresh;
-
-    @JsonView(View.itemInstance_inventory.class)
-    @JsonBackReference
-    @DBRef
-    private Inventory inventory;
+    private ItemType type;
 
     public ItemInstance(){}
 
@@ -62,17 +40,6 @@ public class ItemInstance
         setItemId(itemId);
         setType(getTemplate().getType());
         setCount(count);
-        setLastRefresh(System.currentTimeMillis());
-        setInventory(null);
-    }
-
-    @PostConstruct
-    @Deprecated
-    public void init(){
-        Utils.println("ItemInstance @initialize started.");
-        if(getType().equals(ItemType.RESOURCE)){
-            service.refresh(this);
-        }
     }
 
     public Cargo getCargoItem(){
@@ -172,21 +139,5 @@ public class ItemInstance
 
     public void setCount(long count) {
         this.count = count;
-    }
-
-    public long getLastRefresh() {
-        return lastRefresh;
-    }
-
-    public void setLastRefresh(long lastRefresh) {
-        this.lastRefresh = lastRefresh;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
     }
 }
