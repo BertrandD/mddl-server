@@ -1,8 +1,11 @@
 package com.gameserver.model.instances;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
+import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
@@ -12,6 +15,7 @@ import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -33,6 +37,11 @@ public class ItemInstance
     @JsonView(View.Standard.class)
     private ItemType type;
 
+    @DBRef
+    @JsonManagedReference
+    @JsonIgnore
+    private Inventory inventory;
+
     public ItemInstance(){}
 
     public ItemInstance(String itemId, long count)
@@ -40,6 +49,14 @@ public class ItemInstance
         setItemId(itemId);
         setType(getTemplate().getType());
         setCount(count);
+    }
+
+    public ItemInstance(Inventory inventory, String itemId, long count)
+    {
+        setItemId(itemId);
+        setType(getTemplate().getType());
+        setCount(count);
+        setInventory(inventory);
     }
 
     public Cargo getCargoItem(){
@@ -139,5 +156,13 @@ public class ItemInstance
 
     public void setCount(long count) {
         this.count = count;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }

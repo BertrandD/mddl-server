@@ -15,7 +15,10 @@ import java.util.Collection;
 public class BaseService {
 
     @Autowired
-    BaseRepository repository;
+    private BaseRepository repository;
+
+    @Autowired
+    private BaseInventoryService baseInventoryService;
 
     public Base findOne(String id){
         return repository.findOne(id);
@@ -26,8 +29,13 @@ public class BaseService {
     }
 
     public Base create(String name, Player player){
-        Base b = new Base(name, player);
-        return repository.save(b);
+        Base base = new Base(name, player);
+        base = repository.save(base); // to get an ID
+
+        base.setResources(baseInventoryService.create(base));
+        base.setCommons(baseInventoryService.create(base));
+        base.setShipItems(baseInventoryService.create(base));
+        return repository.save(base);
     }
 
     public void update(Base b) { repository.save(b); }

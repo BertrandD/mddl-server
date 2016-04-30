@@ -2,8 +2,7 @@ package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.gameserver.interfaces.IInventory;
-import com.gameserver.model.Player;
+import com.gameserver.model.Base;
 import com.util.data.json.View;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,28 +10,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "player_inventory")
-public class PlayerInventory extends Inventory implements IInventory {
+@Document(collection = "base_inventory")
+public class BaseInventory extends Inventory {
 
     @DBRef
     @JsonBackReference
     @JsonView(View.Standard.class)
-    private Player player;
+    private Base base;
 
-    public PlayerInventory(){
+    public BaseInventory(){
         super();
     }
 
-    public PlayerInventory(Player player){
+    public BaseInventory(Base base){
         super();
-        setPlayer(player);
+        setBase(base);
     }
 
-    public Player getPlayer() {
-        return player;
+    public Base getBase() {
+        return base;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setBase(Base base) {
+        this.base = base;
     }
 }

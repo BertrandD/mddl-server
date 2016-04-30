@@ -7,17 +7,17 @@ import com.gameserver.model.instances.ItemInstance;
  */
 public interface IInventory {
 
-    boolean isAllowedToStore(ItemInstance item);
+    long getMaxWeight();
+    long getWeight();
+    long getFreeWeight();
 
-    long getMaxCapacity();
+    long getMaxVolume();
+    long getVolume();
+    long getFreeVolume();
 
-    long getFreeCapacity();
-
-    long getCurrentCapacityCharge();
-
+    boolean addItem(String id, long count);
     boolean addItem(ItemInstance item);
 
     ItemInstance consumeItem(ItemInstance item);
-
     ItemInstance consumeItem(String id, long count);
 }

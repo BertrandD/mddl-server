@@ -1,38 +1,30 @@
 package com.gameserver.services;
 
 import com.gameserver.model.Player;
-import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.repository.InventoryRepository;
+import com.gameserver.repository.PlayerInventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 
 /**
  * @author LEBOC Philippe
  */
 @Service
-public class InventoryService {
+public class PlayerInventoryService {
 
     @Autowired
-    private InventoryRepository repository;
+    private PlayerInventoryRepository repository;
 
     @Autowired
     private PlayerService playerService;
 
-    @Autowired
-    private BaseService baseService;
-
-    public Inventory findOne(String id){
+    public PlayerInventory findOne(String id){
         return repository.findOne(id);
     }
 
-    public Collection<Inventory> findAll(){
-        return repository.findAll();
-    }
+    public PlayerInventory findByPlayer(String id) { return repository.findByPlayer(id); }
 
-    public Inventory create(Player player){
+    public PlayerInventory create(Player player){
         PlayerInventory inventory = new PlayerInventory(player);
         inventory = repository.save(inventory);
         player.setInventory(inventory);
@@ -40,7 +32,7 @@ public class InventoryService {
         return inventory;
     }
 
-    public void update(Inventory inventory) { repository.save(inventory); }
+    public void update(PlayerInventory inventory) { repository.save(inventory); }
 
     public void delete(String id) { repository.delete(id); }
 

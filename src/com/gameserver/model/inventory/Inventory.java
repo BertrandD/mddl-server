@@ -7,15 +7,14 @@ import com.gameserver.model.instances.ItemInstance;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "inventories")
-public abstract class Inventory implements IInventory{
+public abstract class Inventory implements IInventory {
 
     @Id
     @JsonView(View.Standard.class)
@@ -24,9 +23,11 @@ public abstract class Inventory implements IInventory{
     @DBRef
     @JsonManagedReference
     @JsonView(View.Standard.class)
-    private HashMap<String, ItemInstance> items;
+    private List<ItemInstance> items;
 
-    public Inventory(){}
+    public Inventory(){
+        setItems(new ArrayList<>());
+    }
 
     public String getId() {
         return id;
@@ -36,73 +37,62 @@ public abstract class Inventory implements IInventory{
         this.id = id;
     }
 
-    public HashMap<String, ItemInstance> getItems() {
+    public List<ItemInstance> getItems() {
         return items;
     }
 
-    public void setItems(HashMap<String, ItemInstance> items) {
+    public void setItems(List<ItemInstance> items) {
         this.items = items;
     }
 
-    public abstract boolean isAllowedToStore(ItemInstance item);
-
-    public abstract long getMaxCapacity();
-
-    public abstract long getFreeCapacity();
-
-    public long getCurrentCapacityCharge(){
-        long weight = 0;
-        for(ItemInstance item : getItems().values())
-        {
-            weight += item.getWeight();
-        }
-        return weight;
+    @Override
+    public long getMaxWeight() {
+        return 0;
     }
 
-    public boolean addItem(ItemInstance item){
-        if(isAllowedToStore(item)) {
-            if (getItems().isEmpty())
-            {
-                if(getFreeCapacity() >= item.getWeight()) {
-                    getItems().put(item.getItemId(), item);
-                } else {
-                    final long storable = (getFreeCapacity() / item.getTemplate().getWeight());
-                    item.setCount(storable);
-                    getItems().put(item.getId(), item);
-                }
-                return true;
-            }
+    @Override
+    public long getWeight() {
+        return 0;
+    }
 
-            // Override count if exist
-            final ItemInstance it = getItems().get(item.getItemId());
-            if (it != null) {
-                // TODO: store items if (FreeCapacity > 0 and item.wieght() > freeCapacity())
-                if (getFreeCapacity() > getCurrentCapacityCharge() + item.getWeight()) {
-                    it.setCount(it.getCount() + item.getCount());
-                }
-                return true;
-            }
-        }
+    @Override
+    public long getFreeWeight() {
+        return 0;
+    }
+
+    @Override
+    public long getMaxVolume() {
+        return 0;
+    }
+
+    @Override
+    public long getVolume() {
+        return 0;
+    }
+
+    @Override
+    public long getFreeVolume() {
+        return 0;
+    }
+
+    @Override
+    public boolean addItem(String id, long count) {
         return false;
     }
 
-    /**
-     * Consume the entire item
-     * @param item to consume
-     * @return the item with new count value = 0 if consumed, null otherwise
-     */
-    public ItemInstance consumeItem(ItemInstance item){
-        return consumeItem(item.getItemId(), item.getCount());
+    @Override
+    public boolean addItem(ItemInstance item) {
+        getItems().add(item);
+        return false;
     }
 
-    public ItemInstance consumeItem(String id, long count){
-        if(!getItems().containsKey(id)) return null;
+    @Override
+    public ItemInstance consumeItem(ItemInstance item) {
+        return null;
+    }
 
-        final ItemInstance item = getItems().get(id);
-        if(item.getCount() < count) return null;
-
-        item.setCount(item.getCount() - count);
-
-        return item;
+    @Override
+    public ItemInstance consumeItem(String id, long count) {
+        return null;
     }
 }

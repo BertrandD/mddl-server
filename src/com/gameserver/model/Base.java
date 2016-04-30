@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.ItemType;
-import com.gameserver.interfaces.IInventory;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.vehicles.Ship;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
@@ -16,12 +16,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
+ * TODO: Rewrite inventory
  */
 @Document(collection = "bases")
-public final class Base implements IInventory
+public final class Base
 {
     @Id
     @JsonView(View.Standard.class)
@@ -49,52 +51,23 @@ public final class Base implements IInventory
 
     @DBRef
     @JsonIgnore
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> metal;
+    @JsonManagedReference
+    private BaseInventory resources;
 
     @DBRef
     @JsonIgnore
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> crystal;
+    @JsonManagedReference
+    private BaseInventory commons;
 
     @DBRef
     @JsonIgnore
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> cargos;
-
-    @DBRef
-    @JsonIgnore
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> engines;
-
-    @DBRef
-    @JsonIgnore
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> modules;
-
-    @DBRef
-    @JsonIgnore
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> structures;
-
-    @DBRef
-    @JsonIgnore
-    @JsonView(View.Standard.class)
-    private List<ItemInstance> weapons;
+    @JsonManagedReference
+    private BaseInventory shipItems;
 
     public Base(){
         setBuildings(new ArrayList<>());
         setShips(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
-
-        // Inventory
-        setMetal(new ArrayList<>());
-        setCrystal(new ArrayList<>());
-        setCargos(new ArrayList<>());
-        setEngines(new ArrayList<>());
-        setModules(new ArrayList<>());
-        setStructures(new ArrayList<>());
-        setWeapons(new ArrayList<>());
     }
 
     public Base(String name, Player owner)
@@ -105,29 +78,17 @@ public final class Base implements IInventory
         setBuildings(new ArrayList<>());
         setShips(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
-
-        // Inventory
-        setMetal(new ArrayList<>());
-        setCrystal(new ArrayList<>());
-        setCargos(new ArrayList<>());
-        setEngines(new ArrayList<>());
-        setModules(new ArrayList<>());
-        setStructures(new ArrayList<>());
-        setWeapons(new ArrayList<>());
     }
 
     @JsonView(View.Standard.class)
     public HashMap<String, List<ItemInstance>> getInventory(){
         final HashMap<String, List<ItemInstance>> inventory = new HashMap<>();
-        final List<ItemInstance> resources = new ArrayList<>(metal);
-        resources.addAll(getMetal());
-        resources.addAll(getCrystal());
-        inventory.put(ItemType.RESOURCE.toString(), resources);
-        inventory.put(ItemType.CARGO.toString(), getCargos());
-        inventory.put(ItemType.ENGINE.toString(), getEngines());
-        inventory.put(ItemType.MODULE.toString(), getModules());
-        inventory.put(ItemType.STRUCTURE.toString(), getStructures());
-        inventory.put(ItemType.WEAPON.toString(), getWeapons());
+        inventory.put(ItemType.RESOURCE.toString(), getResources().getItems());
+        inventory.put(ItemType.CARGO.toString(), getShipItems().getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
+        inventory.put(ItemType.ENGINE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()));
+        inventory.put(ItemType.MODULE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isModule).collect(Collectors.toList()));
+        inventory.put(ItemType.STRUCTURE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()));
+        inventory.put(ItemType.WEAPON.toString(), getShipItems().getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()));
         return inventory;
     }
 
@@ -185,96 +146,30 @@ public final class Base implements IInventory
         this.ships = ships;
     }
 
-    // INVENTORIES
-
-    public List<ItemInstance> getMetal() {
-        return metal;
+    @JsonIgnore
+    public BaseInventory getResources() {
+        return resources;
     }
 
-    public void setMetal(List<ItemInstance> metal) {
-        this.metal = metal;
+    public void setResources(BaseInventory resources) {
+        this.resources = resources;
     }
 
-    public List<ItemInstance> getCrystal() {
-        return crystal;
+    @JsonIgnore
+    public BaseInventory getCommons() {
+        return commons;
     }
 
-    public void setCrystal(List<ItemInstance> crystal) {
-        this.crystal = crystal;
+    public void setCommons(BaseInventory commons) {
+        this.commons = commons;
     }
 
-    public List<ItemInstance> getCargos() {
-        return cargos;
+    @JsonIgnore
+    public BaseInventory getShipItems() {
+        return shipItems;
     }
 
-    public void setCargos(List<ItemInstance> cargos) {
-        this.cargos = cargos;
-    }
-
-    public List<ItemInstance> getEngines() {
-        return engines;
-    }
-
-    public void setEngines(List<ItemInstance> engines) {
-        this.engines = engines;
-    }
-
-    public List<ItemInstance> getModules() {
-        return modules;
-    }
-
-    public void setModules(List<ItemInstance> modules) {
-        this.modules = modules;
-    }
-
-    public List<ItemInstance> getStructures() {
-        return structures;
-    }
-
-    public void setStructures(List<ItemInstance> structures) {
-        this.structures = structures;
-    }
-
-    public List<ItemInstance> getWeapons() {
-        return weapons;
-    }
-
-    public void setWeapons(List<ItemInstance> weapons) {
-        this.weapons = weapons;
-    }
-
-    @Override
-    public boolean isAllowedToStore(ItemInstance item) {
-        return false;
-    }
-
-    @Override
-    public long getMaxCapacity() {
-        return 0;
-    }
-
-    @Override
-    public long getFreeCapacity() {
-        return 0;
-    }
-
-    @Override
-    public long getCurrentCapacityCharge() {
-        return 0;
-    }
-
-    @Override
-    public boolean addItem(ItemInstance item) {
-        return false;
-    }
-
-    @Override
-    public ItemInstance consumeItem(ItemInstance item) {
-        return null;
-    }
-
-    @Override
-    public ItemInstance consumeItem(String id, long count) {
-        return null;
+    public void setShipItems(BaseInventory shipItems) {
+        this.shipItems = shipItems;
     }
 }

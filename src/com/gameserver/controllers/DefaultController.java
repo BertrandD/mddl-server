@@ -53,7 +53,7 @@ public class DefaultController implements ErrorController{
     private BuildingService buildingService;
 
     @Autowired
-    private InventoryService inventoryService;
+    private PlayerInventoryService playerInventoryService;
 
     @Autowired
     private PlayerService playerService;
@@ -67,7 +67,7 @@ public class DefaultController implements ErrorController{
     @RequestMapping(value = "/reset", method = RequestMethod.GET, produces = "application/json")
     public boolean resetDatabase(){
         itemService.deleteAll();
-        inventoryService.deleteAll();
+        playerInventoryService.deleteAll();
         buildingService.deleteAll();
         baseService.deleteAll();
         playerService.deleteAll();

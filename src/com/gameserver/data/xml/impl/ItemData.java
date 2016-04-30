@@ -219,6 +219,9 @@ public class ItemData implements IXmlReader {
         CommonItem common = _commons.values().stream().filter(k -> k.getItemId().equals(itemId)).findFirst().orElse(null);
         if(common != null) return common;
 
+        CommonItem resource = _resources.values().stream().filter(k->k.getItemId().equals(itemId)).findFirst().orElse(null);
+        if(resource != null) return resource;
+
         return null;
     }
 
