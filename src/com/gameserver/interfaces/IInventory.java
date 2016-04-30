@@ -18,6 +18,6 @@ public interface IInventory {
     boolean addItem(String id, long count);
     boolean addItem(ItemInstance item);
 
-    ItemInstance consumeItem(ItemInstance item);
-    ItemInstance consumeItem(String id, long count);
+    boolean consumeItem(ItemInstance item, long count);
+    boolean consumeItem(String id, long count);
 }

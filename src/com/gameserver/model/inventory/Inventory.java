@@ -76,23 +76,47 @@ public abstract class Inventory implements IInventory {
     }
 
     @Override
+    /**
+     * WARNING: logic not completed. Don't use this method.
+     * TODO: put me to database
+     */
     public boolean addItem(String id, long count) {
-        return false;
+        final ItemInstance item = getItems().stream().filter(k->k.getItemId().equals(id)).findFirst().orElse(null);
+        if(item == null){
+            getItems().add(new ItemInstance(this, id, count));
+        }else{
+            item.setCount(item.getCount()+count);
+        }
+        return true;
     }
 
     @Override
     public boolean addItem(ItemInstance item) {
-        getItems().add(item);
+        // TODO: check inventory capacity
+        if(!getItems().contains(item)) {
+            getItems().add(item);
+        }else{
+            ItemInstance inst = getItems().stream().filter(k->k.getItemId().equals(item.getItemId())).findFirst().orElse(null);
+            inst.setCount(inst.getCount()+item.getCount());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean consumeItem(ItemInstance item, long count) {
+        final ItemInstance inst = getItems().stream().filter(k->k.equals(item)).findFirst().orElse(null);
+        if(inst != null){
+            long result = inst.getCount() - count;
+            if(result > 0) {
+                inst.setCount(result);
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
-    public ItemInstance consumeItem(ItemInstance item) {
-        return null;
-    }
-
-    @Override
-    public ItemInstance consumeItem(String id, long count) {
-        return null;
+    public boolean consumeItem(String id, long count) {
+        return false;
     }
 }

@@ -45,4 +45,13 @@ public abstract class Item extends GameItem
     public void setRequirement(Requirement requirement) {
         this.requirement = requirement;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Item){
+            final Item item = (Item) o;
+            if(item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
+        }
+        return false;
+    }
 }
