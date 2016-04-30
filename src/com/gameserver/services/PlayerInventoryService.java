@@ -1,6 +1,8 @@
 package com.gameserver.services;
 
+import com.gameserver.model.Base;
 import com.gameserver.model.Player;
+import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.repository.PlayerInventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,4 @@ public class PlayerInventoryService {
     public void deleteAll(){
         repository.deleteAll();
     }
-
 }

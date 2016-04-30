@@ -4,6 +4,7 @@ import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.Base;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
+import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.repository.ItemRepository;
@@ -35,49 +36,18 @@ public class ItemService {
         return repository.findAll();
     }
 
-    public ItemInstance create(Base base, String itemId, long count){
-        final GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
-        if(tmpl == null) return null;
+    public ItemInstance create(Inventory inv, String itemId, long count){
 
-        final BaseInventory inv;
-
-        switch(tmpl.getType())
-        {
-            case RESOURCE:
-                inv = base.getResources();
-                break;
-            case CARGO:
-            case ENGINE:
-            case MODULE:
-            case WEAPON:
-            case STRUCTURE:
-                inv = base.getShipItems();
-                break;
-            default:
-                inv = base.getCommons();
-                break;
-        }
-
-        final ItemInstance inst = repository.save(new ItemInstance(inv, itemId, count));
+        final ItemInstance inst = repository.save(new ItemInstance(inv, itemId, count)); // TODO: Its bad. Need to check inventory capacity before !
         inv.addItem(inst);
-        baseInventoryService.update(inv);
+
+        if(inv instanceof BaseInventory)
+            baseInventoryService.update((BaseInventory)inv);
+        else if(inv instanceof PlayerInventory)
+            playerInventoryService.update((PlayerInventory)inv);
+        else return null;
 
         return inst;
-    }
-
-    /**
-     * put in player inventory
-     * @param inventory of current player
-     * @param itemId
-     * @param count
-     * @return
-     */
-    public ItemInstance create(Inventory inventory, String itemId, long count){
-        final GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
-        if(tmpl == null) return null;
-
-        final ItemInstance item = new ItemInstance(inventory, itemId, count);
-        return repository.save(item);
     }
 
     public void update(ItemInstance item){
