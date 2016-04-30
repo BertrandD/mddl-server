@@ -1,11 +1,8 @@
 package com.gameserver.services;
 
-import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.model.Base;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.model.items.GameItem;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
