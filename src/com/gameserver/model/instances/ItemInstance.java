@@ -29,7 +29,7 @@ public class ItemInstance
     private String id;
 
     @JsonView(View.Standard.class)
-    private String itemId;
+    private String templateId;
 
     @JsonView(View.Standard.class)
     private long count;
@@ -46,14 +46,14 @@ public class ItemInstance
 
     public ItemInstance(String itemId, long count)
     {
-        setItemId(itemId);
+        setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
     }
 
     public ItemInstance(Inventory inventory, String itemId, long count)
     {
-        setItemId(itemId);
+        setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
         setInventory(inventory);
@@ -95,7 +95,7 @@ public class ItemInstance
     }
 
     public GameItem getTemplate() {
-        return ItemData.getInstance().getTemplate(getItemId());
+        return ItemData.getInstance().getTemplate(getTemplateId());
     }
 
     public long getWeight(){
@@ -134,12 +134,12 @@ public class ItemInstance
         this.id = id;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getTemplateId() {
+        return templateId;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 
     public ItemType getType() {

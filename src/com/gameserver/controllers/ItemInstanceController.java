@@ -10,7 +10,7 @@ import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.items.GameItem;
-import com.gameserver.services.ItemService;
+import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerInventoryService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ItemInstanceController {
 
     @Autowired
-    private ItemService itemService;
+    private InventoryService inventoryService;
 
     @Autowired
     private PlayerService playerService;
@@ -70,7 +70,7 @@ public class ItemInstanceController {
                 break;
         }
 
-        final ItemInstance item = itemService.create(inventory, itemId, count);
+        final ItemInstance item = inventoryService.addItem(inventory, itemId, count);
         if(item == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_CANNOT_CREATE);
 
         return new JsonResponse(item);
@@ -85,7 +85,7 @@ public class ItemInstanceController {
         final PlayerInventory inventory = playerInventoryService.findByPlayer(player.getId());
         if(inventory == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.INVENTORY_NOT_FOUND); // TODO JsonResponse
 
-        final ItemInstance item = itemService.create(inventory, itemId, count);
+        final ItemInstance item = inventoryService.addItem(inventory, itemId, count);
         if(item == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_CANNOT_CREATE);
 
         return new JsonResponse(item);

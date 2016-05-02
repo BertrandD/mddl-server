@@ -1,8 +1,6 @@
 package com.gameserver.services;
 
-import com.gameserver.model.Base;
 import com.gameserver.model.Player;
-import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.repository.PlayerInventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Service;
  * @author LEBOC Philippe
  */
 @Service
-public class PlayerInventoryService {
+public class PlayerInventoryService{
 
     @Autowired
     private PlayerInventoryRepository repository;
@@ -41,4 +39,6 @@ public class PlayerInventoryService {
     public void deleteAll(){
         repository.deleteAll();
     }
+
+
 }
