@@ -59,7 +59,6 @@
                         <xs:attribute name="descriptionId" type="xs:normalizedString" use="required" />
                         <xs:attribute name="maxLevel" type="xs:positiveInteger" use="required"/>
 						<xs:attribute name="buildTimeFunc" type="xs:string" use="required" />
-						<xs:attribute name="reqMetalFunc" type="xs:string" use="required" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
