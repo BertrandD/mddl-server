@@ -21,6 +21,7 @@ public final class Config {
     // --------------------------------------------------
     public static String DATA_ROOT_DIRECTORY;
     public static String[] FORBIDDEN_NAMES;
+    public static long INITIAL_BASE_METAL;
     public static long MAX_PLAYER_INVENTORY_CAPACITY;
 
     // --------------------------------------------------
@@ -32,6 +33,7 @@ public final class Config {
 
         DATA_ROOT_DIRECTORY = general.getString("DataRootDirectory", "data/");
         FORBIDDEN_NAMES = general.getString("ForbiddenNames", "").split(",");
+        INITIAL_BASE_METAL = general.getLong("InitialBaseMetal", 0);
         MAX_PLAYER_INVENTORY_CAPACITY = general.getLong("MaxPlayerInventoryCapacity", 1000000000);
     }
 }
