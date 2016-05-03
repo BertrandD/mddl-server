@@ -12,5 +12,5 @@ public interface IInventoryService {
     ItemInstance addNewItem(Inventory inventory, String itemId, long count);
 
     boolean consumeItem(ItemInstance item, long count);
-    boolean consumeItem(String id, long count);
+    boolean consumeItem(Inventory inventory, String id, long count);
 }

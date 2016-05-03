@@ -5,7 +5,6 @@ import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +25,7 @@ public class InventoryService implements IInventoryService {
 
     public ItemInstance addItem(Inventory inventory, String templateId, long count){
         // TODO: check inventory capacity before
-
-        Utils.println("inv id = "+inventory.getId());
-        Utils.println("templateId = "+templateId);
-
         final ItemInstance item = itemService.findFirstByInventoryAndTemplateId(inventory, templateId);
-        Utils.println("Item is already exist ? "+(item != null));
 
         if(item == null) {
             return addNewItem(inventory, templateId, count);
@@ -58,11 +52,17 @@ public class InventoryService implements IInventoryService {
 
     @Override
     public boolean consumeItem(ItemInstance item, long count) {
+        if(item.getCount() - count >= 0){
+            item.setCount(item.getCount() - count);
+            itemService.update(item);
+            return true;
+        }
         return false;
     }
 
     @Override
-    public boolean consumeItem(String id, long count) {
-        return false;
+    public boolean consumeItem(Inventory inventory, String id, long count) {
+        final ItemInstance item = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(id)).findFirst().orElse(null);
+        return item != null && consumeItem(item, count);
     }
 }
