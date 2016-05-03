@@ -1,26 +1,33 @@
 package com.gameserver.holders;
 
-import com.gameserver.enums.BuildingType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.model.buildings.Building;
+import com.util.data.json.View;
 
 /**
  * @author LEBOC Philippe
  */
 public class BuildingHolder {
 
-    private BuildingType type;
+    @JsonView(View.Standard.class)
+    private String id;
+
+    @JsonView(View.Standard.class)
     private int level;
 
-    public BuildingHolder(BuildingType type, int level){
-        setType(type);
+    public BuildingHolder(String id, int level){
+        setId(id);
         setLevel(level);
     }
 
-    public BuildingType getType() {
-        return type;
+    public String getId() {
+        return id;
     }
 
-    public void setType(BuildingType type) {
-        this.type = type;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getLevel() {
@@ -29,5 +36,10 @@ public class BuildingHolder {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    @JsonIgnore
+    public Building getTemplate(){
+        return BuildingData.getInstance().getBuilding(id);
     }
 }

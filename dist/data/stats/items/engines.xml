@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
+    <item id="12000" type="ENGINE" name="AETI I" rank="A" weight="550" sellable="true" tradable="true" disabled="false" buildTime="300" descriptionId="-1">
+        <creation>
+            <item id="100" count="10000" />
+            <item id="101" count="5000" />
+            <item id="102" count="5000" />
+        </creation>
+        <properties>
+            <set name="power" value="100" />
+        </properties>
+    </item>
+    <item id="12001" type="ENGINE" name="AETI II" rank="A" weight="850" sellable="true" tradable="true" disabled="false" buildTime="300" descriptionId="-1">
+        <creation>
+            <item id="100" count="50000" />
+            <item id="101" count="10000" />
+            <item id="102" count="10000" />
+        </creation>
+        <properties>
+            <set name="power" value="125" />
+        </properties>
+    </item>
+</list>

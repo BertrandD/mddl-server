@@ -1,54 +1,35 @@
 package com.gameserver.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.gameserver.enums.BuildingType;
-import com.gameserver.model.Base;
-import com.gameserver.model.buildings.BuildingInstance;
-import com.gameserver.services.BaseService;
-import com.gameserver.services.BuildingService;
-import com.util.data.json.View;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.auth.Account;
+import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.model.buildings.Building;
+import com.gameserver.model.commons.SystemMessageId;
+import com.util.data.json.Response.JsonResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collection;
 
 /**
  * @author LEBOC Philippe
  */
 @RestController
-@RequestMapping(value = "/building", produces = "application/json")
+@PreAuthorize("hasRole('ROLE_USER')")
+@RequestMapping(value = "/building_static", produces = "application/json")
 public class BuildingController {
 
-    @Autowired
-    private BuildingService buildingService;
-
-    @Autowired
-    private BaseService baseService;
-
-    @JsonView(View.Standard.class)
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Collection<BuildingInstance> findAll(){
-        return buildingService.findAll();
+    @RequestMapping(method = RequestMethod.GET)
+    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
+        return new JsonResponse(BuildingData.getInstance().getBuildings(pAccount.getLang()));
     }
 
-    @JsonView(View.BuildingInstance_Base.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public BuildingInstance findOne(@PathVariable("id") String id){
-        return buildingService.findOne(id);
+    public JsonResponse findBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
+        final Building b = BuildingData.getInstance().getBuilding(id);
+        if(b == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.STATIC_BUILDING_DOESNT_EXIST);
+        b.setLang(pAccount.getLang());
+        return new JsonResponse(b);
     }
-
-    @JsonView(View.BuildingInstance_Base.class)
-    @RequestMapping(method = RequestMethod.POST)
-    public BuildingInstance create(@RequestParam(value = "base") String baseId, @RequestParam(value = "building") String template){
-        Base base = baseService.findOne(baseId);
-        if(base == null) return null;
-        BuildingInstance building = buildingService.create(base, BuildingType.valueOf(template));
-        baseService.update(base);
-        return building;
-    }
-
 }

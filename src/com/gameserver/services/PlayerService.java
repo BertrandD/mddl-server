@@ -1,11 +1,13 @@
 package com.gameserver.services;
 
+import com.auth.Account;
 import com.gameserver.repository.PlayerRepository;
 import com.gameserver.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -20,12 +22,20 @@ public class PlayerService {
         return playerRepository.findOne(id);
     }
 
+    public Player findOneByName(String name) {
+        return playerRepository.findByName(name);
+    }
+
     public Collection<Player> findAll() {
         return playerRepository.findAll();
     }
 
-    public Player create(String name){
-        Player p = new Player(name);
+    public List<Player> findByAccount(Account account){
+        return playerRepository.findByAccount(account);
+    }
+
+    public Player create(Account account, String name){
+        Player p = new Player(account, name);
         return playerRepository.save(p);
     }
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/messages.xsd">
+    <messages lang="FR">
+        <!-- Account -->
+        <message id="username_not_found" text="Nom d'utilisateur inconnu" />
+        <message id="username_already_exist" text="Nom d'utilisateur déjà utilisé" />
+        <message id="account_already_exist" text="Ce compte existe déjà" />
+        <message id="incorrect_credentials" text="Mot de passe incorrect" />
+        <!-- Commons -->
+        <message id="forbidden_name" text="Ce nom est interdit" />
+        <!-- Player -->
+        <message id="player_not_found" text="Ce joueur n'existe pas" />
+        <message id="choose_player" text="Sélectionnez un personnage" />
+        <!-- Base -->
+        <message id="base_not_found" text="Cette base n'existe pas" />
+        <message id="base_position_already_taken" text="Cette position est déjà prise" />
+        <!-- Static buildings -->
+        <message id="static_building_doesnt_exist" text="Le batiment demandé n'existe pas !" />
+        <!-- Buildings -->
+        <message id="building_cannot_create" text="Erreur lors de la creation du batiment" />
+        <message id="building_not_found" text="Le batiment n'existe pas" />
+        <message id="building_already_exist" text="Le batiment existe déjà" />
+        <message id="building_max_level_reached" text="Niveau maximum atteint pour ce batiment." />
+        <!-- Buildings names -->
+        <message id="building_headquarter_n" text="Quartier général" />
+        <message id="building_storage_metal_n" text="Hangar de métal" />
+        <message id="building_storage_crystal_n" text="Hangar de crystal" />
+        <!-- Buildings descriptions -->
+        <message id="building_headquarter_d" text="Le quartier général est le batiment principal de votre base. Il vous permet la gestion complète de celle-ci." />
+        <message id="building_storage_metal_d" text="Le hangar de métal augmente la capacité de stockage de métal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
+        <message id="building_storage_crystal_d" text="Le hangar de crystal augmente la capacité de stockage de crystal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
+    </messages>
+</list>

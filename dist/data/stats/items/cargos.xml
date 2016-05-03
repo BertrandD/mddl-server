@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
+    <item id="11000" type="CARGO" name="ACTI I" rank="A" weight="200" sellable="true" tradable="true" disabled="false" buildTime="300" descriptionId="-1">
+        <creation>
+            <item id="100" count="5000" />
+            <item id="101" count="1000" />
+            <item id="102" count="1000" />
+        </creation>
+        <properties>
+            <set name="capacity" value="10" />
+        </properties>
+    </item>
+    <item id="11001" type="CARGO" name="ACTI II" rank="A" weight="230" sellable="true" tradable="true" disabled="false" buildTime="300" descriptionId="-1">
+        <creation>
+            <item id="100" count="5000" />
+            <item id="101" count="1000" />
+            <item id="102" count="1000" />
+        </creation>
+        <properties>
+            <set name="capacity" value="13" />
+        </properties>
+    </item>
+</list>

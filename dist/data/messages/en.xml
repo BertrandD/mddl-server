@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/messages.xsd">
+    <messages lang="EN">
+        <!-- Account -->
+        <message id="username_not_found" text="Username not found" />
+        <message id="username_already_exist" text="Username already exist" />
+        <message id="account_already_exist" text="Account already exist" />
+        <message id="incorrect_credentials" text="Incorrect credentials" />
+        <!-- Commons -->
+        <message id="forbidden_name" text="Forbidden name" />
+        <!-- Player -->
+        <message id="player_not_found" text="Player not found" />
+        <message id="choose_player" text="Choose a player" />
+        <!-- Base -->
+        <message id="base_not_found" text="Base not found" />
+        <message id="base_position_already_taken" text="The position is already taken" />
+        <!-- Static buildings -->
+        <message id="static_building_doesnt_exist" text="The requested building doesn't exist !" />
+        <!-- Buildings -->
+        <message id="building_cannot_create" text="Cannot create the building" />
+        <message id="building_not_found" text="Building not found" />
+        <message id="building_already_exist" text="Building already exist" />
+        <message id="building_max_level_reached" text="Max building level reached." />
+        <!-- Buildings names -->
+        <message id="building_headquarter_n" text="Headquarter" />
+        <message id="building_storage_metal_n" text="Metal storage" />
+        <message id="building_storage_crystal_n" text="Crystal storage" />
+        <!-- Buildings descriptions -->
+        <message id="building_headquarter_d" text="The headquarter is your main building that manage your entire base." />
+        <message id="building_storage_metal_d" text="The metal storage building increase your basement metal storage capacity. You can up this building to improve the capacity to your conveniences." />
+        <message id="building_storage_crystal_d" text="The crystal storage building increase your basement crystal storage capacity. You can up this building to improve the capacity to your conveniences." />
+    </messages>
+</list>
