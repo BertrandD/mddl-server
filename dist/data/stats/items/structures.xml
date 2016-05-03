@@ -1,73 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
-    <item id="10000" type="STRUCTURE" name="ASTI I" rank="A" weight="3000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
-        <creation>
-            <item id="100" count="50" />
-            <item id="101" count="10" />
-            <item id="102" count="10" />
-        </creation>
+    <item id="10000" type="STRUCTURE" nameId="asti1" rank="A" buildTime="60" descriptionId="asti1_d">
+        <requirement>
+            <item id="metal" count="50" />
+        </requirement>
         <properties>
-            <set name="SLOT_CARGO_COUNT" value="0" />
-            <set name="SLOT_ENGINE_COUNT" value="1" />
-            <set name="SLOT_MODULE_COUNT" value="1" />
-            <set name="SLOT_TECHNOLOGY_COUNT" value="1" />
-            <set name="SLOT_WEAPON_COUNT" value="0" />
+            <set name="slot_cargo" value="0" />
+            <set name="slot_engine" value="1" />
+            <set name="slot_module" value="1" />
+            <set name="slot_technology" value="1" />
+            <set name="slot_weapon" value="0" />
         </properties>
     </item>
-    <item id="10001" type="STRUCTURE" name="ASTI II" rank="B" weight="5000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
-        <creation>
-            <item id="100" count="100" />
-            <item id="101" count="30" />
-            <item id="102" count="75" />
-        </creation>
+    <item id="10001" type="STRUCTURE" nameId="asti2" rank="B" buildTime="60" descriptionId="asti2_d">
+        <requirement>
+            <item id="metal" count="100" />
+        </requirement>
         <properties>
-            <set name="SLOT_CARGO_COUNT" value="1" />
-            <set name="SLOT_ENGINE_COUNT" value="1" />
-            <set name="SLOT_MODULE_COUNT" value="2" />
-            <set name="SLOT_TECHNOLOGY_COUNT" value="2" />
-            <set name="SLOT_WEAPON_COUNT" value="1" />
+            <set name="slot_cargo" value="1" />
+            <set name="slot_engine" value="1" />
+            <set name="slot_module" value="2" />
+            <set name="slot_technology" value="2" />
+            <set name="slot_weapon" value="1" />
         </properties>
     </item>
-    <item id="10002" type="STRUCTURE" name="ASTI III" rank="C" weight="8000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
-        <creation>
-            <item id="100" count="275" />
-            <item id="101" count="45" />
-            <item id="102" count="125" />
-        </creation>
+    <item id="10002" type="STRUCTURE" nameId="asti3" rank="C" buildTime="60" descriptionId="asti3_d">
+        <requirement>
+            <item id="metal" count="275" />
+        </requirement>
         <properties>
-            <set name="SLOT_CARGO_COUNT" value="2" />
-            <set name="SLOT_ENGINE_COUNT" value="2" />
-            <set name="SLOT_MODULE_COUNT" value="2" />
-            <set name="SLOT_TECHNOLOGY_COUNT" value="2" />
-            <set name="SLOT_WEAPON_COUNT" value="2" />
+            <set name="slot_cargo" value="2" />
+            <set name="slot_engine" value="2" />
+            <set name="slot_module" value="2" />
+            <set name="slot_technology" value="2" />
+            <set name="slot_weapon" value="2" />
         </properties>
     </item>
-    <item id="10003" type="STRUCTURE" name="ASTI IV" rank="D" weight="15000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
-        <creation>
-            <item id="100" count="600" />
-            <item id="101" count="145" />
-            <item id="102" count="260" />
-        </creation>
+    <item id="10003" type="STRUCTURE" nameId="asti4" rank="D" buildTime="60" descriptionId="asti4_d">
+        <requirement>
+            <item id="metal" count="600" />
+        </requirement>
         <properties>
-            <set name="SLOT_CARGO_COUNT" value="4" />
-            <set name="SLOT_ENGINE_COUNT" value="4" />
-            <set name="SLOT_MODULE_COUNT" value="3" />
-            <set name="SLOT_TECHNOLOGY_COUNT" value="2" />
-            <set name="SLOT_WEAPON_COUNT" value="4" />
+            <set name="slot_cargo" value="4" />
+            <set name="slot_engine" value="4" />
+            <set name="slot_module" value="3" />
+            <set name="slot_technology" value="2" />
+            <set name="slot_weapon" value="4" />
         </properties>
     </item>
-    <item id="10004" type="STRUCTURE" name="ASTI V" rank="E" weight="25000" sellable="true" tradable="true" disabled="false" buildTime="60" descriptionId="-1">
-        <creation>
-            <item id="100" count="1000" />
-            <item id="101" count="430" />
-            <item id="102" count="755" />
-        </creation>
+    <item id="10004" type="STRUCTURE" nameId="asti5" rank="E" buildTime="60" descriptionId="asti5_d">
+        <requirement>
+            <item id="metal" count="1000" />
+        </requirement>
         <properties>
-            <set name="SLOT_CARGO_COUNT" value="10" />
-            <set name="SLOT_ENGINE_COUNT" value="6" />
-            <set name="SLOT_MODULE_COUNT" value="4" />
-            <set name="SLOT_TECHNOLOGY_COUNT" value="4" />
-            <set name="SLOT_WEAPON_COUNT" value="8" />
+            <set name="slot_cargo" value="10" />
+            <set name="slot_engine" value="6" />
+            <set name="slot_module" value="4" />
+            <set name="slot_technology" value="4" />
+            <set name="slot_weapon" value="8" />
         </properties>
     </item>
 </list>

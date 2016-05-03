@@ -10,15 +10,16 @@ import com.gameserver.model.commons.StatsSet;
 public abstract class Item extends GameItem
 {
     private Rank rank;
-    private int useSlot; // TODO: move it
     private long buildTime;
+    private Requirement requirement;
 
     public Item(StatsSet set, Requirement requirement)
     {
-        super(set, requirement);
-        setRank(set.getEnum("rank", Rank.class));
-        setUseSlot(set.getInt("useslot", 0));
-        setBuildTime(set.getLong("buildtime", -1));
+        super(set);
+        setRank(set.getEnum("rank", Rank.class, Rank.NONE));
+        setBuildTime(set.getLong("buildTime"));
+
+        setRequirement(requirement);
     }
 
     public Rank getRank() {
@@ -29,19 +30,28 @@ public abstract class Item extends GameItem
         this.rank = rank;
     }
 
-    public int getUseSlot() {
-        return useSlot;
-    }
-
-    public void setUseSlot(int useSlot) {
-        this.useSlot = useSlot;
-    }
-
     public long getBuildTime() {
         return buildTime;
     }
 
     public void setBuildTime(long buildTime) {
         this.buildTime = buildTime;
+    }
+
+    public Requirement getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(Requirement requirement) {
+        this.requirement = requirement;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Item){
+            final Item item = (Item) o;
+            if(item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
+        }
+        return false;
     }
 }

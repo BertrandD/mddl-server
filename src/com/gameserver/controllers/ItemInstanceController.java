@@ -1,60 +1,93 @@
 package com.gameserver.controllers;
 
+import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.model.Base;
+import com.gameserver.model.Player;
+import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.services.ItemService;
+import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.PlayerInventory;
+import com.gameserver.model.items.GameItem;
+import com.gameserver.services.InventoryService;
+import com.gameserver.services.PlayerInventoryService;
+import com.gameserver.services.PlayerService;
+import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 /**
  * @author LEBOC Philippe
  */
 @RestController
-@RequestMapping(value = "/item", produces = "application/json")
+@PreAuthorize("hasRole('ROLE_USER')")
+@RequestMapping(produces = "application/json")
 public class ItemInstanceController {
 
-    private static final List<String> resources = new ArrayList<>();
-    static
-    {
-        resources.add("100");
-        resources.add("101");
-        resources.add("102");
-    }
+    @Autowired
+    private InventoryService inventoryService;
 
     @Autowired
-    private ItemService itemService;
+    private PlayerService playerService;
+
+    @Autowired
+    private PlayerInventoryService playerInventoryService;
 
     @JsonView(View.Standard.class)
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Collection<ItemInstance> findAll(){
-        final List<ItemInstance> items = itemService.findAll();
-        return items;
+    @RequestMapping(value = "/base/item", method = RequestMethod.POST)
+    public JsonResponse createItemInBaseInventory(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count) {
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if (player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
+
+        final Base base = player.getCurrentBase();
+        if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
+
+        final GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
+        if(tmpl == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_NOT_FOUND);
+
+        final BaseInventory inventory;
+        switch(tmpl.getType())
+        {
+            case RESOURCE:
+                inventory = base.getResources();
+                break;
+            case CARGO:
+            case ENGINE:
+            case MODULE:
+            case WEAPON:
+            case STRUCTURE:
+                inventory = base.getShipItems();
+                break;
+            default:
+                inventory = base.getCommons();
+                break;
+        }
+
+        final ItemInstance item = inventoryService.addItem(inventory, itemId, count);
+        if(item == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_CANNOT_CREATE);
+
+        return new JsonResponse(item);
     }
 
     @JsonView(View.Standard.class)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ItemInstance findOne(@PathVariable(value = "id") String id){
-        ItemInstance item = itemService.findOne(id);
-        if(item == null) return null;
-        /*if(resources.contains(item.getItemId())){
-            item = itemService.refresh(item);
-        }*/
-        return item;
-    }
+    @RequestMapping(value = "/player/item", method = RequestMethod.POST)
+    public JsonResponse createItemInPlayerInventory(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count) {
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if (player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
 
-    @JsonView(View.Standard.class)
-    @RequestMapping(method = RequestMethod.POST)
-    public ItemInstance create(@RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count, @RequestParam(value = "base") String baseId) {
-        ItemInstance item = itemService.create(itemId, count);
-        return item;
+        final PlayerInventory inventory = playerInventoryService.findByPlayer(player.getId());
+        if(inventory == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.INVENTORY_NOT_FOUND); // TODO JsonResponse
+
+        final ItemInstance item = inventoryService.addItem(inventory, itemId, count);
+        if(item == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_CANNOT_CREATE);
+
+        return new JsonResponse(item);
     }
 }

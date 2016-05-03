@@ -29,5 +29,10 @@
         <message id="building_headquarter_d" text="Le quartier général est le batiment principal de votre base. Il vous permet la gestion complète de celle-ci." />
         <message id="building_storage_metal_d" text="Le hangar de métal augmente la capacité de stockage de métal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
         <message id="building_storage_crystal_d" text="Le hangar de crystal augmente la capacité de stockage de crystal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
+        <!-- Items -->
+        <message id="item_not_found" text="Item not found" />
+        <message id="item_cannot_create" text="Item cannot be created" />
+        <!-- Inventories -->
+        <message id="inventory_not_found" text="Inventory not found" />
     </messages>
 </list>

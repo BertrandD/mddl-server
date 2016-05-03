@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 
 /**
+ * @deprecated
  * @author LEBOC Philippe
  */
 @Document(collection = "ships")
@@ -65,8 +66,8 @@ public class Ship extends Vehicle {
 
     public boolean addCargo(ItemInstance item){
         final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isCargo() && !item.getTemplate().isDisabled() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.CARGO) > getCargos().size())){
-            getCargos().add(item.getItemId()); // TODO add checks
+        if(item.isCargo() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.CARGO) > getCargos().size())){
+            getCargos().add(item.getTemplateId()); // TODO add checks
             return true;
         }
         return false;
@@ -74,8 +75,8 @@ public class Ship extends Vehicle {
 
     public boolean addEngine(ItemInstance item){
         final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isEngine() && !item.getTemplate().isDisabled() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.ENGINE) > getCargos().size())){
-            getEngines().add(item.getItemId()); // TODO add checks
+        if(item.isEngine() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.ENGINE) > getCargos().size())){
+            getEngines().add(item.getTemplateId()); // TODO add checks
             return true;
         }
         return false;
@@ -83,8 +84,8 @@ public class Ship extends Vehicle {
 
     public boolean addModule(ItemInstance item){
         final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isModule() && !item.getTemplate().isDisabled() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.MODULE) > getCargos().size())){
-            getModules().add(item.getItemId()); // TODO add checks
+        if(item.isModule() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.MODULE) > getCargos().size())){
+            getModules().add(item.getTemplateId()); // TODO add checks
             return true;
         }
         return false;
@@ -97,8 +98,8 @@ public class Ship extends Vehicle {
 
     public boolean addWeapon(ItemInstance item){
         final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isWeapon() && !item.getTemplate().isDisabled() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.WEAPON) > getCargos().size())){
-            getWeapons().add(item.getItemId()); // TODO add checks
+        if(item.isWeapon() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.WEAPON) > getCargos().size())){
+            getWeapons().add(item.getTemplateId()); // TODO add checks
             return true;
         }
         return false;

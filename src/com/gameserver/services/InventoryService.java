@@ -1,51 +1,68 @@
 package com.gameserver.services;
 
-import com.gameserver.model.Player;
+import com.gameserver.interfaces.IInventoryService;
+import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 
 /**
  * @author LEBOC Philippe
  */
 @Service
-public class InventoryService {
+public class InventoryService implements IInventoryService {
 
     @Autowired
-    private InventoryRepository repository;
+    private PlayerInventoryService playerInventoryService;
 
     @Autowired
-    private PlayerService playerService;
+    private ItemService itemService;
 
     @Autowired
-    private BaseService baseService;
+    private BaseInventoryService baseInventoryService;
 
-    public Inventory findOne(String id){
-        return repository.findOne(id);
+    public ItemInstance addItem(Inventory inventory, String templateId, long count){
+        // TODO: check inventory capacity before
+        final ItemInstance item = itemService.findFirstByInventoryAndTemplateId(inventory, templateId);
+
+        if(item == null) {
+            return addNewItem(inventory, templateId, count);
+        }
+
+        item.setCount(item.getCount()+count);
+        itemService.update(item);
+        return item;
     }
 
-    public Collection<Inventory> findAll(){
-        return repository.findAll();
+    @Override
+    public ItemInstance addNewItem(Inventory inventory, String templateId, long count) {
+        final ItemInstance item = itemService.create(inventory, templateId, count);
+        if(item == null) return null;
+
+        inventory.getItems().add(item);
+
+        if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
+        else if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
+        else return null;
+
+        return item;
     }
 
-    public Inventory create(Player player){
-        PlayerInventory inventory = new PlayerInventory(player);
-        inventory = repository.save(inventory);
-        player.setInventory(inventory);
-        playerService.update(player);
-        return inventory;
+    @Override
+    public boolean consumeItem(ItemInstance item, long count) {
+        if(item.getCount() - count >= 0){
+            item.setCount(item.getCount() - count);
+            itemService.update(item);
+            return true;
+        }
+        return false;
     }
 
-    public void update(Inventory inventory) { repository.save(inventory); }
-
-    public void delete(String id) { repository.delete(id); }
-
-    public void deleteAll(){
-        repository.deleteAll();
+    @Override
+    public boolean consumeItem(Inventory inventory, String id, long count) {
+        final ItemInstance item = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(id)).findFirst().orElse(null);
+        return item != null && consumeItem(item, count);
     }
-
 }

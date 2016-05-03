@@ -29,5 +29,10 @@
         <message id="building_headquarter_d" text="The headquarter is your main building that manage your entire base." />
         <message id="building_storage_metal_d" text="The metal storage building increase your basement metal storage capacity. You can up this building to improve the capacity to your conveniences." />
         <message id="building_storage_crystal_d" text="The crystal storage building increase your basement crystal storage capacity. You can up this building to improve the capacity to your conveniences." />
+        <!-- Items -->
+        <message id="item_not_found" text="L'objet n'existe pas" />
+        <message id="item_cannot_create" text="L'objet ne peut pas être créé" />
+        <!-- Inventories -->
+        <message id="inventory_not_found" text="L'inventaire n'existe pas" />
     </messages>
 </list>

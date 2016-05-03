@@ -31,4 +31,10 @@ public final class SystemMessageId {
     public static final String BUILDING_ALREADY_EXIST = "building_already_exist";
     public static final String BUILDING_MAX_LEVEL_REACHED = "building_max_level_reached";
 
+    // items
+    public static final String ITEM_NOT_FOUND = "item_not_found";
+    public static final String ITEM_CANNOT_CREATE = "item_cannot_create";
+
+    // inventory
+    public static final String INVENTORY_NOT_FOUND = "inventory_not_found";
 }

@@ -1,10 +1,7 @@
 package com.gameserver.model.vehicles;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.gameserver.enums.VehicleMission;
-import com.gameserver.interfaces.IFleet;
 import com.gameserver.model.commons.Coordinates;
-import com.gameserver.model.inventory.FleetInventory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,7 +13,7 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Document(collection = "fleets")
-public class Fleet implements IFleet {
+public class Fleet {
 
     @Id
     private String id;
@@ -26,10 +23,6 @@ public class Fleet implements IFleet {
     private Coordinates arrival;
 
     private VehicleMission mission;
-
-    @DBRef
-    @JsonBackReference
-    private FleetInventory inventory;
 
     @DBRef
     private List<Ship> ships;
@@ -43,26 +36,6 @@ public class Fleet implements IFleet {
         setDeparture(from);
         setArrival(to);
         setMission(mission);
-    }
-
-    @Override
-    public long getMaxFleetStorageCapacity() {
-        return getInventory().getMaxCapacity();
-    }
-
-    @Override
-    public long getSpeed() {
-        long power = 99999999; // Config.ENGINE_MAX_POWER;
-        for(Ship ship : getShips())
-        {
-            if(power > ship.getMaxSpeed()) power = ship.getMaxSpeed();
-        }
-        return power;
-    }
-
-    public void addShip(Ship ship){
-        getShips().add(ship); // TODO: add check
-        // TODO: Set VehicleState = FLYING
     }
 
     public String getId() {
@@ -103,13 +76,5 @@ public class Fleet implements IFleet {
 
     public void setShips(List<Ship> ships) {
         this.ships = ships;
-    }
-
-    public FleetInventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(FleetInventory inventory) {
-        this.inventory = inventory;
     }
 }

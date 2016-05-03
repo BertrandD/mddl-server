@@ -6,7 +6,7 @@
 				<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
                         <xs:sequence>
-                            <xs:element name="creation" minOccurs="0" maxOccurs="1">
+                            <xs:element name="requirement" minOccurs="0" maxOccurs="1">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
@@ -34,11 +34,11 @@
                                                         <xs:restriction base="xs:string">
                                                             <xs:enumeration value="power" />
                                                             <xs:enumeration value="capacity" />
-                                                            <xs:enumeration value="SLOT_CARGO_COUNT" />
-                                                            <xs:enumeration value="SLOT_ENGINE_COUNT" />
-                                                            <xs:enumeration value="SLOT_MODULE_COUNT" />
-                                                            <xs:enumeration value="SLOT_TECHNOLOGY_COUNT" />
-                                                            <xs:enumeration value="SLOT_WEAPON_COUNT" />
+                                                            <xs:enumeration value="slot_cargo" />
+                                                            <xs:enumeration value="slot_engine" />
+                                                            <xs:enumeration value="slot_module" />
+                                                            <xs:enumeration value="slot_technology" />
+                                                            <xs:enumeration value="slot_weapon" />
                                                         </xs:restriction>
                                                     </xs:simpleType>
                                                 </xs:attribute>
@@ -49,11 +49,11 @@
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="id" type="xs:normalizedString" use="required" />
-                        <xs:attribute name="name" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="id" type="xs:string" use="required" />
+                        <xs:attribute name="nameId" type="xs:string" use="required" />
                         <xs:attribute name="type" type="xs:normalizedString" use="required" />
-                        <xs:attribute name="descriptionId" type="xs:integer" use="required" />
-                        <xs:attribute name="rank" use="required">
+                        <xs:attribute name="descriptionId" type="xs:string" use="required" />
+                        <xs:attribute name="rank" use="optional">
                             <xs:simpleType>
                                 <xs:restriction base="xs:string">
                                     <xs:enumeration value="NONE" />
@@ -66,13 +66,10 @@
                                 </xs:restriction>
                             </xs:simpleType>
                         </xs:attribute>
-                        <xs:attribute name="useslot" type="xs:integer" use="optional" />
-                        <xs:attribute name="buildTime" type="xs:positiveInteger" use="optional" />
-                        <xs:attribute name="sellable" type="xs:boolean" use="optional"/>
-                        <xs:attribute name="tradable" type="xs:boolean" use="optional" />
-                        <xs:attribute name="disabled" type="xs:boolean" use="optional" />
-                        <xs:attribute name="weight" type="xs:long" use="required" />
-					</xs:complexType>
+                        <xs:attribute name="buildTime" type="xs:long" use="optional" />
+                        <xs:attribute name="weight" type="xs:long" use="optional" />
+                        <xs:attribute name="volume" type="xs:long" use="optional" />
+                    </xs:complexType>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
