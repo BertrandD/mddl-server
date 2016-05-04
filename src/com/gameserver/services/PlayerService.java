@@ -16,7 +16,10 @@ import java.util.List;
 public class PlayerService {
 
     @Autowired
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
+
+    @Autowired
+    private InventoryService inventoryService;
 
     public Player findOne(String id){
         return playerRepository.findOne(id);
@@ -35,8 +38,9 @@ public class PlayerService {
     }
 
     public Player create(Account account, String name){
-        Player p = new Player(account, name);
-        return playerRepository.save(p);
+        Player player = new Player(account, name);
+        inventoryService.createPlayerInventory(player);
+        return playerRepository.save(player);
     }
 
     public void update(Player p){
@@ -45,7 +49,6 @@ public class PlayerService {
 
     public void delete(String id){
         playerRepository.delete(id);
-        // TODO: cascading ?
     }
 
     public void deleteAll(){

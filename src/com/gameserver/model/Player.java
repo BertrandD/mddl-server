@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.util.data.json.View;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -53,6 +54,7 @@ public class Player {
 
     public Player(Account account, String name)
     {
+        setId(new ObjectId().toString());
         setName(name);
         setAccount(account);
         setBases(new ArrayList<>());

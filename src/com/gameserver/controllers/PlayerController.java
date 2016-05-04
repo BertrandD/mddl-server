@@ -6,7 +6,6 @@ import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
-import com.gameserver.services.PlayerInventoryService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.View;
@@ -32,9 +31,6 @@ public class PlayerController {
 
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    private PlayerInventoryService playerInventoryService;
 
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
@@ -67,9 +63,9 @@ public class PlayerController {
                 }
             }
         }
+
         final Account playerAccount = accountService.findOne(account.getId());
         final Player player = playerService.create(account, name);
-        playerInventoryService.create(player);
 
         account.addPlayer(player.getId());
         account.setCurrentPlayer(player.getId());
