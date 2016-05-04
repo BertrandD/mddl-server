@@ -70,10 +70,7 @@ public class BaseController {
         // TODO: Base creation conditions.
 
         final Base base = baseService.create(name, player);
-        player.addBase(base);
-        player.setCurrentBase(base);
-
-        playerService.update(player);
+        if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_CANNOT_CREATE);
         return new JsonResponse(base);
     }
 }

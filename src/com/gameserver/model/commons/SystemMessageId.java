@@ -20,6 +20,7 @@ public final class SystemMessageId {
 
     // base
     public static final String BASE_NOT_FOUND = "base_not_found";
+    public static final String BASE_CANNOT_CREATE = "base_cannot_create";
     public static final String BASE_POSITION_ALREADY_TAKEN = "base_position_already_taken";
 
     // static building
