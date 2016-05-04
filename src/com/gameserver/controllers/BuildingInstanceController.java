@@ -99,6 +99,16 @@ public class BuildingInstanceController {
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_POSITION_ALREADY_TAKEN);
         }
 
+        final HashMap<ItemInstance, Long> collector = new HashMap<>();
+        final JsonResponse validate = validateRequirements(building, building.getTemplate(), collector);
+        if(validate != null) return validate;
+
+        Utils.println("Collecting required items and resources.");
+        collector.forEach((k,v) -> {
+            inventoryService.consumeItem(k, v);
+            Utils.println("Collected " + v + " " + k.getTemplateId());
+        });
+
         base.addBuilding(building, position);
         baseService.update(base);
 
@@ -125,8 +135,44 @@ public class BuildingInstanceController {
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_MAX_LEVEL_REACHED);
         }
 
-        final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
+        final HashMap<ItemInstance, Long> collector = new HashMap<>();
+        final JsonResponse validate = validateRequirements(building, template, collector);
+        if(validate != null) return validate;
 
+        Utils.println("Collecting required items and resources.");
+        collector.forEach((k,v) -> {
+            inventoryService.consumeItem(k, v);
+            Utils.println("Collected " + v + " " + k.getTemplateId());
+        });
+
+        buildingService.ScheduleUpgrade(building);
+        final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
+
+        JsonResponse response = new JsonResponse(building);
+        response.addMeta("queue", tasks);
+        return response;
+    }
+
+    private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector){
+        final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
+        if(requirements == null) return null;
+
+        if(!validateBuildings(building.getBase(), requirements)){
+            return new JsonResponse(JsonResponseType.ERROR, "You do not meet buildings requirements"); // TODO: SystemMessage
+        }
+
+        if(!validateItems(building.getBase(), requirements, collector)){
+            return new JsonResponse(JsonResponseType.ERROR, "You do not meet items requirements"); // TODO: SystemMessage
+        }
+
+        if(!validateFunctions(building, requirements, collector)){
+            return new JsonResponse(JsonResponseType.ERROR, "You do not meet resources requirements"); // TODO: SystemMessage
+        }
+
+        return null;
+    }
+
+    private boolean validateBuildings(Base base, Requirement requirements){
         int i = 0;
         boolean meetRequirements = true;
         while(meetRequirements && i < requirements.getBuildings().size())
@@ -139,10 +185,12 @@ public class BuildingInstanceController {
             i++;
         }
 
-        if(!meetRequirements) return new JsonResponse(JsonResponseType.ERROR, "You do not meet buildings requirements"); // TODO: SystemMessage
-        final HashMap<ItemInstance, Long> collector = new HashMap<>();
+        return meetRequirements;
+    }
 
-        i = 0;
+    private boolean validateItems(Base base, Requirement requirements, HashMap<ItemInstance, Long> collector){
+        int i = 0;
+        boolean meetRequirements = true;
         while(meetRequirements && i < requirements.getItems().size())
         {
             final ItemHolder holder = requirements.getItems().get(i);
@@ -165,14 +213,16 @@ public class BuildingInstanceController {
             collector.put(iInst, holder.getCount());
             i++;
         }
+        return meetRequirements;
+    }
 
-        if(!meetRequirements) return new JsonResponse(JsonResponseType.ERROR, "You do not meet items requirements"); // TODO: SystemMessage
-
-        i = 0;
+    private boolean validateFunctions(BuildingInstance building, Requirement requirements, HashMap<ItemInstance, Long> collector){
+        int i = 0;
+        boolean meetRequirements = true;
         while(meetRequirements && i < requirements.getFunctions().size())
         {
             final FuncHolder holder = requirements.getFunctions().get(i);
-            final ItemInstance iInst = base.getResources().getItems().stream().filter(k->k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+            final ItemInstance iInst = building.getBase().getResources().getItems().stream().filter(k->k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
             final long reqCount = ((Number)Evaluator.getInstance().eval(holder.getFunction().replace("$level", ""+(building.getCurrentLevel()+1)))).longValue();
 
             if(iInst == null || iInst.getCount() < reqCount) {
@@ -182,20 +232,6 @@ public class BuildingInstanceController {
             collector.put(iInst, reqCount);
             i++;
         }
-
-        if(!meetRequirements) return new JsonResponse(JsonResponseType.ERROR, "You do not meet resources requirements"); // TODO: SystemMessage
-
-        Utils.println("Collecting required items and resources.");
-        collector.forEach((k,v) -> {
-            inventoryService.consumeItem(k, v);
-            Utils.println("Collected " + v + " " + k.getTemplateId());
-        });
-
-        buildingService.ScheduleUpgrade(building);
-        final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
-
-        JsonResponse response = new JsonResponse(building);
-        response.addMeta("queue", tasks);
-        return response;
+        return meetRequirements;
     }
 }

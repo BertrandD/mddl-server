@@ -10,13 +10,15 @@
             </requirement>
             <requirement level="3">
                 <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <building id="mine_metal" level="1" />
             </requirement>
             <requirement level="4">
                 <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="5">
                 <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
-                <building id="storage_metal" level="3" />
+                <building id="mine_metal" level="2" />
+                <building id="storage_metal" level="1" />
             </requirement>
             <requirement level="6">
                 <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
