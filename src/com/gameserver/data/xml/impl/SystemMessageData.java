@@ -56,7 +56,9 @@ public class SystemMessageData implements IXmlReader {
     }
 
     public String getMessage(Lang lang, String id){
-        return getMessages(lang).get(id);
+        String msg = getMessages(lang).get(id);
+        if(msg == null) return "Missing System Message reply. Please, contact a Game Master to solve this problem.";
+        return msg;
     }
 
     public HashMap<String, String> getMessages(Lang lang){
