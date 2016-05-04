@@ -2,17 +2,29 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.enums.ItemType;
+import com.gameserver.holders.BuildingHolder;
+import com.gameserver.holders.FuncHolder;
+import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
+import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.inventory.Inventory;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
+import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.gameserver.tasks.mongo.BuildingTask;
+import com.util.Evaluator;
+import com.util.Utils;
 import com.util.data.json.Response.JsonResponse;
+import com.util.data.json.Response.JsonResponseType;
 import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -44,6 +57,9 @@ public class BuildingInstanceController {
 
     @Autowired
     private BaseService baseService;
+
+    @Autowired
+    private InventoryService inventoryService;
 
     @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.GET)
@@ -109,8 +125,74 @@ public class BuildingInstanceController {
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_MAX_LEVEL_REACHED);
         }
 
+        final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
+
+        int i = 0;
+        boolean meetRequirements = true;
+        while(meetRequirements && i < requirements.getBuildings().size())
+        {
+            final BuildingHolder holder = requirements.getBuildings().get(i);
+            final BuildingInstance bInst = base.getBuildings().stream().filter(k -> k.getBuildingId().equals(holder.getId())).findFirst().orElse(null);
+            if(bInst == null) {
+                meetRequirements = false;
+            }
+            i++;
+        }
+
+        if(!meetRequirements) return new JsonResponse(JsonResponseType.ERROR, "You do not meet buildings requirements"); // TODO: SystemMessage
+        final HashMap<ItemInstance, Long> collector = new HashMap<>();
+
+        i = 0;
+        while(meetRequirements && i < requirements.getItems().size())
+        {
+            final ItemHolder holder = requirements.getItems().get(i);
+            final ItemType itemType = ItemData.getInstance().getTemplate(holder.getId()).getType();
+
+            final Inventory inventory;
+            if(itemType.equals(ItemType.RESOURCE)) {
+                inventory = base.getResources();
+            } else if(itemType.equals(ItemType.COMMON)) {
+                inventory = base.getCommons();
+            } else {
+                inventory = base.getShipItems();
+            }
+
+            final ItemInstance iInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+            if(iInst == null || iInst.getCount() < holder.getCount()) {
+                meetRequirements = false;
+            }
+
+            collector.put(iInst, holder.getCount());
+            i++;
+        }
+
+        if(!meetRequirements) return new JsonResponse(JsonResponseType.ERROR, "You do not meet items requirements"); // TODO: SystemMessage
+
+        i = 0;
+        while(meetRequirements && i < requirements.getFunctions().size())
+        {
+            final FuncHolder holder = requirements.getFunctions().get(i);
+            final ItemInstance iInst = base.getResources().getItems().stream().filter(k->k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+            final long reqCount = ((Number)Evaluator.getInstance().eval(holder.getFunction().replace("$level", ""+(building.getCurrentLevel()+1)))).longValue();
+
+            if(iInst == null || iInst.getCount() < reqCount) {
+                meetRequirements = false;
+            }
+
+            collector.put(iInst, reqCount);
+            i++;
+        }
+
+        if(!meetRequirements) return new JsonResponse(JsonResponseType.ERROR, "You do not meet resources requirements"); // TODO: SystemMessage
+
+        Utils.println("Collecting required items and resources.");
+        collector.forEach((k,v) -> {
+            inventoryService.consumeItem(k, v);
+            Utils.println("Collected " + v + " " + k.getTemplateId());
+        });
+
         buildingService.ScheduleUpgrade(building);
-        List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
+        final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
 
         JsonResponse response = new JsonResponse(building);
         response.addMeta("queue", tasks);

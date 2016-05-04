@@ -64,6 +64,12 @@ public class InventoryService implements IInventoryService {
             return item;
         }
 
+        if(inventory instanceof ResourceInventory)
+        {
+            // TODO: refresh logic
+            ((ResourceInventory) inventory).setLastRefresh(System.currentTimeMillis());
+        }
+
         item.setCount(item.getCount()+count);
         itemService.update(item);
         return item;
