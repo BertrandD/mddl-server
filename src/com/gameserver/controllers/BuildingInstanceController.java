@@ -103,11 +103,7 @@ public class BuildingInstanceController {
         final JsonResponse validate = validateRequirements(building, building.getTemplate(), collector);
         if(validate != null) return validate;
 
-        Utils.println("Collecting required items and resources.");
-        collector.forEach((k,v) -> {
-            inventoryService.consumeItem(k, v);
-            Utils.println("Collected " + v + " " + k.getTemplateId());
-        });
+        collector.forEach(inventoryService::consumeItem);
 
         base.addBuilding(building, position);
         baseService.update(base);
@@ -123,7 +119,7 @@ public class BuildingInstanceController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         final Base base = player.getCurrentBase();
 
-        BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
+        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
         if(building == null){
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
         }
@@ -139,11 +135,7 @@ public class BuildingInstanceController {
         final JsonResponse validate = validateRequirements(building, template, collector);
         if(validate != null) return validate;
 
-        Utils.println("Collecting required items and resources.");
-        collector.forEach((k,v) -> {
-            inventoryService.consumeItem(k, v);
-            Utils.println("Collected " + v + " " + k.getTemplateId());
-        });
+        collector.forEach(inventoryService::consumeItem);
 
         buildingService.ScheduleUpgrade(building);
         final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
@@ -158,15 +150,15 @@ public class BuildingInstanceController {
         if(requirements == null) return null;
 
         if(!validateBuildings(building.getBase(), requirements)){
-            return new JsonResponse(JsonResponseType.ERROR, "You do not meet buildings requirements"); // TODO: SystemMessage
+            return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
         }
 
         if(!validateItems(building.getBase(), requirements, collector)){
-            return new JsonResponse(JsonResponseType.ERROR, "You do not meet items requirements"); // TODO: SystemMessage
+            return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
         }
 
         if(!validateFunctions(building, requirements, collector)){
-            return new JsonResponse(JsonResponseType.ERROR, "You do not meet resources requirements"); // TODO: SystemMessage
+            return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.YOU_DONT_MEET_RESOURCE_REQUIREMENT);
         }
 
         return null;

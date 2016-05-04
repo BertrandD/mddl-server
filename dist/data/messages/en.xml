@@ -34,5 +34,9 @@
         <message id="item_cannot_create" text="L'objet ne peut pas être créé" />
         <!-- Inventories -->
         <message id="inventory_not_found" text="L'inventaire n'existe pas" />
+        <!-- Requirements -->
+        <message id="you_dont_meet_building_requirement" text="You do not meet buildings requirements" />
+        <message id="you_dont_meet_item_requirement" text="You do not meet items requirements" />
+        <message id="you_dont_meet_resource_requirement" text="You do not meet resources requirements" />
     </messages>
 </list>
