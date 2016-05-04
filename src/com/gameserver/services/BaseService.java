@@ -18,7 +18,7 @@ public class BaseService {
     private BaseRepository repository;
 
     @Autowired
-    private BaseInventoryService baseInventoryService;
+    private InventoryService inventoryService;
 
     public Base findOne(String id){
         return repository.findOne(id);
@@ -30,11 +30,11 @@ public class BaseService {
 
     public Base create(String name, Player player){
         Base base = new Base(name, player);
-        base = repository.save(base); // to get an ID
+        //base = repository.save(base); // to get an ID
 
-        base.setResources(baseInventoryService.create(base));
-        base.setCommons(baseInventoryService.create(base));
-        base.setShipItems(baseInventoryService.create(base));
+        base.setResources(inventoryService.createResourceInventory(base));
+        base.setCommons(inventoryService.createBaseInventory(base));
+        base.setShipItems(inventoryService.createBaseInventory(base));
         return repository.save(base);
     }
 

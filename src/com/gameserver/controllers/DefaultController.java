@@ -58,6 +58,9 @@ public class DefaultController implements ErrorController{
     @Autowired
     private PlayerService playerService;
 
+    @Autowired
+    private InventoryService inventoryService;
+
     @RequestMapping(value = "/", produces = "application/json")
     public JsonResponse index()
     {
@@ -69,6 +72,7 @@ public class DefaultController implements ErrorController{
         itemService.deleteAll();
         playerInventoryService.deleteAll();
         buildingService.deleteAll();
+        inventoryService.deleteAll();
         baseService.deleteAll();
         playerService.deleteAll();
         return true;

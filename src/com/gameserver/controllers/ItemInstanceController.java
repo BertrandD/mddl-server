@@ -8,6 +8,7 @@ import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.services.InventoryService;
@@ -52,7 +53,7 @@ public class ItemInstanceController {
         final GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
         if(tmpl == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_NOT_FOUND);
 
-        final BaseInventory inventory;
+        final Inventory inventory;
         switch(tmpl.getType())
         {
             case RESOURCE:

@@ -7,8 +7,10 @@ import com.gameserver.enums.ItemType;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.model.vehicles.Ship;
 import com.util.data.json.View;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,7 +22,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
- * TODO: Rewrite inventory
  */
 @Document(collection = "bases")
 public final class Base
@@ -52,7 +53,7 @@ public final class Base
     @DBRef
     @JsonIgnore
     @JsonManagedReference
-    private BaseInventory resources;
+    private ResourceInventory resources;
 
     @DBRef
     @JsonIgnore
@@ -72,7 +73,7 @@ public final class Base
 
     public Base(String name, Player owner)
     {
-        setId(null);
+        setId(new ObjectId().toString());
         setName(name);
         setOwner(owner);
         setBuildings(new ArrayList<>());
@@ -147,11 +148,11 @@ public final class Base
     }
 
     @JsonIgnore
-    public BaseInventory getResources() {
+    public ResourceInventory getResources() {
         return resources;
     }
 
-    public void setResources(BaseInventory resources) {
+    public void setResources(ResourceInventory resources) {
         this.resources = resources;
     }
 

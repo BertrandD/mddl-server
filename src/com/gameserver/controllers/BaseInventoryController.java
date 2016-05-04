@@ -4,7 +4,7 @@ import com.auth.Account;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
-import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.Inventory;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class BaseInventoryController {
         final Base base = player.getCurrentBase();
         if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
 
-        final HashMap<String, BaseInventory> inventories = new HashMap<>();
+        final HashMap<String, Inventory> inventories = new HashMap<>();
         inventories.put("RESOURCE", base.getResources());
         inventories.put("SHIP_ITEM", base.getShipItems());
         inventories.put("COMMON", base.getCommons());

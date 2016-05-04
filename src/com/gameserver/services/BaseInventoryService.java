@@ -1,6 +1,5 @@
 package com.gameserver.services;
 
-import com.config.Config;
 import com.gameserver.model.Base;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.repository.BaseInventoryRepository;
@@ -16,9 +15,6 @@ public class BaseInventoryService {
     @Autowired
     private BaseInventoryRepository repository;
 
-    @Autowired
-    private ItemService itemService;
-
     public BaseInventory findOne(String id){
         return repository.findOne(id);
     }
@@ -27,9 +23,7 @@ public class BaseInventoryService {
 
     public BaseInventory create(Base base){
         BaseInventory inventory = new BaseInventory(base);
-        inventory = repository.save(inventory);
-        inventory.getItems().add(itemService.create(inventory, "metal", Config.INITIAL_BASE_METAL));
-        return inventory;
+        return repository.save(inventory);
     }
 
     public void update(BaseInventory inventory) { repository.save(inventory); }
