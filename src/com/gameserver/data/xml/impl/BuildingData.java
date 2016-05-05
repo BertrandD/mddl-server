@@ -7,9 +7,6 @@ import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.model.buildings.HeadQuarter;
-import com.gameserver.model.buildings.Mine;
-import com.gameserver.model.buildings.Storage;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.util.data.xml.IXmlReader;
@@ -18,6 +15,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,86 +42,86 @@ public class BuildingData implements IXmlReader {
     }
 
     @Override
-    public void parseDocument(Document doc)
-    {
+    public void parseDocument(Document doc) {
         for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
         {
             if ("list".equalsIgnoreCase(a.getNodeName()))
             {
                 for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling())
                 {
-                    if ("building".equalsIgnoreCase(b.getNodeName()))
-                    {
+                    if ("building".equalsIgnoreCase(b.getNodeName())) {
                         NamedNodeMap attrs = b.getAttributes();
                         final StatsSet set = new StatsSet();
+                        final HashMap<Integer, Requirement> requirements = new HashMap<>();
 
-                        for(int i = 0; i < attrs.getLength(); i++) {
+                        for (int i = 0; i < attrs.getLength(); i++) {
                             final Node att = attrs.item(i);
                             set.set(att.getNodeName(), att.getNodeValue());
                         }
 
-                        final Building building = createBuildingObject(set);
-                        if(building == null) {
-                            LOGGER.info(getClass().getSimpleName()+ " : building cannot be instanciated because building type not recognized => null");
-                            continue;
-                        }
-
-                        for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
-                        {
-                            if("requirements".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                        for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling()) {
+                            if ("requirements".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
-                                    if("requirement".equalsIgnoreCase(d.getNodeName()))
-                                    {
+                                    if ("requirement".equalsIgnoreCase(d.getNodeName())) {
                                         final int level = parseInteger(attrs, "level");
                                         final Requirement requirement = new Requirement();
-                                        for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-                                        {
+                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
-                                            if("function".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            if ("function".equalsIgnoreCase(e.getNodeName())) {
                                                 requirement.addFunction(new FuncHolder(parseString(attrs, "id"), parseString(attrs, "val")));
-                                            }
-                                            else if("item".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            } else if ("item".equalsIgnoreCase(e.getNodeName())) {
                                                 requirement.addItem(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count")));
-                                            }
-                                            else if("building".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            } else if ("building".equalsIgnoreCase(e.getNodeName())) {
                                                 requirement.addBuilding(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
-                                            }
-                                            else if("technology".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            } else if ("technology".equalsIgnoreCase(e.getNodeName())) {
                                                 LOGGER.info("Technology requirement cannot be parsed: TODO."); // TODO
                                             }
                                         }
-                                        building.addRequirements(level, requirement);
+                                        requirements.put(level, requirement);
+                                    }
+                                }
+                            } else if ("properties".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
+                                    attrs = d.getAttributes();
+                                    if ("property".equalsIgnoreCase(d.getNodeName())) {
+                                        final String name = parseString(attrs, "name");
+                                        final String value = parseString(attrs, "value");
+                                        set.set(name, value);
                                     }
                                 }
                             }
                         }
 
-                        _buildings.put(set.getString("id"), building);
+                        final Building building;
+                        try {
+                            building = makeBuilding(set);
+                            if (building != null) {
+                                building.setRequirements(requirements);
+                                _buildings.put(set.getString("id"), building);
+                            }
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         }
     }
 
-    private Building createBuildingObject(StatsSet set)
-    {
-        switch (set.getEnum("type", BuildingCategory.class))
+    private Building makeBuilding(StatsSet set) throws InvocationTargetException {
+        try
         {
-            case HEADQUARTER: return new HeadQuarter(set);
-            case STORAGE: return new Storage(set);
-            case PRODUCTION: return new Mine(set);
+            final Constructor<?> c = Class.forName("com.gameserver.model.buildings." + set.getString("type")).getConstructor(StatsSet.class);
+            return (Building) c.newInstance(set);
         }
-        return null;
+        catch (Exception e)
+        {
+            throw new InvocationTargetException(e);
+        }
     }
 
-    public Building getBuilding(String id){
+    public Building getBuilding(String id) {
         return _buildings.get(id);
     }
 

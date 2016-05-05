@@ -5,8 +5,8 @@ import com.gameserver.model.commons.StatsSet;
 /**
  * @author LEBOC Philippe
  */
-public class HeadQuarter extends Building {
-    public HeadQuarter(StatsSet set) {
+public class Headquarter extends Building {
+    public Headquarter(StatsSet set) {
         super(set);
     }
 }

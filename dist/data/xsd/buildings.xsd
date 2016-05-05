@@ -12,41 +12,56 @@
 										<xs:element name="requirement" minOccurs="1" maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:sequence>
-													<xs:element name="function" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="id" type="xs:string" use="required" />
-															<xs:attribute name="type" use="required">
-																<xs:simpleType>
-																	<xs:restriction base="xs:string">
-																		<xs:enumeration value="ITEM" />
-																		<xs:enumeration value="BUILDING" />
-																		<xs:enumeration value="TECHNOLOGY" />
-																	</xs:restriction>
-																</xs:simpleType>
-															</xs:attribute>
-															<xs:attribute name="val" type="xs:string" use="required" />
-														</xs:complexType>
-													</xs:element>
-													<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="id" type="xs:string" use="required" />
-															<xs:attribute name="count" type="xs:integer" use="required" />
-														</xs:complexType>
-													</xs:element>
-													<xs:element name="building" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="id" type="xs:string" use="required" />
-															<xs:attribute name="level" type="xs:integer" use="required" />
-														</xs:complexType>
-													</xs:element>
-													<xs:element name="technology" minOccurs="0" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:attribute name="id" type="xs:string" use="required" />
-															<xs:attribute name="level" type="xs:integer" use="required" />
-														</xs:complexType>
-													</xs:element>
+													<xs:choice maxOccurs="unbounded" minOccurs="1">
+														<xs:element name="function" minOccurs="0" maxOccurs="unbounded">
+															<xs:complexType>
+																<xs:attribute name="id" type="xs:string" use="required" />
+																<xs:attribute name="type" use="required">
+																	<xs:simpleType>
+																		<xs:restriction base="xs:string">
+																			<xs:enumeration value="ITEM" />
+																			<xs:enumeration value="BUILDING" />
+																			<xs:enumeration value="TECHNOLOGY" />
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:attribute>
+																<xs:attribute name="val" type="xs:string" use="required" />
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+															<xs:complexType>
+																<xs:attribute name="id" type="xs:string" use="required" />
+																<xs:attribute name="count" type="xs:integer" use="required" />
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="building" minOccurs="0" maxOccurs="unbounded">
+															<xs:complexType>
+																<xs:attribute name="id" type="xs:string" use="required" />
+																<xs:attribute name="level" type="xs:integer" use="required" />
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="technology" minOccurs="0" maxOccurs="unbounded">
+															<xs:complexType>
+																<xs:attribute name="id" type="xs:string" use="required" />
+																<xs:attribute name="level" type="xs:integer" use="required" />
+															</xs:complexType>
+														</xs:element>
+													</xs:choice>
 												</xs:sequence>
 												<xs:attribute name="level" type="xs:integer" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="properties" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="property" minOccurs="1" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="type" type="xs:string" use="optional" />
+												<xs:attribute name="value" type="xs:string" use="required" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
