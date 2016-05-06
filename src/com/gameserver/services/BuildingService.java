@@ -40,9 +40,9 @@ public class BuildingService {
     }
 
     public BuildingInstance create(Base base, String buildingId){
-        Building b = BuildingData.getInstance().getBuilding(buildingId);
+        final Building b = BuildingData.getInstance().getBuilding(buildingId);
         if(b == null) return null;
-        BuildingInstance p = new BuildingInstance(base, b);
+        final BuildingInstance p = new BuildingInstance(base, b);
         return repository.save(p);
     }
 

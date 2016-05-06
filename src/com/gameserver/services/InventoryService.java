@@ -9,6 +9,7 @@ import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.inventory.ResourceInventory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**

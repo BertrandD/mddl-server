@@ -4,6 +4,7 @@ import com.auth.Account;
 import com.gameserver.repository.PlayerRepository;
 import com.gameserver.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -38,15 +39,17 @@ public class PlayerService {
     }
 
     public Player create(Account account, String name){
-        Player player = new Player(account, name);
+        final Player player = new Player(account, name);
         inventoryService.createPlayerInventory(player);
         return playerRepository.save(player);
     }
 
+    @Async
     public void update(Player p){
         playerRepository.save(p);
     }
 
+    @Async
     public void delete(String id){
         playerRepository.delete(id);
     }

@@ -4,6 +4,7 @@ import com.gameserver.model.Base;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.repository.BaseInventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,12 +23,13 @@ public class BaseInventoryService {
     public BaseInventory findByBase(String id) { return repository.findByBase(id); }
 
     public BaseInventory create(Base base){
-        BaseInventory inventory = new BaseInventory(base);
-        return repository.save(inventory);
+        return repository.save(new BaseInventory(base));
     }
 
+    @Async
     public void update(BaseInventory inventory) { repository.save(inventory); }
 
+    @Async
     public void delete(String id) { repository.delete(id); }
 
     public void deleteAll(){

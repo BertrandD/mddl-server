@@ -65,7 +65,6 @@ public class BaseService {
         player.addBase(base);
         player.setCurrentBase(base);
         playerService.update(player);
-
         return repository.save(base);
     }
 

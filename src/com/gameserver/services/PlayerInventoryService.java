@@ -4,6 +4,7 @@ import com.gameserver.model.Player;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.repository.PlayerInventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,8 +33,10 @@ public class PlayerInventoryService{
         return inventory;
     }
 
+    @Async
     public void update(PlayerInventory inventory) { repository.save(inventory); }
 
+    @Async
     public void delete(String id) { repository.delete(id); }
 
     public void deleteAll(){

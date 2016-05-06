@@ -5,6 +5,7 @@ import com.gameserver.model.Base;
 import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.repository.ResourceInventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,8 +34,10 @@ public class ResourceInventoryService {
         return inventory;
     }
 
+    @Async
     public void update(ResourceInventory inventory) { repository.save(inventory); }
 
+    @Async
     public void delete(String id) { repository.delete(id); }
 
     public void deleteAll(){

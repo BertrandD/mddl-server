@@ -4,6 +4,7 @@ import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,10 +42,12 @@ public class ItemService {
         return repository.save(new ItemInstance(inventory, itemId, count));
     }
 
+    @Async
     public void update(ItemInstance item){
         repository.save(item);
     }
 
+    @Async
     public void delete(String id){ repository.delete(id); }
 
     public void deleteAll(){ repository.deleteAll(); }
