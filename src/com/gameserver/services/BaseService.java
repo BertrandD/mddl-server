@@ -30,7 +30,6 @@ public class BaseService {
     private static final String MINE_METAL = "mine_metal";
     private static final String METAL = "metal";
 
-    @SuppressWarnings("Unused")
     public Base findOne(String id){
         final Base base = repository.findOne(id);
         final BuildingInstance mineMetal = base.getBuildings().stream().filter(k->k.getBuildingId().equals(MINE_METAL)).findFirst().orElse(null);

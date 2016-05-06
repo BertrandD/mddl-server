@@ -23,7 +23,6 @@ public class Mine extends Building {
         super(set);
         setFunction(set.getString("production"));
         evaluateProduction();
-        getProduction().forEach((k, v) -> Utils.println("Level [" + k + "] = " + v));
     }
 
     private void evaluateProduction(){
