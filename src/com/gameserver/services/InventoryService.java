@@ -29,6 +29,12 @@ public class InventoryService implements IInventoryService {
     @Autowired
     private ResourceInventoryService resourceInventoryService;
 
+    public void update(Inventory inventory){
+        if(inventory instanceof ResourceInventory) resourceInventoryService.update((ResourceInventory)inventory);
+        else if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
+        else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
+    }
+
     public BaseInventory createBaseInventory(Base base){
         return baseInventoryService.create(base);
     }
@@ -43,7 +49,6 @@ public class InventoryService implements IInventoryService {
 
     @Override
     public ItemInstance addItem(Inventory inventory, String templateId, long count){
-
         ItemInstance item = itemService.findFirstByInventoryAndTemplateId(inventory, templateId);
 
         if(item == null)
@@ -68,12 +73,24 @@ public class InventoryService implements IInventoryService {
         {
             // TODO: refresh logic
             ((ResourceInventory) inventory).setLastRefresh(System.currentTimeMillis());
+            resourceInventoryService.update((ResourceInventory)inventory);
         }
 
         item.setCount(item.getCount()+count);
         itemService.update(item);
         return item;
+    }
 
+    public ItemInstance addItem(ItemInstance item, long amount){
+        if (item.getInventory() instanceof ResourceInventory) {
+            // TODO: refresh logic
+            ((ResourceInventory) item.getInventory()).setLastRefresh(System.currentTimeMillis());
+            resourceInventoryService.update((ResourceInventory) item.getInventory());
+        }
+
+        item.setCount(item.getCount()+amount);
+        itemService.update(item);
+        return item;
     }
 
     @Override

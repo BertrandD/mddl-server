@@ -1,5 +1,8 @@
 package com.gameserver.manager;
 
+import com.gameserver.model.instances.BuildingInstance;
+import com.gameserver.model.inventory.ResourceInventory;
+import com.gameserver.services.InventoryService;
 import com.gameserver.tasks.mongo.BuildingTask;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
@@ -21,6 +24,9 @@ public class BuildingTaskManager {
 
     @Autowired
     private BuildingService buildingService;
+
+    @Autowired
+    private InventoryService inventoryService;
 
     private ScheduledFuture<?> scheduledFuture;
 
@@ -86,7 +92,16 @@ public class BuildingTaskManager {
     {
         @Override
         public void run() {
-            getCurrentTask().getBuilding().setCurrentLevel(getCurrentTask().getLevel());
+            final BuildingInstance building = getCurrentTask().getBuilding();
+
+            if(building.getCurrentLevel() == 0 && building.getBuildingId().equals("mine_metal"))
+            {
+                final ResourceInventory inventory = building.getBase().getResources();
+                inventory.setLastRefresh(System.currentTimeMillis());
+                inventoryService.update(inventory);
+            }
+
+            building.setCurrentLevel(getCurrentTask().getLevel());
             buildingService.update(getCurrentTask().getBuilding());
             restart(getCurrentTask());
         }
