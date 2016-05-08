@@ -8,8 +8,9 @@ import com.gameserver.model.inventory.Inventory;
  */
 public interface IInventoryService {
 
-    ItemInstance addItem(Inventory inventory, String templateId, long count);
+    ItemInstance addItem(ItemInstance item, final long amount);
+    ItemInstance addItem(Inventory inventory, String templateId, final long amount);
 
-    boolean consumeItem(ItemInstance item, long count);
-    boolean consumeItem(Inventory inventory, String id, long count);
+    boolean consumeItem(ItemInstance item, final long amount);
+    boolean consumeItem(Inventory inventory, String id, final long amount);
 }
