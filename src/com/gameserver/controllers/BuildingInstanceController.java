@@ -83,7 +83,7 @@ public class BuildingInstanceController {
 
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId, @RequestParam(value = "position") int position){
+    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
 
@@ -94,9 +94,11 @@ public class BuildingInstanceController {
         final BuildingInstance building = buildingService.create(base, templateId);
         if(building == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_CANNOT_CREATE);
 
+        /*
+        * TODO: uncomment
         if(base.getBuildingPositions().containsKey(position)){
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_POSITION_ALREADY_TAKEN);
-        }
+        }*/
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
         final JsonResponse validate = validateRequirements(building, building.getTemplate(), collector);
@@ -104,7 +106,7 @@ public class BuildingInstanceController {
 
         collector.forEach(inventoryService::consumeItem);
 
-        base.addBuilding(building, position);
+        base.addBuilding(building, base.getBuildingPositions().size()+1); // temp position disable
         baseService.update(base);
 
         buildingService.ScheduleUpgrade(building);
