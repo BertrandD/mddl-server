@@ -38,5 +38,8 @@
         <message id="you_dont_meet_building_requirement" text="You do not meet buildings requirements" />
         <message id="you_dont_meet_item_requirement" text="You do not meet items requirements" />
         <message id="you_dont_meet_resource_requirement" text="You do not meet resources requirements" />
+        <!-- Items details -->
+        <message id="metal_n" text="Metal" />
+        <message id="metal_d" text="The metal is a primary resource used to make buildings and ships components" />
     </messages>
 </list>
