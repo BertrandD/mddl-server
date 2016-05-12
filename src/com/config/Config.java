@@ -27,6 +27,9 @@ public final class Config {
     public static String SLACK_WARNING_CHANNEL;
     public static String SLACK_WARNING_BOT_NAME;
     public static String SLACK_WARNING_BOT_ICON;
+    public static String SLACK_INFO_CHANNEL;
+    public static String SLACK_INFO_BOT_NAME;
+    public static String SLACK_INFO_BOT_ICON;
 
     // --------------------------------------------------
     // Load properties files
@@ -43,5 +46,8 @@ public final class Config {
         SLACK_WARNING_CHANNEL = general.getString("SlackWarningChannel", "");
         SLACK_WARNING_BOT_NAME = general.getString("SlackWarningBotName", "");
         SLACK_WARNING_BOT_ICON = general.getString("SlackWarningBotIcon", "");
+        SLACK_INFO_CHANNEL = general.getString("SlackInfoChannel", "");
+        SLACK_INFO_BOT_NAME = general.getString("SlackInfoBotName", "");
+        SLACK_INFO_BOT_ICON = general.getString("SlackInfoBotIcon", "");
     }
 }

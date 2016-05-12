@@ -73,6 +73,20 @@ public class Slack {
         }
     }
 
+    public static void sendInfo(String message)
+    {
+        try {
+            SlackRequest request = new SlackRequest(Config.SLACK_INFO_CHANNEL, Config.SLACK_INFO_BOT_NAME, message, Config.SLACK_INFO_BOT_ICON);
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            String str = mapper.writeValueAsString(request);
+            excutePost(Config.SLACK_URL, str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private static String excutePost(String targetURL, String urlParameters)
     {
         URL url;
