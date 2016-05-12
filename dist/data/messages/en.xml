@@ -23,10 +23,12 @@
         <message id="building_max_level_reached" text="Max building level reached." />
         <!-- Buildings names -->
         <message id="building_headquarter_n" text="Headquarter" />
+        <message id="building_mine_metal_n" text="Metal mine" />
         <message id="building_storage_metal_n" text="Metal storage" />
         <message id="building_storage_crystal_n" text="Crystal storage" />
         <!-- Buildings descriptions -->
         <message id="building_headquarter_d" text="The headquarter is your main building that manage your entire base." />
+        <message id="building_mine_metal_d" text="Metal mine is necessary to extract metal resource from minerals." />
         <message id="building_storage_metal_d" text="The metal storage building increase your basement metal storage capacity. You can up this building to improve the capacity to your conveniences." />
         <message id="building_storage_crystal_d" text="The crystal storage building increase your basement crystal storage capacity. You can up this building to improve the capacity to your conveniences." />
         <!-- Items -->
