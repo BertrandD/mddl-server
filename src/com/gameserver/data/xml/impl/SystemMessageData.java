@@ -2,6 +2,7 @@ package com.gameserver.data.xml.impl;
 
 import com.config.Config;
 import com.gameserver.enums.Lang;
+import com.util.Slack;
 import com.util.data.xml.IXmlReader;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -57,7 +58,10 @@ public class SystemMessageData implements IXmlReader {
 
     public String getMessage(Lang lang, String id){
         String msg = getMessages(lang).get(id);
-        if(msg == null) return "Missing System Message reply. Please, contact a Game Master to solve this problem.";
+        if(msg == null) {
+            Slack.sendWarning("Missing " + lang.getName() + " translation for key `" + id + "` !");
+            return "%" + id + "%";
+        }
         return msg;
     }
 

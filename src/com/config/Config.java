@@ -23,6 +23,10 @@ public final class Config {
     public static String[] FORBIDDEN_NAMES;
     public static long INITIAL_BASE_METAL;
     public static long MAX_PLAYER_INVENTORY_CAPACITY;
+    public static String SLACK_URL;
+    public static String SLACK_WARNING_CHANNEL;
+    public static String SLACK_WARNING_BOT_NAME;
+    public static String SLACK_WARNING_BOT_ICON;
 
     // --------------------------------------------------
     // Load properties files
@@ -35,5 +39,9 @@ public final class Config {
         FORBIDDEN_NAMES = general.getString("ForbiddenNames", "").split(",");
         INITIAL_BASE_METAL = general.getLong("InitialBaseMetal", 0);
         MAX_PLAYER_INVENTORY_CAPACITY = general.getLong("MaxPlayerInventoryCapacity", 1000000000);
+        SLACK_URL = general.getString("SlackURL", "");
+        SLACK_WARNING_CHANNEL = general.getString("SlackWarningChannel", "");
+        SLACK_WARNING_BOT_NAME = general.getString("SlackWarningBotName", "");
+        SLACK_WARNING_BOT_ICON = general.getString("SlackWarningBotIcon", "");
     }
 }
