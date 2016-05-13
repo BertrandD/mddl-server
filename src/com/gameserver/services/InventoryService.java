@@ -13,6 +13,7 @@ import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.model.items.GameItem;
+import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,10 +88,13 @@ public class InventoryService implements IInventoryService {
         final GameItem template = item.getTemplate();
         if(template == null) return null;
 
-        if(item.getInventory().getFreeVolume() < (template.getVolume()*amount)) return null;
+        final long amountThatCanBeAdded = Math.floorDiv(item.getInventory().getFreeVolume(), template.getVolume());
+        if (amountThatCanBeAdded < 1) {
+            return null;
+        }
 
-        item.setCount(item.getCount()+amount);
-        itemService.update(item);
+        item.setCount(item.getCount() + Math.min(amountThatCanBeAdded, amount));
+//        itemService.update(item);
         return item;
     }
 
