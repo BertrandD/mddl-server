@@ -124,7 +124,6 @@ public class Slack {
                 response.append('\r');
             }
             rd.close();
-            Utils.println("test...");
             return response.toString();
 
         } catch (Exception e) {
