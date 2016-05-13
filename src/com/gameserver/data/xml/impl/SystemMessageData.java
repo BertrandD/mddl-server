@@ -2,6 +2,7 @@ package com.gameserver.data.xml.impl;
 
 import com.config.Config;
 import com.gameserver.enums.Lang;
+import com.util.Slack;
 import com.util.data.xml.IXmlReader;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
