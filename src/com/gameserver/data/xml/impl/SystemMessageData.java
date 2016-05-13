@@ -25,7 +25,7 @@ public class SystemMessageData implements IXmlReader {
     }
 
     @Override
-    public void load() {
+    public synchronized void load() {
         _english.clear();
         _french.clear();
         parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "messages", false);

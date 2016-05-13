@@ -46,7 +46,7 @@ public class ItemData implements IXmlReader {
     }
 
     @Override
-    public void load() {
+    public synchronized void load() {
         _all.clear();
         _structures.clear();
         _cargos.clear();
