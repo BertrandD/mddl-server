@@ -1,5 +1,6 @@
 package com.gameserver.services;
 
+import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.interfaces.IInventoryService;
 import com.gameserver.model.Base;
@@ -11,6 +12,7 @@ import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.inventory.ResourceInventory;
+import com.gameserver.model.items.GameItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +84,11 @@ public class InventoryService implements IInventoryService {
      * @return item with current amount + added amount
      */
     private ItemInstance addResource(ItemInstance item, final long amount) {
+        final GameItem template = item.getTemplate();
+        if(template == null) return null;
+
+        if(item.getInventory().getFreeVolume() < (template.getVolume()*amount)) return null;
+
         item.setCount(item.getCount()+amount);
         itemService.update(item);
         return item;
@@ -90,6 +97,11 @@ public class InventoryService implements IInventoryService {
     @Override
     public ItemInstance addItem(Inventory inventory, String templateId, final long amount){
         ItemInstance item = itemService.findFirstByInventoryAndTemplateId(inventory, templateId);
+
+        final GameItem template = ItemData.getInstance().getTemplate(templateId);
+        if(template == null) return null;
+
+        if(inventory.getFreeVolume() < (template.getVolume()*amount)) return null;
 
         if(item == null)
         {
@@ -118,6 +130,12 @@ public class InventoryService implements IInventoryService {
 
     @Override
     public ItemInstance addItem(ItemInstance item, final long amount) {
+
+        final GameItem template = item.getTemplate();
+        if(template == null) return null;
+
+        if(item.getInventory().getFreeVolume() < (template.getVolume()*amount)) return null;
+
         if(item.getType().equals(ItemType.RESOURCE)){
             ItemInstance refreshed = refreshResource(((ResourceInventory)item.getInventory()).getBase());
             if(refreshed != null)

@@ -3,7 +3,6 @@ package com.gameserver.model.buildings;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
-import com.util.Utils;
 import com.util.data.json.View;
 
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class Mine extends Building {
         final HashMap<Integer, Long> production = new HashMap<>();
         for(int i = 1; i <= getMaxLevel(); i++)
         {
-            long prod = ((Number)Evaluator.getInstance().eval(getFunction().replace("$level", ""+i))).longValue();
+            final long prod = ((Number)Evaluator.getInstance().eval(getFunction().replace("$level", ""+i))).longValue();
             production.put(i, prod);
         }
         setProduction(production);

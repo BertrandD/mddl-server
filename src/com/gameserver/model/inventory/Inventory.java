@@ -67,11 +67,15 @@ public abstract class Inventory implements IInventory {
 
     @Override
     public long getVolume() {
-        return 0;
+        long volume = 0;
+        for (ItemInstance item : items) {
+            volume += item.getTemplate().getVolume();
+        }
+        return volume;
     }
 
     @Override
     public long getFreeVolume() {
-        return 0;
+        return getMaxVolume() - getVolume();
     }
 }

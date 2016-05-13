@@ -65,20 +65,27 @@ public final class Base
     @JsonManagedReference
     private BaseInventory shipItems;
 
-    public Base(){
+    public Base() {
         setBuildings(new ArrayList<>());
         setShips(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
     }
 
-    public Base(String name, Player owner)
-    {
+    public Base(String name, Player owner) {
         setId(new ObjectId().toString());
         setName(name);
         setOwner(owner);
         setBuildings(new ArrayList<>());
         setShips(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
+    }
+
+    @JsonView(View.Standard.class)
+    public HashMap<String, Long> getMaxVolumes(){
+        final HashMap<String, Long> inventoriesVolumes = new HashMap<>();
+        inventoriesVolumes.put("max_volume_resources", getResources().getMaxVolume());
+        inventoriesVolumes.put("max_volume_items", getShipItems().getMaxVolume());
+        return inventoriesVolumes;
     }
 
     @JsonView(View.Standard.class)

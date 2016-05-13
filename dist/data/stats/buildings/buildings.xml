@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="storage_metal" type="Storage" nameId="building_storage_metal_n" maxLevel="1" descriptionId="building_storage_metal_d" buildTimeFunc="5*$level" />
-    <building id="storage_crystal" type="Storage" nameId="building_storage_crystal_n" maxLevel="1" descriptionId="building_storage_crystal_d" buildTimeFunc="5*$level" />
-</list>
