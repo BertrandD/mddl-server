@@ -1,7 +1,9 @@
 package com.gameserver.model.items;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.ItemType;
-import com.gameserver.model.commons.Requirement;
+import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.StatsSet;
 
 /**
@@ -10,19 +12,30 @@ import com.gameserver.model.commons.StatsSet;
 public abstract class GameItem {
 
     private String itemId;
-    private String name;
+
+    @JsonIgnore
+    private String nameId;
+
     private ItemType type;
+
+    @JsonIgnore
     private String descriptionId;
+
     private long weight;
+
     private long volume;
+
+    @JsonIgnore
+    private Lang lang;
 
     public GameItem(StatsSet set){
         setItemId(set.getString("id"));
-        setName(set.getString("nameId"));
+        setNameId(set.getString("nameId"));
         setType(set.getEnum("type", ItemType.class, ItemType.NONE));
         setDescriptionId(set.getString("descriptionId"));
         setWeight(set.getLong("weight"));
         setVolume(set.getLong("volume"));
+        setLang(Lang.EN);
     }
 
     public String getItemId() {
@@ -34,11 +47,18 @@ public abstract class GameItem {
     }
 
     public String getName() {
+        final String name = SystemMessageData.getInstance().getMessage(getLang(), getNameId());
+        if(name == null) return "Unamed item ["+getItemId()+"]";
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @JsonIgnore
+    public String getNameId() {
+        return nameId;
+    }
+
+    public void setNameId(String name) {
+        this.nameId = name;
     }
 
     public ItemType getType() {
@@ -49,6 +69,13 @@ public abstract class GameItem {
         this.type = type;
     }
 
+    public String getDescription(){
+        final String descr = SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
+        if(descr == null) return "No description for item ["+getItemId()+"]";
+        return descr;
+    }
+
+    @JsonIgnore
     public String getDescriptionId() {
         return descriptionId;
     }
@@ -71,5 +98,14 @@ public abstract class GameItem {
 
     public void setVolume(long volume) {
         this.volume = volume;
+    }
+
+    @JsonIgnore
+    public Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(Lang lang) {
+        this.lang = lang;
     }
 }

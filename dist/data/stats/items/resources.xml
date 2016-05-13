@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
-    <item id="metal" type="RESOURCE" nameId="metal_n" descriptionId="metal_d" />
+    <item id="metal" type="RESOURCE" nameId="metal_n" descriptionId="metal_d" volume="1" />
 </list>
