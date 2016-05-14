@@ -123,14 +123,7 @@ public class BuildingInstance
 
     @JsonView(View.Standard.class)
     public Requirement getRequirements() {
-        // Warning: attr level is permanently edited. TODO: find another way | clone() don't work with JsonMapping
-        Requirement requirement = getTemplate().getRequirements(getCurrentLevel() + 1);
-        if(requirement != null)
-        {
-            requirement.setLevel(getCurrentLevel()+1);
-        }
-
-        return requirement;
+        return getTemplate().getRequirements(getCurrentLevel() + 1);
     }
 
     @JsonView(View.Standard.class)
