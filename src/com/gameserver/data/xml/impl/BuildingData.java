@@ -66,6 +66,7 @@ public class BuildingData implements IXmlReader {
                                     if ("requirement".equalsIgnoreCase(d.getNodeName())) {
                                         final int level = parseInteger(attrs, "level");
                                         final Requirement requirement = new Requirement();
+                                        requirement.setLevel(level);
                                         for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
                                             if ("function".equalsIgnoreCase(e.getNodeName())) {
