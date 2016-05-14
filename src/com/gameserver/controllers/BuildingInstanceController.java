@@ -4,6 +4,7 @@ import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
+import com.gameserver.enums.Lang;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
@@ -101,7 +102,7 @@ public class BuildingInstanceController {
         }*/
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse validate = validateRequirements(building, building.getTemplate(), collector);
+        final JsonResponse validate = validateRequirements(building, building.getTemplate(), collector, pAccount.getLang());
         if(validate != null) return validate;
 
         collector.forEach(inventoryService::consumeItem);
@@ -133,7 +134,7 @@ public class BuildingInstanceController {
         }
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse validate = validateRequirements(building, template, collector);
+        final JsonResponse validate = validateRequirements(building, template, collector, pAccount.getLang());
         if(validate != null) return validate;
 
         collector.forEach(inventoryService::consumeItem);
@@ -146,20 +147,20 @@ public class BuildingInstanceController {
         return response;
     }
 
-    private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector){
+    private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector, Lang lang){
         final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
         if(!validateBuildings(building.getBase(), requirements)){
-            return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
+            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
         }
 
         if(!validateItems(building.getBase(), requirements, collector)){
-            return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
+            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
         }
 
         if(!validateFunctions(building, requirements, collector)){
-            return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.YOU_DONT_MEET_RESOURCE_REQUIREMENT);
+            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_RESOURCE_REQUIREMENT);
         }
 
         return null;
