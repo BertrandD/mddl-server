@@ -65,21 +65,23 @@ public class BuildingData implements IXmlReader {
                                     attrs = d.getAttributes();
                                     if ("requirement".equalsIgnoreCase(d.getNodeName())) {
                                         final int level = parseInteger(attrs, "level");
-                                        final Requirement requirement = new Requirement();
-                                        requirement.setLevel(level);
+                                        final List<FuncHolder> functionHolders = new ArrayList<>();
+                                        final List<BuildingHolder> buildingHolders = new ArrayList<>();
+                                        final List<ItemHolder> itemHolders = new ArrayList<>();
+
                                         for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
                                             if ("function".equalsIgnoreCase(e.getNodeName())) {
-                                                requirement.addFunction(new FuncHolder(parseString(attrs, "id"), parseString(attrs, "val")));
+                                                functionHolders.add(new FuncHolder(parseString(attrs, "id"), parseString(attrs, "val")));
                                             } else if ("item".equalsIgnoreCase(e.getNodeName())) {
-                                                requirement.addItem(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count")));
+                                                itemHolders.add(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count")));
                                             } else if ("building".equalsIgnoreCase(e.getNodeName())) {
-                                                requirement.addBuilding(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
+                                                buildingHolders.add(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
                                             } else if ("technology".equalsIgnoreCase(e.getNodeName())) {
                                                 LOGGER.info("Technology requirement cannot be parsed: TODO."); // TODO
                                             }
                                         }
-                                        requirements.put(level, requirement);
+                                        requirements.put(level, new Requirement(level, functionHolders, itemHolders, buildingHolders));
                                     }
                                 }
                             } else if ("properties".equalsIgnoreCase(c.getNodeName())) {

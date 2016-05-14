@@ -69,8 +69,6 @@ public class ItemData implements IXmlReader {
     @Override
     public void parseDocument(Document doc)
     {
-        Requirement requirement = null;
-
         for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
         {
             if ("list".equalsIgnoreCase(a.getNodeName()))
@@ -93,11 +91,14 @@ public class ItemData implements IXmlReader {
                         set.set("descriptionId", parseString(attrs, "descriptionId"));
                         set.set("buildTime", parseLong(attrs, "buildTime"));
 
+                        // Requirements Holders
+                        final List<BuildingHolder> buildingHolders = new ArrayList<>();
+                        final List<ItemHolder> itemHolders = new ArrayList<>();
+
                         for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
                             if("creation".equalsIgnoreCase(c.getNodeName()))
                             {
-                                requirement = new Requirement();
                                 for(Node d = c.getFirstChild(); d != null ; d = d.getNextSibling())
                                 {
                                     NamedNodeMap battrs = d.getAttributes();
@@ -105,13 +106,13 @@ public class ItemData implements IXmlReader {
                                     {
                                         String itemId = parseString(battrs, "id");
                                         long itemCount = parseLong(battrs, "count");
-                                        requirement.addItem(new ItemHolder(itemId, itemCount));
+                                        itemHolders.add(new ItemHolder(itemId, itemCount));
                                     }
                                     else if("building".equalsIgnoreCase(d.getNodeName()))
                                     {
                                         String buildingId = parseString(battrs, "id");
                                         int buildingLevel = parseInteger(battrs, "level");
-                                        requirement.addBuilding(new BuildingHolder(buildingId, buildingLevel));
+                                        buildingHolders.add(new BuildingHolder(buildingId, buildingLevel));
                                     }
                                     // TODO: Technology
                                 }
@@ -128,7 +129,7 @@ public class ItemData implements IXmlReader {
                                 }
                             }
                         }
-                        makeItem(set, requirement);
+                        makeItem(set, new Requirement(itemHolders, buildingHolders));
                     }
                 }
             }

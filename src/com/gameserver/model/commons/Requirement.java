@@ -8,7 +8,6 @@ import com.gameserver.holders.ItemHolder;
 import com.util.Evaluator;
 import com.util.data.json.View;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +15,9 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 public class Requirement {
+
+    @JsonIgnore
+    private int level;
 
     @JsonView(View.Standard.class)
     private List<FuncHolder> functions;
@@ -26,44 +28,37 @@ public class Requirement {
     @JsonView(View.Standard.class)
     private List<BuildingHolder> buildings;
 
-    @JsonIgnore
-    private int level;
+    @JsonView(View.Standard.class)
+    private HashMap<String, Long> resources;
 
     // TODO: Technologies
     // private List<TechnologyHolder> technologies;
 
-    public Requirement() {
-        setFunctions(new ArrayList<>());
-        setItems(new ArrayList<>());
-        setBuildings(new ArrayList<>());
-        // setTechnologies(new ArrayList<>());
-    }
-
     public Requirement(List<ItemHolder> items, List<BuildingHolder> buildings) {
-        setFunctions(new ArrayList<>());
+        setLevel(-1);
+        setFunctions(null);
         setItems(items);
         setBuildings(buildings);
         // setTechnologies(new ArrayList<>());
     }
 
-    public Requirement(List<FuncHolder> functions, List<ItemHolder> items, List<BuildingHolder> buildings) {
+    public Requirement(int level, List<FuncHolder> functions, List<ItemHolder> items, List<BuildingHolder> buildings) {
+        setLevel(level);
         setFunctions(functions);
         setItems(items);
         setBuildings(buildings);
         // setTechnologies(new ArrayList<>());
+        setResources(new HashMap<>());
+
+        evaluateResources();
     }
 
-    @JsonView(View.Standard.class)
-    public HashMap<String, Long> getResources(){
-        final HashMap<String, Long> resourcesReq = new HashMap<>();
-
+    public void evaluateResources() {
         this.functions.forEach(k->{
             final String func = k.getFunction().replace("$level", ""+getLevel());
             final long count = ((Number) Evaluator.getInstance().eval(func)).longValue();
-            resourcesReq.put(k.getId(), count);
+            getResources().put(k.getId(), count);
         });
-
-        return resourcesReq;
     }
 
     public List<FuncHolder> getFunctions() {
@@ -74,20 +69,12 @@ public class Requirement {
         this.functions = functions;
     }
 
-    public void addFunction(FuncHolder func){
-        this.functions.add(func);
-    }
-
     public List<ItemHolder> getItems() {
         return items;
     }
 
     private void setItems(List<ItemHolder> items) {
         this.items = items;
-    }
-
-    public void addItem(ItemHolder item) {
-        items.add(item);
     }
 
     public List<BuildingHolder> getBuildings() {
@@ -98,8 +85,12 @@ public class Requirement {
         this.buildings = buildings;
     }
 
-    public void addBuilding(BuildingHolder building) {
-        buildings.add(building);
+    public HashMap<String, Long> getResources() {
+        return resources;
+    }
+
+    public void setResources(HashMap<String, Long> resources) {
+        this.resources = resources;
     }
 
     @JsonIgnore
