@@ -40,8 +40,11 @@
         <message id="you_dont_meet_building_requirement" text="Vous n'avez pas tous les bâtiments nécessaires" />
         <message id="you_dont_meet_item_requirement" text="Vous n'avez pas tous les objets nécessaires" />
         <message id="you_dont_meet_resource_requirement" text="Vous n'avez pas toutes les ressources nécessaires" />
-        <!-- Items details -->
+        <!-- Items names -->
         <message id="metal_n" text="Métal" />
+        <message id="structure_test_n" text="Structure Test" />
+        <!-- Items descriptions -->
         <message id="metal_d" text="Le métal est une resource primaire destinée à la création de batiment et des composants nécessaires aux vaisseaux" />
+        <message id="structure_test_d" text="Structure créée pour effectuer des tests. A supprimer avant la release." />
     </messages>
 </list>

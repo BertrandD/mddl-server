@@ -12,7 +12,6 @@ import java.util.HashMap;
 public final class Structure extends Item
 {
     private HashMap<StructureSlot, Integer> availablesSlots;
-    // private List<Technology> technologies;
 
     public Structure(StatsSet set, Requirement req) {
         super(set, req);
@@ -29,10 +28,10 @@ public final class Structure extends Item
 
     public void setAvailablesSlots(StatsSet set){
         setAvailablesSlots(new HashMap<>());
-        getAvailablesSlots().put(StructureSlot.CARGO, set.getInt("SLOT_CARGO_COUNT", 0));
-        getAvailablesSlots().put(StructureSlot.ENGINE, set.getInt("SLOT_ENGINE_COUNT", 0));
-        getAvailablesSlots().put(StructureSlot.MODULE, set.getInt("SLOT_MODULE_COUNT", 0));
-        getAvailablesSlots().put(StructureSlot.WEAPON, set.getInt("SLOT_WEAPON_COUNT", 0));
-        getAvailablesSlots().put(StructureSlot.TECHNOLOGY, set.getInt("SLOT_TECHNOLOGY_COUNT", 0));
+        getAvailablesSlots().put(StructureSlot.CARGO, set.getInt("slot_cargo", 0));
+        getAvailablesSlots().put(StructureSlot.ENGINE, set.getInt("slot_engine", 0));
+        getAvailablesSlots().put(StructureSlot.MODULE, set.getInt("slot_module", 0));
+        getAvailablesSlots().put(StructureSlot.WEAPON, set.getInt("slot_weapon", 0));
+        getAvailablesSlots().put(StructureSlot.TECHNOLOGY, set.getInt("slot_technology", 0));
     }
 }

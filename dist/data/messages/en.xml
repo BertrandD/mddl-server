@@ -40,8 +40,11 @@
         <message id="you_dont_meet_building_requirement" text="You do not meet buildings requirements" />
         <message id="you_dont_meet_item_requirement" text="You do not meet items requirements" />
         <message id="you_dont_meet_resource_requirement" text="You do not meet resources requirements" />
-        <!-- Items details -->
+        <!-- Items names -->
         <message id="metal_n" text="Metal" />
+        <message id="structure_test_n" text="Structure Test" />
+        <!-- Items descriptions -->
         <message id="metal_d" text="The metal is a primary resource used to make buildings and ships components" />
+        <message id="structure_test_d" text="This is a structure created for tests only. It must be deleted before release." />
     </messages>
 </list>

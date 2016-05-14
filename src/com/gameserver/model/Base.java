@@ -82,8 +82,8 @@ public final class Base
         setBuildingPositions(new HashMap<>());
     }
 
-    @JsonView(View.Standard.class)
     @SuppressWarnings("unused")
+    @JsonView(View.Standard.class)
     public HashMap<String, Long> getMaxVolumes() {
         final HashMap<String, Long> inventoriesVolumes = new HashMap<>();
         inventoriesVolumes.put("max_volume_resources", getResources().getMaxVolume());
@@ -125,6 +125,7 @@ public final class Base
         return production;
     }
 
+    @SuppressWarnings("unused")
     @JsonView(View.Standard.class)
     public long getLastRefresh(){
         return getResources().getLastRefresh();

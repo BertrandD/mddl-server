@@ -97,7 +97,7 @@ public class ItemData implements IXmlReader {
 
                         for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
-                            if("creation".equalsIgnoreCase(c.getNodeName()))
+                            if("requirements".equalsIgnoreCase(c.getNodeName()))
                             {
                                 for(Node d = c.getFirstChild(); d != null ; d = d.getNextSibling())
                                 {
