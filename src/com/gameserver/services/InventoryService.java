@@ -62,7 +62,7 @@ public class InventoryService implements IInventoryService {
         if(mineMetal != null && mineMetal.getCurrentLevel() > 0)
         {
             final ResourceInventory resources = base.getResources();
-            ItemInstance metal = resources.getItems().values().stream().filter(k->k.getTemplateId().equals(METAL)).findFirst().orElse(null);
+            ItemInstance metal = resources.getItems().stream().filter(k->k.getTemplateId().equals(METAL)).findFirst().orElse(null);
             if(metal != null)
             {
                 final long now = System.currentTimeMillis();
@@ -111,7 +111,7 @@ public class InventoryService implements IInventoryService {
         {
             item = itemService.create(inventory, templateId, amount);
             if(item == null) return null;
-            inventory.getItems().put(item.getId(), item);
+            inventory.getItems().add(item);
 
             if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
             else if(inventory instanceof ResourceInventory) resourceInventoryService.update((ResourceInventory) inventory);
@@ -173,7 +173,7 @@ public class InventoryService implements IInventoryService {
 
     @Override
     public boolean consumeItem(Inventory inventory, String id, final long amount) {
-        final ItemInstance item = inventory.getItems().values().stream().filter(k -> k.getTemplateId().equals(id)).findFirst().orElse(null);
+        final ItemInstance item = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(id)).findFirst().orElse(null);
         return item != null && consumeItem(item, amount);
     }
 

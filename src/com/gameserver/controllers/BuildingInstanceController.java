@@ -199,7 +199,7 @@ public class BuildingInstanceController {
                 inventory = base.getShipItems();
             }
 
-            final ItemInstance iInst = inventory.getItems().values().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+            final ItemInstance iInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
             if(iInst == null || iInst.getCount() < holder.getCount()) {
                 meetRequirements = false;
             }
@@ -216,7 +216,7 @@ public class BuildingInstanceController {
         while(meetRequirements && i < requirements.getFunctions().size())
         {
             final FuncHolder holder = requirements.getFunctions().get(i);
-            final ItemInstance iInst = building.getBase().getResources().getItems().values().stream().filter(k->k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+            final ItemInstance iInst = building.getBase().getResources().getItems().stream().filter(k->k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
             final long reqCount = ((Number)Evaluator.getInstance().eval(holder.getFunction().replace("$level", ""+(building.getCurrentLevel()+1)))).longValue();
 
             if(iInst == null || iInst.getCount() < reqCount) {

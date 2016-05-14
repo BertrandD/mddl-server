@@ -29,7 +29,7 @@ public class ResourceInventoryService {
     public ResourceInventory create(Base base){
         ResourceInventory inventory = new ResourceInventory(base);
         inventory = repository.save(inventory);
-        inventory.getItems().put("metal", itemService.create(inventory, "metal", Config.INITIAL_BASE_METAL));
+        inventory.getItems().add(itemService.create(inventory, "metal", Config.INITIAL_BASE_METAL));
         update(inventory);
         return inventory;
     }

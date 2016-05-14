@@ -89,14 +89,14 @@ public final class Base
     }
 
     @JsonView(View.Standard.class)
-    public HashMap<String, HashMap<String, ItemInstance>> getInventory(){
-        final HashMap<String, HashMap<String, ItemInstance>> inventory = new HashMap<>();
+    public HashMap<String, List<ItemInstance>> getInventory(){
+        final HashMap<String, List<ItemInstance>> inventory = new HashMap<>();
         inventory.put(ItemType.RESOURCE.toString(), getResources().getItems());
-//        inventory.put(ItemType.CARGO.toString(), getShipItems().getItems().values().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
-//        inventory.put(ItemType.ENGINE.toString(), getShipItems().getItems().values().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()));
-//        inventory.put(ItemType.MODULE.toString(), getShipItems().getItems().values().stream().filter(ItemInstance::isModule).collect(Collectors.toList()));
-//        inventory.put(ItemType.STRUCTURE.toString(), getShipItems().getItems().values().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()));
-//        inventory.put(ItemType.WEAPON.toString(), getShipItems().getItems().values().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()));
+        inventory.put(ItemType.CARGO.toString(), getShipItems().getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
+        inventory.put(ItemType.ENGINE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()));
+        inventory.put(ItemType.MODULE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isModule).collect(Collectors.toList()));
+        inventory.put(ItemType.STRUCTURE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()));
+        inventory.put(ItemType.WEAPON.toString(), getShipItems().getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()));
         return inventory;
     }
 

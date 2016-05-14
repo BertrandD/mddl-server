@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -23,10 +23,10 @@ public abstract class Inventory implements IInventory {
     @DBRef
     @JsonManagedReference
     @JsonView(View.Standard.class)
-    private HashMap<String, ItemInstance> items;
+    private List<ItemInstance> items;
 
     public Inventory(){
-        setItems(new HashMap<>());
+        setItems(new ArrayList<>());
     }
 
     public String getId() {
@@ -37,11 +37,11 @@ public abstract class Inventory implements IInventory {
         this.id = id;
     }
 
-    public HashMap<String, ItemInstance> getItems() {
+    public List<ItemInstance> getItems() {
         return items;
     }
 
-    public void setItems(HashMap<String, ItemInstance> items) {
+    public void setItems(List<ItemInstance> items) {
         this.items = items;
     }
 
@@ -68,7 +68,7 @@ public abstract class Inventory implements IInventory {
     @Override
     public long getVolume() {
         long volume = 0;
-        for (ItemInstance item : items.values()) {
+        for (ItemInstance item : items) {
             volume += item.getTemplate().getVolume() * item.getCount();
         }
         return volume;
