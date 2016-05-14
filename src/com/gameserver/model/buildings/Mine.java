@@ -1,16 +1,23 @@
 package com.gameserver.model.buildings;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.commons.StatsSet;
+import com.gameserver.model.items.GameItem;
 import com.util.Evaluator;
 import com.util.data.json.View;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
 public class Mine extends Building {
+
+    @JsonView(View.Standard.class)
+    private List<GameItem> items;
 
     @JsonView(View.Standard.class)
     private String function;
@@ -20,7 +27,17 @@ public class Mine extends Building {
 
     public Mine(StatsSet set) {
         super(set);
-        setFunction(set.getString("production"));
+        setFunction(set.getString("produce_function"));
+        final String[] itemsIds = set.getString("produce").split(";");
+
+        final List<GameItem> items = new ArrayList<>();
+        for (String id : itemsIds) {
+            final GameItem item = ItemData.getInstance().getTemplate(id);
+            if(item != null) items.add(item);
+        }
+
+        setItems(items);
+
         evaluateProduction();
     }
 
@@ -32,6 +49,14 @@ public class Mine extends Building {
             production.put(i, prod);
         }
         setProduction(production);
+    }
+
+    public List<GameItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<GameItem> items) {
+        this.items = items;
     }
 
     public String getFunction() {

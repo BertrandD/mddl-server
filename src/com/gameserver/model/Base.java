@@ -3,7 +3,9 @@ package com.gameserver.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.ItemType;
+import com.gameserver.model.buildings.Mine;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
@@ -81,7 +83,8 @@ public final class Base
     }
 
     @JsonView(View.Standard.class)
-    public HashMap<String, Long> getMaxVolumes(){
+    @SuppressWarnings("unused")
+    public HashMap<String, Long> getMaxVolumes() {
         final HashMap<String, Long> inventoriesVolumes = new HashMap<>();
         inventoriesVolumes.put("max_volume_resources", getResources().getMaxVolume());
         inventoriesVolumes.put("max_volume_items", getShipItems().getMaxVolume());
@@ -89,7 +92,7 @@ public final class Base
     }
 
     @JsonView(View.Standard.class)
-    public HashMap<String, List<ItemInstance>> getInventory(){
+    public HashMap<String, List<ItemInstance>> getInventory() {
         final HashMap<String, List<ItemInstance>> inventory = new HashMap<>();
         inventory.put(ItemType.RESOURCE.toString(), getResources().getItems());
         inventory.put(ItemType.CARGO.toString(), getShipItems().getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
@@ -98,6 +101,28 @@ public final class Base
         inventory.put(ItemType.STRUCTURE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()));
         inventory.put(ItemType.WEAPON.toString(), getShipItems().getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()));
         return inventory;
+    }
+
+    @SuppressWarnings("unused")
+    @JsonView(View.Standard.class)
+    public HashMap<String, Long> getProduction() {
+        final HashMap<String, Long> production = new HashMap<>();
+
+        // List of mines that produces item "metal"
+        final List<BuildingInstance> mines = getBuildings().stream().filter(k ->
+                k.getTemplate().getType().equals(BuildingCategory.Mine) &&
+                ((Mine) k.getTemplate()).getItems().stream().filter(b ->
+                        b.getItemId().equals("metal")).count() > 0
+        ).collect(Collectors.toList());
+
+        long total = 0;
+        for (BuildingInstance mine : mines) {
+            final Mine template = ((Mine) mine.getTemplate());
+            total += template.getProduction(mine.getCurrentLevel());
+        }
+
+        production.put("metal", total);
+        return production;
     }
 
     public String getId() {

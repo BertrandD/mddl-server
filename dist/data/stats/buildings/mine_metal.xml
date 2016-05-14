@@ -8,7 +8,8 @@
             </requirement>
         </requirements>
         <properties>
-            <property name="production" value="(100+(Math.pow($level, 2)))*10" />
+            <property name="produce" value="metal" />
+            <property name="produce_function" value="(100+(Math.pow($level, 2)))*10" />
         </properties>
     </building>
 </list>
