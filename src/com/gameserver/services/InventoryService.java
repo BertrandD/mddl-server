@@ -93,7 +93,7 @@ public class InventoryService implements IInventoryService {
             return null;
         }
 
-        item.setCount(item.getCount() + Math.min(amountThatCanBeAdded, amount));
+        item.setCount(item.getCount()+Math.min(amountThatCanBeAdded, amount));
 //        itemService.update(item);
         return item;
     }
@@ -154,9 +154,13 @@ public class InventoryService implements IInventoryService {
     @Override
     public boolean consumeItem(ItemInstance item, final long amount) {
         if(item.getType().equals(ItemType.RESOURCE)){
-            ItemInstance refreshed = refreshResource(((ResourceInventory)item.getInventory()).getBase());
-            if(refreshed != null)
+            final ResourceInventory resources = (ResourceInventory)item.getInventory();
+            ItemInstance refreshed = refreshResource(resources.getBase());
+            if(refreshed != null) {
                 item = refreshed;
+                resources.setLastRefresh(System.currentTimeMillis());
+                resourceInventoryService.update(resources);
+            }
         }
 
         if(item.getCount() - amount >= 0){

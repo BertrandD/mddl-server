@@ -30,7 +30,11 @@ public class BaseService {
     }
 
     public Collection<Base> findAll(){
-        return repository.findAll();
+        final Collection<Base> bases = repository.findAll();
+        for (Base base : bases) {
+            inventoryService.refreshResource(base);
+        }
+        return bases;
     }
 
     public Base create(String name, Player player){
