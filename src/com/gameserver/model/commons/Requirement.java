@@ -9,6 +9,7 @@ import com.util.Evaluator;
 import com.util.data.json.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,13 +54,13 @@ public class Requirement {
     }
 
     @JsonView(View.Standard.class)
-    public ArrayList<ItemHolder> getResources(){
-        final ArrayList<ItemHolder> resourcesReq = new ArrayList<>();
+    public HashMap<String, Long> getResources(){
+        final HashMap<String, Long> resourcesReq = new HashMap<>();
 
         this.functions.forEach(k->{
             final String func = k.getFunction().replace("$level", ""+getLevel());
             final long count = ((Number) Evaluator.getInstance().eval(func)).longValue();
-            resourcesReq.add(new ItemHolder(k.getId(), count));
+            resourcesReq.put(k.getId(), count);
         });
 
         return resourcesReq;
