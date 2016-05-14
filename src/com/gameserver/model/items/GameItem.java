@@ -69,6 +69,7 @@ public abstract class GameItem {
         this.type = type;
     }
 
+    @SuppressWarnings("unused")
     public String getDescription(){
         final String descr = SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
         if(descr == null) return "No description for item ["+getItemId()+"]";
