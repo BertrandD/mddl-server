@@ -125,6 +125,11 @@ public final class Base
         return production;
     }
 
+    @JsonView(View.Standard.class)
+    public long getLastRefresh(){
+        return getResources().getLastRefresh();
+    }
+
     public String getId() {
         return id;
     }
