@@ -28,6 +28,9 @@ public class Requirement {
     @JsonView(View.Standard.class)
     private List<BuildingHolder> buildings;
 
+    /**
+     * HashMap<String, Long> because Bertrand ask for FRONT
+     */
     @JsonView(View.Standard.class)
     private HashMap<String, Long> resources;
 
