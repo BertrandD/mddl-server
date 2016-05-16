@@ -213,6 +213,9 @@ public class BuildingInstanceController {
     private boolean validateFunctions(BuildingInstance building, Requirement requirements, HashMap<ItemInstance, Long> collector){
         int i = 0;
         boolean meetRequirements = true;
+
+        inventoryService.refreshResource(building.getBase());
+
         while(meetRequirements && i < requirements.getFunctions().size())
         {
             final FuncHolder holder = requirements.getFunctions().get(i);

@@ -72,6 +72,9 @@ public class InventoryService implements IInventoryService {
                 if(amount > 0)
                 {
                     item = addResource(metal, amount);
+                    resources.setLastRefresh(now);
+                } else {
+                    item = metal;
                 }
             }
         }
@@ -89,12 +92,10 @@ public class InventoryService implements IInventoryService {
         if(template == null) return null;
 
         final long amountThatCanBeAdded = Math.floorDiv(item.getInventory().getFreeVolume(), template.getVolume());
-        if (amountThatCanBeAdded < 1) {
-            return null;
+        if (amountThatCanBeAdded > 0) {
+            item.setCount(item.getCount()+Math.min(amountThatCanBeAdded, amount));
         }
 
-        item.setCount(item.getCount()+Math.min(amountThatCanBeAdded, amount));
-//        itemService.update(item);
         return item;
     }
 
