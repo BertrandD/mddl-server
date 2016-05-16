@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="mine_metal" type="Mine" nameId="building_mine_metal_n" maxLevel="1" descriptionId="building_mine_metal_d" buildTimeFunc="5*$level">
+    <building id="mine_metal" type="Mine" nameId="building_mine_metal_n" maxLevel="10" descriptionId="building_mine_metal_d" buildTimeFunc="5*$level">
         <requirements>
             <requirement level="1">
                 <building id="headquarter" level="1" />
