@@ -89,6 +89,8 @@ public class BuildingInstanceController {
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
 
         final Base base = player.getCurrentBase();
+        if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
+
         final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
         if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
 
