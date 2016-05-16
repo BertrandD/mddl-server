@@ -112,7 +112,9 @@ public class BuildingInstanceController {
 
         buildingService.ScheduleUpgrade(building);
 
-        return new JsonResponse(building);
+        JsonResponse response = new JsonResponse(building);
+        response.addMeta("base", base);
+        return response;
     }
 
     @JsonView(View.buildingInstance_base.class)
@@ -144,6 +146,7 @@ public class BuildingInstanceController {
 
         JsonResponse response = new JsonResponse(building);
         response.addMeta("queue", tasks);
+        response.addMeta("base", base);
         return response;
     }
 
