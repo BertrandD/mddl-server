@@ -40,21 +40,22 @@ public class Requirement {
         setItems(items);
         setBuildings(buildings);
         // setTechnologies(new ArrayList<>());
+        setResources(null);
     }
 
-    public Requirement(int level, List<FuncHolder> functions, List<ItemHolder> items, List<BuildingHolder> buildings) {
+    public Requirement(int level, List<FuncHolder> functions, List<ItemHolder> items, List<BuildingHolder> buildings, HashMap<String, Long> resources) {
         setLevel(level);
         setFunctions(functions);
         setItems(items);
         setBuildings(buildings);
         // setTechnologies(new ArrayList<>());
-        setResources(new HashMap<>());
+        setResources(resources);
 
         evaluateResources();
     }
 
     public void evaluateResources() {
-        this.functions.forEach(k->{
+        this.functions.forEach(k -> {
             final String func = k.getFunction().replace("$level", ""+getLevel());
             final long count = ((Number) Evaluator.getInstance().eval(func)).longValue();
             getResources().put(k.getId(), count);

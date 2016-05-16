@@ -4,7 +4,7 @@
         <requirements>
             <requirement level="1">
                 <building id="headquarter" level="1" />
-                <item id="metal" count="300" />
+                <resource id="metal" count="300" />
             </requirement>
         </requirements>
         <properties>

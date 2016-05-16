@@ -111,7 +111,7 @@ public final class Base
         // List of mines that produces item "metal"
         final List<BuildingInstance> mines = getBuildings().stream().filter(k ->
                 k.getTemplate().getType().equals(BuildingCategory.Mine) &&
-                ((Mine) k.getTemplate()).getItems().stream().filter(b ->
+                ((Mine) k.getTemplate()).getProduceItems().stream().filter(b ->
                         b.getItemId().equals("metal")).count() > 0
         ).collect(Collectors.toList());
 

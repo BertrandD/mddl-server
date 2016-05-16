@@ -17,7 +17,7 @@ import java.util.List;
 public class Mine extends Building {
 
     @JsonView(View.Standard.class)
-    private List<GameItem> items;
+    private List<GameItem> produceItems;
 
     @JsonView(View.Standard.class)
     private String function;
@@ -36,7 +36,7 @@ public class Mine extends Building {
             if(item != null) items.add(item);
         }
 
-        setItems(items);
+        setProduceItems(items);
 
         evaluateProduction();
     }
@@ -51,12 +51,12 @@ public class Mine extends Building {
         setProduction(production);
     }
 
-    public List<GameItem> getItems() {
-        return items;
+    public List<GameItem> getProduceItems() {
+        return produceItems;
     }
 
-    public void setItems(List<GameItem> items) {
-        this.items = items;
+    public void setProduceItems(List<GameItem> items) {
+        this.produceItems = items;
     }
 
     public String getFunction() {

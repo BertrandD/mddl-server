@@ -3,7 +3,7 @@
     <building id="storage_metal" type="Storage" nameId="building_storage_metal_n" maxLevel="1" descriptionId="building_storage_metal_d" buildTimeFunc="5*$level">
         <requirements>
             <requirement level="1">
-                <item id="metal" count="100" />
+                <resource id="metal" count="100" />
             </requirement>
         </requirements>
         <properties>

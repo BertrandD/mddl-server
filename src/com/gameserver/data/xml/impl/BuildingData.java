@@ -68,6 +68,7 @@ public class BuildingData implements IXmlReader {
                                         final List<FuncHolder> functionHolders = new ArrayList<>();
                                         final List<BuildingHolder> buildingHolders = new ArrayList<>();
                                         final List<ItemHolder> itemHolders = new ArrayList<>();
+                                        final HashMap<String, Long> resourceHolders = new HashMap<>();
 
                                         for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
@@ -77,11 +78,13 @@ public class BuildingData implements IXmlReader {
                                                 itemHolders.add(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count")));
                                             } else if ("building".equalsIgnoreCase(e.getNodeName())) {
                                                 buildingHolders.add(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
+                                            } else if ("resource".equalsIgnoreCase(e.getNodeName())) {
+                                                resourceHolders.put(parseString(attrs, "id"), parseLong(attrs, "count"));
                                             } else if ("technology".equalsIgnoreCase(e.getNodeName())) {
                                                 LOGGER.info("Technology requirement cannot be parsed: TODO."); // TODO
                                             }
                                         }
-                                        requirements.put(level, new Requirement(level, functionHolders, itemHolders, buildingHolders));
+                                        requirements.put(level, new Requirement(level, functionHolders, itemHolders, buildingHolders, resourceHolders));
                                     }
                                 }
                             } else if ("properties".equalsIgnoreCase(c.getNodeName())) {
