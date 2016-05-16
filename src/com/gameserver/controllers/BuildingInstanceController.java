@@ -2,6 +2,7 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
@@ -94,18 +95,20 @@ public class BuildingInstanceController {
         final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
         if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
 
-        final BuildingInstance building = buildingService.create(base, templateId);
-        if(building == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_CANNOT_CREATE);
-
         /*
         * TODO: uncomment
         if(base.getBuildingPositions().containsKey(position)){
             return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_POSITION_ALREADY_TAKEN);
         }*/
 
+        final BuildingInstance tempBuilding = new BuildingInstance(base, BuildingData.getInstance().getBuilding(templateId));
+
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse validate = validateRequirements(building, building.getTemplate(), collector, pAccount.getLang());
+        final JsonResponse validate = validateRequirements(tempBuilding, tempBuilding.getTemplate(), collector, pAccount.getLang());
         if(validate != null) return validate;
+
+        final BuildingInstance building = buildingService.create(base, templateId);
+        if(building == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_CANNOT_CREATE);
 
         collector.forEach(inventoryService::consumeItem);
 
