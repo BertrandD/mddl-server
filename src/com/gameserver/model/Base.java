@@ -112,7 +112,7 @@ public final class Base
         // If extractor count < 1 return 0 for all productions.
         if(extractors.isEmpty()) {
             for(CommonItem item : ItemData.getInstance().getResources()) {
-                production.put(item.getName(), 0L);
+                production.put(item.getItemId(), 0L);
             }
             return production;
         }
