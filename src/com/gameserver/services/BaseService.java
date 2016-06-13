@@ -39,9 +39,8 @@ public class BaseService {
 
     public Base create(String name, Player player){
         final Base base = new Base(name, player);
-        base.setResources(inventoryService.createResourceInventory(base));
-        base.setCommons(inventoryService.createBaseInventory(base));
-        base.setShipItems(inventoryService.createBaseInventory(base));
+        base.setResourcesInventory(inventoryService.createResourceInventory(base));
+        base.setBaseInventory(inventoryService.createBaseInventory(base));
 
         player.addBase(base);
         player.setCurrentBase(base);

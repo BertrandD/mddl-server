@@ -37,7 +37,7 @@ public class Storage extends Building {
         return capacityBonusByLevel.get(level);
     }
 
-    public HashMap<Integer, Long> getCapaictyBonus() {
+    public HashMap<Integer, Long> getCapacityBonus() {
         return capacityBonusByLevel;
     }
 

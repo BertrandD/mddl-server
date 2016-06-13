@@ -3,7 +3,6 @@ package com.util.data.json.Response;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.Lang;
-import com.gameserver.model.commons.SystemMessageId;
 import com.util.data.json.View;
 
 import java.util.HashMap;

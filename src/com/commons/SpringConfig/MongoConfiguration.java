@@ -13,7 +13,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Bean
     public Mongo mongo() throws Exception {
-        return new Mongo("localhost");
+        return new Mongo();
     }
 
     @Override

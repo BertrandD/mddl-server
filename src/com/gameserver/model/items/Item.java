@@ -17,7 +17,7 @@ public abstract class Item extends GameItem
     {
         super(set);
         setRank(set.getEnum("rank", Rank.class, Rank.NONE));
-        setBuildTime(set.getLong("buildTime"));
+        setBuildTime(set.getLong("buildTime", 0L));
 
         setRequirement(requirement);
     }

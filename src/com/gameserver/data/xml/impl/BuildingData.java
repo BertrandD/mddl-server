@@ -7,10 +7,12 @@ import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.util.data.xml.IXmlReader;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -27,7 +29,8 @@ import java.util.stream.Collectors;
  */
 public class BuildingData implements IXmlReader {
 
-    private final Logger LOGGER = Logger.getLogger(getClass().getSimpleName());
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
+
     private final HashMap<String, Building> _buildings = new HashMap<>();
 
     protected BuildingData(){
@@ -37,7 +40,7 @@ public class BuildingData implements IXmlReader {
     @Override
     public synchronized void load() {
         _buildings.clear();
-        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/buildings", false);
+        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/buildings", true);
         LOGGER.info("Loaded " + _buildings.size() + " buildings Templates.");
     }
 
@@ -47,10 +50,13 @@ public class BuildingData implements IXmlReader {
         {
             if ("list".equalsIgnoreCase(a.getNodeName()))
             {
+                NamedNodeMap attrs = a.getAttributes();
+                if(parseBoolean(attrs, "disabled", false)) continue;
+
                 for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling())
                 {
                     if ("building".equalsIgnoreCase(b.getNodeName())) {
-                        NamedNodeMap attrs = b.getAttributes();
+                        attrs = b.getAttributes();
                         final StatsSet set = new StatsSet();
                         final HashMap<Integer, Requirement> requirements = new HashMap<>();
 
@@ -80,8 +86,6 @@ public class BuildingData implements IXmlReader {
                                                 buildingHolders.add(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
                                             } else if ("resource".equalsIgnoreCase(e.getNodeName())) {
                                                 resourceHolders.put(parseString(attrs, "id"), parseLong(attrs, "count"));
-                                            } else if ("technology".equalsIgnoreCase(e.getNodeName())) {
-                                                LOGGER.info("Technology requirement cannot be parsed: TODO."); // TODO
                                             }
                                         }
                                         requirements.put(level, new Requirement(level, functionHolders, itemHolders, buildingHolders, resourceHolders));
@@ -95,6 +99,20 @@ public class BuildingData implements IXmlReader {
                                         final String value = parseString(attrs, "value");
                                         set.set(name, value);
                                     }
+                                }
+                            } else if ("productions".equalsIgnoreCase(c.getNodeName())) {
+                                final List<FuncHolder> productions = new ArrayList<>();
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
+                                    attrs = d.getAttributes();
+                                    if("produce".equalsIgnoreCase(d.getNodeName())) {
+                                        final String itemId = parseString(attrs, "itemId");
+                                        final String func = parseString(attrs, "function");
+                                        productions.add(new FuncHolder(itemId, func));
+                                    }
+                                }
+
+                                if(!productions.isEmpty()){
+                                    set.set("production", productions);
                                 }
                             }
                         }
@@ -116,13 +134,10 @@ public class BuildingData implements IXmlReader {
     }
 
     private Building makeBuilding(StatsSet set) throws InvocationTargetException {
-        try
-        {
+        try {
             final Constructor<?> c = Class.forName("com.gameserver.model.buildings." + set.getString("type")).getConstructor(StatsSet.class);
             return (Building) c.newInstance(set);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new InvocationTargetException(e);
         }
     }

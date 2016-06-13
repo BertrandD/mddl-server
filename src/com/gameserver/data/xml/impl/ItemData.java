@@ -114,7 +114,6 @@ public class ItemData implements IXmlReader {
                                         int buildingLevel = parseInteger(battrs, "level");
                                         buildingHolders.add(new BuildingHolder(buildingId, buildingLevel));
                                     }
-                                    // TODO: Technology
                                 }
                             }
                             else if("properties".equalsIgnoreCase(c.getNodeName()))

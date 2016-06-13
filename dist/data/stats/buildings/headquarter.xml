@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+<list disabled="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="headquarter" type="Headquarter" nameId="building_headquarter_n" maxLevel="8" descriptionId="building_headquarter_d" buildTimeFunc="5*$level">
         <requirements>
             <requirement level="1">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="2">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="3">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
                 <building id="mine_metal" level="1" />
             </requirement>
             <requirement level="4">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="5">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
                 <building id="mine_metal" level="2" />
                 <building id="storage_metal" level="1" />
             </requirement>
             <requirement level="6">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="7">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="8">
-                <function type="ITEM" id="metal" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
             </requirement>
         </requirements>
     </building>

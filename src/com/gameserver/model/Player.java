@@ -2,7 +2,6 @@ package com.gameserver.model;
 
 import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.util.data.json.View;

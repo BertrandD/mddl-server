@@ -12,6 +12,7 @@ import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
@@ -155,6 +156,34 @@ public class BuildingInstanceController {
         return response;
     }
 
+    @RequestMapping(value = "/{id}/attach/module/{module}")
+    public JsonResponse attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String buildingInstId, @PathVariable("module") String moduleId) {
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+
+        final Base base = player.getCurrentBase();
+        if(base == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BASE_NOT_FOUND);
+
+        BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(buildingInstId)).findFirst().orElse(null);
+        if(building == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
+
+        final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId) && k.getCount() > 0).findFirst().orElse(null);
+        if(module == null) return new JsonResponse(JsonResponseType.ERROR, "You havent module in your inventory !"); // TODO System message
+
+        // TODO: multiple same can be attach ! Remove this line
+        //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new JsonResponse(JsonResponseType.ERROR, "Module already attached !"); // TODO System message
+
+        if(building.getModules().size() >= ((ModulableBuilding)building.getTemplate()).getMaxModules()) return new JsonResponse(JsonResponseType.ERROR, "Maximum modules reached !"); // TODO System Message
+
+        if(inventoryService.consumeItem(module, 1))
+            building.addModule(module.getTemplateId());
+        else
+            return new JsonResponse(JsonResponseType.ERROR, "Incorrect items count.");
+        buildingService.update(building);
+
+        return new JsonResponse(building);
+    }
+
     private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector, Lang lang){
         final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
@@ -181,7 +210,7 @@ public class BuildingInstanceController {
         {
             final BuildingHolder holder = requirements.getBuildings().get(i);
             final BuildingInstance bInst = base.getBuildings().stream().filter(k -> k.getBuildingId().equals(holder.getId())).findFirst().orElse(null);
-            if(bInst == null) {
+            if(bInst == null || bInst.getCurrentLevel() < holder.getLevel()) {
                 meetRequirements = false;
             }
             i++;
@@ -200,11 +229,9 @@ public class BuildingInstanceController {
 
             final Inventory inventory;
             if(itemType.equals(ItemType.RESOURCE)) {
-                inventory = base.getResources();
-            } else if(itemType.equals(ItemType.COMMON)) {
-                inventory = base.getCommons();
+                inventory = base.getResourcesInventory();
             } else {
-                inventory = base.getShipItems();
+                inventory = base.getBaseInventory();
             }
 
             final ItemInstance iInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
@@ -227,7 +254,7 @@ public class BuildingInstanceController {
         while(meetRequirements && i < requirements.getFunctions().size())
         {
             final FuncHolder holder = requirements.getFunctions().get(i);
-            final ItemInstance iInst = building.getBase().getResources().getItems().stream().filter(k->k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+            final ItemInstance iInst = building.getBase().getResourcesInventory().getItems().stream().filter(k->k.getTemplateId().equals(holder.getItemId())).findFirst().orElse(null);
             final long reqCount = ((Number)Evaluator.getInstance().eval(holder.getFunction().replace("$level", ""+(building.getCurrentLevel()+1)))).longValue();
 
             if(iInst == null || iInst.getCount() < reqCount) {

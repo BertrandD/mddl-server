@@ -18,15 +18,12 @@ import java.util.stream.Collectors;
 @Document(collection = "resource_inventory")
 public class ResourceInventory extends Inventory {
 
-    private static final String STORAGE_METAL = "storage_metal";
+    private static final String STORAGE = "storage";
 
     @DBRef
     @JsonBackReference
     @JsonView(View.Standard.class)
     private Base base;
-
-    @JsonView(View.Standard.class)
-    private long lastRefresh;
 
     public ResourceInventory(){
         super();
@@ -35,7 +32,6 @@ public class ResourceInventory extends Inventory {
     public ResourceInventory(Base base){
         super();
         setBase(base);
-        setLastRefresh(System.currentTimeMillis());
     }
 
     public Base getBase() {
@@ -46,19 +42,11 @@ public class ResourceInventory extends Inventory {
         this.base = base;
     }
 
-    public long getLastRefresh() {
-        return lastRefresh;
-    }
-
-    public void setLastRefresh(long lastRefresh) {
-        this.lastRefresh = lastRefresh;
-    }
-
     @Override
     @JsonView(View.Standard.class)
     public long getMaxVolume() {
         long volume = 0;
-        final List<BuildingInstance> storages = getBase().getBuildings().stream().filter(k->k.getBuildingId().equals(STORAGE_METAL) && k.getCurrentLevel() > 0).collect(Collectors.toList());
+        final List<BuildingInstance> storages = getBase().getBuildings().stream().filter(k->k.getBuildingId().equals(STORAGE) && k.getCurrentLevel() > 0).collect(Collectors.toList());
         for (BuildingInstance storage : storages) {
             volume += ((Storage)storage.getTemplate()).getCapacityBonus(storage.getCurrentLevel());
         }

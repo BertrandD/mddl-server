@@ -8,12 +8,15 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author LEBOC Philippe
  */
 @Service
 public class ItemService {
+
+    private final Logger logger = Logger.getLogger(InventoryService.class.getName());
 
     @Autowired
     private ItemRepository repository;
@@ -38,12 +41,16 @@ public class ItemService {
      * @param count is the number of items created (stack)
      * @return the new created item
      */
-    public ItemInstance create(Inventory inventory, String itemId, long count){
-        return repository.save(new ItemInstance(inventory, itemId, count));
+    public ItemInstance create(Inventory inventory, String itemId, long count) {
+        logger.info("Create new item : "+itemId+" count = "+count);
+        final ItemInstance item = new ItemInstance(inventory, itemId, count);
+        item.setLastRefresh(System.currentTimeMillis());
+        return repository.save(item);
     }
 
     @Async
-    public void update(ItemInstance item){
+    public void update(ItemInstance item) {
+        logger.info("Update item "+item.getTemplateId());
         repository.save(item);
     }
 

@@ -9,6 +9,7 @@ import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.View;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(produces = "application/json")
 public class PlayerController {
+
+    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
     @Autowired
     private PlayerService playerService;
@@ -59,6 +62,7 @@ public class PlayerController {
             {
                 if (name.toLowerCase().contains(st.toLowerCase()))
                 {
+                    logger.info("Player creation failed : Forbidden name.");
                     return new JsonResponse(account.getLang(), SystemMessageId.FORBIDDEN_NAME);
                 }
             }
@@ -72,6 +76,8 @@ public class PlayerController {
 
         playerAccount.addPlayer(player.getId());
         playerAccount.setCurrentPlayer(player.getId());
+
+        logger.info("Player creation success : "+ player.getName() +".");
 
         accountService.update(playerAccount);
         return new JsonResponse(player);

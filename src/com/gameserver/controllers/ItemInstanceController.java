@@ -7,7 +7,6 @@ import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.items.GameItem;
@@ -57,17 +56,17 @@ public class ItemInstanceController {
         switch(tmpl.getType())
         {
             case RESOURCE:
-                inventory = base.getResources();
+                inventory = base.getResourcesInventory();
                 break;
             case CARGO:
             case ENGINE:
             case MODULE:
             case WEAPON:
             case STRUCTURE:
-                inventory = base.getShipItems();
+                inventory = base.getBaseInventory();
                 break;
             default:
-                inventory = base.getCommons();
+                inventory = base.getBaseInventory();
                 break;
         }
 

@@ -5,7 +5,7 @@ package com.gameserver.enums;
  */
 public enum BuildingCategory {
     None,
-    Headquarter,
-    Mine,
+    Shield,
+    Extractor,
     Storage
 }

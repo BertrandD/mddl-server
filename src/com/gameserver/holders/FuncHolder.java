@@ -8,27 +8,26 @@ import com.util.data.json.View;
 
 /**
  * @author LEBOC Philippe
- * Store object for calculating resources requirements
  */
 public class FuncHolder {
 
     @JsonView(View.Standard.class)
-    private String id;
+    private String itemId;
 
     @JsonView(View.Standard.class)
     private String function;
 
-    public FuncHolder(String id, String function){
-        setId(id);
+    public FuncHolder(String itemId, String function){
+        setItemId(itemId);
         setFunction(function);
     }
 
-    public String getId() {
-        return id;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getFunction() {
@@ -41,6 +40,6 @@ public class FuncHolder {
 
     @JsonIgnore
     public GameItem getItem(){
-        return ItemData.getInstance().getResource(this.id);
+        return ItemData.getInstance().getResource(this.itemId);
     }
 }

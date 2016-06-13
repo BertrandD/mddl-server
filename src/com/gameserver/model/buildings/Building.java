@@ -8,7 +8,6 @@ import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.util.data.json.View;
-import org.springframework.data.annotation.Transient;
 
 import java.util.HashMap;
 
@@ -38,7 +37,6 @@ public abstract class Building {
     @JsonView(View.Standard.class)
     private HashMap<Integer, Requirement> requirements;
 
-    @Transient
     @JsonIgnore
     private Lang lang = Lang.EN;
 
@@ -92,6 +90,7 @@ public abstract class Building {
     }
 
     @JsonView(View.Standard.class)
+    @SuppressWarnings("unused")
     public String getDescription(){
         return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
     }
@@ -118,10 +117,6 @@ public abstract class Building {
 
     public void setRequirements(HashMap<Integer, Requirement> requirements) {
         this.requirements = requirements;
-    }
-
-    public void addRequirements(int level, Requirement req){
-        requirements.put(level, req);
     }
 
     public Requirement getRequirements(int level){

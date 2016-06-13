@@ -1,6 +1,5 @@
 package com.gameserver.services;
 
-import com.config.Config;
 import com.gameserver.model.Base;
 import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.repository.ResourceInventoryRepository;
@@ -29,8 +28,6 @@ public class ResourceInventoryService {
     public ResourceInventory create(Base base){
         ResourceInventory inventory = new ResourceInventory(base);
         inventory = repository.save(inventory);
-        inventory.getItems().add(itemService.create(inventory, "metal", Config.INITIAL_BASE_METAL));
-        update(inventory);
         return inventory;
     }
 

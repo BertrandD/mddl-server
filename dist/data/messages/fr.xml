@@ -23,14 +23,12 @@
         <message id="building_max_level_reached" text="Niveau maximum atteint pour ce batiment." />
         <!-- Buildings names -->
         <message id="building_headquarter_n" text="Quartier général" />
-        <message id="building_mine_metal_n" text="Mine de métal" />
-        <message id="building_storage_metal_n" text="Hangar de métal" />
-        <message id="building_storage_crystal_n" text="Hangar de crystal" />
+        <message id="building_mine_n" text="Mine" />
+        <message id="building_storage_n" text="Hangar" />
         <!-- Buildings descriptions -->
         <message id="building_headquarter_d" text="Le quartier général est le batiment principal de votre base. Il vous permet la gestion complète de celle-ci." />
-        <message id="building_mine_metal_d" text="La mine de métal permet l'extraction du métal, ressource précieuse contenue dans les entrailles de la planète." />
-        <message id="building_storage_metal_d" text="Le hangar de métal augmente la capacité de stockage de métal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
-        <message id="building_storage_crystal_d" text="Le hangar de crystal augmente la capacité de stockage de crystal de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
+        <message id="building_mine_d" text="La mine permet l'extraction de ressources précieuses contenue dans les entrailles de la planète." />
+        <message id="building_storage_d" text="Le hangar augmente la capacité de stockage de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
         <!-- Items -->
         <message id="item_not_found" text="Item not found" />
         <message id="item_cannot_create" text="Item cannot be created" />
@@ -41,10 +39,28 @@
         <message id="you_dont_meet_item_requirement" text="Vous n'avez pas tous les objets nécessaires" />
         <message id="you_dont_meet_resource_requirement" text="Vous n'avez pas toutes les ressources nécessaires" />
         <!-- Items names -->
-        <message id="metal_n" text="Métal" />
+        <message id="resource_feo_n" text="FeO" />
+        <message id="resource_c_n" text="C" />
+        <message id="resource_ato3_n" text="AtO3" />
+        <message id="resource_ch4_n" text="CH4" />
+        <message id="resource_h2o_n" text="H2O" />
+        <message id="resource_steel_n" text="Acier" />
+        <message id="resource_plastic_n" text="Plastique" />
+        <message id="resource_tool_n" text="Outil" />
+        <message id="resource_nanoliquid_n" text="Nanoliquide" />
+        <message id="resource_septum_n" text="Septum" />
         <message id="structure_test_n" text="Structure Test" />
         <!-- Items descriptions -->
-        <message id="metal_d" text="Le métal est une resource primaire destinée à la création de batiment et des composants nécessaires aux vaisseaux" />
+        <message id="resource_feo_d" text="Oxyde de Fer" />
+        <message id="resource_c_d" text="Carbone" />
+        <message id="resource_ato3_d" text="Oxyde d'atemium" />
+        <message id="resource_ch4_d" text="Méthane" />
+        <message id="resource_h2o_d" text="Eau" />
+        <message id="resource_steel_d" text="L'acier est une resource primaire destinée à la création de batiment et des composants nécessaires aux vaisseaux" />
+        <message id="resource_plastic_d" text="Plastique" />
+        <message id="resource_tool_d" text="Outil" />
+        <message id="resource_nanoliquid_d" text="Nanoliquide" />
+        <message id="resource_septum_d" text="Septum" />
         <message id="structure_test_d" text="Structure créée pour effectuer des tests. A supprimer avant la release." />
     </messages>
 </list>

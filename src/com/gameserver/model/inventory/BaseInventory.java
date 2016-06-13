@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Document(collection = "base_inventory")
 public class BaseInventory extends Inventory {
 
-    private static final String STORAGE_METAL = "storage_metal";
+    private static final String STORAGE = "storage";
 
     @DBRef
     @JsonBackReference
@@ -47,7 +47,7 @@ public class BaseInventory extends Inventory {
     @JsonView(View.Standard.class)
     public long getMaxVolume() {
         long volume = 0;
-        final List<BuildingInstance> storages = getBase().getBuildings().stream().filter(k->!k.getBuildingId().equals(STORAGE_METAL) &&
+        final List<BuildingInstance> storages = getBase().getBuildings().stream().filter(k->k.getBuildingId().equals(STORAGE) &&
                 k.getTemplate().getType().equals(BuildingCategory.Storage) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
         for (BuildingInstance storage : storages) {

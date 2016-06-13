@@ -37,6 +37,9 @@ public class ItemInstance
     @JsonView(View.Standard.class)
     private ItemType type;
 
+    @JsonView(View.Standard.class)
+    private long lastRefresh;
+
     @DBRef
     @JsonManagedReference
     @JsonIgnore
@@ -57,41 +60,6 @@ public class ItemInstance
         setType(getTemplate().getType());
         setCount(count);
         setInventory(inventory);
-    }
-
-    public Cargo getCargoItem(){
-        if(isCargo()){
-            return (Cargo) getTemplate();
-        }
-        return null;
-    }
-
-    public Engine getEngineItem(){
-        if(isEngine()){
-            return (Engine) getTemplate();
-        }
-        return null;
-    }
-
-    public Module getModuleItem(){
-        if(isModule()){
-            return (Module) getTemplate();
-        }
-        return null;
-    }
-
-    public Structure getStructureItem(){
-        if(isStructure()){
-            return (Structure) getTemplate();
-        }
-        return null;
-    }
-
-    public Weapon getWeaponItem(){
-        if(isWeapon()){
-            return (Weapon) getTemplate();
-        }
-        return null;
     }
 
     public GameItem getTemplate() {
@@ -164,5 +132,13 @@ public class ItemInstance
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public long getLastRefresh() {
+        return lastRefresh;
+    }
+
+    public void setLastRefresh(long lastRefresh) {
+        this.lastRefresh = lastRefresh;
     }
 }

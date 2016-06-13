@@ -1,16 +1,20 @@
 package com.gameserver.model;
 
+import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.ItemType;
-import com.gameserver.model.buildings.Mine;
+import com.gameserver.model.buildings.Extractor;
+import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.ResourceInventory;
-import com.gameserver.model.vehicles.Ship;
+import com.gameserver.model.items.CommonItem;
+import com.gameserver.model.items.Module;
 import com.util.data.json.View;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -20,6 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -41,6 +46,9 @@ public final class Base
     private Player owner;
 
     @JsonView(View.Standard.class)
+    private BaseStat baseStat;
+
+    @JsonView(View.Standard.class)
     private HashMap<Integer, String> buildingPositions;
 
     @DBRef
@@ -49,27 +57,17 @@ public final class Base
     private List<BuildingInstance> buildings;
 
     @DBRef
-    @JsonView(View.Standard.class)
-    private List<Ship> ships;
+    @JsonIgnore
+    @JsonManagedReference
+    private ResourceInventory resourcesInventory;
 
     @DBRef
     @JsonIgnore
     @JsonManagedReference
-    private ResourceInventory resources;
-
-    @DBRef
-    @JsonIgnore
-    @JsonManagedReference
-    private BaseInventory commons;
-
-    @DBRef
-    @JsonIgnore
-    @JsonManagedReference
-    private BaseInventory shipItems;
+    private BaseInventory baseInventory;
 
     public Base() {
         setBuildings(new ArrayList<>());
-        setShips(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
     }
 
@@ -77,8 +75,8 @@ public final class Base
         setId(new ObjectId().toString());
         setName(name);
         setOwner(owner);
+        setBaseStat(new BaseStat(Config.BASE_INITIAL_MAX_SHIELD, Config.BASE_INITIAL_MAX_HEALTH));
         setBuildings(new ArrayList<>());
-        setShips(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
     }
 
@@ -86,20 +84,20 @@ public final class Base
     @JsonView(View.Standard.class)
     public HashMap<String, Long> getMaxVolumes() {
         final HashMap<String, Long> inventoriesVolumes = new HashMap<>();
-        inventoriesVolumes.put("max_volume_resources", getResources().getMaxVolume());
-        inventoriesVolumes.put("max_volume_items", getShipItems().getMaxVolume());
+        inventoriesVolumes.put("max_volume_resources", getResourcesInventory().getMaxVolume());
+        inventoriesVolumes.put("max_volume_items", getBaseInventory().getMaxVolume());
         return inventoriesVolumes;
     }
 
     @JsonView(View.Standard.class)
     public HashMap<String, List<ItemInstance>> getInventory() {
         final HashMap<String, List<ItemInstance>> inventory = new HashMap<>();
-        inventory.put(ItemType.RESOURCE.toString(), getResources().getItems());
-        inventory.put(ItemType.CARGO.toString(), getShipItems().getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
-        inventory.put(ItemType.ENGINE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()));
-        inventory.put(ItemType.MODULE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isModule).collect(Collectors.toList()));
-        inventory.put(ItemType.STRUCTURE.toString(), getShipItems().getItems().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()));
-        inventory.put(ItemType.WEAPON.toString(), getShipItems().getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()));
+        inventory.put(ItemType.RESOURCE.toString(), getResourcesInventory().getItems());
+        inventory.put(ItemType.CARGO.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
+        inventory.put(ItemType.ENGINE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()));
+        inventory.put(ItemType.MODULE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isModule).collect(Collectors.toList()));
+        inventory.put(ItemType.STRUCTURE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()));
+        inventory.put(ItemType.WEAPON.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()));
         return inventory;
     }
 
@@ -107,29 +105,45 @@ public final class Base
     @JsonView(View.Standard.class)
     public HashMap<String, Long> getProduction() {
         final HashMap<String, Long> production = new HashMap<>();
+        final List<BuildingInstance> extractors = getBuildings().stream().filter(k ->
+                k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
+                k.getCurrentLevel() > 0).collect(Collectors.toList());
 
-        // List of mines that produces item "metal"
-        final List<BuildingInstance> mines = getBuildings().stream().filter(k ->
-                k.getTemplate().getType().equals(BuildingCategory.Mine) &&
-                k.getCurrentLevel() > 0 &&
-                ((Mine) k.getTemplate()).getProduceItems().stream().filter(b ->
-                        b.getItemId().equals("metal")).count() > 0
-        ).collect(Collectors.toList());
-
-        long total = 0;
-        for (BuildingInstance mine : mines) {
-            final Mine template = ((Mine) mine.getTemplate());
-            total += template.getProduction(mine.getCurrentLevel());
+        // If extractor count < 1 return 0 for all productions.
+        if(extractors.isEmpty()) {
+            for(CommonItem item : ItemData.getInstance().getResources()) {
+                production.put(item.getName(), 0L);
+            }
+            return production;
         }
 
-        production.put("metal", total);
-        return production;
-    }
+        for (BuildingInstance extractor : extractors)
+        {
+            final Extractor template = ((Extractor) extractor.getTemplate());
+            for(Map.Entry entry : template.getProductionAtLevel(extractor.getCurrentLevel()).entrySet())
+            {
+                if(!production.containsKey(entry.getKey().toString())) {
+                    production.put(entry.getKey().toString(), (Long) entry.getValue());
+                } else {
+                    long currentCnt = production.get(entry.getKey().toString());
+                    currentCnt += (Long) entry.getValue();
+                    production.replace(entry.getKey().toString(), currentCnt);
+                }
+            }
+        }
 
-    @SuppressWarnings("unused")
-    @JsonView(View.Standard.class)
-    public long getLastRefresh(){
-        return getResources().getLastRefresh();
+        // Calculate resources modules bonus
+        for (BuildingInstance extractor : extractors){
+            for(Module module : extractor.getModules()){
+                Long resource = production.get(module.getAffected());
+                if(resource != null) {
+                    resource = (long)(resource * module.getMultiplicator()); // apply module multiplicator
+                    production.replace(module.getAffected(), resource);
+                }
+            }
+        }
+
+        return production;
     }
 
     public String getId() {
@@ -156,6 +170,14 @@ public final class Base
         this.owner = owner;
     }
 
+    public BaseStat getBaseStat() {
+        return baseStat;
+    }
+
+    public void setBaseStat(BaseStat baseStat) {
+        this.baseStat = baseStat;
+    }
+
     public HashMap<Integer, String> getBuildingPositions() {
         return buildingPositions;
     }
@@ -178,38 +200,21 @@ public final class Base
         this.buildingPositions.put(position, building.getId());
     }
 
-    public List<Ship> getShips() {
-        return ships;
+    @JsonIgnore
+    public ResourceInventory getResourcesInventory() {
+        return resourcesInventory;
     }
 
-    public void setShips(List<Ship> ships) {
-        this.ships = ships;
+    public void setResourcesInventory(ResourceInventory resources) {
+        this.resourcesInventory = resources;
     }
 
     @JsonIgnore
-    public ResourceInventory getResources() {
-        return resources;
+    public BaseInventory getBaseInventory() {
+        return baseInventory;
     }
 
-    public void setResources(ResourceInventory resources) {
-        this.resources = resources;
-    }
-
-    @JsonIgnore
-    public BaseInventory getCommons() {
-        return commons;
-    }
-
-    public void setCommons(BaseInventory commons) {
-        this.commons = commons;
-    }
-
-    @JsonIgnore
-    public BaseInventory getShipItems() {
-        return shipItems;
-    }
-
-    public void setShipItems(BaseInventory shipItems) {
-        this.shipItems = shipItems;
+    public void setBaseInventory(BaseInventory baseInventory) {
+        this.baseInventory = baseInventory;
     }
 }

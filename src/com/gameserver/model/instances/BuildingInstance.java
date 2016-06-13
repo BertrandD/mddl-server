@@ -4,16 +4,21 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.commons.Requirement;
+import com.gameserver.model.items.Module;
 import com.util.Evaluator;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -42,11 +47,15 @@ public class BuildingInstance
     @JsonView(View.Standard.class)
     private long startedAt;
 
+    @JsonView(View.Standard.class)
+    private List<String> modules;
+
     @Transient
     @JsonIgnore
     private Lang lang = Lang.EN;
 
     public BuildingInstance(){
+        setModules(new ArrayList<>());
     }
 
     public BuildingInstance(Base base, Building template) {
@@ -54,6 +63,7 @@ public class BuildingInstance
         setBuildingId(template.getId());
         setCurrentLevel(0);
         setStartedAt(-1);
+        setModules(new ArrayList<>());
     }
 
     @JsonView(View.buildingInstance_full.class)
@@ -130,6 +140,24 @@ public class BuildingInstance
     public long getBuildTime() {
         final String func = getTemplate().getBuildTimeFunc().replace("$level", ""+(getCurrentLevel()+1));
         return ((Number)Evaluator.getInstance().eval(func)).longValue() * 1000;
+    }
+
+    @JsonView(View.Standard.class)
+    public List<Module> getModules() {
+    List<Module> all = new ArrayList<>();
+        for (String module : modules) {
+            Module m = ItemData.getInstance().getModule(module);
+            if(m != null) all.add(m);
+        }
+        return all;
+    }
+
+    public void setModules(List<String> modules) {
+        this.modules = modules;
+    }
+
+    public void addModule(String module) {
+        modules.add(module);
     }
 
     @Override

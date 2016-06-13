@@ -61,7 +61,7 @@ public class Requirement {
         this.functions.forEach(k -> {
             final String func = k.getFunction().replace("$level", ""+getLevel());
             final long count = ((Number) Evaluator.getInstance().eval(func)).longValue();
-            getResources().put(k.getId(), count);
+            getResources().put(k.getItemId(), count);
         });
     }
 

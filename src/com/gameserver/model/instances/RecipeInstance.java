@@ -52,9 +52,6 @@ public class RecipeInstance {
     private List<String> modules;
 
     @JsonView(View.Standard.class)
-    private List<String> technologies;
-
-    @JsonView(View.Standard.class)
     private List<String> weapons;
 
     public RecipeInstance(){}
@@ -66,7 +63,6 @@ public class RecipeInstance {
         setCargos(cargos);
         setEngines(engines);
         setModules(modules);
-        setTechnologies(technologies);
         setWeapons(weapons);
     }
 
@@ -130,15 +126,6 @@ public class RecipeInstance {
 
     public void setModules(List<String> modules) {
         this.modules = modules;
-    }
-
-    public ArrayList<String> getTechnologies() {
-        // TODO: create Technology entity
-        return null;
-    }
-
-    public void setTechnologies(List<String> technologies) {
-        this.technologies = technologies;
     }
 
     public ArrayList<Weapon> getWeapons() {

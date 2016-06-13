@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list disabled="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+    <building id="factory" nameId="building_factory_n" type="Factory" descriptionId="building_factory_d" maxLevel="1" buildTimeFunc="10*$level">
+        <properties>
+            <property name="availables_modules" value="module_building_factory_structure;module_building_factory_engine;module_building_factory_cargo;module_building_factory_weapon;module_building_factory_rafinery"/>
+        </properties>
+        <requirements>
+            <requirement level="1">
+                <resource id="resource_feo" count="3000" />
+            </requirement>
+        </requirements>
+    </building>
+</list>

@@ -31,7 +31,7 @@ public class ShipService {
     public Ship create(Base base, String structure, long count){
         Ship ship = new Ship(base, structure, count);
         ship = repository.save(ship);
-        base.getShips().add(ship);
+        //base.getShips().add(ship);
         baseService.update(base);
         return ship;
     }
