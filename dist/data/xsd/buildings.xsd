@@ -58,13 +58,49 @@
 								<xs:element name="properties" minOccurs="0" maxOccurs="1">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="property" minOccurs="1" maxOccurs="unbounded">
-												<xs:complexType>
-													<xs:attribute name="name" type="xs:string" use="required" />
-													<xs:attribute name="type" type="xs:string" use="optional" />
-													<xs:attribute name="value" type="xs:string" use="required" />
-												</xs:complexType>
-											</xs:element>
+											<xs:choice maxOccurs="unbounded" minOccurs="1">
+												<xs:element name="property" minOccurs="1" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:attribute name="name" type="xs:string" use="required" />
+														<xs:attribute name="type" type="xs:string" use="optional" />
+														<xs:attribute name="value" type="xs:string" use="required" />
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="propertiesByLevel" minOccurs="0" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:choice maxOccurs="unbounded" minOccurs="1">
+												<xs:element name="property" minOccurs="1" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:attribute name="name" type="xs:string" use="required" />
+														<xs:attribute name="value" type="xs:string" use="required" />
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="properties" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="list" minOccurs="1" maxOccurs="unbounded">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+																			<xs:complexType>
+																				<xs:attribute name="name" type="xs:string" use="required" />
+																				<xs:attribute name="value" type="xs:string" use="required" />
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="name" type="xs:string" use="required" />
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+														<xs:attribute name="level" type="xs:integer" use="required" />
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>

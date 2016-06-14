@@ -7,5 +7,6 @@ public enum BuildingCategory {
     None,
     Shield,
     Extractor,
-    Storage
+    Storage,
+    ModuleFactory
 }

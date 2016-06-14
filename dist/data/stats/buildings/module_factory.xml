@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<list disabled="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="headquarter" type="Headquarter" nameId="building_headquarter_n" maxLevel="8" descriptionId="building_headquarter_d" buildTimeFunc="5*$level">
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+    <building id="module_factory" type="ModuleFactory" nameId="module_factory_n" maxLevel="8" descriptionId="module_factory_d" buildTimeFunc="10*$level">
+        <propertiesByLevel>
+            <properties level="1">
+                <list name="unlock_modules">
+                    <set name="module" value="module_optimizer_feo" />
+                    <set name="module" value="module_optimizer_c" />
+                </list>
+            </properties>
+            <properties level="2">
+                <list name="unlock_modules">
+                    <set name="module" value="module_optimizer_ato3" />
+                </list>
+            </properties>
+        </propertiesByLevel>
         <requirements>
             <requirement level="1">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_feo" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="2">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
+                <function type="ITEM" id="resource_feo" val="100*(Math.pow($level,2))" />
             </requirement>
             <requirement level="3">
                 <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
@@ -17,8 +30,8 @@
             </requirement>
             <requirement level="5">
                 <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
-                <building id="mine_metal" level="2" />
-                <building id="storage_metal" level="1" />
+                <building id="mine" level="2" />
+                <building id="storage" level="2" />
             </requirement>
             <requirement level="6">
                 <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
