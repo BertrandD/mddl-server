@@ -69,8 +69,6 @@ public class InventoryService implements IInventoryService {
                 k->k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
 
-        //final Extractor extractorTemplate = (Extractor)BuildingData.getInstance().getBuilding("mine");
-
         final long now = System.currentTimeMillis();
         final HashMap<String, Long> generatedResources = new HashMap<>();
 
@@ -79,7 +77,6 @@ public class InventoryService implements IInventoryService {
         for (BuildingInstance extractor : extractors)
         {
             final Extractor extractorTemplate =  (Extractor)BuildingData.getInstance().getBuilding(extractor.getBuildingId());
-            logger.info(extractorTemplate.getName()+" : "+extractorTemplate.getProduceItems().isEmpty());
 
             for (GameItem gameItem : extractorTemplate.getProduceItems())
             {
