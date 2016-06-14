@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author LEBOC Philippe
@@ -47,6 +48,8 @@ import java.util.List;
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/building", produces = "application/json")
 public class BuildingInstanceController {
+
+    private static final Logger logger = Logger.getLogger(BuildingInstanceController.class.getName());
 
     @Autowired
     private BuildingService buildingService;
@@ -65,7 +68,7 @@ public class BuildingInstanceController {
 
     @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.GET)
-    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
+    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
         final Base base = player.getCurrentBase();
@@ -75,7 +78,7 @@ public class BuildingInstanceController {
 
     @JsonView(View.buildingInstance_full.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public JsonResponse findOne(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
+    public JsonResponse findOne(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
         final BuildingInstance building = buildingService.findByBaseAndId(player.getCurrentBase(), id);
@@ -86,7 +89,7 @@ public class BuildingInstanceController {
 
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
-    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId){
+    public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
 
@@ -125,7 +128,7 @@ public class BuildingInstanceController {
 
     @JsonView(View.buildingInstance_base.class)
     @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.POST)
-    public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
+    public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         final Base base = player.getCurrentBase();
 
@@ -184,7 +187,7 @@ public class BuildingInstanceController {
         return new JsonResponse(building);
     }
 
-    private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector, Lang lang){
+    private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector, Lang lang) {
         final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
@@ -203,7 +206,7 @@ public class BuildingInstanceController {
         return null;
     }
 
-    private boolean validateBuildings(Base base, Requirement requirements){
+    private boolean validateBuildings(Base base, Requirement requirements) {
         int i = 0;
         boolean meetRequirements = true;
         while(meetRequirements && i < requirements.getBuildings().size())
@@ -219,7 +222,7 @@ public class BuildingInstanceController {
         return meetRequirements;
     }
 
-    private boolean validateItems(Base base, Requirement requirements, HashMap<ItemInstance, Long> collector){
+    private boolean validateItems(Base base, Requirement requirements, HashMap<ItemInstance, Long> collector) {
         int i = 0;
         boolean meetRequirements = true;
         while(meetRequirements && i < requirements.getItems().size())
@@ -229,6 +232,7 @@ public class BuildingInstanceController {
 
             final Inventory inventory;
             if(itemType.equals(ItemType.RESOURCE)) {
+                // todo: refresh resource ?
                 inventory = base.getResourcesInventory();
             } else {
                 inventory = base.getBaseInventory();
@@ -245,7 +249,7 @@ public class BuildingInstanceController {
         return meetRequirements;
     }
 
-    private boolean validateFunctions(BuildingInstance building, Requirement requirements, HashMap<ItemInstance, Long> collector){
+    private boolean validateFunctions(BuildingInstance building, Requirement requirements, HashMap<ItemInstance, Long> collector) {
         int i = 0;
         boolean meetRequirements = true;
 

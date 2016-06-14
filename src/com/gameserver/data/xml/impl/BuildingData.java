@@ -84,8 +84,6 @@ public class BuildingData implements IXmlReader {
                                                 itemHolders.add(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count")));
                                             } else if ("building".equalsIgnoreCase(e.getNodeName())) {
                                                 buildingHolders.add(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
-                                            } else if ("resource".equalsIgnoreCase(e.getNodeName())) {
-                                                resourceHolders.put(parseString(attrs, "id"), parseLong(attrs, "count"));
                                             }
                                         }
                                         requirements.put(level, new Requirement(level, functionHolders, itemHolders, buildingHolders, resourceHolders));

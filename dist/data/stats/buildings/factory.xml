@@ -6,7 +6,7 @@
         </properties>
         <requirements>
             <requirement level="1">
-                <resource id="resource_feo" count="3000" />
+                <item id="resource_feo" count="3000" />
             </requirement>
         </requirements>
     </building>

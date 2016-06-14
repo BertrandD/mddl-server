@@ -8,8 +8,8 @@
         </properties>
         <requirements>
             <requirement level="1">
-                <resource id="resource_steel" count="150" />
-                <resource id="resource_ch4" count="100" />
+                <item id="resource_steel" count="150" />
+                <item id="resource_ch4" count="100" />
             </requirement>
         </requirements>
     </building>
