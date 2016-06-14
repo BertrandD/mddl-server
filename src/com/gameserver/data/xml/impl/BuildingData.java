@@ -6,6 +6,9 @@ import com.gameserver.enums.Lang;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
+import com.gameserver.holders.PropertiesHolder;
+import com.gameserver.holders.PropertyHolder;
+import com.gameserver.holders.PropertyListHolder;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.Requirement;
@@ -89,8 +92,11 @@ public class BuildingData implements IXmlReader {
                                         requirements.put(level, new Requirement(level, functionHolders, itemHolders, buildingHolders, resourceHolders));
                                     }
                                 }
-                            } else if ("properties".equalsIgnoreCase(c.getNodeName())) {
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
+                            }
+                            else if ("properties".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
                                     attrs = d.getAttributes();
                                     if ("property".equalsIgnoreCase(d.getNodeName())) {
                                         final String name = parseString(attrs, "name");
@@ -98,7 +104,45 @@ public class BuildingData implements IXmlReader {
                                         set.set(name, value);
                                     }
                                 }
-                            } else if ("productions".equalsIgnoreCase(c.getNodeName())) {
+                            }
+                            else if("propertiesByLevel".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                final PropertiesHolder propertiesHolder = new PropertiesHolder();
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    attrs = d.getAttributes();
+                                    if("properties".equalsIgnoreCase(d.getNodeName()))
+                                    {
+                                        final int level = parseInteger(attrs, "level");
+                                        final List<PropertyListHolder> groupHolder = propertiesHolder.addLevelGroup(level);
+
+                                        for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
+                                        {
+                                            attrs = e.getAttributes();
+                                            if("list".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                final String listName = parseString(attrs, "name");
+                                                final PropertyListHolder propertyList = new PropertyListHolder(listName);
+                                                groupHolder.add(propertyList);
+
+                                                for(Node f = e.getFirstChild(); f != null; f = f.getNextSibling())
+                                                {
+                                                    attrs = f.getAttributes();
+                                                    if("set".equalsIgnoreCase(f.getNodeName()))
+                                                    {
+                                                        final String value = parseString(attrs, "value");
+                                                        final String name = parseString(attrs, "name");
+                                                        propertyList.addProperty(new PropertyHolder(name, value));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                set.set("propertiesByLevel", propertiesHolder);
+                            }
+                            else if ("productions".equalsIgnoreCase(c.getNodeName()))
+                            {
                                 final List<FuncHolder> productions = new ArrayList<>();
                                 for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
