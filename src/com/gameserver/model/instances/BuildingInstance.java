@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -132,8 +133,8 @@ public class BuildingInstance
     }
 
     @JsonView(View.Standard.class)
-    public Requirement getRequirements() {
-        return getTemplate().getRequirements(getCurrentLevel() + 1);
+    public HashMap<Integer, Requirement> getRequirements() {
+        return getTemplate().getRequirements();
     }
 
     @JsonView(View.Standard.class)
