@@ -13,11 +13,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author LEBOC Philippe
  */
 public class ModuleFactory extends Building {
+
+    private static final Logger logger = Logger.getLogger(Building.class.getName());
 
     @JsonView(View.Standard.class)
     private HashMap<Integer, List<Module>> modulesByLevel;
@@ -32,7 +35,7 @@ public class ModuleFactory extends Building {
 
         final PropertiesHolder properties = set.getObject("propertiesByLevel", PropertiesHolder.class);
         if(properties == null || properties.getPropertiesByLevel() == null) {
-            // TODO: add logger
+            logger.warning("PropertyByLevel is null !");
             return;
         }
 
