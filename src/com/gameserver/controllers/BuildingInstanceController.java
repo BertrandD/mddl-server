@@ -191,6 +191,8 @@ public class BuildingInstanceController {
         final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
+        inventoryService.refreshResource(building.getBase());
+
         if(!validateBuildings(building.getBase(), requirements)){
             return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
         }
@@ -232,7 +234,6 @@ public class BuildingInstanceController {
 
             final Inventory inventory;
             if(itemType.equals(ItemType.RESOURCE)) {
-                // todo: refresh resource ?
                 inventory = base.getResourcesInventory();
             } else {
                 inventory = base.getBaseInventory();
@@ -252,8 +253,6 @@ public class BuildingInstanceController {
     private boolean validateFunctions(BuildingInstance building, Requirement requirements, HashMap<ItemInstance, Long> collector) {
         int i = 0;
         boolean meetRequirements = true;
-
-        inventoryService.refreshResource(building.getBase());
 
         while(meetRequirements && i < requirements.getFunctions().size())
         {
