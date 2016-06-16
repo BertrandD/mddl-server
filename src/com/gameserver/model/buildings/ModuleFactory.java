@@ -42,7 +42,15 @@ public class ModuleFactory extends Building {
         for (Map.Entry<Integer, List<PropertyListHolder>> entry : properties.getPropertiesByLevel().entrySet()) {
             addModuleLevel(entry.getKey(), entry.getValue());
         }
+    }
 
+    public boolean hasModule(int level, String moduleId) {
+        final List<Module> modules = getModulesByLevel(level);
+        return modules != null && modules.stream().filter(k -> k.getItemId().equals(moduleId)).count() > 0;
+    }
+
+    public List<Module> getModulesByLevel(int level) {
+        return getModulesByLevel().get(level);
     }
 
     public HashMap<Integer, List<Module>> getModulesByLevel() {
