@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author LEBOC Philippe
@@ -48,8 +47,6 @@ import java.util.logging.Logger;
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/building", produces = "application/json")
 public class BuildingInstanceController {
-
-    private static final Logger logger = Logger.getLogger(BuildingInstanceController.class.getName());
 
     @Autowired
     private BuildingService buildingService;
