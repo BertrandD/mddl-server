@@ -109,12 +109,9 @@ public final class Base
                 k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
 
-        // If extractor count < 1 return 0 for all productions.
+        // If extractor count < 1 return null.
         if(extractors.isEmpty()) {
-            for(CommonItem item : ItemData.getInstance().getResources()) {
-                production.put(item.getItemId(), 0L);
-            }
-            return production;
+            return null;
         }
 
         for (BuildingInstance extractor : extractors)
