@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<list disabled="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="power_factory" nameId="building_power_factory_n" type="PowerFactory" descriptionId="building_power_factory_d" maxLevel="1" buildTimeFunc="10*$level">
         <properties>
             <property name="production" value="(200 + (100 * $level))"/>
         </properties>
         <requirements>
             <requirement level="1">
-                <item id="resource_steel" count="150" />
-                <item id="resource_ch4" count="100" />
+                <item id="resource_feo" count="15" />
+                <item id="resource_ch4" count="10" />
             </requirement>
         </requirements>
     </building>

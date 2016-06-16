@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
-    <building id="mine" type="Extractor" nameId="building_mine_n" maxLevel="10" descriptionId="building_mine_d" buildTimeFunc="5*$level">
+    <building id="mine" type="Extractor" nameId="building_mine_n" maxLevel="10" useEnergy="(100+(10*$level))" descriptionId="building_mine_d" buildTimeFunc="5*$level">
         <properties>
             <property name="availables_modules" value="module_optimizer_feo;module_optimizer_c;module_optimizer_ato3"/>
             <property name="max_modules" value="2" />
@@ -17,8 +17,6 @@
             <produce itemId="resource_feo" function="(100+(Math.pow($level, 3)))*10" />
             <produce itemId="resource_c" function="(100+(Math.pow($level, 2)))*5" />
             <produce itemId="resource_ato3" function="(10+(Math.pow($level, 2)))*2" />
-            <produce itemId="resource_ch4" function="(10*(Math.pow($level, 2)))" />
-            <produce itemId="resource_h2o" function="(15*(Math.pow($level, 2)))" />
         </productions>
     </building>
 </list>

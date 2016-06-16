@@ -8,5 +8,6 @@ public enum BuildingCategory {
     Shield,
     Extractor,
     Storage,
-    ModuleFactory
+    ModuleFactory,
+    PowerFactory
 }

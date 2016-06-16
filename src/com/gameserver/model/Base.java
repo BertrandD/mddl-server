@@ -4,16 +4,16 @@ import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.ItemType;
+import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.Extractor;
+import com.gameserver.model.buildings.PowerFactory;
 import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.ResourceInventory;
-import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Module;
 import com.util.data.json.View;
 import org.bson.types.ObjectId;
@@ -109,17 +109,12 @@ public final class Base
                 k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
 
-        // If extractor count < 1 return null.
-        if(extractors.isEmpty()) {
-            return null;
-        }
+        if(extractors.isEmpty()) return null;
 
-        for (BuildingInstance extractor : extractors)
-        {
+        for (BuildingInstance extractor : extractors) {
             final Extractor template = ((Extractor) extractor.getTemplate());
-            for(Map.Entry entry : template.getProductionAtLevel(extractor.getCurrentLevel()).entrySet())
-            {
-                if(!production.containsKey(entry.getKey().toString())) {
+            for (Map.Entry entry : template.getProductionAtLevel(extractor.getCurrentLevel()).entrySet()) {
+                if (!production.containsKey(entry.getKey().toString())) {
                     production.put(entry.getKey().toString(), (Long) entry.getValue());
                 } else {
                     long currentCnt = production.get(entry.getKey().toString());
@@ -130,17 +125,43 @@ public final class Base
         }
 
         // Calculate resources modules bonus
-        for (BuildingInstance extractor : extractors){
-            for(Module module : extractor.getModules()){
+        for (BuildingInstance extractor : extractors) {
+            for (Module module : extractor.getModules()) {
                 Long resource = production.get(module.getAffected());
-                if(resource != null) {
-                    resource = (long)(resource * module.getMultiplicator()); // apply module multiplicator
+                if (resource != null) {
+                    resource = (long) (resource * module.getMultiplicator()); // apply module multiplicator
                     production.replace(module.getAffected(), resource);
                 }
             }
         }
 
         return production;
+    }
+
+    @SuppressWarnings("unused")
+    @JsonView(View.Standard.class)
+    public long getEnergy() {
+        final List<BuildingInstance> powerFactories = getBuildings().stream().filter(k ->
+                k.getTemplate().getType().equals(BuildingCategory.PowerFactory) &&
+                        k.getCurrentLevel() > 0).collect(Collectors.toList());
+
+        if(powerFactories.isEmpty()) return 0;
+
+        long totalGeneratedPower = 0;
+
+        // How many power generated from all PowerFactories
+        for (BuildingInstance powerFactory : powerFactories) {
+            final PowerFactory factory = (PowerFactory) powerFactory.getTemplate();
+            totalGeneratedPower += factory.getPowerAtLevel(powerFactory.getCurrentLevel());
+        }
+
+        // How many is consumed from all building
+        for (BuildingInstance buildingInstance : getBuildings()) {
+            final Building building = buildingInstance.getTemplate();
+            totalGeneratedPower -= building.getRequiredEnergyAtLevel(buildingInstance.getCurrentLevel());
+        }
+
+        return totalGeneratedPower;
     }
 
     public String getId() {

@@ -7,6 +7,7 @@ import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
+import com.util.Evaluator;
 import com.util.data.json.View;
 
 import java.util.HashMap;
@@ -32,6 +33,9 @@ public abstract class Building {
     private int maxLevel;
 
     @JsonView(View.Standard.class)
+    private HashMap<Integer, Long> requiredEnergy;
+
+    @JsonView(View.Standard.class)
     private String buildTimeFunc;
 
     @JsonView(View.Standard.class)
@@ -47,7 +51,22 @@ public abstract class Building {
         setDescriptionId(set.getString("descriptionId"));
         setMaxLevel(set.getInt("maxLevel", 1));
         setBuildTimeFunc(set.getString("buildTimeFunc", null));
+        setRequiredEnergy(new HashMap<>());
         setRequirements(new HashMap<>());
+
+        initialize(set);
+    }
+
+    private void initialize(StatsSet set) {
+        final String useEnergyFunction = set.getString("useEnergy", null);
+
+        for(int i=1;i<=getMaxLevel();i++)
+        {
+            if(useEnergyFunction != null) {
+                final long prod = ((Number) Evaluator.getInstance().eval(useEnergyFunction.replace("$level", ""+i))).longValue();
+                getRequiredEnergy().put(i, prod);
+            } else getRequiredEnergy().put(i, 0L);
+        }
     }
 
     public String getId() {
@@ -101,6 +120,18 @@ public abstract class Building {
 
     public void setMaxLevel(int maxlevel) {
         this.maxLevel = maxlevel;
+    }
+
+    public HashMap<Integer, Long> getRequiredEnergy() {
+        return requiredEnergy;
+    }
+
+    public void setRequiredEnergy(HashMap<Integer, Long> requiredEnergy) {
+        this.requiredEnergy = requiredEnergy;
+    }
+
+    public long getRequiredEnergyAtLevel(int level) {
+        return getRequiredEnergy().get(level);
     }
 
     public String getBuildTimeFunc() {
