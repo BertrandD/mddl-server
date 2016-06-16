@@ -1,4 +1,4 @@
-package com.gameserver.controllers;
+package com.gameserver.controllers.statics;
 
 import com.auth.Account;
 import com.gameserver.data.xml.impl.ItemData;
