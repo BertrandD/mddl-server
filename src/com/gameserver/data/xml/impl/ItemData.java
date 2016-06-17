@@ -101,17 +101,17 @@ public class ItemData implements IXmlReader {
                             {
                                 for(Node d = c.getFirstChild(); d != null ; d = d.getNextSibling())
                                 {
-                                    NamedNodeMap battrs = d.getAttributes();
+                                    attrs = d.getAttributes();
                                     if("item".equalsIgnoreCase(d.getNodeName()))
                                     {
-                                        String itemId = parseString(battrs, "id");
-                                        long itemCount = parseLong(battrs, "count");
+                                        final String itemId = parseString(attrs, "id");
+                                        final long itemCount = parseLong(attrs, "count");
                                         itemHolders.add(new ItemHolder(itemId, itemCount));
                                     }
                                     else if("building".equalsIgnoreCase(d.getNodeName()))
                                     {
-                                        String buildingId = parseString(battrs, "id");
-                                        int buildingLevel = parseInteger(battrs, "level");
+                                        final String buildingId = parseString(attrs, "id");
+                                        final int buildingLevel = parseInteger(attrs, "level");
                                         buildingHolders.add(new BuildingHolder(buildingId, buildingLevel));
                                     }
                                 }
@@ -122,8 +122,8 @@ public class ItemData implements IXmlReader {
                                 {
                                     if("set".equalsIgnoreCase(d.getNodeName()))
                                     {
-                                        NamedNodeMap battrs = d.getAttributes();
-                                        set.set(parseString(battrs, "name"), parseString(battrs, "value"));
+                                        attrs = d.getAttributes();
+                                        set.set(parseString(attrs, "name"), parseString(attrs, "value"));
                                     }
                                 }
                             }

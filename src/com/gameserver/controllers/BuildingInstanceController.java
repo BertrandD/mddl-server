@@ -185,7 +185,7 @@ public class BuildingInstanceController {
     }
 
     private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector, Lang lang) {
-        final Requirement requirements = template.getRequirements().get(building.getCurrentLevel()+1);
+        final Requirement requirements = template.getAllRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
         inventoryService.refreshResource(building.getBase());

@@ -134,7 +134,7 @@ public class BuildingInstance
 
     @JsonView(View.Standard.class)
     public HashMap<Integer, Requirement> getRequirements() {
-        return getTemplate().getRequirements();
+        return getTemplate().getAllRequirements();
     }
 
     @JsonView(View.Standard.class)

@@ -8,7 +8,6 @@ import com.gameserver.holders.ItemHolder;
 import com.util.Evaluator;
 import com.util.data.json.View;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,61 +15,56 @@ import java.util.List;
  */
 public class Requirement {
 
-    @JsonIgnore
+    @JsonView(View.Standard.class)
     private int level;
 
     @JsonView(View.Standard.class)
-    private List<FuncHolder> functions;
-
-    @JsonView(View.Standard.class)
     private List<ItemHolder> items;
+
+    @JsonIgnore
+    private List<FuncHolder> functions;
 
     @JsonView(View.Standard.class)
     private List<BuildingHolder> buildings;
 
     /**
-     * HashMap<String, Long> because Bertrand ask for FRONT
+     * Used to parse ItemData
+     * @param items
+     * @param buildings
      */
-    @JsonView(View.Standard.class)
-    private HashMap<String, Long> resources;
-
-    // TODO: Technologies
-    // private List<TechnologyHolder> technologies;
-
     public Requirement(List<ItemHolder> items, List<BuildingHolder> buildings) {
         setLevel(-1);
-        setFunctions(null);
         setItems(items);
         setBuildings(buildings);
-        // setTechnologies(new ArrayList<>());
-        setResources(null);
     }
 
-    public Requirement(int level, List<FuncHolder> functions, List<ItemHolder> items, List<BuildingHolder> buildings, HashMap<String, Long> resources) {
+    /**
+     * Used to parse BuildingData
+     * @param level
+     * @param items
+     * @param functions
+     * @param buildings
+     */
+    public Requirement(int level, List<ItemHolder> items, List<FuncHolder> functions, List<BuildingHolder> buildings) {
         setLevel(level);
-        setFunctions(functions);
         setItems(items);
+        setFunctions(functions);
         setBuildings(buildings);
-        // setTechnologies(new ArrayList<>());
-        setResources(resources);
-
-        evaluateResources();
     }
 
-    public void evaluateResources() {
-        this.functions.forEach(k -> {
-            final String func = k.getFunction().replace("$level", ""+getLevel());
-            final long count = ((Number) Evaluator.getInstance().eval(func)).longValue();
-            getResources().put(k.getItemId(), count);
+    private void initialize() {
+        this.functions.forEach(k ->
+        {
+            String func = k.getFunction();
+            if(func != null) {
+                func = func.replace("$level", "" + getLevel());
+                final long count = ((Number) Evaluator.getInstance().eval(func)).longValue();
+
+                final ItemHolder currentItem = getItems().stream().filter(h -> h.getId().equals(k.getItemId())).findFirst().orElse(null);
+                if (currentItem == null) getItems().add(new ItemHolder(k.getItemId(), count));
+                else currentItem.setCount(currentItem.getCount() + count);
+            }
         });
-    }
-
-    public List<FuncHolder> getFunctions() {
-        return functions;
-    }
-
-    public void setFunctions(List<FuncHolder> functions) {
-        this.functions = functions;
     }
 
     public List<ItemHolder> getItems() {
@@ -81,6 +75,15 @@ public class Requirement {
         this.items = items;
     }
 
+    public List<FuncHolder> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(List<FuncHolder> functions) {
+        this.functions = functions;
+        initialize();
+    }
+
     public List<BuildingHolder> getBuildings() {
         return buildings;
     }
@@ -89,20 +92,11 @@ public class Requirement {
         this.buildings = buildings;
     }
 
-    public HashMap<String, Long> getResources() {
-        return resources;
-    }
-
-    public void setResources(HashMap<String, Long> resources) {
-        this.resources = resources;
-    }
-
-    @JsonIgnore
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    private void setLevel(int level) {
         this.level = level;
     }
 }

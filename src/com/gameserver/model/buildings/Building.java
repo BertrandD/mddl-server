@@ -32,13 +32,13 @@ public abstract class Building {
     @JsonView(View.Standard.class)
     private int maxLevel;
 
-    @JsonView(View.Standard.class)
+    @JsonIgnore
     private HashMap<Integer, Long> requiredEnergy;
 
-    @JsonView(View.Standard.class)
+    @JsonIgnore
     private String buildTimeFunc;
 
-    @JsonView(View.Standard.class)
+    @JsonIgnore
     private HashMap<Integer, Requirement> requirements;
 
     @JsonIgnore
@@ -52,7 +52,7 @@ public abstract class Building {
         setMaxLevel(set.getInt("maxLevel", 1));
         setBuildTimeFunc(set.getString("buildTimeFunc", null));
         setRequiredEnergy(new HashMap<>());
-        setRequirements(new HashMap<>());
+        setAllRequirements(new HashMap<>());
 
         initialize(set);
     }
@@ -67,6 +67,37 @@ public abstract class Building {
                 getRequiredEnergy().put(i, prod);
             } else getRequiredEnergy().put(i, 0L);
         }
+    }
+
+    @JsonView(View.Standard.class)
+    @SuppressWarnings("unused")
+    public long[] getBuildTimeByLevel() {
+        long[] times = new long[getMaxLevel()];
+        for(int i=0;i<getMaxLevel();i++){
+            final String strFunc = getBuildTimeFunc().replace("$level", ""+i);
+            if(strFunc != null){
+                final long prod = ((Number) Evaluator.getInstance().eval(getBuildTimeFunc().replace("$level", ""+i))).longValue();
+                times[i] = prod;
+            }
+        }
+        return times;
+    }
+
+    @JsonView(View.Standard.class)
+    @SuppressWarnings("unused")
+    public Requirement[] getRequirements() {
+        final Requirement[] req = new Requirement[getAllRequirements().size()];
+        return getAllRequirements().values().toArray(req);
+    }
+
+    @JsonView(View.Standard.class)
+    @SuppressWarnings("unused")
+    public long[] getReqEnergy() {
+        final long[] req = new long[getRequiredEnergy().size()];
+        for(int i=0;i<getRequiredEnergy().size();i++){
+            req[i] = getRequiredEnergyAtLevel(i+1);
+        }
+        return req;
     }
 
     public String getId() {
@@ -142,16 +173,12 @@ public abstract class Building {
         this.buildTimeFunc = buildTimeFunc;
     }
 
-    public HashMap<Integer, Requirement> getRequirements() {
+    public HashMap<Integer, Requirement> getAllRequirements() {
         return requirements;
     }
 
-    public void setRequirements(HashMap<Integer, Requirement> requirements) {
+    public void setAllRequirements(HashMap<Integer, Requirement> requirements) {
         this.requirements = requirements;
-    }
-
-    public Requirement getRequirements(int level){
-        return getRequirements().get(level);
     }
 
     @JsonIgnore

@@ -77,7 +77,6 @@ public class BuildingData implements IXmlReader {
                                         final List<FuncHolder> functionHolders = new ArrayList<>();
                                         final List<BuildingHolder> buildingHolders = new ArrayList<>();
                                         final List<ItemHolder> itemHolders = new ArrayList<>();
-                                        final HashMap<String, Long> resourceHolders = new HashMap<>();
 
                                         for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
@@ -89,7 +88,7 @@ public class BuildingData implements IXmlReader {
                                                 buildingHolders.add(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
                                             }
                                         }
-                                        requirements.put(level, new Requirement(level, functionHolders, itemHolders, buildingHolders, resourceHolders));
+                                        requirements.put(level, new Requirement(level, itemHolders, functionHolders, buildingHolders));
                                     }
                                 }
                             }
@@ -163,7 +162,7 @@ public class BuildingData implements IXmlReader {
                         try {
                             building = makeBuilding(set);
                             if (building != null) {
-                                building.setRequirements(requirements);
+                                building.setAllRequirements(requirements);
                                 _buildings.put(set.getString("id"), building);
                             }
                         } catch (InvocationTargetException e) {
