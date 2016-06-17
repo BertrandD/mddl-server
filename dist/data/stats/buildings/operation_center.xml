@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+    <building id="operation_center" nameId="building_operation_center_n" type="CommonBuilding" descriptionId="building_operation_center_d" maxLevel="10" buildTimeFunc="10*$level">
+        <requirements>
+            <requirement level="1">
+                <item id="resource_feo" count="1500" />
+                <item id="resource_c" count="150" />
+                <item id="resource_h2o" count="200" />
+                <item id="resource_ato3" count="25" />
+            </requirement>
+        </requirements>
+    </building>
+</list>
