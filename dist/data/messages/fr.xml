@@ -22,13 +22,18 @@
         <message id="building_already_exist" text="Le batiment existe déjà" />
         <message id="building_max_level_reached" text="Niveau maximum atteint pour ce batiment." />
         <!-- Buildings names -->
-        <message id="building_headquarter_n" text="Quartier général" />
         <message id="building_mine_n" text="Mine" />
         <message id="building_storage_n" text="Hangar" />
+        <message id="building_shield_n" text="Bouclier" />
+        <message id="building_pump_n" text="Pompe" />
+        <message id="building_power_factory_n" text="Centrale énergétique" />
         <!-- Buildings descriptions -->
         <message id="building_headquarter_d" text="Le quartier général est le batiment principal de votre base. Il vous permet la gestion complète de celle-ci." />
         <message id="building_mine_d" text="La mine permet l'extraction de ressources précieuses contenue dans les entrailles de la planète." />
         <message id="building_storage_d" text="Le hangar augmente la capacité de stockage de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
+        <message id="building_shield_d" text="Le bouclier est un batiment defensif vous protégeant des attaques et raids venant d'éventuels ennemis." />
+        <message id="building_pump_d" text="La pompe est un batiment essentiel pour extraire les ressources liquides." />
+        <message id="building_power_factory_d" text="La centrale énergétique génère l'energie consommées par les batiments pour exploité la maximum de leur capacités." />
         <!-- Items -->
         <message id="item_not_found" text="Item not found" />
         <message id="item_cannot_create" text="Item cannot be created" />
