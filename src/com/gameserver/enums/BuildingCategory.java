@@ -9,5 +9,6 @@ public enum BuildingCategory {
     Extractor,
     Storage,
     ModuleFactory,
-    PowerFactory
+    PowerFactory,
+    CommonBuilding
 }
