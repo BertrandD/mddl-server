@@ -27,6 +27,8 @@
         <message id="building_shield_n" text="Bouclier" />
         <message id="building_pump_n" text="Pompe" />
         <message id="building_power_factory_n" text="Centrale énergétique" />
+        <message id="building_embassy_n" text="Ambassade" />
+        <message id="building_operation_center_n" text="Centre opérationnel" />
         <!-- Buildings descriptions -->
         <message id="building_headquarter_d" text="Le quartier général est le batiment principal de votre base. Il vous permet la gestion complète de celle-ci." />
         <message id="building_mine_d" text="La mine permet l'extraction de ressources précieuses contenue dans les entrailles de la planète." />
@@ -34,6 +36,8 @@
         <message id="building_shield_d" text="Le bouclier est un batiment defensif vous protégeant des attaques et raids venant d'éventuels ennemis." />
         <message id="building_pump_d" text="La pompe est un batiment essentiel pour extraire les ressources liquides." />
         <message id="building_power_factory_d" text="La centrale énergétique génère l'energie consommées par les batiments pour exploité la maximum de leur capacités." />
+        <message id="building_embassy_d" text="L'ambassade est destinée à la gestion des relations extérieurs." />
+        <message id="building_operation_center_d" text="Le centre opérationnel permet la gestion des flottes entrantes et sortante de la base" />
         <!-- Items -->
         <message id="item_not_found" text="Item not found" />
         <message id="item_cannot_create" text="Item cannot be created" />
