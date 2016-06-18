@@ -10,7 +10,6 @@ import com.gameserver.holders.PropertiesHolder;
 import com.gameserver.holders.PropertyHolder;
 import com.gameserver.holders.PropertyListHolder;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.util.data.xml.IXmlReader;
