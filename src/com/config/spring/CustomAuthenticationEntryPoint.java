@@ -1,4 +1,4 @@
-package com.commons.SpringConfig;
+package com.config.spring;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

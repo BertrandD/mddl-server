@@ -1,4 +1,4 @@
-package com.commons.SpringConfig;
+package com.config.spring;
 
 import com.auth.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;

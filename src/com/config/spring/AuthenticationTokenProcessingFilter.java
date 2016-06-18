@@ -1,4 +1,4 @@
-package com.commons.SpringConfig;
+package com.config.spring;
 
 import com.auth.Account;
 import com.auth.AccountService;

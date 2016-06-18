@@ -1,4 +1,4 @@
-package com.commons.SpringConfig;
+package com.config.spring;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
