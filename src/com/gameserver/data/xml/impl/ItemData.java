@@ -259,6 +259,10 @@ public class ItemData implements IXmlReader {
         return item;
     }
 
+    public int getSize() {
+        return _all.size();
+    }
+
     public static ItemData getInstance()
     {
         return SingletonHolder._instance;
