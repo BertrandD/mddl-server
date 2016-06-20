@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/building/modulefactory/interface", produces = "application/json")
+@RequestMapping(value = "/modulefactory", produces = "application/json")
 public class ModuleFactoryController {
 
     private static final String MODULE_FACTORY = "module_factory";
@@ -37,7 +37,7 @@ public class ModuleFactoryController {
     @Autowired
     private InventoryService inventoryService;
 
-    @RequestMapping(value = "/create/module/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
     public JsonResponse createModule(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") String moduleId) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
