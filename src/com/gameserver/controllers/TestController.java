@@ -9,6 +9,7 @@ import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
+import com.gameserver.services.UpdateService;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,20 @@ public class TestController {
 
     @Autowired
     private InventoryService inventoryService;
+
+    @Autowired
+    private UpdateService updateService;
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public JsonResponse test() {
+        return new JsonResponse();
+    }
+
+    @RequestMapping(value = "/mongodb/update", method = RequestMethod.GET)
+    public JsonResponse updateDatabase() {
+        updateService.updateDatabase();
+        return new JsonResponse("Static message : Database updated successfully !");
+    }
 
     @RequestMapping(value = "/create/item", method = RequestMethod.POST)
     public JsonResponse createItem(@AuthenticationPrincipal Account pAccount, @RequestParam(name = "itemId") String itemId, @RequestParam(name = "count") long count) {
