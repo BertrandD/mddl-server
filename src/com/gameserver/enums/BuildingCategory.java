@@ -10,5 +10,6 @@ public enum BuildingCategory {
     Storage,
     ModuleFactory,
     PowerFactory,
-    CommonBuilding
+    CommonBuilding,
+    RobotFactory
 }
