@@ -77,7 +77,7 @@ public abstract class Building {
             final String strFunc = getBuildTimeFunc().replace("$level", ""+i);
             if(strFunc != null){
                 final long prod = ((Number) Evaluator.getInstance().eval(getBuildTimeFunc().replace("$level", ""+i))).longValue();
-                times[i] = prod;
+                times[i] = prod * 1000;
             }
         }
         return times;
