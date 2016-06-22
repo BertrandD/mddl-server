@@ -132,12 +132,6 @@ public class BuildingInstance
         this.lang = lang;
     }
 
-    @JsonView(View.Standard.class)
-    public HashMap<Integer, Requirement> getRequirements() {
-        return getTemplate().getAllRequirements();
-    }
-
-    @JsonView(View.Standard.class)
     public long getBuildTime() {
         final String func = getTemplate().getBuildTimeFunc().replace("$level", ""+(getCurrentLevel()+1));
         return ((Number)Evaluator.getInstance().eval(func)).longValue() * 1000;
