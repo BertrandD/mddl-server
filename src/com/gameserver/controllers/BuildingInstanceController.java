@@ -105,7 +105,7 @@ public class BuildingInstanceController {
         final BuildingInstance tempBuilding = new BuildingInstance(base, BuildingData.getInstance().getBuilding(templateId));
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse validate = validateRequirements(tempBuilding, tempBuilding.getTemplate(), collector, pAccount.getLang());
+        final JsonResponse validate = validateRequirements(base, tempBuilding, tempBuilding.getTemplate(), collector, pAccount.getLang());
         if(validate != null) return validate;
 
         final BuildingInstance building = buildingService.create(base, templateId);
@@ -142,7 +142,7 @@ public class BuildingInstanceController {
         }
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse validate = validateRequirements(building, template, collector, pAccount.getLang());
+        final JsonResponse validate = validateRequirements(base, building, template, collector, pAccount.getLang());
         if(validate != null) return validate;
 
         collector.forEach(inventoryService::consumeItem);
@@ -184,17 +184,17 @@ public class BuildingInstanceController {
         return new JsonResponse(building);
     }
 
-    private JsonResponse validateRequirements(BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector, Lang lang) {
+    private JsonResponse validateRequirements(Base base, BuildingInstance building, Building template, HashMap<ItemInstance, Long> collector, Lang lang) {
         final Requirement requirements = template.getAllRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
         inventoryService.refreshResource(building.getBase());
 
-        if(!validateBuildings(building.getBase(), requirements)){
+        if(!validateBuildings(base, requirements)){
             return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
         }
 
-        if(!validateItems(building.getBase(), requirements, collector)){
+        if(!validateItems(base, requirements, collector)){
             return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
         }
 

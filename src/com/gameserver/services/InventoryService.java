@@ -143,7 +143,7 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public ItemInstance addItem(Inventory inventory, String templateId, final long amount){
+    public synchronized ItemInstance addItem(Inventory inventory, String templateId, final long amount){
         ItemInstance item = itemService.findFirstByInventoryAndTemplateId(inventory, templateId);
 
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
@@ -176,7 +176,7 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public ItemInstance addItem(ItemInstance item, final long amount) {
+    public synchronized ItemInstance addItem(ItemInstance item, final long amount) {
 
         final GameItem template = item.getTemplate();
         if(template == null) return null;
@@ -194,12 +194,14 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public boolean consumeItem(ItemInstance item, final long amount) {
+    public synchronized boolean consumeItem(ItemInstance item, final long amount) {
         logger.info("consumeItem(ItemInstance:"+item.getTemplateId()+", "+amount+")");
         if(item.getType().equals(ItemType.RESOURCE)){
             final ResourceInventory resources = (ResourceInventory)item.getInventory();
             refreshResource(resources.getBase());
-            item = itemService.findOne(item.getId());
+            //item = itemService.findOne(item.getId());
+            final String itemTemplateId = item.getTemplateId();
+            item = resources.getItems().stream().filter(k->k.getTemplateId().equals(itemTemplateId)).findFirst().orElse(null);
         }
 
         if(item.getCount() - amount >= 0){
@@ -218,7 +220,7 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public boolean consumeItem(Inventory inventory, String id, final long amount) {
+    public synchronized boolean consumeItem(Inventory inventory, String id, final long amount) {
         logger.info("consumeItem(Inventory:"+inventory.getClass().getSimpleName()+", "+id+", "+amount+")");
         final ItemInstance item = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(id)).findFirst().orElse(null);
         return item != null && consumeItem(item, amount);
