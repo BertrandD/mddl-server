@@ -173,6 +173,7 @@ public abstract class Building {
         this.buildTimeFunc = buildTimeFunc;
     }
 
+    @JsonIgnore
     public HashMap<Integer, Requirement> getAllRequirements() {
         return requirements;
     }

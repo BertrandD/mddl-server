@@ -3,11 +3,8 @@ package com.gameserver.controllers;
 import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
-import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
 import com.gameserver.holders.BuildingHolder;
-import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
@@ -24,7 +21,6 @@ import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.gameserver.tasks.mongo.BuildingTask;
-import com.util.Evaluator;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import com.util.data.json.View;
@@ -198,10 +194,6 @@ public class BuildingInstanceController {
             return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
         }
 
-        if(!validateFunctions(building, requirements, collector)){
-            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_RESOURCE_REQUIREMENT);
-        }
-
         return null;
     }
 
@@ -227,41 +219,14 @@ public class BuildingInstanceController {
         while(meetRequirements && i < requirements.getItems().size())
         {
             final ItemHolder holder = requirements.getItems().get(i);
-            final ItemType itemType = ItemData.getInstance().getTemplate(holder.getId()).getType();
-
-            final Inventory inventory;
-            if(itemType.equals(ItemType.RESOURCE)) {
-                inventory = base.getResourcesInventory();
-            } else {
-                inventory = base.getBaseInventory();
-            }
-
+            final Inventory inventory = base.getBaseInventory();
             final ItemInstance iInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+
             if(iInst == null || iInst.getCount() < holder.getCount()) {
                 meetRequirements = false;
             }
 
             collector.put(iInst, holder.getCount());
-            i++;
-        }
-        return meetRequirements;
-    }
-
-    private boolean validateFunctions(BuildingInstance building, Requirement requirements, HashMap<ItemInstance, Long> collector) {
-        int i = 0;
-        boolean meetRequirements = true;
-
-        while(meetRequirements && i < requirements.getFunctions().size())
-        {
-            final FuncHolder holder = requirements.getFunctions().get(i);
-            final ItemInstance iInst = building.getBase().getResourcesInventory().getItems().stream().filter(k->k.getTemplateId().equals(holder.getItemId())).findFirst().orElse(null);
-            final long reqCount = ((Number)Evaluator.getInstance().eval(holder.getFunction().replace("$level", ""+(building.getCurrentLevel()+1)))).longValue();
-
-            if(iInst == null || iInst.getCount() < reqCount) {
-                meetRequirements = false;
-            }
-
-            collector.put(iInst, reqCount);
             i++;
         }
         return meetRequirements;

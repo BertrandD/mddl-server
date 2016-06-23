@@ -15,32 +15,12 @@
             </properties>
         </propertiesByLevel>
         <requirements>
-            <requirement level="1">
-                <function type="ITEM" id="resource_feo" val="100*(Math.pow($level,2))" />
-            </requirement>
-            <requirement level="2">
-                <function type="ITEM" id="resource_feo" val="100*(Math.pow($level,2))" />
-            </requirement>
-            <requirement level="3">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
-                <building id="mine_metal" level="1" />
-            </requirement>
-            <requirement level="4">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
-            </requirement>
+            <functions>
+                <function fromLevel="1" itemId="resource_feo" value="100*(Math.pow($level,2))"/>
+            </functions>
             <requirement level="5">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
                 <building id="mine" level="2" />
                 <building id="storage" level="2" />
-            </requirement>
-            <requirement level="6">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
-            </requirement>
-            <requirement level="7">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
-            </requirement>
-            <requirement level="8">
-                <function type="ITEM" id="resource_steel" val="100*(Math.pow($level,2))" />
             </requirement>
         </requirements>
     </building>

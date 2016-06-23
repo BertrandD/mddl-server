@@ -13,7 +13,6 @@ import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
-import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.model.items.Module;
 import com.util.data.json.View;
 import org.bson.types.ObjectId;
@@ -59,11 +58,6 @@ public final class Base
     @DBRef
     @JsonIgnore
     @JsonManagedReference
-    private ResourceInventory resourcesInventory;
-
-    @DBRef
-    @JsonIgnore
-    @JsonManagedReference
     private BaseInventory baseInventory;
 
     public Base() {
@@ -84,7 +78,6 @@ public final class Base
     @JsonView(View.Standard.class)
     public HashMap<String, Long> getMaxVolumes() {
         final HashMap<String, Long> inventoriesVolumes = new HashMap<>();
-        inventoriesVolumes.put("max_volume_resources", getResourcesInventory().getMaxVolume());
         inventoriesVolumes.put("max_volume_items", getBaseInventory().getMaxVolume());
         return inventoriesVolumes;
     }
@@ -92,7 +85,7 @@ public final class Base
     @JsonView(View.Standard.class)
     public HashMap<String, List<ItemInstance>> getInventory() {
         final HashMap<String, List<ItemInstance>> inventory = new HashMap<>();
-        inventory.put(ItemType.RESOURCE.toString(), getResourcesInventory().getItems());
+        inventory.put(ItemType.RESOURCE.toString(), getBaseInventory().getItems().stream().filter(k->k.getType().equals(ItemType.RESOURCE)).collect(Collectors.toList()));
         inventory.put(ItemType.CARGO.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
         inventory.put(ItemType.ENGINE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()));
         inventory.put(ItemType.MODULE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isModule).collect(Collectors.toList()));
@@ -216,15 +209,6 @@ public final class Base
     public void addBuilding(BuildingInstance building, int position) {
         this.buildings.add(building);
         this.buildingPositions.put(position, building.getId());
-    }
-
-    @JsonIgnore
-    public ResourceInventory getResourcesInventory() {
-        return resourcesInventory;
-    }
-
-    public void setResourcesInventory(ResourceInventory resources) {
-        this.resourcesInventory = resources;
     }
 
     @JsonIgnore

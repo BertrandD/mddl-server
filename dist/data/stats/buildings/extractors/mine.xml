@@ -6,11 +6,11 @@
             <property name="max_modules" value="2" />
         </properties>
         <requirements>
+            <functions>
+                <function fromLevel="1" itemId="resource_feo" value="100*$level"/>
+            </functions>
             <requirement level="1">
                 <building id="storage" level="1" />
-            </requirement>
-            <requirement level="2">
-                <function id="resource_feo" type="ITEM" val="100*$level" />
             </requirement>
         </requirements>
         <productions>

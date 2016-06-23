@@ -1,13 +1,11 @@
 package com.gameserver.model.commons;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.holders.BuildingHolder;
-import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
-import com.util.Evaluator;
 import com.util.data.json.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +18,6 @@ public class Requirement {
 
     @JsonView(View.Standard.class)
     private List<ItemHolder> items;
-
-    @JsonIgnore
-    private List<FuncHolder> functions;
 
     @JsonView(View.Standard.class)
     private List<BuildingHolder> buildings;
@@ -42,29 +37,24 @@ public class Requirement {
      * Used to parse BuildingData
      * @param level
      * @param items
-     * @param functions
      * @param buildings
      */
-    public Requirement(int level, List<ItemHolder> items, List<FuncHolder> functions, List<BuildingHolder> buildings) {
+    public Requirement(int level, List<ItemHolder> items, List<BuildingHolder> buildings) {
         setLevel(level);
         setItems(items);
-        setFunctions(functions);
         setBuildings(buildings);
     }
 
-    private void initialize() {
-        this.functions.forEach(k ->
-        {
-            String func = k.getFunction();
-            if(func != null) {
-                func = func.replace("$level", "" + getLevel());
-                final long count = ((Number) Evaluator.getInstance().eval(func)).longValue();
-
-                final ItemHolder currentItem = getItems().stream().filter(h -> h.getId().equals(k.getItemId())).findFirst().orElse(null);
-                if (currentItem == null) getItems().add(new ItemHolder(k.getItemId(), count));
-                else currentItem.setCount(currentItem.getCount() + count);
-            }
-        });
+    /**
+     * Used to parse BuildingData (completion with functions)
+     * @param level
+     * @param item
+     */
+    public Requirement(int level, ItemHolder item) {
+        setLevel(level);
+        setItems(new ArrayList<>());
+        setBuildings(new ArrayList<>());
+        addItem(item);
     }
 
     public List<ItemHolder> getItems() {
@@ -75,13 +65,12 @@ public class Requirement {
         this.items = items;
     }
 
-    public List<FuncHolder> getFunctions() {
-        return functions;
-    }
-
-    public void setFunctions(List<FuncHolder> functions) {
-        this.functions = functions;
-        initialize();
+    public void addItem(ItemHolder item) {
+        final ItemHolder alreadyExistingItem = items.stream().filter(k->k.getId().equals(item.getId())).findFirst().orElse(null);
+        if(alreadyExistingItem != null)
+            alreadyExistingItem.setCount(alreadyExistingItem.getCount()+item.getCount());
+        else
+            items.add(item);
     }
 
     public List<BuildingHolder> getBuildings() {
