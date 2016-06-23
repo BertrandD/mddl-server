@@ -2,7 +2,6 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.enums.ItemType;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
@@ -59,8 +58,7 @@ public class TestController {
         GameItem item = ItemData.getInstance().getTemplate(itemId);
         if(item == null) return new JsonResponse(JsonResponseType.ERROR, "Item ["+itemId+"] doesnt exist !");
 
-        if(item.getType().equals(ItemType.RESOURCE)) inventoryService.addItem(base.getResourcesInventory(), itemId, count);
-        else inventoryService.addItem(base.getBaseInventory(), itemId, count);
+        inventoryService.addItem(base.getBaseInventory(), itemId, count);
 
         return new JsonResponse("Item added successful !");
     }

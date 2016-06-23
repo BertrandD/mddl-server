@@ -7,7 +7,6 @@ import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.services.InventoryService;
@@ -52,25 +51,7 @@ public class ItemInstanceController {
         final GameItem tmpl = ItemData.getInstance().getTemplate(itemId);
         if(tmpl == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_NOT_FOUND);
 
-        final Inventory inventory;
-        switch(tmpl.getType())
-        {
-            case RESOURCE:
-                inventory = base.getResourcesInventory();
-                break;
-            case CARGO:
-            case ENGINE:
-            case MODULE:
-            case WEAPON:
-            case STRUCTURE:
-                inventory = base.getBaseInventory();
-                break;
-            default:
-                inventory = base.getBaseInventory();
-                break;
-        }
-
-        final ItemInstance item = inventoryService.addItem(inventory, itemId, count);
+        final ItemInstance item = inventoryService.addItem(base.getBaseInventory(), itemId, count);
         if(item == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.ITEM_CANNOT_CREATE);
 
         return new JsonResponse(item);

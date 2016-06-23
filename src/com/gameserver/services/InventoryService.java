@@ -13,7 +13,6 @@ import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,21 +40,13 @@ public class InventoryService implements IInventoryService {
     @Autowired
     private BaseInventoryService baseInventoryService;
 
-    @Autowired
-    private ResourceInventoryService resourceInventoryService;
-
     public void update(Inventory inventory){
-        if(inventory instanceof ResourceInventory) resourceInventoryService.update((ResourceInventory)inventory);
-        else if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
+        if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
         else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
     }
 
     public BaseInventory createBaseInventory(Base base){
         return baseInventoryService.create(base);
-    }
-
-    public ResourceInventory createResourceInventory(Base base){
-        return resourceInventoryService.create(base);
     }
 
     public PlayerInventory createPlayerInventory(Player player){
@@ -64,7 +55,7 @@ public class InventoryService implements IInventoryService {
 
     public void refreshResource(Base base){
         logger.info("Refreshing resources...");
-        final ResourceInventory baseResourcesInventory = base.getResourcesInventory();
+        final BaseInventory baseInventory = base.getBaseInventory();
         final List<BuildingInstance> extractors = base.getBuildings().stream().filter(
                 k->k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
@@ -80,7 +71,7 @@ public class InventoryService implements IInventoryService {
 
             for (GameItem gameItem : extractorTemplate.getProduceItems())
             {
-                final ItemInstance resourceToUpdate = baseResourcesInventory.getItems().stream().filter(k->k.getTemplateId().equals(gameItem.getItemId())).findFirst().orElse(null);
+                final ItemInstance resourceToUpdate = baseInventory.getItems().stream().filter(k->k.getTemplateId().equals(gameItem.getItemId())).findFirst().orElse(null);
                 if(resourceToUpdate != null){
                     final long productionCnt = (long)((((float) extractorTemplate.getProductionAtLevel(gameItem.getItemId(), extractor.getCurrentLevel()) / 3600)) * ((now - resourceToUpdate.getLastRefresh()) / 1000));
                     if(generatedResources.containsKey(gameItem.getItemId())){
@@ -106,19 +97,19 @@ public class InventoryService implements IInventoryService {
 
         for (String itemId : generatedResources.keySet())
         {
-            ItemInstance item = baseResourcesInventory.getItems().stream().filter(k->k.getTemplateId().equals(itemId)).findFirst().orElse(null);
+            ItemInstance item = baseInventory.getItems().stream().filter(k->k.getTemplateId().equals(itemId)).findFirst().orElse(null);
             if(item == null){
-                item = itemService.create(baseResourcesInventory, itemId, 0);
+                item = itemService.create(baseInventory, itemId, 0);
                 if(generatedResources.get(itemId) > 0)
                     item = addResource(item, generatedResources.get(itemId));
-                baseResourcesInventory.getItems().add(item);
+                baseInventory.getItems().add(item);
             } else {
                 if(generatedResources.get(itemId) > 0)
                     addResource(item, generatedResources.get(item.getTemplateId()));
             }
         }
 
-        update(baseResourcesInventory);
+        update(baseInventory);
     }
 
     /**
@@ -158,7 +149,6 @@ public class InventoryService implements IInventoryService {
             inventory.getItems().add(item);
 
             if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
-            else if(inventory instanceof ResourceInventory) resourceInventoryService.update((ResourceInventory) inventory);
             else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
             else return null;
 
@@ -166,7 +156,7 @@ public class InventoryService implements IInventoryService {
         }
 
         if(item.getType().equals(ItemType.RESOURCE)){
-            refreshResource(((ResourceInventory)item.getInventory()).getBase());
+            refreshResource(((BaseInventory)item.getInventory()).getBase());
             item = itemService.findOne(item.getId());
         }
 
@@ -184,7 +174,7 @@ public class InventoryService implements IInventoryService {
         if(item.getInventory().getFreeVolume() < (template.getVolume()*amount)) return null;
 
         if(item.getType().equals(ItemType.RESOURCE)){
-            refreshResource(((ResourceInventory)item.getInventory()).getBase());
+            refreshResource(((BaseInventory)item.getInventory()).getBase());
             item = itemService.findOne(item.getId());
         }
 
@@ -196,8 +186,8 @@ public class InventoryService implements IInventoryService {
     @Override
     public synchronized boolean consumeItem(ItemInstance item, final long amount) {
         logger.info("consumeItem(ItemInstance:"+item.getTemplateId()+", "+amount+")");
-        if(item.getType().equals(ItemType.RESOURCE)){
-            final ResourceInventory resources = (ResourceInventory)item.getInventory();
+        if(item.getType().equals(ItemType.RESOURCE)) {
+            final BaseInventory resources = (BaseInventory)item.getInventory();
             refreshResource(resources.getBase());
             //item = itemService.findOne(item.getId());
             final String itemTemplateId = item.getTemplateId();
@@ -228,7 +218,6 @@ public class InventoryService implements IInventoryService {
 
     public void deleteAll() {
         baseInventoryService.deleteAll();
-        resourceInventoryService.deleteAll();
         playerInventoryService.deleteAll();
     }
 }
