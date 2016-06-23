@@ -1,15 +1,12 @@
 package com;
 
 import com.config.Config;
-import com.console.ConsoleImpl;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import org.jsondoc.spring.boot.starter.EnableJSONDoc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Scanner;
 
 @EnableJSONDoc
 @SpringBootApplication
@@ -38,8 +35,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
 
         // Console
-        final Scanner scanner = new Scanner(System.in);
-        Thread console = new Thread(new ConsoleImpl(scanner));
-        console.start();
+        //final Scanner scanner = new Scanner(System.in);
+        //Thread console = new Thread(new ConsoleImpl(scanner));
+        //console.start();
     }
 }
