@@ -136,7 +136,7 @@ public final class Base
     public long getEnergy() {
         final List<BuildingInstance> powerFactories = getBuildings().stream().filter(k ->
                 k.getTemplate().getType().equals(BuildingCategory.PowerFactory) &&
-                        k.getCurrentLevel() > 0).collect(Collectors.toList());
+                k.getCurrentLevel() > 0).collect(Collectors.toList());
 
         if(powerFactories.isEmpty()) return 0;
 
@@ -197,7 +197,6 @@ public final class Base
         this.buildingPositions = buildingPositions;
     }
 
-    @JsonView(View.Standard.class)
     public List<BuildingInstance> getBuildings() {
         return buildings;
     }
