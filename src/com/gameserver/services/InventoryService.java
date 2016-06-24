@@ -1,5 +1,6 @@
 package com.gameserver.services;
 
+import com.config.Config;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.BuildingCategory;
@@ -98,7 +99,7 @@ public class InventoryService implements IInventoryService {
 
                 if(resourceToUpdate != null)
                 {
-                    final long productionCnt = (long)((((float) extractorTemplate.getProductionAtLevel(gameItem.getItemId(), extractor.getCurrentLevel()) / 3600)) * ((now - resourceToUpdate.getLastRefresh()) / 1000));
+                    final long productionCnt = (long)((((float) extractorTemplate.getProductionAtLevel(gameItem.getItemId(), extractor.getCurrentLevel()) / 3600)) * ((now - resourceToUpdate.getLastRefresh()) / 1000) * Config.RESOURCE_PRODUCTION_MODIFIER);
                     if(generatedResources.containsKey(gameItem.getItemId()))
                     {
                         final long containedResource = generatedResources.get(gameItem.getItemId());

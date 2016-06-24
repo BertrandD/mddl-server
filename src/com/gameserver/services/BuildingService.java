@@ -1,5 +1,6 @@
 package com.gameserver.services;
 
+import com.config.Config;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
@@ -61,7 +62,7 @@ public class BuildingService {
             update(building);
             newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel()+1);
         }else{
-            endupgrade = lastInQueue.getEndsAt() + building.getBuildTime();
+            endupgrade = lastInQueue.getEndsAt() + (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
             newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel()+1);
         }
 
