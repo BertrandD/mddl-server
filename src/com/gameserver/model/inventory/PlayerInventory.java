@@ -1,6 +1,5 @@
 package com.gameserver.model.inventory;
 
-import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Player;
@@ -38,11 +37,11 @@ public class PlayerInventory extends Inventory {
 
     @Override
     public long getMaxVolume() {
-        return Config.INFINITY;
+        return 0;
     }
 
     @Override
     public long getFreeVolume() {
-        return Config.INFINITY;
+        return 1000000000;
     }
 }
