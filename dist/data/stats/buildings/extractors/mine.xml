@@ -7,7 +7,7 @@
         </properties>
         <requirements>
             <functions>
-                <function fromLevel="1" itemId="resource_feo" value="100*$level"/>
+                <function fromLevel="2" itemId="resource_feo" value="100*$level"/>
             </functions>
             <requirement level="1">
                 <building id="storage" level="1" />
