@@ -40,6 +40,11 @@ public class InventoryService implements IInventoryService {
     @Autowired
     private BaseInventoryService baseInventoryService;
 
+    public void updateAsync(Inventory inventory){
+        if(inventory instanceof BaseInventory) baseInventoryService.updateAsync((BaseInventory) inventory);
+        else if(inventory instanceof PlayerInventory) playerInventoryService.updateAsync((PlayerInventory) inventory);
+    }
+
     public void update(Inventory inventory){
         if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
         else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
@@ -53,12 +58,26 @@ public class InventoryService implements IInventoryService {
         return playerInventoryService.create(player);
     }
 
-    public void refreshResource(Base base){
+    public void forceUpdateLastRefresh(Inventory inventory) {
+        final List<ItemInstance> resources = inventory.getItems().stream().filter(k -> k != null && k.getType().equals(ItemType.RESOURCE)).collect(Collectors.toList());
+        for (ItemInstance resource : resources) {
+            resource.setLastRefresh(System.currentTimeMillis());
+            itemService.update(resource);
+        }
+    }
+
+    /**
+     * Refreshing resources
+     * @param base
+     */
+    public synchronized void refreshResource(Base base){
         logger.info("Refreshing resources...");
         final BaseInventory baseInventory = base.getBaseInventory();
-        final List<BuildingInstance> extractors = base.getBuildings().stream().filter(
-                k->k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
-                k.getCurrentLevel() > 0).collect(Collectors.toList());
+        final List<BuildingInstance> extractors = base.getBuildings().stream().filter(k ->
+            k != null &&
+            k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
+            k.getCurrentLevel() > 0)
+        .collect(Collectors.toList());
 
         final long now = System.currentTimeMillis();
         final HashMap<String, Long> generatedResources = new HashMap<>();
@@ -71,14 +90,23 @@ public class InventoryService implements IInventoryService {
 
             for (GameItem gameItem : extractorTemplate.getProduceItems())
             {
-                final ItemInstance resourceToUpdate = baseInventory.getItems().stream().filter(k->k.getTemplateId().equals(gameItem.getItemId())).findFirst().orElse(null);
-                if(resourceToUpdate != null){
+                final ItemInstance resourceToUpdate = baseInventory.getItems().stream().filter(k ->
+                        k != null &&
+                        k.getTemplateId().equals(gameItem.getItemId()) &&
+                        k.getType().equals(ItemType.RESOURCE)
+                ).findFirst().orElse(null);
+
+                if(resourceToUpdate != null)
+                {
                     final long productionCnt = (long)((((float) extractorTemplate.getProductionAtLevel(gameItem.getItemId(), extractor.getCurrentLevel()) / 3600)) * ((now - resourceToUpdate.getLastRefresh()) / 1000));
-                    if(generatedResources.containsKey(gameItem.getItemId())){
+                    if(generatedResources.containsKey(gameItem.getItemId()))
+                    {
                         final long containedResource = generatedResources.get(gameItem.getItemId());
                         generatedResources.replace(gameItem.getItemId(), containedResource+productionCnt);
                     } else generatedResources.put(gameItem.getItemId(), productionCnt);
-                }else{
+                }
+                else
+                {
                     generatedResources.put(gameItem.getItemId(), 0L);
                 }
             }
@@ -97,8 +125,8 @@ public class InventoryService implements IInventoryService {
 
         for (String itemId : generatedResources.keySet())
         {
-            ItemInstance item = baseInventory.getItems().stream().filter(k->k.getTemplateId().equals(itemId)).findFirst().orElse(null);
-            if(item == null){
+            ItemInstance item = baseInventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(itemId)).findFirst().orElse(null);
+            if(item == null) {
                 item = itemService.create(baseInventory, itemId, 0);
                 if(generatedResources.get(itemId) > 0)
                     item = addResource(item, generatedResources.get(itemId));
@@ -118,8 +146,7 @@ public class InventoryService implements IInventoryService {
      * @param amount to be added
      * @return item with current amount + added amount
      */
-    private ItemInstance addResource(ItemInstance item, final long amount) {
-        logger.info("\t\taddResource("+item.getTemplateId()+" ["+item.getCount()+"], +"+amount+")");
+    private synchronized ItemInstance addResource(ItemInstance item, final long amount) {
         final GameItem template = item.getTemplate();
         if(template == null) return null;
 
@@ -127,6 +154,7 @@ public class InventoryService implements IInventoryService {
         if (amountThatCanBeAdded > 0) {
             item.setCount(item.getCount()+Math.min(amountThatCanBeAdded, amount));
             item.setLastRefresh(System.currentTimeMillis());
+            logger.info("\t\taddResource("+item.getTemplateId()+" [+"+Math.min(amountThatCanBeAdded, amount)+"], "+item.getCount()+")");
             itemService.update(item);
         }
 
@@ -134,13 +162,25 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public synchronized ItemInstance addItem(Inventory inventory, String templateId, final long amount){
+    public synchronized ItemInstance addItem(Inventory inventory, String templateId, long amount) {
         ItemInstance item = itemService.findFirstByInventoryAndTemplateId(inventory, templateId);
 
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
-        if(template == null) return null;
+        if(template == null) {
+            logger.warning("addItem: template is null for item "+templateId);
+            return null;
+        }
 
-        if(inventory.getFreeVolume() < (template.getVolume()*amount)) return null;
+        if(inventory.getFreeVolume() < (template.getVolume() * amount)) {
+            if(inventory.getFreeVolume() > 0 && inventory.getFreeVolume() >= template.getVolume())
+                amount = (inventory.getFreeVolume() / template.getVolume());
+            else {
+                logger.warning("addItem: cannot add more item to inventory.");
+                return null;
+            }
+        }
+
+        logger.info("addItem: " + amount + " "+templateId);
 
         if(item == null)
         {
@@ -148,16 +188,16 @@ public class InventoryService implements IInventoryService {
             if(item == null) return null;
             inventory.getItems().add(item);
 
-            if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
-            else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
+            if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory) inventory);
+            else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory) inventory);
             else return null;
 
             return item;
         }
 
-        if(item.getType().equals(ItemType.RESOURCE)){
+        if(item.getType().equals(ItemType.RESOURCE)) {
             refreshResource(((BaseInventory)item.getInventory()).getBase());
-            item = itemService.findOne(item.getId());
+            item = inventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(templateId)).findFirst().orElse(null);
         }
 
         item.setCount(item.getCount()+amount);
@@ -166,16 +206,28 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public synchronized ItemInstance addItem(ItemInstance item, final long amount) {
+    public synchronized ItemInstance addItem(ItemInstance item, long amount) {
 
         final GameItem template = item.getTemplate();
         if(template == null) return null;
 
-        if(item.getInventory().getFreeVolume() < (template.getVolume()*amount)) return null;
+        final String itemTemplateId = item.getTemplateId();
+        final Inventory inventory = item.getInventory();
 
-        if(item.getType().equals(ItemType.RESOURCE)){
-            refreshResource(((BaseInventory)item.getInventory()).getBase());
-            item = itemService.findOne(item.getId());
+        if(inventory.getFreeVolume() < (template.getVolume() * amount)) {
+            if(inventory.getFreeVolume() > 0 && inventory.getFreeVolume() >= template.getVolume())
+                amount = (inventory.getFreeVolume() / template.getVolume());
+            else {
+                logger.warning("addItem: cannot add more item to inventory.");
+                return null;
+            }
+        }
+
+        logger.info("addItem: " + amount + " "+itemTemplateId);
+
+        if(item.getType().equals(ItemType.RESOURCE)) {
+            refreshResource(((BaseInventory)inventory).getBase());
+            item = inventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(itemTemplateId)).findFirst().orElse(null);
         }
 
         item.setCount(item.getCount()+amount);
@@ -189,18 +241,20 @@ public class InventoryService implements IInventoryService {
         if(item.getType().equals(ItemType.RESOURCE)) {
             final BaseInventory resources = (BaseInventory)item.getInventory();
             refreshResource(resources.getBase());
-            //item = itemService.findOne(item.getId());
             final String itemTemplateId = item.getTemplateId();
             item = resources.getItems().stream().filter(k->k.getTemplateId().equals(itemTemplateId)).findFirst().orElse(null);
         }
 
-        if(item.getCount() - amount >= 0){
-            logger.info("\t\t["+item.getCount()+" - "+amount+"] => ["+(item.getCount()-amount)+"]");
+        if(item.getCount() - amount >= 0) {
+            logger.info("\t\t["+item.getCount()+" - "+amount+"] => ["+(item.getCount() - amount)+"]");
             item.setCount(item.getCount() - amount);
 
-            if(item.getCount() == 0){
-                itemService.delete(item.getId());
-            }else{
+            if(item.getCount() == 0 && !item.getType().equals(ItemType.RESOURCE)) {
+                final Inventory inv = item.getInventory();
+                inv.getItems().remove(item);
+                update(inv); // delete from inventory
+                itemService.delete(item.getId()); // delete from items in mongo
+            } else {
                 itemService.update(item);
             }
 

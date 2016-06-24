@@ -1,9 +1,12 @@
 package com.gameserver.manager;
 
+import com.gameserver.model.buildings.Extractor;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.tasks.mongo.BuildingTask;
+import com.gameserver.model.inventory.Inventory;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
+import com.gameserver.services.InventoryService;
+import com.gameserver.tasks.mongo.BuildingTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +26,14 @@ public class BuildingTaskManager {
     @Autowired
     private BuildingService buildingService;
 
-    private ScheduledFuture<?> scheduledFuture;
+    @Autowired
+    private InventoryService inventoryService;
 
+    private static final String BUILDING_MINE_ID = "mine";
+    private static final String BUILDING_PUMP_ID = "pump";
+    private static final String BUILDING_STORAGE_ID = "storage";
+
+    private ScheduledFuture<?> scheduledFuture;
     private BuildingTask currentTask;
 
     @PostConstruct
@@ -86,11 +95,35 @@ public class BuildingTaskManager {
     private class Upgrade implements Runnable
     {
         @Override
-        public void run() {
+        public void run()
+        {
             final BuildingInstance building = getCurrentTask().getBuilding();
+
+            if(building.getBuildingId().equals(BUILDING_STORAGE_ID))
+            {
+                // Updating resources (lastrefresh) before expanding inventory
+                inventoryService.refreshResource(building.getBase());
+                // force lastrefresh to be updated (because if no resource was updated (max storage capacity reached), lastrefresh isnt updated)
+                inventoryService.forceUpdateLastRefresh(building.getBase().getBaseInventory());
+            }
 
             building.setCurrentLevel(getCurrentTask().getLevel());
             buildingService.update(getCurrentTask().getBuilding());
+
+            if(building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1)
+            {
+                final Inventory inventory = building.getBase().getBaseInventory();
+                final Extractor mine = (Extractor) building.getTemplate();
+                mine.getProduceItems().forEach(k -> inventoryService.addItem(inventory, k.getItemId(), 0));
+            }
+
+            if(building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1)
+            {
+                final Inventory inventory = building.getBase().getBaseInventory();
+                final Extractor mine = (Extractor) building.getTemplate();
+                mine.getProduceItems().forEach(k -> inventoryService.addItem(inventory, k.getItemId(), 0));
+            }
+
             restart(getCurrentTask());
         }
     }

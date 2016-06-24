@@ -49,8 +49,13 @@ public class ItemService {
     }
 
     @Async
-    public void update(ItemInstance item) {
-        logger.info("Update item "+item.getTemplateId());
+    public synchronized void updateAsync(ItemInstance item) {
+        logger.info("Update item "+ item.getTemplateId() + " with count = " + item.getCount());
+        repository.save(item);
+    }
+
+    public synchronized void update(ItemInstance item) {
+        logger.info("Update item "+ item.getTemplateId() + " with count = " + item.getCount());
         repository.save(item);
     }
 

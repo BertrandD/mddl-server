@@ -27,7 +27,9 @@ public class BaseInventoryService {
     }
 
     @Async
-    public void update(BaseInventory inventory) { repository.save(inventory); }
+    public synchronized void updateAsync(BaseInventory inventory) { repository.save(inventory); }
+
+    public synchronized void update(BaseInventory inventory) { repository.save(inventory); }
 
     @Async
     public void delete(String id) { repository.delete(id); }

@@ -34,6 +34,8 @@ public class PlayerInventoryService{
     }
 
     @Async
+    public void updateAsync(PlayerInventory inventory) { repository.save(inventory); }
+
     public void update(PlayerInventory inventory) { repository.save(inventory); }
 
     @Async
