@@ -92,12 +92,6 @@ public class BuildingInstanceController {
         final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
         if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
 
-        /*
-        * TODO: uncomment
-        if(base.getBuildingPositions().containsKey(position)){
-            return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_POSITION_ALREADY_TAKEN);
-        }*/
-
         final BuildingInstance tempBuilding = new BuildingInstance(base, BuildingData.getInstance().getBuilding(templateId));
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
@@ -184,9 +178,9 @@ public class BuildingInstanceController {
         final Requirement requirements = template.getAllRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
-        inventoryService.refreshResource(building.getBase());
+        inventoryService.refreshResource(base);
 
-        if(!validateBuildings(base, requirements)){
+        if(!validateBuildings(base, requirements)) {
             return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
         }
 
