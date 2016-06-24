@@ -47,8 +47,10 @@ public class BaseController {
 
     @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
-    public JsonResponse findOne(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
-        // TODO: check base owner
+    public JsonResponse findOne(@AuthenticationPrincipal Account account, @PathVariable("id") String id) {
+        final Player player = playerService.findOne(account.getCurrentPlayer());
+        if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
+
         final Base base = baseService.findOne(id);
         if(base == null) return new JsonResponse(account.getLang(), SystemMessageId.BASE_NOT_FOUND);
 
