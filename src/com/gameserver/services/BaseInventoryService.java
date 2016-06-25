@@ -22,8 +22,10 @@ public class BaseInventoryService {
 
     public BaseInventory findByBase(String id) { return repository.findByBase(id); }
 
-    public BaseInventory create(Base base){
-        return repository.save(new BaseInventory(base));
+    public BaseInventory create(Base base) {
+        final BaseInventory inventory = new BaseInventory(base);
+        inventory.setLastRefresh(System.currentTimeMillis());
+        return repository.save(inventory);
     }
 
     @Async

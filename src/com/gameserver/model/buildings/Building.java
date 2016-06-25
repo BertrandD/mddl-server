@@ -158,7 +158,8 @@ public abstract class Building {
     }
 
     public long getBuildTimeAtLevel(int level) {
-        return getBuildTimes().get(level);
+        if(level > 0 && level < getMaxLevel()) return getBuildTimes().get(level);
+        else return 0;
     }
 
     @JsonIgnore

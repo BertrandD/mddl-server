@@ -29,7 +29,7 @@ public class BaseService {
 
     public Base findOne(String id) {
         final Base base = repository.findOne(id);
-        inventoryService.refreshResource(base);
+        if(base != null) inventoryService.refreshResource(base);
         return base;
     }
 
