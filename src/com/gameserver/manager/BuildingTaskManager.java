@@ -103,8 +103,6 @@ public class BuildingTaskManager {
             {
                 // Updating resources (lastrefresh) before expanding inventory
                 inventoryService.refreshResource(building.getBase());
-                // force lastrefresh to be updated (because if no resource was updated (max storage capacity reached), lastrefresh isnt updated)
-                inventoryService.forceUpdateLastRefresh(building.getBase().getBaseInventory());
             }
 
             building.setCurrentLevel(getCurrentTask().getLevel());

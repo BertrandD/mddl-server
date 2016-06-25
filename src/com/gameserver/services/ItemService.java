@@ -44,7 +44,6 @@ public class ItemService {
     public ItemInstance create(Inventory inventory, String itemId, long count) {
         logger.info("Create new item : "+itemId+" count = "+count);
         final ItemInstance item = new ItemInstance(inventory, itemId, count);
-        item.setLastRefresh(System.currentTimeMillis());
         return repository.save(item);
     }
 

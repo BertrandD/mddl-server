@@ -1,6 +1,7 @@
 package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.Base;
@@ -26,6 +27,9 @@ public class BaseInventory extends Inventory {
     @JsonView(View.Standard.class)
     private Base base;
 
+    @JsonIgnore
+    private long lastRefresh;
+
     public BaseInventory(){
         super();
     }
@@ -41,6 +45,15 @@ public class BaseInventory extends Inventory {
 
     public void setBase(Base base) {
         this.base = base;
+    }
+
+    @JsonIgnore
+    public long getLastRefresh() {
+        return lastRefresh;
+    }
+
+    public void setLastRefresh(long lastRefresh) {
+        this.lastRefresh = lastRefresh;
     }
 
     @Override

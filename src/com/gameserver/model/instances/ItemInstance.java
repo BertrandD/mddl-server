@@ -32,13 +32,10 @@ public class ItemInstance
     private String templateId;
 
     @JsonView(View.Standard.class)
-    private long count;
+    private double count;
 
     @JsonView(View.Standard.class)
     private ItemType type;
-
-    @JsonView(View.Standard.class)
-    private long lastRefresh;
 
     @DBRef
     @JsonManagedReference
@@ -47,14 +44,14 @@ public class ItemInstance
 
     public ItemInstance(){}
 
-    public ItemInstance(String itemId, long count)
+    public ItemInstance(String itemId, double count)
     {
         setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
     }
 
-    public ItemInstance(Inventory inventory, String itemId, long count)
+    public ItemInstance(Inventory inventory, String itemId, double count)
     {
         setTemplateId(itemId);
         setType(getTemplate().getType());
@@ -67,7 +64,7 @@ public class ItemInstance
     }
 
     public long getWeight(){
-        return getTemplate().getWeight() * getCount();
+        return (long)(getTemplate().getWeight() * getCount());
     }
 
     public boolean isCargo(){
@@ -118,11 +115,11 @@ public class ItemInstance
         this.type = type;
     }
 
-    public long getCount() {
+    public double getCount() {
         return count;
     }
 
-    public void setCount(long count) {
+    public void setCount(double count) {
         this.count = count;
     }
 
@@ -132,13 +129,5 @@ public class ItemInstance
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
-    }
-
-    public long getLastRefresh() {
-        return lastRefresh;
-    }
-
-    public void setLastRefresh(long lastRefresh) {
-        this.lastRefresh = lastRefresh;
     }
 }

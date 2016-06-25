@@ -54,7 +54,7 @@ public class BuildingService {
     public void ScheduleUpgrade(BuildingInstance building){
         final BuildingTask newTask;
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
-        long endupgrade = System.currentTimeMillis() + building.getBuildTime();
+        long endupgrade = System.currentTimeMillis() + (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
 
         if(lastInQueue == null){
             building.setStartedAt(System.currentTimeMillis()); // This value is a false startedAt value ! Difference of ~30 millis
