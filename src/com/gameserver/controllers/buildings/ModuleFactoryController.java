@@ -11,6 +11,7 @@ import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.items.Module;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
+import com.gameserver.services.ValidatorService;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 
 /**
  * @author LEBOC Philippe
@@ -36,6 +39,9 @@ public class ModuleFactoryController {
 
     @Autowired
     private InventoryService inventoryService;
+
+    @Autowired
+    private ValidatorService validator;
 
     @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
     public JsonResponse createModule(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") String moduleId) {
@@ -55,7 +61,11 @@ public class ModuleFactoryController {
         final ModuleFactory factoryTemplate = (ModuleFactory)factory.getTemplate();
         if(!factoryTemplate.hasModule(factory.getCurrentLevel(), module.getItemId())) return new JsonResponse(JsonResponseType.ERROR, "Module not unlocked !");
 
-        // TODO: consume requirements (wait for a unique logic for all needed consume requirements)
+        final HashMap<ItemInstance, Long> collector = new HashMap<>();
+        final JsonResponse faillure = validator.validateItemRequirements(base, module, collector, pAccount.getLang());
+        if(faillure != null) return faillure;
+
+        collector.forEach(inventoryService::consumeItem);
 
         final ItemInstance item = inventoryService.addItem(base.getBaseInventory(), module.getItemId(), 1);
         if(item == null) return new JsonResponse(JsonResponseType.ERROR, "Module cannot be created.");

@@ -15,7 +15,7 @@ import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
-import com.util.data.xml.IXmlReader;
+import com.gameserver.interfaces.IXmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;

@@ -13,7 +13,7 @@ import com.gameserver.model.buildings.Building;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
-import com.util.data.xml.IXmlReader;
+import com.gameserver.interfaces.IXmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
