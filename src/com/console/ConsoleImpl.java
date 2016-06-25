@@ -20,23 +20,22 @@ public class ConsoleImpl implements Runnable {
     public void run() {
         System.out.println("Console started.\r\nYou can write command here to handle some functions.");
         System.out.print("> ");
-        while(true) {
-            while (scanner.hasNext()) {
-                System.out.print("> ");
-                String inStr = scanner.nextLine();
-                String command = inStr;
-                String params = null;
+        while (scanner.hasNext())
+        {
+            System.out.print("> ");
+            String inStr = scanner.nextLine();
+            String command = inStr;
+            String params = null;
 
-                if(inStr.contains(" ")) {
-                    command = inStr.substring(0, inStr.indexOf(" "));
-                    params = inStr.substring(inStr.indexOf(" ")+1, inStr.length());
-                }
-
-                final ICommandHandler handler = CommandHandler.getInstance().getHandler(command);
-                if(handler != null){
-                    handler.useCommand(command, params);
-                } else System.out.println("Unknown command");
+            if(inStr.contains(" ")) {
+                command = inStr.substring(0, inStr.indexOf(" "));
+                params = inStr.substring(inStr.indexOf(" ")+1, inStr.length());
             }
+
+            final ICommandHandler handler = CommandHandler.getInstance().getHandler(command);
+            if(handler != null){
+                handler.useCommand(command, params);
+            } else System.out.println("Unknown command");
         }
     }
 }

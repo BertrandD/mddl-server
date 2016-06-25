@@ -40,6 +40,8 @@ public final class Config {
     public static double BUILDTIME_MODIFIER;
     public static double RESOURCE_PRODUCTION_MODIFIER;
     public static double SHIP_SPEED_MODIFIER;
+    public static double USE_ENERGY_MODIFIER;
+    public static double PRODUCE_ENERGY_MODIFIER;
 
     // --------------------------------------------------
     // Load properties files
@@ -68,5 +70,7 @@ public final class Config {
         BUILDTIME_MODIFIER = univers.getDouble("BuildTimeModifier", 1.0);
         RESOURCE_PRODUCTION_MODIFIER = univers.getDouble("ResourceProductionModifier", 1.0);
         SHIP_SPEED_MODIFIER = univers.getDouble("ShipSpeedModifier", 1.0);
+        USE_ENERGY_MODIFIER = univers.getDouble("UseEnergyModifier", 1.0);
+        PRODUCE_ENERGY_MODIFIER = univers.getDouble("ProduceEnergyModifier", 1.0);
     }
 }

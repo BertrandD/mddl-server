@@ -145,7 +145,7 @@ public class BuildingData implements IXmlReader {
 
                                         final FunctionHolder holder = new FunctionHolder(fromLevel, toLevel, function);
                                         for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
-                                            buildTimes.put(i, holder.getResultForLevel(i));
+                                            buildTimes.put(i, (holder.getResultForLevel(i)));
                                         }
                                     }
                                 }
@@ -162,7 +162,7 @@ public class BuildingData implements IXmlReader {
 
                                         final FunctionHolder holder = new FunctionHolder(fromLevel, toLevel, function);
                                         for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
-                                            energies[i-1] = holder.getResultForLevel(i);
+                                            energies[i-1] = (holder.getResultForLevel(i));
                                         }
                                     }
                                 }
@@ -314,6 +314,34 @@ public class BuildingData implements IXmlReader {
         final List<Building> buildings = new ArrayList<>(_buildings.values());
         buildings.forEach(k->k.setLang(lang));
         return buildings;
+    }
+
+    /**
+     * Used for live reload when Config.SOME_CONFIG has changed.
+     * DONT USE LIVE RELOAD ON LIVE SERVERS !!!!!
+     */
+    public void resetBuildings()
+    {
+        for (int i = 0; i < getBuildings().size(); i++)
+        {
+            final Building current = getBuildings().get(i);
+            final long[] useEnergy = new long[current.getMaxLevel()];
+            final HashMap<Integer, Long> buildTimes = new HashMap<>();
+
+
+            // Recalculate use of energy
+            for (int j = 0; j < current.getUseEnergy().length; j++) {
+                useEnergy[j] = (long)(current.getUseEnergyAtLevel(j+1) * Config.USE_ENERGY_MODIFIER);
+            }
+
+            // Recalculate build times
+            for (int j = 0; j < current.getBuildTimes().values().size(); j++) {
+                buildTimes.put(j+1, (long)(current.getBuildTimeAtLevel(j+1) * Config.BUILDTIME_MODIFIER));
+            }
+
+            current.setUseEnergy(useEnergy);
+            current.setBuildTimes(buildTimes);
+        }
     }
 
     public static BuildingData getInstance()
