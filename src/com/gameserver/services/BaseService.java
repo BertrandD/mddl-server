@@ -4,7 +4,6 @@ import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,9 +13,6 @@ import java.util.Collection;
  */
 @Service
 public class BaseService {
-
-    @Autowired
-    private MongoOperations operations;
 
     @Autowired
     private BaseRepository repository;
