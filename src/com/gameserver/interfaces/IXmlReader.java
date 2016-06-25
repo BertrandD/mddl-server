@@ -1,4 +1,4 @@
-package com.util.data.xml;
+package com.gameserver.interfaces;
 
 import java.io.File;
 import java.io.FileFilter;
