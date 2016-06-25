@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="module_factory" type="ModuleFactory" nameId="module_factory_n" maxLevel="8" descriptionId="module_factory_d" buildTimeFunc="10*$level">
+    <building id="module_factory" type="ModuleFactory" nameId="module_factory_n" maxLevel="8" descriptionId="module_factory_d">
         <propertiesByLevel>
             <properties level="1">
                 <list name="unlock_modules">

@@ -8,9 +8,7 @@ import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.items.Module;
-import com.util.Evaluator;
 import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -18,7 +16,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -133,8 +130,7 @@ public class BuildingInstance
     }
 
     public long getBuildTime() {
-        final String func = getTemplate().getBuildTimeFunc().replace("$level", ""+(getCurrentLevel()+1));
-        return ((Number)Evaluator.getInstance().eval(func)).longValue() * 1000;
+        return getTemplate().getBuildTimeAtLevel(getCurrentLevel());
     }
 
     @JsonView(View.Standard.class)

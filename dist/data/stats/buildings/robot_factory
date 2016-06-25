@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="robot_factory" type="RobotFactory" nameId="robot_factory_n" maxLevel="8" descriptionId="robot_factory_d" buildTimeFunc="10*$level">
+    <building id="robot_factory" type="RobotFactory" nameId="robot_factory_n" maxLevel="8" descriptionId="robot_factory_d">
         <properties>
             <property name="cooldown_reduction" value="$cooldown - ($cooldown * ($level * 0.05))"/>
         </properties>

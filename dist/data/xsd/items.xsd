@@ -68,12 +68,18 @@
                                     <xs:enumeration value="D" />
                                     <xs:enumeration value="E" />
                                     <xs:enumeration value="F" />
+                                    <xs:enumeration value="G" />
+                                    <xs:enumeration value="H" />
+                                    <xs:enumeration value="I" />
+                                    <xs:enumeration value="J" />
+                                    <xs:enumeration value="K" />
                                 </xs:restriction>
                             </xs:simpleType>
                         </xs:attribute>
                         <xs:attribute name="buildTime" type="xs:long" use="optional" />
                         <xs:attribute name="weight" type="xs:long" use="optional" />
                         <xs:attribute name="volume" type="xs:long" use="optional" />
+                        <xs:attribute name="rarity" type="xs:integer" use="optional" />
                     </xs:complexType>
 				</xs:element>
 			</xs:sequence>

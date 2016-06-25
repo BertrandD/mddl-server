@@ -7,6 +7,32 @@
 					<xs:complexType>
 						<xs:sequence>
 							<xs:choice maxOccurs="unbounded" minOccurs="1">
+								<xs:element name="buildTime" minOccurs="1" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="fromLevel" type="xs:positiveInteger" use="required" />
+													<xs:attribute name="toLevel" type="xs:positiveInteger" use="optional" />
+													<xs:attribute name="function" type="xs:string" use="required" />
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="energy" minOccurs="1" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="fromLevel" type="xs:positiveInteger" use="required" />
+													<xs:attribute name="toLevel" type="xs:positiveInteger" use="optional" />
+													<xs:attribute name="function" type="xs:string" use="required" />
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
 								<xs:element name="requirements" minOccurs="0" maxOccurs="1">
 									<xs:complexType>
 										<xs:sequence>
@@ -14,14 +40,16 @@
 												<xs:element name="functions" minOccurs="0" maxOccurs="unbounded">
 													<xs:complexType>
 														<xs:sequence>
-															<xs:element name="function" minOccurs="1" maxOccurs="unbounded">
-																<xs:complexType>
-																	<xs:attribute name="fromLevel" type="xs:positiveInteger" use="required" />
-																	<xs:attribute name="toLevel" type="xs:positiveInteger" use="optional" />
-																	<xs:attribute name="itemId" type="xs:string" use="required" />
-																	<xs:attribute name="value" type="xs:string" use="required" />
-																</xs:complexType>
-															</xs:element>
+															<xs:choice minOccurs="1" maxOccurs="unbounded">
+																<xs:element name="function" minOccurs="1" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:attribute name="fromLevel" type="xs:positiveInteger" use="required" />
+																		<xs:attribute name="toLevel" type="xs:positiveInteger" use="optional" />
+																		<xs:attribute name="itemId" type="xs:string" use="required" />
+																		<xs:attribute name="value" type="xs:string" use="required" />
+																	</xs:complexType>
+																</xs:element>
+															</xs:choice>
 														</xs:sequence>
 													</xs:complexType>
 												</xs:element>
@@ -125,7 +153,6 @@
                         <xs:attribute name="descriptionId" type="xs:normalizedString" use="required" />
                         <xs:attribute name="maxLevel" type="xs:positiveInteger" use="required"/>
 						<xs:attribute name="useEnergy" type="xs:string" use="optional" />
-						<xs:attribute name="buildTimeFunc" type="xs:string" use="required" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

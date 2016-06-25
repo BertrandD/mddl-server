@@ -62,11 +62,14 @@ public class BuildingData implements IXmlReader {
                         attrs = b.getAttributes();
                         final StatsSet set = new StatsSet();
                         final HashMap<Integer, Requirement> requirements = new HashMap<>();
+                        final HashMap<Integer, Long> buildTimes = new HashMap<>();
 
                         for (int i = 0; i < attrs.getLength(); i++) {
                             final Node att = attrs.item(i);
                             set.set(att.getNodeName(), att.getNodeValue());
                         }
+
+                        final long[] energies = new long[set.getInt("maxLevel")];
 
                         for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
@@ -87,7 +90,6 @@ public class BuildingData implements IXmlReader {
                                                 final int toLevel = parseInteger(attrs, "toLevel", set.getInt("maxLevel"));
                                                 final String itemId = parseString(attrs, "itemId");
                                                 final String function = parseString(attrs, "value");
-
                                                 functions.add(new FunctionHolder(fromLevel, toLevel, itemId, function));
                                             }
                                         }
@@ -122,11 +124,45 @@ public class BuildingData implements IXmlReader {
                                         Requirement req = requirements.get(i);
                                         if(req != null)
                                         {
-                                            req.addItem(new ItemHolder(function.getItemId(), function.getCount(i)));
+                                            req.addItem(new ItemHolder(function.getItemId(), function.getResultForLevel(i)));
                                         }
                                         else
                                         {
-                                            requirements.put(i, new Requirement(i, new ItemHolder(function.getItemId(), function.getCount(i))));
+                                            requirements.put(i, new Requirement(i, new ItemHolder(function.getItemId(), function.getResultForLevel(i))));
+                                        }
+                                    }
+                                }
+                            }
+                            else if ("buildTime".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    attrs = d.getAttributes();
+                                    if ("set".equalsIgnoreCase(d.getNodeName())) {
+                                        final int fromLevel = parseInteger(attrs, "fromLevel", 1);
+                                        final int toLevel = parseInteger(attrs, "toLevel", set.getInt("maxLevel"));
+                                        final String function = parseString(attrs, "function");
+
+                                        final FunctionHolder holder = new FunctionHolder(fromLevel, toLevel, function);
+                                        for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
+                                            buildTimes.put(i, holder.getResultForLevel(i));
+                                        }
+                                    }
+                                }
+                            }
+                            else if ("energy".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    attrs = d.getAttributes();
+                                    if ("set".equalsIgnoreCase(d.getNodeName())) {
+                                        final int fromLevel = parseInteger(attrs, "fromLevel", 1);
+                                        final int toLevel = parseInteger(attrs, "toLevel", set.getInt("maxLevel"));
+                                        final String function = parseString(attrs, "function");
+
+                                        final FunctionHolder holder = new FunctionHolder(fromLevel, toLevel, function);
+                                        for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
+                                            energies[i-1] = holder.getResultForLevel(i);
                                         }
                                     }
                                 }
@@ -201,6 +237,8 @@ public class BuildingData implements IXmlReader {
                         try {
                             building = makeBuilding(set);
                             if (building != null) {
+                                building.setUseEnergy(energies);
+                                building.setBuildTimes(buildTimes);
                                 building.setAllRequirements(requirements);
                                 _buildings.put(set.getString("id"), building);
                             }
@@ -219,6 +257,12 @@ public class BuildingData implements IXmlReader {
         private int toLevel;
         private String itemId;
         private String function;
+
+        public FunctionHolder(int fromLevel, int toLevel, String function) {
+            this.fromLevel = fromLevel;
+            this.toLevel = toLevel;
+            this.function = function;
+        }
 
         public FunctionHolder(int fromLevel, int toLevel, String itemId, String function) {
             this.fromLevel = fromLevel;
@@ -239,7 +283,7 @@ public class BuildingData implements IXmlReader {
             return itemId;
         }
 
-        public long getCount(int level) {
+        public long getResultForLevel(int level) {
             final String func = function.replace("$level", "" + level);
             return ((Number) Evaluator.getInstance().eval(func)).longValue();
         }

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="market" type="CommonBuilding" nameId="market_n" maxLevel="8" descriptionId="market_d" buildTimeFunc="10*$level">
+    <building id="market" type="CommonBuilding" nameId="market_n" maxLevel="8" descriptionId="market_d">
+        <buildTime>
+            <set fromLevel="1" toLevel="5" function="5*$level" />
+            <set fromLevel="6" function="10*$level" />
+        </buildTime>
         <properties>
             <property name="cooldown_reduction" value="$cooldown - ($cooldown * ($level * 0.05))"/>
         </properties>

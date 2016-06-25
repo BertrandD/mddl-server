@@ -151,7 +151,7 @@ public final class Base
         // How many is consumed from all building
         for (BuildingInstance buildingInstance : getBuildings()) {
             final Building building = buildingInstance.getTemplate();
-            totalGeneratedPower -= building.getRequiredEnergyAtLevel(buildingInstance.getCurrentLevel());
+            totalGeneratedPower -= building.getUseEnergyAtLevel(buildingInstance.getCurrentLevel());
         }
 
         return totalGeneratedPower;

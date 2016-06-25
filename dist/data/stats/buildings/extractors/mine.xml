@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
-    <building id="mine" type="Extractor" nameId="building_mine_n" maxLevel="10" useEnergy="(100+(10*$level))" descriptionId="building_mine_d" buildTimeFunc="5*$level">
+    <building id="mine" type="Extractor" nameId="building_mine_n" maxLevel="10" descriptionId="building_mine_d">
+        <buildTime>
+            <set fromLevel="1" toLevel="5" function="5*$level" />
+            <set fromLevel="6" function="10*$level" />
+        </buildTime>
+        <energy>
+            <set fromLevel="2" function="100 + ($level * 125)" />
+        </energy>
         <properties>
             <property name="availables_modules" value="module_optimizer_feo;module_optimizer_c;module_optimizer_ato3"/>
             <property name="max_modules" value="2" />
