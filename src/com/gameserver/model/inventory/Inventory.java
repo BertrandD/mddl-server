@@ -69,7 +69,7 @@ public abstract class Inventory implements IInventory {
     public long getVolume() {
         long volume = 0;
         for (ItemInstance item : items) {
-            volume += item.getTemplate().getVolume() * item.getCount();
+            volume += item.getTemplate().getVolume() * item.getItemCount();
         }
         return volume;
     }

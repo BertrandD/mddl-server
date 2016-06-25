@@ -31,7 +31,7 @@ public class ItemInstance
     @JsonView(View.Standard.class)
     private String templateId;
 
-    @JsonView(View.Standard.class)
+    @JsonIgnore
     private double count;
 
     @JsonView(View.Standard.class)
@@ -64,7 +64,7 @@ public class ItemInstance
     }
 
     public long getWeight(){
-        return (long)(getTemplate().getWeight() * getCount());
+        return (getTemplate().getWeight() * getCount());
     }
 
     public boolean isCargo(){
@@ -115,13 +115,17 @@ public class ItemInstance
         this.type = type;
     }
 
-    public double getCount() {
+    @JsonIgnore
+    public double getItemCount() {
         return count;
     }
 
     public void setCount(double count) {
         this.count = count;
     }
+
+    @JsonView(View.Standard.class)
+    public long getCount() { return (long)Math.floor(count); }
 
     public Inventory getInventory() {
         return inventory;

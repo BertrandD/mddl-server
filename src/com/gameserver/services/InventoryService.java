@@ -139,8 +139,8 @@ public class InventoryService implements IInventoryService {
 
         final long amountThatCanBeAdded = Math.floorDiv(item.getInventory().getFreeVolume(), template.getVolume());
         if (amountThatCanBeAdded > 0) {
-            item.setCount(item.getCount()+Math.min(amountThatCanBeAdded, amount));
-            logger.info("\t\taddResource("+item.getTemplateId()+" [+"+Math.min(amountThatCanBeAdded, amount)+"], "+item.getCount()+")");
+            item.setCount(item.getItemCount()+Math.min(amountThatCanBeAdded, amount));
+            logger.info("\t\taddResource("+item.getTemplateId()+" [+"+Math.min(amountThatCanBeAdded, amount)+"], "+item.getItemCount()+")");
             itemService.update(item);
         }
 
@@ -186,7 +186,7 @@ public class InventoryService implements IInventoryService {
             item = inventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(templateId)).findFirst().orElse(null);
         }
 
-        item.setCount(item.getCount()+amount);
+        item.setCount(item.getItemCount()+amount);
         itemService.updateAsync(item);
         return item;
     }
@@ -216,7 +216,7 @@ public class InventoryService implements IInventoryService {
             item = inventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(itemTemplateId)).findFirst().orElse(null);
         }
 
-        item.setCount(item.getCount()+amount);
+        item.setCount(item.getItemCount()+amount);
         itemService.updateAsync(item);
         return item;
     }
@@ -231,11 +231,11 @@ public class InventoryService implements IInventoryService {
             item = resources.getItems().stream().filter(k->k.getTemplateId().equals(itemTemplateId)).findFirst().orElse(null);
         }
 
-        if(item.getCount() - amount >= 0) {
-            logger.info("\t\t["+item.getCount()+" - "+amount+"] => ["+(item.getCount() - amount)+"]");
-            item.setCount(item.getCount() - amount);
+        if(item.getItemCount() - amount >= 0) {
+            logger.info("\t\t["+item.getItemCount()+" - "+amount+"] => ["+(item.getItemCount() - amount)+"]");
+            item.setCount(item.getItemCount() - amount);
 
-            if(item.getCount() == 0 && !item.getType().equals(ItemType.RESOURCE)) {
+            if(item.getItemCount() == 0 && !item.getType().equals(ItemType.RESOURCE)) {
                 final Inventory inv = item.getInventory();
                 inv.getItems().remove(item);
                 update(inv); // delete from inventory
