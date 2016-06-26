@@ -1,6 +1,5 @@
 package com.gameserver.model.instances;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.Player;
 import com.gameserver.model.items.Cargo;
@@ -8,13 +7,10 @@ import com.gameserver.model.items.Engine;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
-import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,33 +21,15 @@ import java.util.List;
 public class RecipeInstance {
 
     @Id
-    @JsonView(View.Standard.class)
     private String id;
-
-    @NotNull(message = "You must assign a name to your recipe !")
-    @Size(min = 3, max = 50, message = "The recipe name size must be between 3 and 50 characters.")
-    @JsonView(View.Standard.class)
     private String name;
 
-    // TODO: Check why if this attributes is displayed on Json => infinite recursion Player->bases[Base]->owner[Player]->bases[Base]->owner[Player]->...
-    @NotNull(message = "Recipe owner cannot be null !")
     @DBRef
     private Player owner;
-
-    @NotNull
-    @JsonView(View.Standard.class)
     private String structureId;
-
-    @JsonView(View.Standard.class)
     private List<String> cargos;
-
-    @JsonView(View.Standard.class)
     private List<String> engines;
-
-    @JsonView(View.Standard.class)
     private List<String> modules;
-
-    @JsonView(View.Standard.class)
     private List<String> weapons;
 
     public RecipeInstance(){}

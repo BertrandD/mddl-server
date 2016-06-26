@@ -3,12 +3,10 @@ package com.gameserver.controllers;
 import com.auth.Account;
 import com.auth.AccountService;
 import com.config.Config;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
-import com.util.data.json.View;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,14 +33,12 @@ public class PlayerController {
     @Autowired
     private AccountService accountService;
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
     public JsonResponse players(@AuthenticationPrincipal Account pAccount){
         final Account account = accountService.findOne(pAccount.getId());
         return new JsonResponse(playerService.findByAccount(account));
     }
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
     public JsonResponse player(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
         final Player player = playerService.findOne(id);
@@ -50,7 +46,6 @@ public class PlayerController {
         return new JsonResponse(player);
     }
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/player", method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
         if(playerService.findOneByName(name) != null) return new JsonResponse(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST);

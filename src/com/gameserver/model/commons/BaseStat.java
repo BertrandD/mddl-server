@@ -1,23 +1,13 @@
 package com.gameserver.model.commons;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.util.data.json.View;
-
 /**
  * @author LEBOC Philippe
  */
 public class BaseStat {
 
-    @JsonView(View.Standard.class)
     private long maxShield;
-
-    @JsonView(View.Standard.class)
     private long maxHealth;
-
-    @JsonView(View.Standard.class)
     private long currentShield;
-
-    @JsonView(View.Standard.class)
     private long currentHealth;
 
     public BaseStat(final long maxShield, final long maxHealth) {

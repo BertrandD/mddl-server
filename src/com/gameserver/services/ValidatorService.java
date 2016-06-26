@@ -90,7 +90,7 @@ public class ValidatorService {
             final Inventory inventory = base.getBaseInventory();
             final ItemInstance iInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
 
-            if(iInst == null || iInst.getItemCount() < holder.getCount()) {
+            if(iInst == null || iInst.getCount() < holder.getCount()) {
                 meetRequirements = false;
             }
 

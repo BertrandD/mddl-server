@@ -1,10 +1,8 @@
 package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.interfaces.IInventory;
 import com.gameserver.model.instances.ItemInstance;
-import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -17,12 +15,10 @@ import java.util.List;
 public abstract class Inventory implements IInventory {
 
     @Id
-    @JsonView(View.Standard.class)
     private String id;
 
     @DBRef
     @JsonManagedReference
-    @JsonView(View.Standard.class)
     private List<ItemInstance> items;
 
     public Inventory(){
@@ -69,7 +65,7 @@ public abstract class Inventory implements IInventory {
     public long getVolume() {
         long volume = 0;
         for (ItemInstance item : items) {
-            volume += item.getTemplate().getVolume() * item.getItemCount();
+            volume += item.getTemplate().getVolume() * item.getCount();
         }
         return volume;
     }

@@ -1,10 +1,7 @@
 package com.gameserver.tasks.mongo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;
-import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,21 +13,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class BuildingTask {
 
     @Id
-    @JsonView(View.Standard.class)
     private String id;
 
     @DBRef
-    @JsonIgnore
     private Base base;
 
     @DBRef
-    @JsonView(View.Standard.class)
     private BuildingInstance building;
 
-    @JsonView(View.Standard.class)
     private long endsAt;
-
-    @JsonView(View.Standard.class)
     private int level;
 
     public BuildingTask(){}
@@ -42,7 +33,6 @@ public class BuildingTask {
         setLevel(level);
     }
 
-    @JsonView(View.Standard.class)
     public String getBuildingId(){
         return building.getBuildingId();
     }
@@ -55,7 +45,6 @@ public class BuildingTask {
         this.id = id;
     }
 
-    @JsonIgnore
     public Base getBase() {
         return base;
     }

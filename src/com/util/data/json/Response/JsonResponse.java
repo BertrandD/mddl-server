@@ -1,9 +1,7 @@
 package com.util.data.json.Response;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.Lang;
-import com.util.data.json.View;
 
 import java.util.HashMap;
 
@@ -12,13 +10,8 @@ import java.util.HashMap;
  */
 public class JsonResponse {
 
-    @JsonView(View.Standard.class)
     private String status;
-
-    @JsonView(View.Standard.class)
     private Object payload;
-
-    @JsonView(View.Standard.class)
     private final HashMap<String, Object> meta = new HashMap<>();
 
     public JsonResponse(){}

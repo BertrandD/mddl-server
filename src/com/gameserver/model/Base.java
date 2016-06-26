@@ -1,20 +1,17 @@
 package com.gameserver.model;
 
 import com.config.Config;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.BuildingCategory;
-import com.gameserver.enums.ItemType;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.Extractor;
 import com.gameserver.model.buildings.PowerFactory;
 import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.items.Module;
-import com.util.data.json.View;
+import com.serializer.BaseSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -29,34 +26,25 @@ import java.util.stream.Collectors;
 /**
  * @author LEBOC Philippe
  */
+@JsonSerialize(using = BaseSerializer.class)
 @Document(collection = "bases")
 public final class Base
 {
     @Id
-    @JsonView(View.Standard.class)
     private String id;
-
-    @JsonView(View.Standard.class)
     private String name;
 
     @DBRef
     @JsonManagedReference
-    @JsonView(View.Standard.class)
     private Player owner;
-
-    @JsonView(View.Standard.class)
     private BaseStat baseStat;
-
-    @JsonView(View.Standard.class)
     private HashMap<Integer, String> buildingPositions;
 
     @DBRef
     @JsonManagedReference
-    @JsonView(View.Standard.class)
     private List<BuildingInstance> buildings;
 
     @DBRef
-    @JsonIgnore
     @JsonManagedReference
     private BaseInventory baseInventory;
 
@@ -74,28 +62,6 @@ public final class Base
         setBuildingPositions(new HashMap<>());
     }
 
-    @SuppressWarnings("unused")
-    @JsonView(View.Standard.class)
-    public HashMap<String, Long> getMaxVolumes() {
-        final HashMap<String, Long> inventoriesVolumes = new HashMap<>();
-        inventoriesVolumes.put("max_volume_items", getBaseInventory().getMaxVolume());
-        return inventoriesVolumes;
-    }
-
-    @JsonView(View.Standard.class)
-    public HashMap<String, List<ItemInstance>> getInventory() {
-        final HashMap<String, List<ItemInstance>> inventory = new HashMap<>();
-        inventory.put(ItemType.RESOURCE.toString(), getBaseInventory().getItems().stream().filter(k->k.getType().equals(ItemType.RESOURCE)).collect(Collectors.toList()));
-        inventory.put(ItemType.CARGO.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()));
-        inventory.put(ItemType.ENGINE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()));
-        inventory.put(ItemType.MODULE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isModule).collect(Collectors.toList()));
-        inventory.put(ItemType.STRUCTURE.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()));
-        inventory.put(ItemType.WEAPON.toString(), getBaseInventory().getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()));
-        return inventory;
-    }
-
-    @SuppressWarnings("unused")
-    @JsonView(View.Standard.class)
     public HashMap<String, Long> getProduction() {
         final HashMap<String, Long> production = new HashMap<>();
         final List<BuildingInstance> extractors = getBuildings().stream().filter(k ->
@@ -131,8 +97,6 @@ public final class Base
         return production;
     }
 
-    @SuppressWarnings("unused")
-    @JsonView(View.Standard.class)
     public long getEnergy() {
         final List<BuildingInstance> powerFactories = getBuildings().stream().filter(k ->
                 k.getTemplate().getType().equals(BuildingCategory.PowerFactory) &&
@@ -210,7 +174,6 @@ public final class Base
         this.buildingPositions.put(position, building.getId());
     }
 
-    @JsonIgnore
     public BaseInventory getBaseInventory() {
         return baseInventory;
     }

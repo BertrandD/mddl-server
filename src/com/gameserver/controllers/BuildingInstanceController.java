@@ -1,7 +1,6 @@
 package com.gameserver.controllers;
 
 import com.auth.Account;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
@@ -19,7 +18,6 @@ import com.gameserver.services.ValidatorService;
 import com.gameserver.tasks.mongo.BuildingTask;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
-import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -58,7 +56,6 @@ public class BuildingInstanceController {
     @Autowired
     private ValidatorService validator;
 
-    @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.GET)
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
@@ -68,7 +65,6 @@ public class BuildingInstanceController {
         return new JsonResponse(base.getBuildings());
     }
 
-    @JsonView(View.buildingInstance_full.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public JsonResponse findOne(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
@@ -79,7 +75,6 @@ public class BuildingInstanceController {
         return new JsonResponse(building);
     }
 
-    @JsonView(View.buildingInstance_base.class)
     @RequestMapping(method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
@@ -112,7 +107,6 @@ public class BuildingInstanceController {
         return response;
     }
 
-    @JsonView(View.buildingInstance_base.class)
     @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.POST)
     public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());

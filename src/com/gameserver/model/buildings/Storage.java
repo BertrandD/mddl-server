@@ -1,9 +1,7 @@
 package com.gameserver.model.buildings;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
-import com.util.data.json.View;
 
 import java.util.HashMap;
 
@@ -12,9 +10,7 @@ import java.util.HashMap;
  */
 public class Storage extends Building {
 
-    @JsonView(View.Standard.class)
     private String capacityFunc;
-
     private HashMap<Integer, Long> capacityBonusByLevel;
 
     public Storage(StatsSet set){

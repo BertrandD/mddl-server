@@ -1,13 +1,11 @@
 package com.gameserver.model.buildings;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.holders.PropertiesHolder;
 import com.gameserver.holders.PropertyHolder;
 import com.gameserver.holders.PropertyListHolder;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.Module;
-import com.util.data.json.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +19,6 @@ import java.util.logging.Logger;
 public class ModuleFactory extends Building {
 
     private static final Logger logger = Logger.getLogger(Building.class.getName());
-
-    @JsonView(View.Standard.class)
     private HashMap<Integer, List<Module>> modulesByLevel;
 
     public ModuleFactory(StatsSet set) {

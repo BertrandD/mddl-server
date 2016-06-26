@@ -1,7 +1,6 @@
 package com.gameserver.controllers;
 
 import com.auth.Account;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
@@ -9,7 +8,6 @@ import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
-import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,7 +34,6 @@ public class BaseController {
     @Autowired
     private BuildingTaskService buildingTaskService;
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
         if(pAccount.getCurrentPlayer() == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
@@ -45,7 +42,6 @@ public class BaseController {
         return new JsonResponse(player.getBases());
     }
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
     public JsonResponse findOne(@AuthenticationPrincipal Account account, @PathVariable("id") String id) {
         final Player player = playerService.findOne(account.getCurrentPlayer());
@@ -63,7 +59,6 @@ public class BaseController {
         return response;
     }
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/base", method = RequestMethod.POST)
     public JsonResponse create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());

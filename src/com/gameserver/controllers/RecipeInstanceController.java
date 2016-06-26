@@ -1,14 +1,11 @@
 package com.gameserver.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.Player;
 import com.gameserver.model.instances.RecipeInstance;
 import com.gameserver.services.PlayerService;
 import com.gameserver.services.RecipeService;
-import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,7 +44,6 @@ public class RecipeInstanceController {
         return second;
     }
 
-    @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.POST)
     public RecipeInstance create(
             @RequestParam(value = "name") String name,

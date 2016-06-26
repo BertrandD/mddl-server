@@ -2,9 +2,9 @@ package com.gameserver.model;
 
 import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.util.data.json.View;
+import com.serializer.PlayerSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -18,33 +18,28 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Document(collection = "players")
+@JsonSerialize(using = PlayerSerializer.class)
 public class Player {
 
     @Id
-    @JsonView(View.Standard.class)
     private String id;
 
-    @JsonView(View.Standard.class)
     @Indexed(unique = true)
     private String name;
 
     @DBRef
-    @JsonView(View.player_account.class)
     private Account account;
 
     @DBRef
     @JsonBackReference
-    @JsonView(View.Standard.class)
     private List<Base> bases;
 
     @DBRef
     @JsonBackReference
-    @JsonView(View.Standard.class)
     private Base currentBase;
 
     @DBRef
     @JsonBackReference
-    @JsonView(View.Standard.class)
     private PlayerInventory inventory;
 
     public Player(){

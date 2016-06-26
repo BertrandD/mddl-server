@@ -1,7 +1,6 @@
 package com.gameserver.controllers;
 
 import com.auth.Account;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
@@ -13,7 +12,6 @@ import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerInventoryService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
-import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,7 +37,6 @@ public class ItemInstanceController {
     @Autowired
     private PlayerInventoryService playerInventoryService;
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/base/item", method = RequestMethod.POST)
     public JsonResponse createItemInBaseInventory(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
@@ -57,7 +54,6 @@ public class ItemInstanceController {
         return new JsonResponse(item);
     }
 
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/player/item", method = RequestMethod.POST)
     public JsonResponse createItemInPlayerInventory(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "itemId") String itemId, @RequestParam(value = "count") long count) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());

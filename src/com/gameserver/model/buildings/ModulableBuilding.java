@@ -1,10 +1,8 @@
 package com.gameserver.model.buildings;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.Module;
-import com.util.data.json.View;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -16,10 +14,7 @@ public abstract class ModulableBuilding extends Building {
 
     private static final Logger logger = Logger.getLogger(ModulableBuilding.class.getName());
 
-    @JsonView(View.Standard.class)
     private HashMap<String, Module> modules;
-
-    @JsonView(View.Standard.class)
     private int maxModules;
 
     public ModulableBuilding(StatsSet set) {

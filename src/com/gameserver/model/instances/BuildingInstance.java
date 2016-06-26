@@ -1,15 +1,14 @@
 package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.items.Module;
-import com.util.data.json.View;
+import com.serializer.BuildingInstanceSerializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -22,34 +21,22 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Document(collection = "buildings")
+@JsonSerialize(using = BuildingInstanceSerializer.class)
 public class BuildingInstance
 {
     @Id
-    @JsonView(View.Standard.class)
     private String id;
 
     @DBRef
     @JsonBackReference
-    @JsonView(View.Standard.class)
     private Base base;
-
-    @JsonView(View.Standard.class)
     private String buildingId;
-
-    @JsonView(View.Standard.class)
     private int currentLevel;
-
-    @JsonView(View.Standard.class)
     private long endsAt;
-
-    @JsonView(View.Standard.class)
     private long startedAt;
-
-    @JsonView(View.Standard.class)
     private List<String> modules;
 
     @Transient
-    @JsonIgnore
     private Lang lang = Lang.EN;
 
     public BuildingInstance(){
@@ -64,7 +51,6 @@ public class BuildingInstance
         setModules(new ArrayList<>());
     }
 
-    @JsonView(View.buildingInstance_full.class)
     public Building getTemplate() {
         final Building building = BuildingData.getInstance().getBuilding(buildingId);
         building.setLang(getLang());
@@ -79,7 +65,6 @@ public class BuildingInstance
         this.id = id;
     }
 
-    @JsonIgnore
     public Base getBase() {
         return base;
     }
@@ -120,7 +105,6 @@ public class BuildingInstance
         this.startedAt = startedAt;
     }
 
-    @JsonIgnore
     private Lang getLang() {
         return lang;
     }
@@ -129,11 +113,13 @@ public class BuildingInstance
         this.lang = lang;
     }
 
+    /**
+     * @return build time to get the next level
+     */
     public long getBuildTime() {
-        return getTemplate().getBuildTimeAtLevel(getCurrentLevel());
+        return getTemplate().getBuildTimeAtLevel(getCurrentLevel()+1);
     }
 
-    @JsonView(View.Standard.class)
     public List<Module> getModules() {
     List<Module> all = new ArrayList<>();
         for (String module : modules) {

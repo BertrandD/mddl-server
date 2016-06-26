@@ -1,9 +1,7 @@
 package com.gameserver.model.commons;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
-import com.util.data.json.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +11,8 @@ import java.util.List;
  */
 public class Requirement {
 
-    @JsonView(View.Standard.class)
     private int level;
-
-    @JsonView(View.Standard.class)
     private List<ItemHolder> items;
-
-    @JsonView(View.Standard.class)
     private List<BuildingHolder> buildings;
 
     /**

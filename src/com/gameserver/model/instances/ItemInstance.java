@@ -1,8 +1,7 @@
 package com.gameserver.model.instances;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.model.inventory.Inventory;
@@ -13,7 +12,7 @@ import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
-import com.util.data.json.View;
+import com.serializer.ItemInstanceSerializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -22,24 +21,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author LEBOC Philippe
  */
 @Document(collection = "items")
+@JsonSerialize(using = ItemInstanceSerializer.class)
 public class ItemInstance
 {
     @Id
-    @JsonView(View.Standard.class)
     private String id;
-
-    @JsonView(View.Standard.class)
     private String templateId;
-
-    @JsonIgnore
     private double count;
-
-    @JsonView(View.Standard.class)
     private ItemType type;
 
     @DBRef
     @JsonManagedReference
-    @JsonIgnore
     private Inventory inventory;
 
     public ItemInstance(){}
@@ -64,8 +56,10 @@ public class ItemInstance
     }
 
     public long getWeight(){
-        return (getTemplate().getWeight() * getCount());
+        return (getTemplate().getWeight() * (long)Math.floor(getCount()));
     }
+
+    public boolean isResource() { return isCommonItem() && getType().equals(ItemType.RESOURCE); }
 
     public boolean isCargo(){
         return getTemplate() instanceof Cargo;
@@ -115,17 +109,11 @@ public class ItemInstance
         this.type = type;
     }
 
-    @JsonIgnore
-    public double getItemCount() {
+    public double getCount() {
         return count;
     }
 
-    public void setCount(double count) {
-        this.count = count;
-    }
-
-    @JsonView(View.Standard.class)
-    public long getCount() { return (long)Math.floor(count); }
+    public void setCount(double count) { this.count = count; }
 
     public Inventory getInventory() {
         return inventory;

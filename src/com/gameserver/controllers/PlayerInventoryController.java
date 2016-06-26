@@ -1,14 +1,12 @@
 package com.gameserver.controllers;
 
 import com.auth.Account;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.services.PlayerInventoryService;
 import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
-import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +28,6 @@ public class PlayerInventoryController{
     @Autowired
     private PlayerService playerService;
 
-    @JsonView(View.Standard.class)
     @RequestMapping(method = RequestMethod.GET)
     public JsonResponse getPlayerInventory(@AuthenticationPrincipal Account pAccount){
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());

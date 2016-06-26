@@ -1,9 +1,6 @@
 package com.auth;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.enums.Lang;
-import com.util.data.json.View;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,17 +16,9 @@ public class Account extends User
 {
     @Id
     private String id;
-
-    @JsonView(View.Standard.class)
     private Lang lang;
-
-    @JsonIgnore
     private List<String> players;
-
-    @JsonIgnore
     private String currentPlayer;
-
-    @JsonView(View.Standard.class)
     private String token;
 
     public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, Lang lang, List<String> players, String currentPlayer, String token)
@@ -58,7 +47,6 @@ public class Account extends User
         this.lang = lang;
     }
 
-    @JsonIgnore
     public List<String> getPlayers() {
         return players;
     }
@@ -71,7 +59,6 @@ public class Account extends User
         getPlayers().add(player);
     }
 
-    @JsonIgnore
     public String getCurrentPlayer() {
         return currentPlayer;
     }
@@ -88,7 +75,6 @@ public class Account extends User
         this.token = token;
     }
 
-    @JsonView(View.Standard.class)
     public Collection<GrantedAuthority> getAuthorities() {
         return super.getAuthorities();
     }
@@ -97,7 +83,6 @@ public class Account extends User
         return super.getPassword();
     }
 
-    @JsonView(View.Standard.class)
     public String getUsername() {
         return super.getUsername();
     }

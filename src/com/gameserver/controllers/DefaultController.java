@@ -2,14 +2,17 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.auth.AccountService;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.SystemMessageId;
-import com.gameserver.services.*;
+import com.gameserver.services.BaseService;
+import com.gameserver.services.BuildingService;
+import com.gameserver.services.InventoryService;
+import com.gameserver.services.ItemService;
+import com.gameserver.services.PlayerInventoryService;
+import com.gameserver.services.PlayerService;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
-import com.util.data.json.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -111,7 +114,6 @@ public class DefaultController implements ErrorController{
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @JsonView(View.Standard.class)
     @RequestMapping(value = "/me", method = RequestMethod.GET, produces = "application/json")
     public JsonResponse aboutMe(@AuthenticationPrincipal Account account){
         final Account reqAccount = accountService.findOne(account.getId());

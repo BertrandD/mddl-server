@@ -1,13 +1,12 @@
 package com.gameserver.model.buildings;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
-import com.util.data.json.View;
+import com.serializer.BuildingSerializer;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,33 +14,17 @@ import java.util.HashMap;
 /**
  * @author LEBOC Philippe
  */
+@JsonSerialize(using = BuildingSerializer.class)
 public abstract class Building {
 
-    @JsonView(View.Standard.class)
     private String id;
-
-    @JsonIgnore
     private String nameId;
-
-    @JsonIgnore
     private String descriptionId;
-
-    @JsonView(View.Standard.class)
     private BuildingCategory type;
-
-    @JsonView(View.Standard.class)
     private int maxLevel;
-
-    @JsonIgnore
     private HashMap<Integer, Long> buildTimes;
-
-    @JsonView(View.Standard.class)
     private long[] useEnergy;
-
-    @JsonIgnore
     private HashMap<Integer, Requirement> requirements;
-
-    @JsonIgnore
     private Lang lang = Lang.EN;
 
     public Building(StatsSet set) {
@@ -55,7 +38,6 @@ public abstract class Building {
         setAllRequirements(new HashMap<>());
     }
 
-    @JsonView(View.Standard.class)
     @SuppressWarnings("unused")
     public long[] getBuildTimeByLevel() {
         final Collection<Long> values = getBuildTimes().values();
@@ -66,7 +48,6 @@ public abstract class Building {
         return result;
     }
 
-    @JsonView(View.Standard.class)
     @SuppressWarnings("unused")
     public Requirement[] getRequirements() {
         final Requirement[] req = new Requirement[getAllRequirements().size()];
@@ -81,7 +62,6 @@ public abstract class Building {
         this.id = id;
     }
 
-    @JsonIgnore
     private String getNameId() {
         return nameId;
     }
@@ -90,7 +70,6 @@ public abstract class Building {
         this.nameId = nameId;
     }
 
-    @JsonView(View.Standard.class)
     public String getName(){
         return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
     }
@@ -103,7 +82,6 @@ public abstract class Building {
         this.type = type;
     }
 
-    @JsonIgnore
     public String getDescriptionId() {
         return descriptionId;
     }
@@ -112,7 +90,6 @@ public abstract class Building {
         this.descriptionId = descriptionId;
     }
 
-    @JsonView(View.Standard.class)
     @SuppressWarnings("unused")
     public String getDescription(){
         return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
@@ -140,7 +117,6 @@ public abstract class Building {
         else return 0;
     }
 
-    @JsonIgnore
     public HashMap<Integer, Requirement> getAllRequirements() {
         return requirements;
     }
@@ -162,7 +138,6 @@ public abstract class Building {
         else return 0;
     }
 
-    @JsonIgnore
     private Lang getLang() {
         return lang;
     }

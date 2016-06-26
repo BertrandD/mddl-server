@@ -1,12 +1,9 @@
 package com.gameserver.model.buildings;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gameserver.holders.FuncHolder;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.GameItem;
 import com.util.Evaluator;
-import com.util.data.json.View;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +12,10 @@ import java.util.stream.Collectors;
 /**
  * @author LEBOC Philippe
  */
+// TODO: REFRACTOR !!
 public class Extractor extends ModulableBuilding {
 
-    @JsonIgnore
     private List<FuncHolder> productionsFunctions;
-
-    @JsonView(View.Standard.class)
     private HashMap<Integer, HashMap<String, Long>> production;
 
     @SuppressWarnings("unchecked")

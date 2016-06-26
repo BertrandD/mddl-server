@@ -1,13 +1,12 @@
 package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Storage;
 import com.gameserver.model.instances.BuildingInstance;
-import com.util.data.json.View;
+import com.serializer.BaseInventorySerializer;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,16 +17,15 @@ import java.util.stream.Collectors;
  * @author LEBOC Philippe
  */
 @Document(collection = "base_inventory")
+@JsonSerialize(using = BaseInventorySerializer.class)
 public class BaseInventory extends Inventory {
 
     private static final String STORAGE = "storage";
 
     @DBRef
     @JsonBackReference
-    @JsonView(View.Standard.class)
     private Base base;
 
-    @JsonIgnore
     private long lastRefresh;
 
     public BaseInventory(){
@@ -47,7 +45,6 @@ public class BaseInventory extends Inventory {
         this.base = base;
     }
 
-    @JsonIgnore
     public long getLastRefresh() {
         return lastRefresh;
     }
@@ -57,7 +54,6 @@ public class BaseInventory extends Inventory {
     }
 
     @Override
-    @JsonView(View.Standard.class)
     public long getMaxVolume() {
         long volume = 0;
         final List<BuildingInstance> storages = getBase().getBuildings().stream().filter(k->k.getBuildingId().equals(STORAGE) &&
