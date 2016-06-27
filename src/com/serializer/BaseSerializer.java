@@ -24,7 +24,9 @@ public class BaseSerializer extends JsonSerializer<Base> {
 
         gen.writeObjectField("baseStat", value.getBaseStat());
         gen.writeNumberField("energy", value.getEnergy());
-        gen.writeObjectField("production", value.getProduction());
+
+        if(value.getProduction() != null)
+            gen.writeObjectField("production", value.getProduction());
 
         gen.writeObjectField("buildings", value.getBuildings());
         gen.writeObjectField("inventory", value.getBaseInventory());
