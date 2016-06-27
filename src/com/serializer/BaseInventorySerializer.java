@@ -8,7 +8,6 @@ import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -21,6 +20,16 @@ public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
         gen.writeNumberField("lastRefresh", value.getLastRefresh());
         gen.writeNumberField("maxVolume", value.getMaxVolume());
 
+        gen.writeArrayFieldStart("items");
+        for(ItemInstance item : value.getItems()){
+            gen.writeObject(item);
+        }
+        gen.writeEndArray();
+
+        /**
+        *
+        * DETAILLED INFORMATION
+        *
         gen.writeArrayFieldStart("resource");
         for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isResource).collect(Collectors.toList()))
             gen.writeObject(item);
@@ -50,6 +59,7 @@ public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
         for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()))
             gen.writeObject(item);
         gen.writeEndArray();
+        */
 
         gen.writeEndObject();
     }
