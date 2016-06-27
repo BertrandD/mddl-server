@@ -102,14 +102,15 @@ public final class Base
                 k.getTemplate().getType().equals(BuildingCategory.PowerFactory) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
 
-        if(powerFactories.isEmpty()) return 0;
-
         long totalGeneratedPower = 0;
 
         // How many power generated from all PowerFactories
-        for (BuildingInstance powerFactory : powerFactories) {
-            final PowerFactory factory = (PowerFactory) powerFactory.getTemplate();
-            totalGeneratedPower += factory.getPowerAtLevel(powerFactory.getCurrentLevel());
+        if(!powerFactories.isEmpty())
+        {
+            for (BuildingInstance powerFactory : powerFactories) {
+                final PowerFactory factory = (PowerFactory) powerFactory.getTemplate();
+                totalGeneratedPower += factory.getPowerAtLevel(powerFactory.getCurrentLevel());
+            }
         }
 
         // How many is consumed from all building
