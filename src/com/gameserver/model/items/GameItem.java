@@ -1,31 +1,24 @@
 package com.gameserver.model.items;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.StatsSet;
+import com.serializer.GameItemSerializer;
 
 /**
  * @author LEBOC Philippe
  */
+@JsonSerialize(using = GameItemSerializer.class)
 public abstract class GameItem {
 
     private String itemId;
-
-    @JsonIgnore
     private String nameId;
-
     private ItemType type;
-
-    @JsonIgnore
     private String descriptionId;
-
     private long weight;
-
     private long volume;
-
-    @JsonIgnore
     private Lang lang;
 
     public GameItem(StatsSet set){
@@ -33,8 +26,8 @@ public abstract class GameItem {
         setNameId(set.getString("nameId"));
         setType(set.getEnum("type", ItemType.class, ItemType.NONE));
         setDescriptionId(set.getString("descriptionId"));
-        setWeight(set.getLong("weight"));
-        setVolume(set.getLong("volume"));
+        setWeight(set.getLong("weight", 0));
+        setVolume(set.getLong("volume", 0));
         setLang(Lang.EN);
     }
 
@@ -52,7 +45,6 @@ public abstract class GameItem {
         return name;
     }
 
-    @JsonIgnore
     public String getNameId() {
         return nameId;
     }
@@ -69,14 +61,12 @@ public abstract class GameItem {
         this.type = type;
     }
 
-    @SuppressWarnings("unused")
     public String getDescription(){
         final String descr = SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
         if(descr == null) return "No description for item ["+getItemId()+"]";
         return descr;
     }
 
-    @JsonIgnore
     public String getDescriptionId() {
         return descriptionId;
     }
@@ -101,7 +91,6 @@ public abstract class GameItem {
         this.volume = volume;
     }
 
-    @JsonIgnore
     public Lang getLang() {
         return lang;
     }
