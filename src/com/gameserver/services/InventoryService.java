@@ -123,7 +123,7 @@ public class InventoryService implements IInventoryService {
             }
         }
 
-        baseInventory.setLastRefresh(System.currentTimeMillis());
+        baseInventory.setLastRefresh(now);
         updateAsync(baseInventory);
     }
 

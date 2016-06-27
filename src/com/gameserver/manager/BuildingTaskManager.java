@@ -95,7 +95,7 @@ public class BuildingTaskManager {
     private class Upgrade implements Runnable
     {
         @Override
-        public void run()
+        public synchronized void run()
         {
             final BuildingInstance building = getCurrentTask().getBuilding();
 
