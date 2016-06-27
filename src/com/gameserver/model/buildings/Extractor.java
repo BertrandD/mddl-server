@@ -32,7 +32,8 @@ public class Extractor extends ModulableBuilding {
             for (FuncHolder funcHolder : functions) {
                 final long prod = ((Number)Evaluator.getInstance().eval(funcHolder.getFunction().replace("$level", ""+i))).longValue();
                 tProduction.put(funcHolder.getItemId(), prod);
-                items.add(funcHolder.getItem());
+                if(!items.contains(funcHolder.getItem()))
+                    items.add(funcHolder.getItem());
             }
             production.put(i, tProduction);
         }
