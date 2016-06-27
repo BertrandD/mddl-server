@@ -12,10 +12,11 @@ public class Storage extends Building {
 
     public Storage(StatsSet set){
         super(set);
-        initialize(set.getString("capacity"));
+        initialize(set.getString("capacity", null));
     }
 
     private void initialize(String function){
+        if(function == null) return;
         final long[] ms = new long[getMaxLevel()];
         for(int i = 1; i <= getMaxLevel(); i++)
             ms[i-1] = ((Number) Evaluator.getInstance().eval(function.replace("$level", ""+i))).longValue();

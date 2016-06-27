@@ -12,10 +12,11 @@ public class PowerFactory extends Building {
 
     public PowerFactory(StatsSet set) {
         super(set);
-        initialize(set.getString("production"));
+        initialize(set.getString("production", null));
     }
 
     private void initialize(String function) {
+        if(function == null) return;
         final long[] p = new long[getMaxLevel()];
         for(int i = 1; i <= getMaxLevel(); i++)
             p[i-1] = ((Number) Evaluator.getInstance().eval(function.replace("$level", ""+i))).longValue();
