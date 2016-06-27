@@ -8,7 +8,6 @@ import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.serializer.BuildingSerializer;
 
-import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -22,7 +21,7 @@ public abstract class Building {
     private String descriptionId;
     private BuildingCategory type;
     private int maxLevel;
-    private HashMap<Integer, Long> buildTimes;
+    private long[] buildTimes;
     private long[] useEnergy;
     private HashMap<Integer, Requirement> requirements;
     private Lang lang = Lang.EN;
@@ -34,24 +33,7 @@ public abstract class Building {
         setDescriptionId(set.getString("descriptionId"));
         setMaxLevel(set.getInt("maxLevel", 1));
 
-        setBuildTimes(new HashMap<>());
-        setAllRequirements(new HashMap<>());
-    }
-
-    @SuppressWarnings("unused")
-    public long[] getBuildTimeByLevel() {
-        final Collection<Long> values = getBuildTimes().values();
-        final long[] result = new long[values.size()];
-        for(int i=0;i<values.size();i++){
-            result[i] = getBuildTimeAtLevel(i + 1);
-        }
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public Requirement[] getRequirements() {
-        final Requirement[] req = new Requirement[getAllRequirements().size()];
-        return getAllRequirements().values().toArray(req);
+        setRequirements(new HashMap<>());
     }
 
     public String getId() {
@@ -90,7 +72,6 @@ public abstract class Building {
         this.descriptionId = descriptionId;
     }
 
-    @SuppressWarnings("unused")
     public String getDescription(){
         return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
     }
@@ -117,24 +98,24 @@ public abstract class Building {
         else return 0;
     }
 
-    public HashMap<Integer, Requirement> getAllRequirements() {
-        return requirements;
-    }
-
-    public void setAllRequirements(HashMap<Integer, Requirement> requirements) {
-        this.requirements = requirements;
-    }
-
-    public HashMap<Integer, Long> getBuildTimes() {
+    public long[] getBuildTimes() {
         return buildTimes;
     }
 
-    public void setBuildTimes(HashMap<Integer, Long> buildTimes) {
+    public void setBuildTimes(long[] buildTimes) {
         this.buildTimes = buildTimes;
     }
 
+    public void setRequirements(HashMap<Integer, Requirement> requirements) {
+        this.requirements = requirements;
+    }
+
+    public HashMap<Integer, Requirement> getRequirements() {
+        return requirements;
+    }
+
     public long getBuildTimeAtLevel(int level) {
-        if(level > 0 && level < getMaxLevel()) return getBuildTimes().get(level);
+        if(level > 0 && level <= getMaxLevel()) return getBuildTimes()[level-1];
         else return 0;
     }
 

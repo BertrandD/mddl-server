@@ -35,7 +35,7 @@ public class ValidatorService {
      * @return null if everythings is OK, JsonResponse with proper error message otherwise
      */
     public JsonResponse validateBuildingRequirements(Base base, BuildingInstance building, HashMap<ItemInstance, Long> collector, Lang lang) {
-        final Requirement requirements = building.getTemplate().getAllRequirements().get(building.getCurrentLevel()+1);
+        final Requirement requirements = building.getTemplate().getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
         inventoryService.refreshResource(base);

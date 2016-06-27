@@ -3,49 +3,36 @@ package com.gameserver.model.buildings;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
 
-import java.util.HashMap;
-
 /**
  * @author LEBOC Philippe
  */
 public class Storage extends Building {
 
-    private String capacityFunc;
-    private HashMap<Integer, Long> capacityBonusByLevel;
+    private long[] capacity;
 
     public Storage(StatsSet set){
         super(set);
-        setCapacityFunc(set.getString("capacity"));
-        evaluateCapacity();
+        initialize(set.getString("capacity"));
     }
 
-    private void evaluateCapacity(){
-        final HashMap<Integer, Long> capacityByLevel = new HashMap<>();
+    private void initialize(String function){
+        final long[] ms = new long[getMaxLevel()];
         for(int i = 1; i <= getMaxLevel(); i++)
-        {
-            final long capacity = ((Number) Evaluator.getInstance().eval(getCapacityFunc().replace("$level", ""+i))).longValue();
-            capacityByLevel.put(i, capacity);
-        }
-        setCapacityBonus(capacityByLevel);
+            ms[i-1] = ((Number) Evaluator.getInstance().eval(function.replace("$level", ""+i))).longValue();
+        setCapacity(ms);
     }
 
-    public Long getCapacityBonus(int level){
-        return capacityBonusByLevel.get(level);
+    public long getCapacityAtLevel(int level) {
+        if(level > 0 && level <= getMaxLevel())
+            return getCapacity()[level-1];
+        else return 0;
     }
 
-    public HashMap<Integer, Long> getCapacityBonus() {
-        return capacityBonusByLevel;
+    public long[] getCapacity() {
+        return capacity;
     }
 
-    public void setCapacityBonus(HashMap<Integer, Long> capacityBonusByLevel) {
-        this.capacityBonusByLevel = capacityBonusByLevel;
-    }
-
-    public String getCapacityFunc() {
-        return capacityFunc;
-    }
-
-    public void setCapacityFunc(String capacityFunc) {
-        this.capacityFunc = capacityFunc;
+    public void setCapacity(long[] capacity) {
+        this.capacity = capacity;
     }
 }

@@ -60,7 +60,7 @@ public class BaseInventory extends Inventory {
                 k.getTemplate().getType().equals(BuildingCategory.Storage) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
         for (BuildingInstance storage : storages) {
-            volume += ((Storage)storage.getTemplate()).getCapacityBonus(storage.getCurrentLevel());
+            volume += ((Storage)storage.getTemplate()).getCapacityAtLevel(storage.getCurrentLevel());
         }
         return volume;
     }

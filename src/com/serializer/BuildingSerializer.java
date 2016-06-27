@@ -28,7 +28,7 @@ public class BuildingSerializer extends JsonSerializer<Building> {
         gen.writeEndArray();
 
         gen.writeArrayFieldStart("buildTimes");
-        for(long val : value.getBuildTimeByLevel())
+        for(long val : value.getBuildTimes())
             gen.writeNumber(val);
         gen.writeEndArray();
 

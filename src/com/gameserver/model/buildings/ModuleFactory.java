@@ -23,13 +23,12 @@ public class ModuleFactory extends Building {
 
     public ModuleFactory(StatsSet set) {
         super(set);
-        init(set);
+        initialize(set.getObject("propertiesByLevel", PropertiesHolder.class));
     }
 
-    private void init(StatsSet set){
+    private void initialize(final PropertiesHolder properties){
         setModulesByLevel(new HashMap<>());
 
-        final PropertiesHolder properties = set.getObject("propertiesByLevel", PropertiesHolder.class);
         if(properties == null || properties.getPropertiesByLevel() == null) {
             logger.warning("PropertyByLevel is null !");
             return;

@@ -61,15 +61,15 @@ public class BuildingData implements IXmlReader {
                     if ("building".equalsIgnoreCase(b.getNodeName())) {
                         attrs = b.getAttributes();
                         final StatsSet set = new StatsSet();
-                        final HashMap<Integer, Requirement> requirements = new HashMap<>();
-                        final HashMap<Integer, Long> buildTimes = new HashMap<>();
 
                         for (int i = 0; i < attrs.getLength(); i++) {
                             final Node att = attrs.item(i);
                             set.set(att.getNodeName(), att.getNodeValue());
                         }
 
-                        final long[] energies = new long[set.getInt("maxLevel")];
+                        final HashMap<Integer, Requirement> requirements = new HashMap<>();
+                        final long[] buildTimes = new long[set.getInt("maxLevel", 1)];
+                        final long[] energies = new long[set.getInt("maxLevel", 1)];
 
                         for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
@@ -145,7 +145,7 @@ public class BuildingData implements IXmlReader {
 
                                         final FunctionHolder holder = new FunctionHolder(fromLevel, toLevel, function);
                                         for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
-                                            buildTimes.put(i, (holder.getResultForLevel(i)));
+                                            buildTimes[i-1] = holder.getResultForLevel(i);
                                         }
                                     }
                                 }
@@ -239,7 +239,7 @@ public class BuildingData implements IXmlReader {
                             if (building != null) {
                                 building.setUseEnergy(energies);
                                 building.setBuildTimes(buildTimes);
-                                building.setAllRequirements(requirements);
+                                building.setRequirements(requirements);
                                 _buildings.put(set.getString("id"), building);
                             }
                         } catch (InvocationTargetException e) {
@@ -326,7 +326,7 @@ public class BuildingData implements IXmlReader {
         {
             final Building current = getBuildings().get(i);
             final long[] useEnergy = new long[current.getMaxLevel()];
-            final HashMap<Integer, Long> buildTimes = new HashMap<>();
+            final long[] buildTimes = new long[current.getMaxLevel()];
 
 
             // Recalculate use of energy
@@ -335,8 +335,8 @@ public class BuildingData implements IXmlReader {
             }
 
             // Recalculate build times
-            for (int j = 0; j < current.getBuildTimes().values().size(); j++) {
-                buildTimes.put(j+1, (long)(current.getBuildTimeAtLevel(j+1) * Config.BUILDTIME_MODIFIER));
+            for (int j = 0; j < current.getBuildTimes().length; j++) {
+                buildTimes[j] = (long)(current.getBuildTimeAtLevel(j+1) * Config.BUILDTIME_MODIFIER);
             }
 
             current.setUseEnergy(useEnergy);

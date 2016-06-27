@@ -5,42 +5,47 @@ import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.GameItem;
 import com.util.Evaluator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
  */
-// TODO: REFRACTOR !!
 public class Extractor extends ModulableBuilding {
 
-    private List<FuncHolder> productionsFunctions;
+    private List<GameItem> produceItems;
     private HashMap<Integer, HashMap<String, Long>> production;
 
-    @SuppressWarnings("unchecked")
     public Extractor(StatsSet set) {
         super(set);
-        setProductionsFunctions(set.getObject("production", List.class));
+        initialize(set.getObject("production", List.class)); // TODO: unchecked here
     }
 
-    private void evaluateProduction() {
+    private void initialize(List<FuncHolder> functions) {
+        final List<GameItem> items = new ArrayList<>();
         final HashMap<Integer, HashMap<String, Long>> production = new HashMap<>();
+
         for(int i = 1; i <= getMaxLevel(); i++)
         {
             final HashMap<String, Long> tProduction = new HashMap<>();
-            for (FuncHolder funcHolder : getProductionsFunctions()) {
+            for (FuncHolder funcHolder : functions) {
                 final long prod = ((Number)Evaluator.getInstance().eval(funcHolder.getFunction().replace("$level", ""+i))).longValue();
                 tProduction.put(funcHolder.getItemId(), prod);
+                items.add(funcHolder.getItem());
             }
             production.put(i, tProduction);
         }
-
+        setProduceItems(items);
         setProduction(production);
     }
 
+    public void setProduceItems(List<GameItem> produceItems) {
+        this.produceItems = produceItems;
+    }
+
     public List<GameItem> getProduceItems() {
-        return getProductionsFunctions().stream().map(FuncHolder::getItem).collect(Collectors.toList());
+        return produceItems;
     }
 
     public HashMap<String, Long> getProductionAtLevel(int level){
@@ -49,15 +54,6 @@ public class Extractor extends ModulableBuilding {
 
     public Long getProductionAtLevel(String itemId, int level) {
         return getProductionAtLevel(level).get(itemId);
-    }
-
-    public List<FuncHolder> getProductionsFunctions() {
-        return productionsFunctions;
-    }
-
-    public void setProductionsFunctions(List<FuncHolder> productionsFunctions) {
-        this.productionsFunctions = productionsFunctions;
-        evaluateProduction();
     }
 
     public HashMap<Integer, HashMap<String, Long>> getProduction() {
