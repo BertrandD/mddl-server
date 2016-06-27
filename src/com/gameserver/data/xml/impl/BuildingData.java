@@ -9,11 +9,13 @@ import com.gameserver.holders.ItemHolder;
 import com.gameserver.holders.PropertiesHolder;
 import com.gameserver.holders.PropertyHolder;
 import com.gameserver.holders.PropertyListHolder;
+import com.gameserver.interfaces.IXmlReader;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
+import com.gameserver.model.items.Module;
 import com.util.Evaluator;
-import com.gameserver.interfaces.IXmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -68,6 +70,7 @@ public class BuildingData implements IXmlReader {
                         }
 
                         final HashMap<Integer, Requirement> requirements = new HashMap<>();
+                        final HashMap<String, Module> modules = new HashMap<>();
                         final long[] buildTimes = new long[set.getInt("maxLevel", 1)];
                         final long[] energies = new long[set.getInt("maxLevel", 1)];
 
@@ -167,6 +170,20 @@ public class BuildingData implements IXmlReader {
                                     }
                                 }
                             }
+                            else if("modules".equalsIgnoreCase(c.getNodeName()))
+                            {
+
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    attrs = d.getAttributes();
+                                    if ("module".equalsIgnoreCase(d.getNodeName())) {
+                                        final String id = parseString(attrs, "id");
+                                        final Module module = ItemData.getInstance().getModule(id);
+                                        if(module != null)
+                                            modules.put(id, module);
+                                    }
+                                }
+                            }
                             else if ("properties".equalsIgnoreCase(c.getNodeName()))
                             {
                                 for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
@@ -240,6 +257,7 @@ public class BuildingData implements IXmlReader {
                                 building.setUseEnergy(energies);
                                 building.setBuildTimes(buildTimes);
                                 building.setRequirements(requirements);
+                                if(!modules.isEmpty()) ((ModulableBuilding) building).setModules(modules);
                                 _buildings.put(set.getString("id"), building);
                             }
                         } catch (InvocationTargetException e) {

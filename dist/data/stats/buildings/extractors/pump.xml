@@ -6,9 +6,12 @@
             <set fromLevel="6" function="10*$level" />
         </buildTime>
         <properties>
-            <property name="availables_modules" value="module_optimizer_h2o;module_optimizer_ch4"/>
             <property name="max_modules" value="2" />
         </properties>
+        <modules>
+            <module id="module_optimizer_h2o" />
+            <module id="module_optimizer_ch4" />
+        </modules>
         <requirements>
             <functions>
                 <function fromLevel="2" itemId="resource_c" value="100*$level"/>

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gameserver.model.buildings.Building;
+import com.gameserver.model.buildings.ModulableBuilding;
 
 import java.io.IOException;
 
@@ -31,6 +32,17 @@ public class BuildingSerializer extends JsonSerializer<Building> {
         for(long val : value.getBuildTimes())
             gen.writeNumber(val);
         gen.writeEndArray();
+
+        if(value instanceof ModulableBuilding) {
+            gen.writeNumberField("maxModules", ((ModulableBuilding) value).getMaxModules());
+            if(!((ModulableBuilding) value).getModules().isEmpty())
+            {
+                gen.writeArrayFieldStart("availablesModules");
+                for(String moduleId : ((ModulableBuilding) value).getModules().keySet())
+                    gen.writeString(moduleId);
+                gen.writeEndArray();
+            }
+        }
 
         gen.writeObjectField("requirements", value.getRequirements());
         gen.writeEndObject();
