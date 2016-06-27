@@ -18,11 +18,15 @@ public class PlayerSerializer extends JsonSerializer<Player> {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
         gen.writeStringField("name", value.getName());
-        gen.writeStringField("currentBase", value.getCurrentBase().getId());
+
+        if(value.getCurrentBase() != null)
+            gen.writeStringField("currentBase", value.getCurrentBase().getId());
+
         gen.writeArrayFieldStart("bases");
         for(Base base : value.getBases())
             gen.writeString(base.getId());
         gen.writeEndArray();
+
         gen.writeObjectField("inventory", value.getInventory().getItems());
         gen.writeEndObject();
     }
