@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
-    <building id="pump" nameId="building_pump_n" type="Extractor" descriptionId="building_pump_d" maxLevel="10">
+    <building id="pump" nameId="building_pump_n" type="Extractor" descriptionId="building_pump_d" maxLevel="100">
         <buildTime>
-            <set fromLevel="1" toLevel="5" function="5*$level" />
-            <set fromLevel="6" function="10*$level" />
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <properties>
             <property name="max_modules" value="2" />
@@ -14,9 +13,9 @@
         </modules>
         <requirements>
             <functions>
-                <function fromLevel="2" itemId="resource_c" value="100*$level"/>
-                <function fromLevel="3" toLevel="8" itemId="resource_feo" value="250*$level"/>
-                <function fromLevel="4" itemId="resource_ato3" value="25*$level"/>
+                <function fromLevel="2" itemId="resource_c" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="3" toLevel="8" itemId="resource_feo" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="4" itemId="resource_ato3" value="0,2*Math.pow($level,4)"/>
             </functions>
             <requirement level="5">
                 <building id="power_factory" level="2" />

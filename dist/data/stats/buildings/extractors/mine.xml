@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
-    <building id="mine" type="Extractor" nameId="building_mine_n" maxLevel="10" descriptionId="building_mine_d">
+    <building id="mine" type="Extractor" nameId="building_mine_n" maxLevel="100" descriptionId="building_mine_d">
         <buildTime>
-            <set fromLevel="1" toLevel="5" function="5*$level" />
-            <set fromLevel="6" function="10*$level" />
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <energy>
             <set fromLevel="2" function="100 + ($level * 125)" />
@@ -18,16 +17,16 @@
         </properties>
         <requirements>
             <functions>
-                <function fromLevel="2" itemId="resource_feo" value="100*$level"/>
+                <function fromLevel="2" itemId="resource_feo" value="0,2*Math.pow($level,4)"/>
             </functions>
             <requirement level="1">
                 <building id="storage" level="1" />
             </requirement>
         </requirements>
         <productions>
-            <produce itemId="resource_feo" function="(100+(Math.pow($level, 3)))*10" />
-            <produce itemId="resource_c" function="(100+(Math.pow($level, 2)))*5" />
-            <produce itemId="resource_ato3" function="(10+(Math.pow($level, 2)))*2" />
+            <produce itemId="resource_feo" function="(18*Math.pow($level,2)+150)" />
+            <produce itemId="resource_c" function="(18*Math.pow($level,2)+150)" />
+            <produce itemId="resource_ato3" function="(18*Math.pow($level,2)+150)" />
         </productions>
     </building>
 </list>

@@ -2,7 +2,7 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="module_factory" type="ModuleFactory" nameId="module_factory_n" maxLevel="25" descriptionId="module_factory_d">
         <buildTime>
-            <set fromLevel="1" function="25*$level"/>
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <propertiesByLevel>
             <properties level="1">
@@ -29,7 +29,7 @@
         </propertiesByLevel>
         <requirements>
             <functions>
-                <function fromLevel="1" itemId="resource_feo" value="100*(Math.pow($level,2))"/>
+                <function fromLevel="1" itemId="resource_feo" value="0,2*Math.pow($level,4)"/>
             </functions>
             <requirement level="5">
                 <building id="mine" level="2" />

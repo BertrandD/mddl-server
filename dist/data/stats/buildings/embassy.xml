@@ -2,7 +2,7 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="embassy" nameId="building_embassy_n" type="CommonBuilding" descriptionId="building_embassy_d" maxLevel="5">
         <buildTime>
-            <set fromLevel="1" function="5*$level" />
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <requirements>
             <requirement level="1">

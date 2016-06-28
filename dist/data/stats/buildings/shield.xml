@@ -2,7 +2,7 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="shield" nameId="building_shield_n" type="Shield" descriptionId="building_shield_d" maxLevel="10">
         <buildTime>
-            <set fromLevel="1" function="5*$level" />
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <properties>
             <property name="availables_modules" value="module_building_shield_laser;module_building_shield_ion;module_building_shield_photon;module_building_shield_plasma;module_building_shield_graviton"/>
@@ -10,10 +10,10 @@
             <property name="armor" value="10000" />
         </properties>
         <requirements>
-            <requirement level="1">
-                <item id="resource_steel" count="150" />
-                <item id="resource_ch4" count="100" />
-            </requirement>
+            <functions>
+                <function fromLevel="1" itemId="resource_c" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="1" itemId="resource_ato3" value="0,2*Math.pow($level,4)"/>
+            </functions>
         </requirements>
     </building>
 </list>

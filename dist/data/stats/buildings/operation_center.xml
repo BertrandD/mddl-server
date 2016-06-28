@@ -2,15 +2,15 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="operation_center" nameId="building_operation_center_n" type="CommonBuilding" descriptionId="building_operation_center_d" maxLevel="10">
         <buildTime>
-            <set fromLevel="1" function="5*$level" />
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <requirements>
-            <requirement level="1">
-                <item id="resource_feo" count="1500" />
-                <item id="resource_c" count="150" />
-                <item id="resource_h2o" count="200" />
-                <item id="resource_ato3" count="25" />
-            </requirement>
+            <functions>
+                <function fromLevel="1" itemId="resource_feo" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="1" itemId="resource_c" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="1" itemId="resource_h2o" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="1" itemId="resource_ato3" value="0,2*Math.pow($level,4)"/>
+            </functions>
         </requirements>
     </building>
 </list>
