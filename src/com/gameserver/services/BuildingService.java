@@ -51,13 +51,14 @@ public class BuildingService {
         repository.save(p);
     }
 
-    public void ScheduleUpgrade(BuildingInstance building){
+    public void ScheduleUpgrade(BuildingInstance building) {
         final BuildingTask newTask;
+        final long now = System.currentTimeMillis();
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
-        long endupgrade = System.currentTimeMillis() + (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+        long endupgrade = now + (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
 
         if(lastInQueue == null){
-            building.setStartedAt(System.currentTimeMillis()); // This value is a false startedAt value ! Difference of ~30 millis
+            building.setStartedAt(now); // This value is a false startedAt value ! Difference of ~30 millis
             building.setEndsAt(endupgrade);
             update(building);
             newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel()+1);

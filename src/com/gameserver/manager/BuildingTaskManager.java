@@ -7,6 +7,7 @@ import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;
 import com.gameserver.tasks.mongo.BuildingTask;
+import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,15 +42,13 @@ public class BuildingTaskManager {
         start();
     }
 
-    public void notifyNewTask(BuildingTask task){
-
+    public void notifyNewTask(BuildingTask task) {
         if(scheduledFuture != null){
             if(task.getEndsAt() < currentTask.getEndsAt()){
                 scheduledFuture.cancel(false);
                 scheduledFuture = null;
             }
         }
-
         start();
     }
 
@@ -70,21 +69,10 @@ public class BuildingTaskManager {
         }
     }
 
-    public void restart(BuildingTask task){
-        buildingTaskService.delete(task);
-
-        if(buildingTaskService.findByBuilding(task.getBuilding().getId()).isEmpty()){
-            task.getBuilding().setEndsAt(-1);
-            task.getBuilding().setStartedAt(-1);
-            buildingService.update(task.getBuilding());
-        }else{
-            final BuildingTask bTask = buildingTaskService.findFirstByBuildingOrderByEndsAtAsc(task.getBuilding().getId());
-            bTask.getBuilding().setStartedAt(System.currentTimeMillis());
-            buildingService.update(bTask.getBuilding());
-        }
-
+    public void restart(){
         scheduledFuture = null;
         currentTask = null;
+        Utils.println("Scheduled task finished");
         start();
     }
 
@@ -97,6 +85,8 @@ public class BuildingTaskManager {
         @Override
         public synchronized void run()
         {
+            Utils.println("The task is null ? "+getCurrentTask());
+            Utils.println("The building from task is null ? "+getCurrentTask().getBuilding());
             final BuildingInstance building = getCurrentTask().getBuilding();
 
             if(building.getBuildingId().equals(BUILDING_STORAGE_ID))
@@ -106,7 +96,18 @@ public class BuildingTaskManager {
             }
 
             building.setCurrentLevel(getCurrentTask().getLevel());
-            buildingService.update(getCurrentTask().getBuilding());
+            buildingTaskService.delete(getCurrentTask());
+
+            if(buildingTaskService.findByBuilding(building.getId()).isEmpty()){
+                building.setEndsAt(-1);
+                building.setStartedAt(-1);
+            }else{
+                final BuildingTask bTask = buildingTaskService.findFirstByBuildingOrderByEndsAtAsc(building.getId());
+                bTask.getBuilding().setStartedAt(System.currentTimeMillis());
+                buildingService.update(bTask.getBuilding());
+            }
+
+            buildingService.update(building);
 
             if(building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1)
             {
@@ -122,7 +123,7 @@ public class BuildingTaskManager {
                 mine.getProduceItems().forEach(k -> inventoryService.addItem(inventory, k.getItemId(), 0));
             }
 
-            restart(getCurrentTask());
+            restart();
         }
     }
 }

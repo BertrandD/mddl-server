@@ -114,10 +114,10 @@ public class BuildingInstance
     }
 
     /**
-     * @return build time to get the next level
+     * @return build time in millis to get the next level
      */
     public long getBuildTime() {
-        return getTemplate().getBuildTimeAtLevel(getCurrentLevel()+1);
+        return getTemplate().getBuildTimeAtLevel(getCurrentLevel()+1) * 1000;
     }
 
     public List<Module> getModules() {
