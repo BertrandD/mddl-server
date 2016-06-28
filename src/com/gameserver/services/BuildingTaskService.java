@@ -1,6 +1,6 @@
 package com.gameserver.services;
 
-import com.gameserver.tasks.mongo.BuildingTask;
+import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.repository.BuildingTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;

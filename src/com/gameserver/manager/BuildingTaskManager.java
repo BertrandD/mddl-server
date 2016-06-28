@@ -6,7 +6,7 @@ import com.gameserver.model.inventory.Inventory;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;
-import com.gameserver.tasks.mongo.BuildingTask;
+import com.gameserver.model.tasks.BuildingTask;
 import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

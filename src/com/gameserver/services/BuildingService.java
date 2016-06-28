@@ -2,9 +2,11 @@ package com.gameserver.services;
 
 import com.config.Config;
 import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.tasks.mongo.BuildingTask;
+import com.gameserver.model.buildings.RobotFactory;
+import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.repository.BuildingRepository;
 import com.gameserver.manager.BuildingTaskManager;
@@ -54,8 +56,15 @@ public class BuildingService {
     public void ScheduleUpgrade(BuildingInstance building) {
         final BuildingTask newTask;
         final long now = System.currentTimeMillis();
+        final BuildingInstance robotFactory = building.getBase().getBuildings().stream().filter(k -> k.getCurrentLevel() > 0 &&
+                k.getTemplate().getType().equals(BuildingCategory.RobotFactory)).findFirst().orElse(null);
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
-        long endupgrade = now + (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+
+        // calculate BuildTime with modifiers :
+        // - World modifier
+        // - RobotFactory modifier
+        long buildTime = (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+        long endupgrade = now + buildTime - (long)(buildTime * (((RobotFactory)robotFactory.getTemplate()).getCoolDownReductionAtLevel(robotFactory.getCurrentLevel())));
 
         if(lastInQueue == null){
             building.setStartedAt(now); // This value is a false startedAt value ! Difference of ~30 millis

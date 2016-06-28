@@ -1,4 +1,4 @@
-package com.gameserver.tasks.mongo;
+package com.gameserver.model.tasks;
 
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;

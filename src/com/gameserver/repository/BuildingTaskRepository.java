@@ -1,6 +1,6 @@
 package com.gameserver.repository;
 
-import com.gameserver.tasks.mongo.BuildingTask;
+import com.gameserver.model.tasks.BuildingTask;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

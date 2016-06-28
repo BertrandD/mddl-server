@@ -15,7 +15,7 @@ import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.gameserver.services.ValidatorService;
-import com.gameserver.tasks.mongo.BuildingTask;
+import com.gameserver.model.tasks.BuildingTask;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,6 @@
 package com.gameserver.services;
 
 import com.config.Config;
-import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.ItemType;
@@ -78,21 +77,19 @@ public class InventoryService implements IInventoryService {
 
         for (BuildingInstance extractor : extractors)
         {
-            final Extractor extractorTemplate = (Extractor)BuildingData.getInstance().getBuilding(extractor.getBuildingId());
+            final Extractor extractorTemplate = (Extractor)extractor.getTemplate();
             for (GameItem gameItem : extractorTemplate.getProduceItems())
             {
                 final ItemInstance resource = baseInventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(gameItem.getItemId())).findFirst().orElse(null);
-                if(resource != null)
-                {
+                if(resource != null) {
                     final double productionCnt = ((((double) extractorTemplate.getProductionAtLevel(gameItem.getItemId(), extractor.getCurrentLevel()) / 3600)) * ((now - baseInventory.getLastRefresh()) / 1000) * Config.RESOURCE_PRODUCTION_MODIFIER);
-                    if(generatedResources.containsKey(gameItem.getItemId()))
-                    {
+                    if(generatedResources.containsKey(gameItem.getItemId())) {
                         final double containedResource = generatedResources.get(gameItem.getItemId());
                         generatedResources.replace(gameItem.getItemId(), containedResource+productionCnt);
-                    } else generatedResources.put(gameItem.getItemId(), productionCnt);
-                }
-                else
-                {
+                    } else {
+                        generatedResources.put(gameItem.getItemId(), productionCnt);
+                    }
+                } else {
                     generatedResources.put(gameItem.getItemId(), 0.0);
                 }
             }
@@ -109,6 +106,17 @@ public class InventoryService implements IInventoryService {
             }
         }
 
+        // Balance amount of resource
+        long totalResourceAmount = 0;
+        for(double amount : generatedResources.values())
+            totalResourceAmount += amount;
+
+        if(base.getBaseInventory().getFreeVolume() < totalResourceAmount)
+        {
+            // balance resources
+        }
+
+        // Add resources
         for (String itemId : generatedResources.keySet())
         {
             ItemInstance item = baseInventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(itemId)).findFirst().orElse(null);
