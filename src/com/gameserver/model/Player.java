@@ -45,9 +45,13 @@ public class Player {
     @DBRef
     private List<Player> friends;
 
-    public Player(){
+    @DBRef
+    private List<FriendRequest> friendRequests;
+
+    public Player() {
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
+        setFriendRequests(new ArrayList<>());
     }
 
     public Player(Account account, String name)
@@ -57,6 +61,7 @@ public class Player {
         setAccount(account);
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
+        setFriendRequests(new ArrayList<>());
     }
 
     public String getId() {
@@ -121,6 +126,18 @@ public class Player {
 
     public boolean addFriend(Player friend) {
         return !getFriends().contains(friend) && getFriends().add(friend);
+    }
+
+    public List<FriendRequest> getFriendRequests() {
+        return friendRequests;
+    }
+
+    public void setFriendRequests(List<FriendRequest> friendRequests) {
+        this.friendRequests = friendRequests;
+    }
+
+    public boolean addRequest(FriendRequest request) {
+        return !getFriendRequests().contains(request) && getFriendRequests().add(request);
     }
 
     @Override
