@@ -1,6 +1,8 @@
 package com.auth;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.Lang;
+import com.serializer.AccountSerializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@JsonSerialize(using = AccountSerializer.class)
 public class Account extends User
 {
     @Id
