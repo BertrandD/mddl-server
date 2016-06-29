@@ -122,4 +122,13 @@ public class ItemInstance
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof ItemInstance){
+            final ItemInstance item = (ItemInstance) o;
+            if(item.getId().equalsIgnoreCase(this.getId())) return true;
+        }
+        return false;
+    }
 }

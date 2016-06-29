@@ -141,7 +141,7 @@ public class BuildingInstance
     public boolean equals(Object o) {
         if (o instanceof BuildingInstance) {
             final BuildingInstance building = (BuildingInstance)o;
-            return (this.id.equals(building.id));
+            return (this.id.equalsIgnoreCase(building.id));
         }
         return false;
     }

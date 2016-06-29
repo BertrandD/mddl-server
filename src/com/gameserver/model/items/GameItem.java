@@ -98,4 +98,13 @@ public abstract class GameItem {
     public void setLang(Lang lang) {
         this.lang = lang;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof GameItem){
+            final GameItem item = (GameItem) o;
+            if(item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
+        }
+        return false;
+    }
 }

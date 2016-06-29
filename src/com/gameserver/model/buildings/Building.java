@@ -126,4 +126,13 @@ public abstract class Building {
     public void setLang(Lang lang) {
         this.lang = lang;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Building){
+            final Building building = (Building) o;
+            if(building.getId().equalsIgnoreCase(this.getId())) return true;
+        }
+        return false;
+    }
 }
