@@ -164,4 +164,9 @@ public class PlayerController {
 
         return new JsonResponse(friend.getName() + " has been refused !"); // TODO: SysMsg
     }
+
+    @RequestMapping(value = "/players", method = RequestMethod.GET)
+    public JsonResponse showAllPlayers() {
+        return new JsonResponse(playerService.findAll());
+    }
 }
