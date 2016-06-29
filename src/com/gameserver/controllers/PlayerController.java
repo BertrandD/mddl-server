@@ -47,7 +47,9 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/player", method = RequestMethod.POST)
-    public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name){
+    public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
+        if(account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT) return new JsonResponse("Maximum player creation reached !"); // TODO: SysMsg
+
         if(playerService.findOneByName(name) != null) return new JsonResponse(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST);
 
         // Check if name is forbidden (Like 'fuck', 'admin', ...)
@@ -76,5 +78,22 @@ public class PlayerController {
 
         accountService.update(playerAccount);
         return new JsonResponse(player);
+    }
+
+    //TODO: Make a friend request instead of this
+    @RequestMapping(value = "/me/player/addfriend/{friendId}", method = RequestMethod.GET)
+    public JsonResponse addFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "friendId") String friendId) {
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
+
+        if(player.getId().equals(friendId)) return new JsonResponse("You cannot add yourself to your friend list."); // TODO: SysMsg
+
+        final Player friend = playerService.findOne(friendId);
+        if(friend == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
+
+        if(player.addFriend(friend)) return new JsonResponse(friend.getName() + " added successfully to your friend list !"); // TODO: SysMsg
+        playerService.update(player);
+
+        return new JsonResponse(friend.getName() + " is already in your friend list."); // TODO: SysMsg
     }
 }

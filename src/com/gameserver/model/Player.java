@@ -42,8 +42,12 @@ public class Player {
     @JsonBackReference
     private PlayerInventory inventory;
 
+    @DBRef
+    private List<Player> friends;
+
     public Player(){
-        bases = new ArrayList<>();
+        setBases(new ArrayList<>());
+        setFriends(new ArrayList<>());
     }
 
     public Player(Account account, String name)
@@ -52,6 +56,7 @@ public class Player {
         setName(name);
         setAccount(account);
         setBases(new ArrayList<>());
+        setFriends(new ArrayList<>());
     }
 
     public String getId() {
@@ -104,5 +109,26 @@ public class Player {
 
     public void setInventory(PlayerInventory inventory) {
         this.inventory = inventory;
+    }
+
+    public List<Player> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Player> friends) {
+        this.friends = friends;
+    }
+
+    public boolean addFriend(Player friend) {
+        return !getFriends().contains(friend) && getFriends().add(friend);
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Player){
+            final Player player = (Player) o;
+            if(player.getId().equalsIgnoreCase(this.getId())) return true;
+        }
+        return false;
     }
 }

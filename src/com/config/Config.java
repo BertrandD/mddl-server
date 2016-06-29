@@ -24,6 +24,7 @@ public final class Config {
     public static String DATA_ROOT_DIRECTORY;
     public static String[] FORBIDDEN_NAMES;
     public static long MAX_PLAYER_INVENTORY_CAPACITY;
+    public static int MAX_PLAYER_IN_ACCOUNT;
     public static long BASE_INITIAL_MAX_SHIELD;
     public static long BASE_INITIAL_MAX_HEALTH;
 
@@ -54,6 +55,7 @@ public final class Config {
         DATA_ROOT_DIRECTORY = general.getString("DataRootDirectory", "data/");
         FORBIDDEN_NAMES = general.getString("ForbiddenNames", "").split(",");
         MAX_PLAYER_INVENTORY_CAPACITY = general.getLong("MaxPlayerInventoryCapacity", 1000000000);
+        MAX_PLAYER_IN_ACCOUNT = general.getInt("MaxPlayerInAccount", 1);
         BASE_INITIAL_MAX_SHIELD = general.getLong("InitialMaxShield", 0);
         BASE_INITIAL_MAX_HEALTH = general.getLong("InitialMaxHealth", 0);
 
