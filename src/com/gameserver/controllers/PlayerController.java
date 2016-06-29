@@ -121,7 +121,7 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/friend/accept/{requestId}", method = RequestMethod.GET)
-    public JsonResponse addFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
+    public JsonResponse acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
 
@@ -142,5 +142,26 @@ public class PlayerController {
         playerService.update(player);
 
         return new JsonResponse(friend.getName() + " added successfully to your friend list !"); // TODO: SysMsg
+    }
+
+    @RequestMapping(value = "/friend/refuse/{requestId}", method = RequestMethod.GET)
+    public JsonResponse refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
+
+        final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
+        if(request == null) return new JsonResponse(JsonResponseType.ERROR, "Request doesn't exist.");
+
+        final Player friend = request.getRequester();
+        if(friend == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
+
+        friend.getFriendRequests().remove(request);
+        player.getFriendRequests().remove(request);
+
+        friendRequestService.delete(request);
+        playerService.update(friend);
+        playerService.update(player);
+
+        return new JsonResponse(friend.getName() + " has been refused !"); // TODO: SysMsg
     }
 }
