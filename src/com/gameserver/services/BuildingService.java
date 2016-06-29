@@ -3,13 +3,13 @@ package com.gameserver.services;
 import com.config.Config;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.enums.BuildingCategory;
+import com.gameserver.manager.BuildingTaskManager;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.RobotFactory;
-import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.model.instances.BuildingInstance;
+import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.repository.BuildingRepository;
-import com.gameserver.manager.BuildingTaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +64,9 @@ public class BuildingService {
         // - World modifier
         // - RobotFactory modifier
         long buildTime = (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
-        long endupgrade = now + buildTime - (long)(buildTime * (((RobotFactory)robotFactory.getTemplate()).getCoolDownReductionAtLevel(robotFactory.getCurrentLevel())));
+        long endupgrade = now + buildTime;
+
+        if(robotFactory != null) endupgrade -= (long)(buildTime * (((RobotFactory)robotFactory.getTemplate()).getCoolDownReductionAtLevel(robotFactory.getCurrentLevel())));
 
         if(lastInQueue == null){
             building.setStartedAt(now); // This value is a false startedAt value ! Difference of ~30 millis
