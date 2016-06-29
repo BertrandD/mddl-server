@@ -70,14 +70,21 @@ public class DefaultController implements ErrorController{
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/reset", method = RequestMethod.GET, produces = "application/json")
-    public boolean resetDatabase(){
+    public boolean resetDatabase(@AuthenticationPrincipal Account pAccount){
         itemService.deleteAll();
         playerInventoryService.deleteAll();
         buildingService.deleteAll();
         inventoryService.deleteAll();
         baseService.deleteAll();
         playerService.deleteAll();
+        pAccount.setCurrentPlayer(null);
+        pAccount.getPlayers().clear();
+        Account account = accountService.findOne(pAccount.getId());
+        account.getPlayers().clear();
+        account.setCurrentPlayer(null);
+        accountService.update(account);
         return true;
     }
 
