@@ -1,13 +1,15 @@
 package com.gameserver.services;
 
 import com.auth.Account;
-import com.gameserver.repository.PlayerRepository;
 import com.gameserver.model.Player;
+import com.gameserver.model.inventory.PlayerInventory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,44 +19,50 @@ import java.util.List;
 public class PlayerService {
 
     @Autowired
-    private PlayerRepository playerRepository;
-
-    @Autowired
-    private InventoryService inventoryService;
+    private MongoOperations mongoOperations;
 
     public Player findOne(String id){
-        return playerRepository.findOne(id);
+        final Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(id));
+        return mongoOperations.findOne(query, Player.class);
     }
 
     public Player findOneByName(String name) {
-        return playerRepository.findByName(name);
+        final Query query = new Query();
+        query.addCriteria(Criteria.where("name").is(name));
+        return mongoOperations.findOne(query, Player.class);
     }
 
-    public Collection<Player> findAll() {
-        return playerRepository.findAll();
+    public List<Player> findAll() {
+        return mongoOperations.findAll(Player.class);
     }
 
-    public List<Player> findByAccount(Account account){
-        return playerRepository.findByAccount(account);
+    public List<Player> findByAccount(Account account) {
+        final Query query = new Query();
+        query.addCriteria(Criteria.where("account").is(account));
+        return mongoOperations.find(query, Player.class);
     }
 
-    public Player create(Account account, String name){
+    public Player create(Account account, String name) {
         final Player player = new Player(account, name);
-        inventoryService.createPlayerInventory(player);
-        return playerRepository.save(player);
+        final PlayerInventory inventory = new PlayerInventory(player);
+        player.setInventory(inventory);
+        mongoOperations.insert(player);
+        mongoOperations.insert(inventory);
+        return player;
     }
 
     @Async
-    public void update(Player p){
-        playerRepository.save(p);
+    public void update(Player p) {
+        mongoOperations.save(p);
     }
 
     @Async
     public void delete(String id){
-        playerRepository.delete(id);
+        mongoOperations.remove(new Query(Criteria.where("id").is(id)), Player.class);
     }
 
-    public void deleteAll(){
-        playerRepository.deleteAll();
+    public void deleteAll() {
+        mongoOperations.remove(new Query(), Player.class);
     }
 }

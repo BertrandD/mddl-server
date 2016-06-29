@@ -3,6 +3,7 @@ package com.gameserver.model.inventory;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.gameserver.interfaces.IInventory;
 import com.gameserver.model.instances.ItemInstance;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -21,7 +22,8 @@ public abstract class Inventory implements IInventory {
     @JsonManagedReference
     private List<ItemInstance> items;
 
-    public Inventory(){
+    public Inventory() {
+        setId(new ObjectId().toString());
         setItems(new ArrayList<>());
     }
 
