@@ -1,13 +1,15 @@
 package com.gameserver.manager;
 
 import com.gameserver.model.buildings.Extractor;
+import com.gameserver.model.buildings.Shield;
+import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.Inventory;
+import com.gameserver.model.tasks.BuildingTask;
+import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;
-import com.gameserver.model.tasks.BuildingTask;
-import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +32,12 @@ public class BuildingTaskManager {
     @Autowired
     private InventoryService inventoryService;
 
+    @Autowired
+    private BaseService baseService;
+
     private static final String BUILDING_MINE_ID = "mine";
     private static final String BUILDING_PUMP_ID = "pump";
+    private static final String BUILDING_SHIELD_ID = "shield";
     private static final String BUILDING_STORAGE_ID = "storage";
 
     private ScheduledFuture<?> scheduledFuture;
@@ -72,7 +78,6 @@ public class BuildingTaskManager {
     public void restart(){
         scheduledFuture = null;
         currentTask = null;
-        Utils.println("Scheduled task finished");
         start();
     }
 
@@ -85,8 +90,6 @@ public class BuildingTaskManager {
         @Override
         public synchronized void run()
         {
-            Utils.println("The task is null ? "+getCurrentTask());
-            Utils.println("The building from task is null ? "+getCurrentTask().getBuilding());
             final BuildingInstance building = getCurrentTask().getBuilding();
 
             if(building.getBuildingId().equals(BUILDING_STORAGE_ID))
@@ -121,6 +124,14 @@ public class BuildingTaskManager {
                 final Inventory inventory = building.getBase().getBaseInventory();
                 final Extractor mine = (Extractor) building.getTemplate();
                 mine.getProduceItems().forEach(k -> inventoryService.addItem(inventory, k.getItemId(), 0));
+            }
+
+            if(building.getBuildingId().equals(BUILDING_SHIELD_ID))
+            {
+                final Shield shield = (Shield) building.getTemplate();
+                final BaseStat stats = building.getBase().getBaseStat();
+                stats.setMaxShield(shield.getArmorBonusAtLevel(building.getCurrentLevel()));
+                baseService.update(building.getBase());
             }
 
             restart();

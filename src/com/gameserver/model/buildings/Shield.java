@@ -1,34 +1,40 @@
 package com.gameserver.model.buildings;
 
 import com.gameserver.model.commons.StatsSet;
+import com.util.Evaluator;
 
 /**
  * @author LEBOC Philippe
  */
 public class Shield extends ModulableBuilding {
 
-    private long armor;
-    private String strongAgainst;
+    private long[] armorBonus;
 
     public Shield(StatsSet set) {
         super(set);
-        setArmor(set.getLong("armor", 0L));
-        setStrongAgainst(set.getString("shield_defense", null));
+        initialize(set.getString("armor", null));
     }
 
-    public long getArmor() {
-        return armor;
+    private void initialize(String function) {
+        if(function == null) return;
+        final long[] t = new long[getMaxLevel()];
+        for(int i=1;i<=getMaxLevel();i++) {
+            t[i-1] = ((Number) Evaluator.getInstance().eval(function.replace("$level", ""+i))).longValue();
+        }
+        setArmorBonus(t);
     }
 
-    public void setArmor(long armor) {
-        this.armor = armor;
+    public long getArmorBonusAtLevel(int level) {
+        if(level > 0 && level <= getMaxLevel())
+            return getArmorBonus()[level-1];
+        return 0;
     }
 
-    public String getStrongAgainst() {
-        return strongAgainst;
+    public long[] getArmorBonus() {
+        return armorBonus;
     }
 
-    public void setStrongAgainst(String strongAgainst) {
-        this.strongAgainst = strongAgainst;
+    public void setArmorBonus(long[] armorBonus) {
+        this.armorBonus = armorBonus;
     }
 }

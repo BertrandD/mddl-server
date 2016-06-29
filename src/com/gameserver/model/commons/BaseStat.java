@@ -21,7 +21,7 @@ public class BaseStat {
         return maxShield;
     }
 
-    private void setMaxShield(long maxShield) {
+    public void setMaxShield(long maxShield) {
         this.maxShield = maxShield;
     }
 
@@ -29,7 +29,7 @@ public class BaseStat {
         return maxHealth;
     }
 
-    private void setMaxHealth(long maxHealth) {
+    public void setMaxHealth(long maxHealth) {
         this.maxHealth = maxHealth;
     }
 
