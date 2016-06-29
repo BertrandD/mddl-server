@@ -69,7 +69,7 @@ public class SystemMessageData implements IXmlReader {
         switch(lang){
             case EN: return _english;
             case FR: return _french;
-            default: return null;
+            default: return _english;
         }
     }
 
