@@ -6,7 +6,6 @@ import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.ItemType;
 import com.gameserver.interfaces.IInventoryService;
 import com.gameserver.model.Base;
-import com.gameserver.model.Player;
 import com.gameserver.model.buildings.Extractor;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
@@ -48,13 +47,6 @@ public class InventoryService implements IInventoryService {
     public void update(Inventory inventory){
         if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
         else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
-    }
-
-    public BaseInventory createBaseInventory(Base base){
-        return baseInventoryService.create(base);
-    }
-    public PlayerInventory createPlayerInventory(Player player){
-        return playerInventoryService.create(player);
     }
 
     /**

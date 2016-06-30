@@ -2,48 +2,23 @@ package com.gameserver.services;
 
 import com.gameserver.model.Player;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.repository.PlayerInventoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
  * @author LEBOC Philippe
  */
 @Service
-public class PlayerInventoryService{
+public class PlayerInventoryService extends DatabaseService<PlayerInventory> {
 
-    @Autowired
-    private PlayerInventoryRepository repository;
-
-    @Autowired
-    private PlayerService playerService;
-
-    public PlayerInventory findOne(String id){
-        return repository.findOne(id);
+    protected PlayerInventoryService() {
+        super(PlayerInventory.class);
     }
 
-    public PlayerInventory findByPlayer(String id) { return repository.findByPlayer(id); }
-
-    public PlayerInventory create(Player player){
-        PlayerInventory inventory = new PlayerInventory(player);
-        inventory = repository.save(inventory);
-        player.setInventory(inventory);
-        playerService.update(player);
+    @Override
+    public PlayerInventory create(Object... params) {
+        final PlayerInventory inventory = new PlayerInventory();
+        if(params.length == 1) inventory.setPlayer((Player)params[0]);
+        mongoOperations.insert(inventory);
         return inventory;
     }
-
-    @Async
-    public void updateAsync(PlayerInventory inventory) { repository.save(inventory); }
-
-    public void update(PlayerInventory inventory) { repository.save(inventory); }
-
-    @Async
-    public void delete(String id) { repository.delete(id); }
-
-    public void deleteAll(){
-        repository.deleteAll();
-    }
-
-
 }

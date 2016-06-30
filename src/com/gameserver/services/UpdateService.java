@@ -1,6 +1,12 @@
 package com.gameserver.services;
 
+import com.gameserver.model.Base;
+import com.gameserver.model.Player;
+import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.PlayerInventory;
+import com.gameserver.model.tasks.BuildingTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -26,5 +32,15 @@ public class UpdateService {
         update.unset("lastRefresh");
 
         mongoOperations.findAndModify(new Query(Criteria.where("lastRefresh").exists(true)), update, ItemInstance.class);
+    }
+
+    public void resetDatabase() {
+        mongoOperations.remove(new Query(), ItemInstance.class);
+        mongoOperations.remove(new Query(), PlayerInventory.class);
+        mongoOperations.remove(new Query(), BaseInventory.class);
+        mongoOperations.remove(new Query(), BuildingTask.class);
+        mongoOperations.remove(new Query(), BuildingInstance.class);
+        mongoOperations.remove(new Query(), Base.class);
+        mongoOperations.remove(new Query(), Player.class);
     }
 }

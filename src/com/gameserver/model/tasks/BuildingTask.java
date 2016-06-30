@@ -2,6 +2,7 @@ package com.gameserver.model.tasks;
 
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,7 +27,8 @@ public class BuildingTask {
 
     public BuildingTask(){}
 
-    public BuildingTask(Base base, BuildingInstance building, long endsAt, int level){
+    public BuildingTask(Base base, BuildingInstance building, long endsAt, int level) {
+        setId(new ObjectId().toString());
         setBase(base);
         setBuilding(building);
         setEndsAt(endsAt);

@@ -28,8 +28,9 @@ public class BaseInventory extends Inventory {
 
     private long lastRefresh;
 
-    public BaseInventory(){
+    public BaseInventory() {
         super();
+        setLastRefresh(System.currentTimeMillis());
     }
 
     public BaseInventory(Base base){

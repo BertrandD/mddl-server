@@ -2,56 +2,57 @@ package com.gameserver.services;
 
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
-import com.gameserver.repository.BaseRepository;
+import com.gameserver.model.inventory.BaseInventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
 @Service
-public class BaseService {
-
-    @Autowired
-    private BaseRepository repository;
+public class BaseService extends DatabaseService<Base> {
 
     @Autowired
     private InventoryService inventoryService;
 
-    @Autowired
-    private PlayerService playerService;
+    protected BaseService() {
+        super(Base.class);
+    }
 
+    @Override
+    public Base create(Object... params) {
+        if(params.length != 2) return null;
+
+        final String name = (String) params[0];
+        final Player player = (Player) params[1];
+        final Base base = new Base(name, player);
+        final BaseInventory inventory = new BaseInventory();
+
+        base.setBaseInventory(inventory);
+        inventory.setBase(base);
+
+        player.addBase(base);
+        player.setCurrentBase(base);
+
+        mongoOperations.insert(base);
+        mongoOperations.insert(inventory);
+        mongoOperations.save(player);
+        return base;
+    }
+
+    @Override
     public Base findOne(String id) {
-        final Base base = repository.findOne(id);
+        final Base base = super.findOne(id);
         if(base != null) inventoryService.refreshResource(base);
         return base;
     }
 
-    public Collection<Base> findAll() {
-        final Collection<Base> bases = repository.findAll();
-        for (Base base : bases) {
-            inventoryService.refreshResource(base);
-        }
+    @Override
+    public List<Base> findAll() {
+        final List<Base> bases = super.findAll();
+        bases.forEach(inventoryService::refreshResource);
         return bases;
-    }
-
-    public Base create(String name, Player player){
-        final Base base = new Base(name, player);
-        base.setBaseInventory(inventoryService.createBaseInventory(base));
-
-        player.addBase(base);
-        player.setCurrentBase(base);
-        playerService.update(player);
-        return repository.save(base);
-    }
-
-    public void update(Base b) { repository.save(b); }
-
-    public void delete(String id) { repository.delete(id); }
-
-    public void deleteAll(){
-        repository.deleteAll();
     }
 }

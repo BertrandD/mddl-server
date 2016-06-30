@@ -1,9 +1,11 @@
 package com.gameserver.services;
 
-import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.repository.BuildingTaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gameserver.model.tasks.BuildingTask;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,41 +14,48 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Service
-public class BuildingTaskService {
+public class BuildingTaskService extends DatabaseService<BuildingTask> {
 
-    @Autowired
-    private BuildingTaskRepository repository;
-
-    public List<BuildingTask> findAll(){
-        return repository.findAll();
+    protected BuildingTaskService() {
+        super(BuildingTask.class);
     }
 
-    public BuildingTask findFirstByOrderByEndsAtAsc(){
-        return repository.findFirstByOrderByEndsAtAsc();
+    @Override
+    public BuildingTask create(Object... params) {
+        if(params.length != 3) return null;
+
+        final BuildingInstance inst = (BuildingInstance) params[0];
+        final long timestamp = (long) params[1];
+        final int level = (int) params[2];
+
+        final BuildingTask buildingTask = new BuildingTask(inst.getBase(), inst, timestamp, level);
+        mongoOperations.insert(buildingTask);
+        return buildingTask;
     }
 
-    public List<BuildingTask> findByBuilding(String id) { return repository.findByBuilding(id); }
-    public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) { return repository.findByBuildingOrderByEndsAtAsc(id); }
-
-    public List<BuildingTask> findByBaseOrderByEndsAtAsc(String id) { return repository.findByBaseOrderByEndsAtAsc(id); }
-
-    public BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id){
-        return repository.findFirstByBuildingOrderByEndsAtAsc(id);
+    public BuildingTask findFirstByOrderByEndsAtAsc() {
+        final Query query = new Query();
+        query.with(new Sort(Sort.Direction.ASC, "EndsAt"));
+        query.limit(1);
+        return mongoOperations.findOne(query, BuildingTask.class);
     }
 
-    public BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id){
-        return repository.findFirstByBuildingOrderByEndsAtDesc(id);
+    public List<BuildingTask> findByBuilding(String id) {
+        return findBy(Criteria.where("building").is(new ObjectId(id)));
+    }
+    public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) {
+        return findBy(Criteria.where("building").is(new ObjectId(id)), new Sort(Sort.Direction.ASC, "EndsAt"));
     }
 
-    public BuildingTask create(BuildingInstance building, long timestamp, int level){
-        return repository.save(new BuildingTask(building.getBase(), building, timestamp, level));
+    public List<BuildingTask> findByBaseOrderByEndsAtAsc(String id) {
+        return findBy(Criteria.where("base").is(new ObjectId(id)), new Sort(Sort.Direction.ASC, "EndsAt"));
     }
 
-    public void delete(BuildingTask o){
-        delete(o.getId());
+    public BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id) {
+        return findOneBy(Criteria.where("building").is(new ObjectId(id)), new Sort(Sort.Direction.ASC, "EndsAt"));
     }
 
-    public void delete(String id){
-        repository.delete(id);
+    public BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id) {
+        return findOneBy(Criteria.where("building").is(new ObjectId(id)), new Sort(Sort.Direction.DESC, "EndsAt"));
     }
 }

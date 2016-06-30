@@ -1,6 +1,9 @@
 package com.gameserver.manager;
 
+import com.config.Config;
+import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.buildings.Extractor;
+import com.gameserver.model.buildings.RobotFactory;
 import com.gameserver.model.buildings.Shield;
 import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
@@ -79,6 +82,34 @@ public class BuildingTaskManager {
         scheduledFuture = null;
         currentTask = null;
         start();
+    }
+
+    public void ScheduleUpgrade(BuildingInstance building) {
+        final BuildingTask newTask;
+        final long now = System.currentTimeMillis();
+        final BuildingInstance robotFactory = building.getBase().getBuildings().stream().filter(k -> k.getCurrentLevel() > 0 &&
+                k.getTemplate().getType().equals(BuildingCategory.RobotFactory)).findFirst().orElse(null);
+        final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
+
+        // calculate BuildTime with modifiers :
+        // - World modifier
+        // - RobotFactory modifier
+        long buildTime = (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+        long endupgrade = now + buildTime;
+
+        if(robotFactory != null) endupgrade -= (long)(buildTime * (((RobotFactory)robotFactory.getTemplate()).getCoolDownReductionAtLevel(robotFactory.getCurrentLevel())));
+
+        if(lastInQueue == null){
+            building.setStartedAt(now); // This value is a false startedAt value ! Difference of ~30 millis
+            building.setEndsAt(endupgrade);
+            buildingService.update(building);
+            newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel()+1);
+        }else{
+            endupgrade = lastInQueue.getEndsAt() + (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+            newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel()+1);
+        }
+
+        notifyNewTask(newTask);
     }
 
     public BuildingTask getCurrentTask() {

@@ -43,9 +43,9 @@ public class BuildingInstance
         setModules(new ArrayList<>());
     }
 
-    public BuildingInstance(Base base, Building template) {
+    public BuildingInstance(Base base, String templateId) {
         setBase(base);
-        setBuildingId(template.getId());
+        setBuildingId(templateId);
         setCurrentLevel(0);
         setStartedAt(-1);
         setModules(new ArrayList<>());

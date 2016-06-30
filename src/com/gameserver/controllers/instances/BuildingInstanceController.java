@@ -1,7 +1,7 @@
 package com.gameserver.controllers.instances;
 
 import com.auth.Account;
-import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.manager.BuildingTaskManager;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.buildings.Building;
@@ -9,13 +9,13 @@ import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.gameserver.services.ValidatorService;
-import com.gameserver.model.tasks.BuildingTask;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +45,9 @@ public class BuildingInstanceController {
     private BuildingTaskService buildingTaskService;
 
     @Autowired
+    private BuildingTaskManager buildingTaskManager;
+
+    @Autowired
     private PlayerService playerService;
 
     @Autowired
@@ -69,7 +72,7 @@ public class BuildingInstanceController {
     public JsonResponse findOne(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
-        final BuildingInstance building = buildingService.findByBaseAndId(player.getCurrentBase(), id);
+        final BuildingInstance building = buildingService.findBy(player.getCurrentBase(), id);
         if(building == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
         building.setLang(pAccount.getLang());
         return new JsonResponse(building);
@@ -86,7 +89,7 @@ public class BuildingInstanceController {
         final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
         if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
 
-        final BuildingInstance tempBuilding = new BuildingInstance(base, BuildingData.getInstance().getBuilding(templateId));
+        final BuildingInstance tempBuilding = new BuildingInstance(base, templateId);
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
         final JsonResponse validate = validator.validateBuildingRequirements(base, tempBuilding, collector, pAccount.getLang());
@@ -100,7 +103,7 @@ public class BuildingInstanceController {
         base.addBuilding(building, base.getBuildingPositions().size()+1); // temp position disable
         baseService.update(base);
 
-        buildingService.ScheduleUpgrade(building);
+        buildingTaskManager.ScheduleUpgrade(building);
 
         JsonResponse response = new JsonResponse(building);
         response.addMeta("base", base);
@@ -130,7 +133,7 @@ public class BuildingInstanceController {
 
         collector.forEach(inventoryService::consumeItem);
 
-        buildingService.ScheduleUpgrade(building);
+        buildingTaskManager.ScheduleUpgrade(building);
         final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
 
         JsonResponse response = new JsonResponse(building);

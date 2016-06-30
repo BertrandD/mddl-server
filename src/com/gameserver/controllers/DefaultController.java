@@ -5,12 +5,7 @@ import com.auth.AccountService;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.commons.SystemMessageId;
-import com.gameserver.services.BaseService;
-import com.gameserver.services.BuildingService;
-import com.gameserver.services.InventoryService;
-import com.gameserver.services.ItemService;
-import com.gameserver.services.PlayerInventoryService;
-import com.gameserver.services.PlayerService;
+import com.gameserver.services.UpdateService;
 import com.util.data.json.Response.JsonResponse;
 import com.util.data.json.Response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,22 +42,7 @@ public class DefaultController implements ErrorController{
     private AccountService accountService;
 
     @Autowired
-    private BaseService baseService;
-
-    @Autowired
-    private ItemService itemService;
-
-    @Autowired
-    private BuildingService buildingService;
-
-    @Autowired
-    private PlayerInventoryService playerInventoryService;
-
-    @Autowired
-    private PlayerService playerService;
-
-    @Autowired
-    private InventoryService inventoryService;
+    private UpdateService updateService;
 
     @RequestMapping(value = "/", produces = "application/json")
     public JsonResponse index()
@@ -73,12 +53,7 @@ public class DefaultController implements ErrorController{
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/reset", method = RequestMethod.GET, produces = "application/json")
     public boolean resetDatabase(@AuthenticationPrincipal Account pAccount){
-        itemService.deleteAll();
-        playerInventoryService.deleteAll();
-        buildingService.deleteAll();
-        inventoryService.deleteAll();
-        baseService.deleteAll();
-        playerService.deleteAll();
+        updateService.resetDatabase();
         pAccount.setCurrentPlayer(null);
         pAccount.getPlayers().clear();
         Account account = accountService.findOne(pAccount.getId());
