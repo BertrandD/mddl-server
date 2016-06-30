@@ -9,6 +9,7 @@ import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.items.Module;
 import com.serializer.BuildingInstanceSerializer;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -44,6 +45,7 @@ public class BuildingInstance
     }
 
     public BuildingInstance(Base base, String templateId) {
+        setId(new ObjectId().toString());
         setBase(base);
         setBuildingId(templateId);
         setCurrentLevel(0);

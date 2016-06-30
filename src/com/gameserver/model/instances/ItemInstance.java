@@ -13,6 +13,7 @@ import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
 import com.serializer.ItemInstanceSerializer;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -38,6 +39,7 @@ public class ItemInstance
 
     public ItemInstance(String itemId, double count)
     {
+        setId(new ObjectId().toString());
         setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
@@ -45,6 +47,7 @@ public class ItemInstance
 
     public ItemInstance(Inventory inventory, String itemId, double count)
     {
+        setId(new ObjectId().toString());
         setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
