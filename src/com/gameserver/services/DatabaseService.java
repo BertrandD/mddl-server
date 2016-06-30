@@ -25,16 +25,7 @@ public abstract class DatabaseService<T> {
         setClazz(clazz);
     }
 
-    public void create(T object) {
-        mongoOperations.insert(object);
-    }
-
     public abstract T create(Object... params);
-
-    @Async
-    public void createAsync(T object) {
-        mongoOperations.insert(object);
-    }
 
     public T findOne(String id) {
         return mongoOperations.findById(id, getClazz());
@@ -44,19 +35,11 @@ public abstract class DatabaseService<T> {
         return mongoOperations.findOne(new Query(Criteria.where("id").is(object)), getClazz());
     }
 
-    public T findOneBy(Criteria criteria) {
-        return findOneBy(new Criteria[]{criteria}, null);
+    public T findOneBy(Criteria... criterias) {
+        return findOneBy(null, criterias);
     }
 
-    public T findOneBy(Criteria[] criterias) {
-        return findOneBy(criterias, null);
-    }
-
-    public T findOneBy(Criteria criteria, Sort sort) {
-        return findOneBy(new Criteria[]{criteria}, sort);
-    }
-
-    public T findOneBy(Criteria[] criterias, Sort sort) {
+    public T findOneBy(Sort sort, Criteria... criterias) {
         final Query query = new Query();
         for (Criteria criteria : criterias) {
             query.addCriteria(criteria);
@@ -73,19 +56,11 @@ public abstract class DatabaseService<T> {
         return mongoOperations.findAll(getClazz());
     }
 
-    public List<T> findBy(Criteria criteria) {
-        return findBy(new Criteria[]{criteria});
+    public List<T> findBy(Criteria... criterias) {
+        return findBy(null, criterias);
     }
 
-    public List<T> findBy(Criteria criteria, Sort sort) {
-        return findBy(new Criteria[]{criteria}, sort);
-    }
-
-    public List<T> findBy(Criteria[] criterias) {
-        return findBy(criterias, null);
-    }
-
-    public List<T> findBy(Criteria[] criterias, Sort sort) {
+    public List<T> findBy(Sort sort, Criteria... criterias) {
         final Query query = new Query();
         for (Criteria criteria : criterias) {
             query.addCriteria(criteria);
@@ -98,11 +73,11 @@ public abstract class DatabaseService<T> {
         return mongoOperations.find(query, getClazz());
     }
 
-    public List<T> findBy(Criteria criterias, Sort sort, int limit) {
-        return findBy(new Criteria[]{criterias}, sort, limit);
+    public List<T> findBy(int limit, Criteria... criterias) {
+        return findBy(null, limit, criterias);
     }
 
-    public List<T> findBy(Criteria[] criterias, Sort sort, int limit) {
+    public List<T> findBy(Sort sort, int limit, Criteria... criterias) {
         final Query query = new Query();
         for (Criteria criteria : criterias) {
             query.addCriteria(criteria);
@@ -119,11 +94,6 @@ public abstract class DatabaseService<T> {
 
     public void update(T object) {
         mongoOperations.save(object);
-    }
-
-    public T updateAndGet(T object) {
-        update(object);
-        return object;
     }
 
     @Async
