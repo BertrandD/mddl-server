@@ -28,6 +28,7 @@ public class Player {
     private String name;
 
     @DBRef
+    @Indexed
     private Account account;
 
     @DBRef

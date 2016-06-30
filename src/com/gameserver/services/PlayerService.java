@@ -39,7 +39,7 @@ public class PlayerService {
 
     public List<Player> findByAccount(Account account) {
         final Query query = new Query();
-        query.addCriteria(Criteria.where("account").is(account));
+        query.addCriteria(Criteria.where("account").is(account.getId()));
         return mongoOperations.find(query, Player.class);
     }
 
