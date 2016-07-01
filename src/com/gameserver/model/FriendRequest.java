@@ -1,5 +1,7 @@
 package com.gameserver.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.serializer.FriendRequestSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author LEBOC Philippe
  */
 @Document(collection = "friend_request")
+@JsonSerialize(using = FriendRequestSerializer.class)
 public class FriendRequest {
 
     @Id
