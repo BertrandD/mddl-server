@@ -45,7 +45,7 @@ public class FriendController {
         final Player friend = playerService.findOne(friendId);
         if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        if(player.getFriends().contains(friend)) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
+        if(player.getFriends().contains(new PlayerHolder(friend.getId(), friend.getName()))) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
 
         int counter = 0;
         boolean allreadySent = false;
