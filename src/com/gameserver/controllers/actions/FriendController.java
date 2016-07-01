@@ -103,6 +103,8 @@ public class FriendController {
         final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
         if(request == null) return new JsonResponse(JsonResponseType.ERROR, "Request doesn't exist.");
 
+        if(player == request.getRequester()) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
+
         final Player friend = request.getRequester();
         if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
