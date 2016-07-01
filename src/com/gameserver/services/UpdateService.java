@@ -1,6 +1,7 @@
 package com.gameserver.services;
 
 import com.gameserver.model.Base;
+import com.gameserver.model.FriendRequest;
 import com.gameserver.model.Player;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
@@ -41,6 +42,7 @@ public class UpdateService {
         mongoOperations.remove(new Query(), BuildingTask.class);
         mongoOperations.remove(new Query(), BuildingInstance.class);
         mongoOperations.remove(new Query(), Base.class);
+        mongoOperations.remove(new Query(), FriendRequest.class);
         mongoOperations.remove(new Query(), Player.class);
     }
 }
