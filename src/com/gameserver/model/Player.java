@@ -3,6 +3,7 @@ package com.gameserver.model;
 import com.auth.Account;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gameserver.holders.PlayerHolder;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.serializer.PlayerSerializer;
 import org.bson.types.ObjectId;
@@ -43,8 +44,7 @@ public class Player {
     @JsonBackReference
     private PlayerInventory inventory;
 
-    @DBRef
-    private List<Player> friends;
+    private List<PlayerHolder> friends;
 
     @DBRef
     private List<FriendRequest> friendRequests;
@@ -117,15 +117,15 @@ public class Player {
         this.inventory = inventory;
     }
 
-    public List<Player> getFriends() {
+    public List<PlayerHolder> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Player> friends) {
+    public void setFriends(List<PlayerHolder> friends) {
         this.friends = friends;
     }
 
-    public boolean addFriend(Player friend) {
+    public boolean addFriend(PlayerHolder friend) {
         return !getFriends().contains(friend) && getFriends().add(friend);
     }
 

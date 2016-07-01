@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.gameserver.holders.PlayerHolder;
 import com.gameserver.model.Base;
 import com.gameserver.model.FriendRequest;
 import com.gameserver.model.Player;
@@ -24,12 +25,8 @@ public class PlayerSerializer extends JsonSerializer<Player> {
             gen.writeStringField("currentBase", value.getCurrentBase().getId());
 
         gen.writeArrayFieldStart("friends");
-        for(Player friend : value.getFriends()) {
-            gen.writeStartObject();
-            gen.writeStringField("id", friend.getId());
-            gen.writeStringField("name", friend.getName());
-            // TODO: write bases coordinates
-            gen.writeEndObject();
+        for(PlayerHolder friend : value.getFriends()) {
+            gen.writeObject(friend);
         }
         gen.writeEndArray();
 
