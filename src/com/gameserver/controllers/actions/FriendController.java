@@ -66,7 +66,7 @@ public class FriendController {
         playerService.update(friend);
         playerService.update(player);
 
-        return new JsonResponse("Friend request sent successfully !"); // TODO: SysMsg
+        return new JsonResponse(player); // TODO: SysMsg
     }
 
     @RequestMapping(value = "/friend/accept/{requestId}", method = RequestMethod.GET)
@@ -92,7 +92,7 @@ public class FriendController {
         playerService.update(friend);
         playerService.update(player);
 
-        return new JsonResponse(friend.getName() + " added successfully to your friend list !"); // TODO: SysMsg
+        return new JsonResponse(player); // TODO: SysMsg
     }
 
     @RequestMapping(value = "/friend/refuse/{requestId}", method = RequestMethod.GET)
@@ -115,6 +115,6 @@ public class FriendController {
         playerService.update(friend);
         playerService.update(player);
 
-        return new JsonResponse(friend.getName() + " has been refused !"); // TODO: SysMsg
+        return new JsonResponse(player); // TODO: SysMsg
     }
 }
