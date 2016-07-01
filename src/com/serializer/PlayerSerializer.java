@@ -24,12 +24,17 @@ public class PlayerSerializer extends JsonSerializer<Player> {
             gen.writeStringField("currentBase", value.getCurrentBase().getId());
 
         gen.writeArrayFieldStart("friends");
-        for(Player friend : value.getFriends())
-            gen.writeString(friend.getId());
+        for(Player friend : value.getFriends()) {
+            gen.writeStartObject();
+            gen.writeStringField("id", friend.getId());
+            gen.writeStringField("name", friend.getName());
+            // TODO: write bases coordinates
+            gen.writeEndObject();
+        }
         gen.writeEndArray();
 
         gen.writeArrayFieldStart("friendRequests");
-        for(FriendRequest request : value.getFriendRequests()){
+        for(FriendRequest request : value.getFriendRequests()) {
             gen.writeObject(request);
         }
         gen.writeEndArray();
