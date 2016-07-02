@@ -1,26 +1,19 @@
 package com.gameserver.services;
 
-import com.config.Config;
 import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.ItemType;
 import com.gameserver.interfaces.IInventoryService;
 import com.gameserver.model.Base;
-import com.gameserver.model.buildings.Extractor;
-import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.items.GameItem;
-import com.gameserver.model.items.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -39,12 +32,12 @@ public class InventoryService implements IInventoryService {
     @Autowired
     private BaseInventoryService baseInventoryService;
 
-    public void updateAsync(Inventory inventory){
+    public void updateAsync(Inventory inventory) {
         if(inventory instanceof BaseInventory) baseInventoryService.updateAsync((BaseInventory) inventory);
         else if(inventory instanceof PlayerInventory) playerInventoryService.updateAsync((PlayerInventory) inventory);
     }
 
-    public void update(Inventory inventory){
+    public void update(Inventory inventory) {
         if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
         else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory)inventory);
     }
@@ -53,170 +46,140 @@ public class InventoryService implements IInventoryService {
      * Refreshing resources
      * @param base
      */
-    public synchronized void refreshResource(Base base){
+    public synchronized void refreshResource(Base base) {
         logger.info("Refreshing resources...");
         final BaseInventory baseInventory = base.getBaseInventory();
-        final List<BuildingInstance> extractors = base.getBuildings().stream().filter(k ->
-            k != null &&
-            k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
-            k.getCurrentLevel() > 0)
-        .collect(Collectors.toList());
-
+        final HashMap<String, Double> production = base.getProduction();
         final long now = System.currentTimeMillis();
-        final HashMap<String, Double> generatedResources = new HashMap<>();
 
-        if(extractors.isEmpty()) return;
-
-        for (BuildingInstance extractor : extractors)
-        {
-            final Extractor extractorTemplate = (Extractor)extractor.getTemplate();
-            for (GameItem gameItem : extractorTemplate.getProduceItems())
-            {
-                final ItemInstance resource = baseInventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(gameItem.getItemId())).findFirst().orElse(null);
-                if(resource != null) {
-                    final double productionCnt = ((((double) extractorTemplate.getProductionAtLevel(gameItem.getItemId(), extractor.getCurrentLevel()) / 3600)) * ((now - baseInventory.getLastRefresh()) / 1000) * Config.RESOURCE_PRODUCTION_MODIFIER);
-                    if(generatedResources.containsKey(gameItem.getItemId())) {
-                        final double containedResource = generatedResources.get(gameItem.getItemId());
-                        generatedResources.replace(gameItem.getItemId(), containedResource+productionCnt);
-                    } else {
-                        generatedResources.put(gameItem.getItemId(), productionCnt);
-                    }
-                } else {
-                    generatedResources.put(gameItem.getItemId(), 0.0);
-                }
-            }
-        }
-
-        // Apply resources modules bonus
-        for (BuildingInstance extractor : extractors){
-            for(Module module : extractor.getModules()){
-                Double resource = generatedResources.get(module.getAffected());
-                if(resource != null) {
-                    resource = (resource * module.getMultiplicator()); // here is applyied module multiplicator
-                    generatedResources.replace(module.getAffected(), resource);
-                }
-            }
-        }
-
-        // Balance amount of resource
-        long totalResourceAmount = 0;
-        for(double amount : generatedResources.values())
-            totalResourceAmount += amount;
-
-        if(base.getBaseInventory().getFreeVolume() < totalResourceAmount)
-        {
-            // balance resources
+        if(production == null) {
+            logger.info("Abort refreshing resources because : Empty production");
+            baseInventory.setLastRefresh(now);
+            update(baseInventory);
+            return;
         }
 
         // Add resources
-        for (String itemId : generatedResources.keySet())
+        production.forEach((k,v) ->
         {
-            ItemInstance item = baseInventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(itemId)).findFirst().orElse(null);
-            if(item == null) {
-                item = itemService.create(baseInventory, itemId, 0);
-                if(generatedResources.get(itemId) > 0)
-                    item = addResource(item, generatedResources.get(itemId));
-                baseInventory.getItems().add(item);
-            } else {
-                if(generatedResources.get(itemId) > 0)
-                    addResource(item, generatedResources.get(item.getTemplateId()));
+            final ItemInstance inst = baseInventory.getItems().stream().filter(j -> j.getTemplateId().equalsIgnoreCase(k)).findFirst().orElse(null);
+            double value = (v / 3600) * ((now - baseInventory.getLastRefresh()) / 1000);
+            logger.info("Trying to add " + value + " to " + k);
+            if(value > 0) {
+                if(inst == null) {
+                    logger.warning("Item " + k + " doesn't exist. It must be created on his building creation. Aborting "+k+" refresh...");
+                } else {
+                    value = baseInventory.getHowManyCanBeAdded(value, inst.getTemplate().getVolume());
+                    inst.addCount(value);
+                    logger.info("\tadded + " + value + " to " + inst.getTemplateId());
+                    itemService.updateAsync(inst);
+                }
             }
-        }
+        });
 
         baseInventory.setLastRefresh(now);
-        updateAsync(baseInventory);
+        update(baseInventory);
     }
 
     /**
-     * Method created and used only by refreshResource to avoid infinite loop from refreshResource() <=> addItem()
-     * @param item to be updated
-     * @param amount to be added
-     * @return item with current amount + added amount
+     * Used by BuildingTaskManager to create items corresponding to the buildings (Extractors) when creation has ended.
+     * @param inventory
+     * @param templateId
+     * @param amount
      */
-    private synchronized ItemInstance addResource(ItemInstance item, final double amount) {
-        final GameItem template = item.getTemplate();
-        if(template == null) return null;
-
-        final long amountThatCanBeAdded = Math.floorDiv(item.getInventory().getFreeVolume(), template.getVolume());
-        if (amountThatCanBeAdded > 0) {
-            item.setCount(item.getCount()+Math.min(amountThatCanBeAdded, amount));
-            logger.info("\t\taddResource("+item.getTemplateId()+" [+"+Math.min(amountThatCanBeAdded, amount)+"], "+item.getCount()+")");
-            itemService.update(item);
-        }
-
-        return item;
-    }
-
-    @Override
-    public synchronized ItemInstance addItem(Inventory inventory, String templateId, long amount) {
-        ItemInstance item = itemService.findFirstByInventoryAndTemplateId(inventory, templateId);
-
+    public synchronized void addVoidItem(final Inventory inventory, final String templateId, long amount) {
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
         if(template == null) {
             logger.warning("addItem: template is null for item "+templateId);
-            return null;
-        }
-
-        if(inventory.getFreeVolume() < (template.getVolume() * amount)) {
-            if(inventory.getFreeVolume() > 0 && inventory.getFreeVolume() >= template.getVolume())
-                amount = (inventory.getFreeVolume() / template.getVolume());
-            else {
-                logger.warning("addItem: cannot add more item to inventory.");
-                return null;
-            }
+            return;
         }
 
         logger.info("addItem: " + amount + " "+templateId);
+        final ItemInstance existingItem = itemService.findOneBy(inventory, templateId);
+        if(existingItem != null) {
+            logger.warning("Trying to add void item but item already exist ! Aborting...");
+            return;
+        }
 
+        final ItemInstance item = itemService.create(inventory, templateId, amount);
+        if(item == null) {
+            logger.warning("Cannot create void item because itemService returned null item on creation !");
+            return;
+        }
+        inventory.getItems().add(item);
+        updateAsync(inventory);
+    }
+
+    /**
+     * Used to add a NON RESOURCE item (because resources are Double and others are Long)
+     * @see #refreshResource to see how resources are automatically added
+     * @param inventory
+     * @param templateId
+     * @param amount
+     * @return instance of item newly created
+     */
+    @Override
+    public synchronized ItemInstance addItem(final Inventory inventory, final String templateId, long amount) {
+
+        final GameItem template = ItemData.getInstance().getTemplate(templateId);
+        if(template == null) {
+            logger.warning("addItem(Inventory, String, long): template is null for item "+templateId);
+            return null;
+        }
+
+        amount = inventory.getHowManyCanBeAdded(amount, template.getVolume());
+        if(amount == 0) {
+            logger.warning("Abort addItem " + templateId + " because amount that can be added is " + amount);
+            return null;
+        }
+
+        logger.info("addItem: " + amount + " "+templateId);
+        ItemInstance item = itemService.findOneBy(inventory, templateId);
         if(item == null)
         {
             item = itemService.create(inventory, templateId, amount);
             if(item == null) return null;
             inventory.getItems().add(item);
 
-            if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory) inventory);
-            else if(inventory instanceof PlayerInventory) playerInventoryService.update((PlayerInventory) inventory);
-            else return null;
-
+            updateAsync(inventory);
             return item;
         }
 
-        if(item.getType().equals(ItemType.RESOURCE)) {
-            refreshResource(((BaseInventory)item.getInventory()).getBase());
-            item = inventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(templateId)).findFirst().orElse(null);
-        }
-
-        item.setCount(item.getCount()+amount);
+        item.addCount(amount);
         itemService.updateAsync(item);
         return item;
     }
 
+    /**
+     * @param item that is already in inventory. It must be get from Inventory and NOT new Instance creation !
+     * @param amount that must be added to the current existing item
+     * @return item with new value, null if amount cant be added or if item doesnt exist in an inventory
+     */
     @Override
     public synchronized ItemInstance addItem(ItemInstance item, long amount) {
-
         final GameItem template = item.getTemplate();
-        if(template == null) return null;
+        if(template == null) {
+            logger.warning("addItem(ItemInstance, long): template is null for item "+ item.getTemplateId());
+            return null;
+        }
 
-        final String itemTemplateId = item.getTemplateId();
+        final String templateId = item.getTemplateId();
         final Inventory inventory = item.getInventory();
 
-        if(inventory.getFreeVolume() < (template.getVolume() * amount)) {
-            if(inventory.getFreeVolume() > 0 && inventory.getFreeVolume() >= template.getVolume())
-                amount = (inventory.getFreeVolume() / template.getVolume());
-            else {
-                logger.warning("addItem: cannot add more item to inventory.");
-                return null;
-            }
+        amount = inventory.getHowManyCanBeAdded(amount, template.getVolume());
+        if(amount == 0) {
+            logger.warning("Abort addItem " + templateId + " because amount that can be added is " + amount);
+            return null;
         }
 
-        logger.info("addItem: " + amount + " "+itemTemplateId);
-
-        if(item.getType().equals(ItemType.RESOURCE)) {
-            refreshResource(((BaseInventory)inventory).getBase());
-            item = inventory.getItems().stream().filter(k -> k != null && k.getTemplateId().equals(itemTemplateId)).findFirst().orElse(null);
+        logger.info("addItem: " + amount + " "+templateId);
+        ItemInstance existingOne = itemService.findOneBy(inventory, templateId);
+        if(existingOne == null) {
+            logger.warning("Bad usage of addItem(ItemInstance, long) ! Read Doc !");
+            return null;
         }
 
-        item.setCount(item.getCount()+amount);
+        item.addCount(amount);
         itemService.updateAsync(item);
         return item;
     }
@@ -254,10 +217,5 @@ public class InventoryService implements IInventoryService {
         logger.info("consumeItem(Inventory:"+inventory.getClass().getSimpleName()+", "+id+", "+amount+")");
         final ItemInstance item = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(id)).findFirst().orElse(null);
         return item != null && consumeItem(item, amount);
-    }
-
-    public void deleteAll() {
-        baseInventoryService.deleteAll();
-        playerInventoryService.deleteAll();
     }
 }

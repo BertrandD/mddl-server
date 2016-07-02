@@ -112,6 +112,10 @@ public class ItemInstance
         this.type = type;
     }
 
+    public void addCount(double count) {
+        setCount(getCount() + count);
+    }
+
     public double getCount() {
         return count;
     }

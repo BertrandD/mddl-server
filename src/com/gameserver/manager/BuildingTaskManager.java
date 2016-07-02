@@ -1,15 +1,11 @@
 package com.gameserver.manager;
 
 import com.config.Config;
-import com.gameserver.enums.BuildingCategory;
+import com.gameserver.enums.Stat;
 import com.gameserver.model.buildings.Extractor;
-import com.gameserver.model.buildings.RobotFactory;
-import com.gameserver.model.buildings.Shield;
-import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.tasks.BuildingTask;
-import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;
@@ -35,12 +31,8 @@ public class BuildingTaskManager {
     @Autowired
     private InventoryService inventoryService;
 
-    @Autowired
-    private BaseService baseService;
-
     private static final String BUILDING_MINE_ID = "mine";
     private static final String BUILDING_PUMP_ID = "pump";
-    private static final String BUILDING_SHIELD_ID = "shield";
     private static final String BUILDING_STORAGE_ID = "storage";
 
     private ScheduledFuture<?> scheduledFuture;
@@ -87,17 +79,10 @@ public class BuildingTaskManager {
     public void ScheduleUpgrade(BuildingInstance building) {
         final BuildingTask newTask;
         final long now = System.currentTimeMillis();
-        final BuildingInstance robotFactory = building.getBase().getBuildings().stream().filter(k -> k.getCurrentLevel() > 0 &&
-                k.getTemplate().getType().equals(BuildingCategory.RobotFactory)).findFirst().orElse(null);
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
 
-        // calculate BuildTime with modifiers :
-        // - World modifier
-        // - RobotFactory modifier
-        long buildTime = (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+        long buildTime = (long)(building.getBuildTime() * building.getBase().getBaseStat().getStat(Stat.BUILD_COOLDOWN_REDUCTION).getValue());
         long endupgrade = now + buildTime;
-
-        if(robotFactory != null) endupgrade -= (long)(buildTime * (((RobotFactory)robotFactory.getTemplate()).getCoolDownReductionAtLevel(robotFactory.getCurrentLevel())));
 
         if(lastInQueue == null){
             building.setStartedAt(now); // This value is a false startedAt value ! Difference of ~30 millis
@@ -147,22 +132,14 @@ public class BuildingTaskManager {
             {
                 final Inventory inventory = building.getBase().getBaseInventory();
                 final Extractor mine = (Extractor) building.getTemplate();
-                mine.getProduceItems().forEach(k -> inventoryService.addItem(inventory, k.getItemId(), 0));
+                mine.getProduceItems().forEach(k -> inventoryService.addVoidItem(inventory, k.getItemId(), 0));
             }
 
             if(building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1)
             {
                 final Inventory inventory = building.getBase().getBaseInventory();
                 final Extractor mine = (Extractor) building.getTemplate();
-                mine.getProduceItems().forEach(k -> inventoryService.addItem(inventory, k.getItemId(), 0));
-            }
-
-            if(building.getBuildingId().equals(BUILDING_SHIELD_ID))
-            {
-                final Shield shield = (Shield) building.getTemplate();
-                final BaseStat stats = building.getBase().getBaseStat();
-                stats.setMaxShield(shield.getArmorBonusAtLevel(building.getCurrentLevel()));
-                baseService.update(building.getBase());
+                mine.getProduceItems().forEach(k -> inventoryService.addVoidItem(inventory, k.getItemId(), 0));
             }
 
             restart();

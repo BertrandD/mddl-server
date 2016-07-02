@@ -43,6 +43,20 @@ public abstract class Inventory implements IInventory {
         this.items = items;
     }
 
+    public long getHowManyCanBeAdded(long addAmount, long volume) {
+        if(getFreeVolume() <= 0) return 0;
+        if(addAmount * volume > getFreeVolume())
+            return (long)Math.floor(getFreeVolume() / volume);
+        return addAmount;
+    }
+
+    public double getHowManyCanBeAdded(double addAmount, long volume) {
+        if(getFreeVolume() <= 0) return 0;
+        if((addAmount * volume) > getFreeVolume())
+            return getFreeVolume() / volume;
+        return addAmount;
+    }
+
     @Override
     public long getMaxWeight() {
         return 0;
