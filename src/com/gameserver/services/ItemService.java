@@ -16,10 +16,6 @@ public class ItemService extends DatabaseService<ItemInstance> {
         super(ItemInstance.class);
     }
 
-    /**
-     * MANUALLY USE IS FORBIDDEN !
-     * This method is managed by Inventory to made all necessary checks.
-     */
     @Override
     public ItemInstance create(Object... params) {
         if(params.length != 3) return null;
@@ -32,7 +28,7 @@ public class ItemService extends DatabaseService<ItemInstance> {
         return item;
     }
 
-    public ItemInstance findFirstByInventoryAndTemplateId(Inventory inventory, String templateId) {
-        return findOneBy(new Criteria[]{Criteria.where("inventory").is(new ObjectId(inventory.getId())), Criteria.where("templateId").is(templateId)});
+    public ItemInstance findOneBy(Inventory inventory, String templateId) {
+        return findOneBy(Criteria.where("inventory").is(new ObjectId(inventory.getId())), Criteria.where("templateId").is(templateId));
     }
 }
