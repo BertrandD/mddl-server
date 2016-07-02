@@ -2,10 +2,12 @@ package com.gameserver.services;
 
 import com.gameserver.holders.PlayerHolder;
 import com.gameserver.model.social.PrivateMessage;
+import org.springframework.stereotype.Service;
 
 /**
  * @author LEBOC Philippe
  */
+@Service
 public class PrivateMessageService extends DatabaseService<PrivateMessage> {
 
     protected PrivateMessageService() {
