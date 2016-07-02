@@ -4,9 +4,12 @@ import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.BuildingCategory;
+import com.gameserver.enums.Stat;
+import com.gameserver.enums.StatOp;
+import com.gameserver.holders.StatHolder;
+import com.gameserver.holders.StatModifierHolder;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.Extractor;
-import com.gameserver.model.buildings.PowerFactory;
 import com.gameserver.model.commons.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.BaseInventory;
@@ -14,6 +17,7 @@ import com.gameserver.model.items.Module;
 import com.serializer.BaseSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -32,12 +36,16 @@ public final class Base
 {
     @Id
     private String id;
+
     private String name;
 
     @DBRef
     @JsonManagedReference
     private Player owner;
+
+    @Transient
     private BaseStat baseStat;
+
     private HashMap<Integer, String> buildingPositions;
 
     @DBRef
@@ -49,21 +57,54 @@ public final class Base
     private BaseInventory baseInventory;
 
     public Base() {
-        setBuildings(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
+        setBuildings(new ArrayList<>());
+        setBaseStat(new BaseStat());
     }
 
     public Base(String name, Player owner) {
         setId(new ObjectId().toString());
         setName(name);
         setOwner(owner);
-        setBaseStat(new BaseStat(Config.BASE_INITIAL_MAX_SHIELD, Config.BASE_INITIAL_MAX_HEALTH));
+        setBaseStat(new BaseStat());
         setBuildings(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
     }
 
-    public HashMap<String, Long> getProduction() {
-        final HashMap<String, Long> production = new HashMap<>();
+    /**
+     * Base Stats Initializer
+     * Use it when you want to serialize Base or use some stats
+     *      Warning: @PostContruct does not work fine with Spring & MongoDB.
+     *               That's why we need initialize stats hand made
+     */
+    public void initializeStats(boolean force) {
+        if(!force && !getBaseStat().getStats().isEmpty()) return;
+
+        // Intialize all existing stats
+        for (Stat stat : Stat.values()) {
+            getBaseStat().addStat(new StatHolder(stat));
+        }
+
+        // Buildings stats
+        long energyConsumption = 0;
+        for (BuildingInstance building : getBuildings()) {
+            final Building template = building.getTemplate();
+
+            for (StatModifierHolder holder : template.getStats()) {
+                getBaseStat().getStat(holder.getStat()).add(template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp());
+            }
+
+            energyConsumption += (template.getUseEnergyAtLevel(building.getCurrentLevel()) * Config.USE_ENERGY_MODIFIER);
+        }
+
+        // Building energy consumption
+        getBaseStat().getStat(Stat.ENERGY).add(-energyConsumption, StatOp.DIFF);
+    }
+
+    public HashMap<String, Double> getProduction() {
+        initializeStats(false);
+
+        final HashMap<String, Double> production = new HashMap<>();
         final List<BuildingInstance> extractors = getBuildings().stream().filter(k ->
                 k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
                 k.getCurrentLevel() > 0).collect(Collectors.toList());
@@ -72,13 +113,16 @@ public final class Base
 
         for (BuildingInstance extractor : extractors) {
             final Extractor template = ((Extractor) extractor.getTemplate());
-            for (Map.Entry entry : template.getProductionAtLevel(extractor.getCurrentLevel()).entrySet()) {
-                if (!production.containsKey(entry.getKey().toString())) {
-                    production.put(entry.getKey().toString(), (Long) entry.getValue());
-                } else {
-                    long currentCnt = production.get(entry.getKey().toString());
-                    currentCnt += (Long) entry.getValue();
-                    production.replace(entry.getKey().toString(), currentCnt);
+            for (Map.Entry<String, Long> entry : template.getProductionAtLevel(extractor.getCurrentLevel()).entrySet()) {
+                if (!production.containsKey(entry.getKey()))
+                {
+                    production.put(entry.getKey(), entry.getValue() * getBaseStat().getStat(Stat.RESOURCE_PRODUCTION_SPEED).getValue());
+                }
+                else
+                {
+                    double currentCnt = production.get(entry.getKey());
+                    currentCnt += entry.getValue();
+                    production.replace(entry.getKey(), currentCnt);
                 }
             }
         }
@@ -86,40 +130,15 @@ public final class Base
         // Calculate resources modules bonus
         for (BuildingInstance extractor : extractors) {
             for (Module module : extractor.getModules()) {
-                Long resource = production.get(module.getAffected());
+                Double resource = production.get(module.getAffected());
                 if (resource != null) {
-                    resource = (long) (resource * module.getMultiplicator()); // apply module multiplicator
+                    resource = resource * module.getMultiplicator(); // apply module multiplicator
                     production.replace(module.getAffected(), resource);
                 }
             }
         }
 
         return production;
-    }
-
-    public long getEnergy() {
-        final List<BuildingInstance> powerFactories = getBuildings().stream().filter(k ->
-                k.getTemplate().getType().equals(BuildingCategory.PowerFactory) &&
-                k.getCurrentLevel() > 0).collect(Collectors.toList());
-
-        long totalGeneratedPower = 0;
-
-        // How many power generated from all PowerFactories
-        if(!powerFactories.isEmpty())
-        {
-            for (BuildingInstance powerFactory : powerFactories) {
-                final PowerFactory factory = (PowerFactory) powerFactory.getTemplate();
-                totalGeneratedPower += factory.getPowerAtLevel(powerFactory.getCurrentLevel());
-            }
-        }
-
-        // How many is consumed from all building
-        for (BuildingInstance buildingInstance : getBuildings()) {
-            final Building building = buildingInstance.getTemplate();
-            totalGeneratedPower -= building.getUseEnergyAtLevel(buildingInstance.getCurrentLevel());
-        }
-
-        return totalGeneratedPower;
     }
 
     public String getId() {

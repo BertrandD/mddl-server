@@ -1,5 +1,6 @@
 package com.gameserver.model.buildings;
 
+import com.gameserver.enums.Stat;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
 
@@ -13,6 +14,16 @@ public class PowerFactory extends Building {
     public PowerFactory(StatsSet set) {
         super(set);
         initialize(set.getString("production", null));
+    }
+
+    @Override
+    public double getStatValue(Stat stat, int level) {
+        final double val;
+        switch(stat) {
+            case ENERGY: val = getPowerAtLevel(level); break;
+            default: val = 0;
+        }
+        return val;
     }
 
     private void initialize(String function) {

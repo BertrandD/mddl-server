@@ -18,7 +18,6 @@ public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
         gen.writeStartObject();
         gen.writeStringField("baseId", value.getBase().getId());
         gen.writeNumberField("lastRefresh", value.getLastRefresh());
-        gen.writeNumberField("maxVolume", value.getMaxVolume());
 
         gen.writeObjectFieldStart("items");
         for(ItemInstance item : value.getItems()){

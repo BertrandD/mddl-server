@@ -4,6 +4,9 @@
         <buildTime>
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
+        <stats>
+            <stat name="MAX_VOLUME" op="DIFF" />
+        </stats>
         <properties>
             <property name="capacity" value="(1000+(Math.pow($level, 2)*100))*10" />
         </properties>

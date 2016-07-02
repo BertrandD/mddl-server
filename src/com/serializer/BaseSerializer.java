@@ -14,6 +14,8 @@ import java.io.IOException;
 public class BaseSerializer extends JsonSerializer<Base> {
     @Override
     public void serialize(Base value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+        value.initializeStats(false);
+
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
 
@@ -23,7 +25,6 @@ public class BaseSerializer extends JsonSerializer<Base> {
         gen.writeEndObject();
 
         gen.writeObjectField("baseStat", value.getBaseStat());
-        gen.writeNumberField("energy", value.getEnergy());
 
         if(value.getProduction() != null)
             gen.writeObjectField("production", value.getProduction());

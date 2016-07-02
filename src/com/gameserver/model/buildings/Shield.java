@@ -1,5 +1,6 @@
 package com.gameserver.model.buildings;
 
+import com.gameserver.enums.Stat;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
 
@@ -36,5 +37,15 @@ public class Shield extends ModulableBuilding {
 
     public void setArmorBonus(long[] armorBonus) {
         this.armorBonus = armorBonus;
+    }
+
+    @Override
+    public double getStatValue(Stat stat, int level) {
+        final double val;
+        switch (stat){
+            case MAX_SHIELD: val = getArmorBonusAtLevel(level); break;
+            default: val = 0;
+        }
+        return val;
     }
 }

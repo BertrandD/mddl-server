@@ -31,6 +31,37 @@
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>
+								<xs:element name="stats" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="stat" minOccurs="1" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:attribute name="name" use="required">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="ENERGY" />
+																<xs:enumeration value="MAX_HEALTH" />
+																<xs:enumeration value="MAX_SHIELD" />
+																<xs:enumeration value="MAX_VOLUME" />
+																<xs:enumeration value="BUILD_COOLDOWN_REDUCTION" />
+																<xs:enumeration value="RESOURCE_PRODUCTION_SPEED" />
+																<xs:enumeration value="SHIP_SPEED" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+													<xs:attribute name="op" use="required">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="DIFF" />
+																<xs:enumeration value="PER" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
 								<xs:element name="energy" minOccurs="1" maxOccurs="1">
 									<xs:complexType>
 										<xs:sequence>

@@ -1,6 +1,7 @@
 package com.gameserver.controllers.instances;
 
 import com.auth.Account;
+import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.manager.BuildingTaskManager;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
@@ -89,6 +90,8 @@ public class BuildingInstanceController {
         final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
         if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
 
+        if(BuildingData.getInstance().getBuilding(templateId) == null) return new JsonResponse(JsonResponseType.ERROR, "Building " + templateId + " does not exist.");
+
         final BuildingInstance tempBuilding = new BuildingInstance(base, templateId);
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
@@ -103,6 +106,7 @@ public class BuildingInstanceController {
         base.addBuilding(building, base.getBuildingPositions().size()+1); // temp position disable
         baseService.update(base);
 
+        base.initializeStats(false);
         buildingTaskManager.ScheduleUpgrade(building);
 
         JsonResponse response = new JsonResponse(building);
@@ -133,6 +137,7 @@ public class BuildingInstanceController {
 
         collector.forEach(inventoryService::consumeItem);
 
+        base.initializeStats(false);
         buildingTaskManager.ScheduleUpgrade(building);
         final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
 

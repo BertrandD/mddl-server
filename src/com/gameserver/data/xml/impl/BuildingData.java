@@ -3,12 +3,15 @@ package com.gameserver.data.xml.impl;
 import com.config.Config;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
+import com.gameserver.enums.Stat;
+import com.gameserver.enums.StatOp;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.holders.PropertiesHolder;
 import com.gameserver.holders.PropertyHolder;
 import com.gameserver.holders.PropertyListHolder;
+import com.gameserver.holders.StatModifierHolder;
 import com.gameserver.interfaces.IXmlReader;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.ModulableBuilding;
@@ -73,6 +76,7 @@ public class BuildingData implements IXmlReader {
                         final HashMap<String, Module> modules = new HashMap<>();
                         final long[] buildTimes = new long[set.getInt("maxLevel", 1)];
                         final long[] energies = new long[set.getInt("maxLevel", 1)];
+                        final List<StatModifierHolder> stats = new ArrayList<>();
 
                         for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
@@ -150,6 +154,19 @@ public class BuildingData implements IXmlReader {
                                         for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
                                             buildTimes[i-1] = holder.getResultForLevel(i);
                                         }
+                                    }
+                                }
+                            }
+                            else if ("stats".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    attrs = d.getAttributes();
+                                    if ("stat".equalsIgnoreCase(d.getNodeName())) {
+                                        final Stat stat = parseEnum(attrs, Stat.class, "name");
+                                        final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
+                                        final StatModifierHolder holder = new StatModifierHolder(stat, op);
+                                        stats.add(holder);
                                     }
                                 }
                             }
@@ -257,6 +274,7 @@ public class BuildingData implements IXmlReader {
                                 building.setUseEnergy(energies);
                                 building.setBuildTimes(buildTimes);
                                 building.setRequirements(requirements);
+                                if(!stats.isEmpty()) building.setStats(stats);
                                 if(!modules.isEmpty()) ((ModulableBuilding) building).setModules(modules);
                                 _buildings.put(set.getString("id"), building);
                             }

@@ -4,6 +4,9 @@
         <buildTime>
             <set fromLevel="1" function="1750*$level" />
         </buildTime>
+        <stats>
+            <stat name="BUILD_COOLDOWN_REDUCTION" op="DIFF" />
+        </stats>
         <properties>
             <property name="cooldown_reduction" value="($level * (0.0085))"/>
         </properties>

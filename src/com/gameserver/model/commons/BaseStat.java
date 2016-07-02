@@ -1,51 +1,37 @@
 package com.gameserver.model.commons;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gameserver.enums.Stat;
+import com.gameserver.holders.StatHolder;
+import com.serializer.BaseStatSerializer;
+
+import java.util.HashMap;
+
 /**
  * @author LEBOC Philippe
  */
+@JsonSerialize(using = BaseStatSerializer.class)
 public class BaseStat {
 
-    private long maxShield;
-    private long maxHealth;
-    private long currentShield;
-    private long currentHealth;
+    private HashMap<Stat, StatHolder> stats;
 
-    public BaseStat(final long maxShield, final long maxHealth) {
-        setMaxShield(maxShield);
-        setMaxHealth(maxHealth);
-        setCurrentHealth(getMaxHealth());
-        setCurrentShield(getMaxShield());
+    public BaseStat() {
+        setStats(new HashMap<>());
     }
 
-    public long getMaxShield() {
-        return maxShield;
+    public void addStat(StatHolder holder) {
+        if(!getStats().containsKey(holder.getStat())) getStats().put(holder.getStat(), holder);
     }
 
-    public void setMaxShield(long maxShield) {
-        this.maxShield = maxShield;
+    public StatHolder getStat(Stat stat) {
+        return getStats().get(stat);
     }
 
-    public long getMaxHealth() {
-        return maxHealth;
+    public HashMap<Stat, StatHolder> getStats() {
+        return stats;
     }
 
-    public void setMaxHealth(long maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public long getCurrentShield() {
-        return currentShield;
-    }
-
-    public void setCurrentShield(long currentShield) {
-        this.currentShield = currentShield;
-    }
-
-    public long getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(long currentHealth) {
-        this.currentHealth = currentHealth;
+    private void setStats(HashMap<Stat, StatHolder> stat) {
+        this.stats = stat;
     }
 }

@@ -4,17 +4,22 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
+import com.gameserver.enums.Stat;
+import com.gameserver.holders.StatModifierHolder;
+import com.gameserver.interfaces.IStat;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.serializer.BuildingSerializer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
 @JsonSerialize(using = BuildingSerializer.class)
-public abstract class Building {
+public abstract class Building implements IStat {
 
     private String id;
     private String nameId;
@@ -23,6 +28,7 @@ public abstract class Building {
     private int maxLevel;
     private long[] buildTimes;
     private long[] useEnergy;
+    private List<StatModifierHolder> stats;
     private HashMap<Integer, Requirement> requirements;
     private Lang lang = Lang.EN;
 
@@ -34,6 +40,7 @@ public abstract class Building {
         setMaxLevel(set.getInt("maxLevel", 1));
 
         setRequirements(new HashMap<>());
+        setStats(new ArrayList<>());
     }
 
     public String getId() {
@@ -125,6 +132,21 @@ public abstract class Building {
 
     public void setLang(Lang lang) {
         this.lang = lang;
+    }
+
+    @Override
+    public List<StatModifierHolder> getStats() {
+        return stats;
+    }
+
+    @Override
+    public void setStats(List<StatModifierHolder> stats) {
+        this.stats = stats;
+    }
+
+    @Override
+    public double getStatValue(Stat stat, int level) {
+        return 0;
     }
 
     @Override

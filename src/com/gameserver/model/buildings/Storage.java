@@ -1,13 +1,19 @@
 package com.gameserver.model.buildings;
 
+import com.gameserver.enums.Stat;
+import com.gameserver.holders.StatModifierHolder;
+import com.gameserver.interfaces.IStat;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
+
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
-public class Storage extends Building {
+public class Storage extends Building implements IStat {
 
+    private List<StatModifierHolder> stats;
     private long[] capacity;
 
     public Storage(StatsSet set){
@@ -35,5 +41,25 @@ public class Storage extends Building {
 
     public void setCapacity(long[] capacity) {
         this.capacity = capacity;
+    }
+
+    @Override
+    public void setStats(List<StatModifierHolder> stats) {
+        this.stats = stats;
+    }
+
+    @Override
+    public List<StatModifierHolder> getStats() {
+        return stats;
+    }
+
+    @Override
+    public double getStatValue(Stat stat, int level) {
+        final double val;
+        switch(stat) {
+            case MAX_VOLUME: val = getCapacityAtLevel(level); break;
+            default: val = 0;
+        }
+        return val;
     }
 }

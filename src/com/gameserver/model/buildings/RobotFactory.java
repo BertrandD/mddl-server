@@ -1,5 +1,6 @@
 package com.gameserver.model.buildings;
 
+import com.gameserver.enums.Stat;
 import com.gameserver.model.commons.StatsSet;
 import com.util.Evaluator;
 
@@ -35,5 +36,15 @@ public class RobotFactory extends Building {
 
     public void setCooldownReduction(double[] cooldownReduction) {
         this.cooldownReduction = cooldownReduction;
+    }
+
+    @Override
+    public double getStatValue(Stat stat, int level) {
+        final double val;
+        switch (stat) {
+            case BUILD_COOLDOWN_REDUCTION: val = getCoolDownReductionAtLevel(level); break;
+            default: val = 0;
+        }
+        return val;
     }
 }
