@@ -55,7 +55,8 @@ public class BuildingInstance
 
     public Building getTemplate() {
         final Building building = BuildingData.getInstance().getBuilding(buildingId);
-        building.setLang(getLang());
+        if(building != null)
+            building.setLang(getLang());
         return building;
     }
 
