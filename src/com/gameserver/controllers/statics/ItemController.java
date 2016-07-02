@@ -9,7 +9,7 @@ import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
-import com.util.data.json.Response.JsonResponse;
+import com.util.response.JsonResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

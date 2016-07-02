@@ -1,4 +1,4 @@
-package com.gameserver.model.commons;
+package com.gameserver.model.stats;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.Stat;

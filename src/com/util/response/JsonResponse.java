@@ -1,4 +1,4 @@
-package com.util.data.json.Response;
+package com.util.response;
 
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.Lang;

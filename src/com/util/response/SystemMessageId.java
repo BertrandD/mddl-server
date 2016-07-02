@@ -1,4 +1,4 @@
-package com.gameserver.model.commons;
+package com.util.response;
 
 /**
  * @author LEBOC Philippe

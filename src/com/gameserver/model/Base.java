@@ -10,7 +10,7 @@ import com.gameserver.holders.StatHolder;
 import com.gameserver.holders.StatModifierHolder;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.Extractor;
-import com.gameserver.model.commons.BaseStat;
+import com.gameserver.model.stats.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.items.Module;

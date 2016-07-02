@@ -5,13 +5,13 @@ import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.Base;
 import com.gameserver.model.commons.Requirement;
-import com.gameserver.model.commons.SystemMessageId;
+import com.util.response.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.items.Item;
-import com.util.data.json.Response.JsonResponse;
-import com.util.data.json.Response.JsonResponseType;
+import com.util.response.JsonResponse;
+import com.util.response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

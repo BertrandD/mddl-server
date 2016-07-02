@@ -1,4 +1,4 @@
-package com.util.data.json.Response;
+package com.util.response;
 
 /**
  * @author LEBOC Philippe
