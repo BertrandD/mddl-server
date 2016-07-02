@@ -1,7 +1,7 @@
 package com.gameserver.services;
 
 import com.gameserver.model.Base;
-import com.gameserver.model.FriendRequest;
+import com.gameserver.model.social.FriendRequest;
 import com.gameserver.model.Player;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gameserver.holders.PlayerHolder;
 import com.gameserver.model.Base;
-import com.gameserver.model.FriendRequest;
+import com.gameserver.model.social.FriendRequest;
 import com.gameserver.model.Player;
 
 import java.io.IOException;

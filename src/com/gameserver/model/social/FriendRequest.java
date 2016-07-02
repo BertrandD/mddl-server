@@ -1,6 +1,7 @@
-package com.gameserver.model;
+package com.gameserver.model.social;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gameserver.holders.PlayerHolder;
 import com.serializer.FriendRequestSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -15,12 +16,12 @@ public class FriendRequest {
 
     @Id
     private String id;
-    private Player requester;
-    private Player requested;
+    private PlayerHolder requester;
+    private PlayerHolder requested;
     private String message;
     private long requestDate;
 
-    public FriendRequest(Player requester, Player requested, String message) {
+    public FriendRequest(PlayerHolder requester, PlayerHolder requested, String message) {
         setId(new ObjectId().toString());
         setRequester(requester);
         setRequested(requested);
@@ -36,19 +37,19 @@ public class FriendRequest {
         this.id = id;
     }
 
-    public Player getRequester() {
+    public PlayerHolder getRequester() {
         return requester;
     }
 
-    public void setRequester(Player requester) {
+    public void setRequester(PlayerHolder requester) {
         this.requester = requester;
     }
 
-    public Player getRequested() {
+    public PlayerHolder getRequested() {
         return requested;
     }
 
-    public void setRequested(Player requested) {
+    public void setRequested(PlayerHolder requested) {
         this.requested = requested;
     }
 

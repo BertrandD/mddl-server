@@ -2,7 +2,7 @@ package com.gameserver.controllers.actions;
 
 import com.auth.Account;
 import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.FriendRequest;
+import com.gameserver.model.social.FriendRequest;
 import com.gameserver.model.Player;
 import com.gameserver.model.commons.SystemMessageId;
 import com.gameserver.services.FriendRequestService;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(produces = "application/json")
+@RequestMapping(value = "/friend", produces = "application/json")
 public class FriendController {
 
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
@@ -35,7 +35,7 @@ public class FriendController {
     @Autowired
     private FriendRequestService friendRequestService;
 
-    @RequestMapping(value = "/friend/request", method = RequestMethod.POST)
+    @RequestMapping(value = "/request", method = RequestMethod.POST)
     public JsonResponse sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "playerId") String friendId, @RequestParam(value = "message") String message) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
@@ -69,7 +69,7 @@ public class FriendController {
         return new JsonResponse(player); // TODO: SysMsg
     }
 
-    @RequestMapping(value = "/friend/accept/{requestId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/accept/{requestId}", method = RequestMethod.GET)
     public JsonResponse acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
@@ -77,14 +77,14 @@ public class FriendController {
         final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
         if(request == null) return new JsonResponse(JsonResponseType.ERROR, "Request doesn't exist.");
 
-        if(player == request.getRequester()) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
+        if(player.getId().equals(request.getRequester().getId())) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
 
-        final Player friend = request.getRequester();
+        final Player friend = playerService.findOne(request.getRequester().getId());
         if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        if(!player.addFriend(new PlayerHolder(friend.getId(), friend.getName()))) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
+        if(!player.addFriend(new PlayerHolder(friend))) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
 
-        friend.addFriend(new PlayerHolder(player.getId(), player.getName()));
+        friend.addFriend(new PlayerHolder(player));
         friend.getFriendRequests().remove(request);
         player.getFriendRequests().remove(request);
 
@@ -95,7 +95,7 @@ public class FriendController {
         return new JsonResponse(player); // TODO: SysMsg
     }
 
-    @RequestMapping(value = "/friend/refuse/{requestId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/refuse/{requestId}", method = RequestMethod.GET)
     public JsonResponse refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
@@ -103,9 +103,9 @@ public class FriendController {
         final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
         if(request == null) return new JsonResponse(JsonResponseType.ERROR, "Request doesn't exist.");
 
-        if(player == request.getRequester()) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
+        if(player.getId().equals(request.getRequester().getId())) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
 
-        final Player friend = request.getRequester();
+        final Player friend = playerService.findOne(request.getRequester().getId());
         if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         friend.getFriendRequests().remove(request);

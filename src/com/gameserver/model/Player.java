@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.holders.PlayerHolder;
 import com.gameserver.model.inventory.PlayerInventory;
+import com.gameserver.model.social.FriendRequest;
 import com.serializer.PlayerSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
