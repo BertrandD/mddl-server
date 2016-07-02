@@ -1,11 +1,18 @@
 package com.gameserver.holders;
 
+import com.gameserver.model.Player;
+
 /**
  * @author LEBOC Philippe
  */
 public class PlayerHolder {
     private String id;
     private String name;
+
+    public PlayerHolder(Player player) {
+        setId(player.getId());
+        setName(player.getName());
+    }
 
     public PlayerHolder(String id, String name) {
         setId(id);
