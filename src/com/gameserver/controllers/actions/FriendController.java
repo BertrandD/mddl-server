@@ -45,13 +45,13 @@ public class FriendController {
         final Player friend = playerService.findOne(friendId);
         if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        if(player.getFriends().contains(new PlayerHolder(friend.getId(), friend.getName()))) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
+        if(player.getFriends().contains(new PlayerHolder(friend))) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
 
         int counter = 0;
         boolean allreadySent = false;
         while(!allreadySent && counter < player.getFriendRequests().size()) {
             final FriendRequest frequest = player.getFriendRequests().get(counter);
-            if(frequest != null && frequest.getRequested().equals(friend))
+            if(frequest != null && frequest.getRequested().is(friend))
                 allreadySent = true;
             counter++;
         }
@@ -77,7 +77,7 @@ public class FriendController {
         final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
         if(request == null) return new JsonResponse(JsonResponseType.ERROR, "Request doesn't exist.");
 
-        if(player.getId().equals(request.getRequester().getId())) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
+        if(request.getRequester().is(player)) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
 
         final Player friend = playerService.findOne(request.getRequester().getId());
         if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
@@ -103,7 +103,7 @@ public class FriendController {
         final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
         if(request == null) return new JsonResponse(JsonResponseType.ERROR, "Request doesn't exist.");
 
-        if(player.getId().equals(request.getRequester().getId())) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
+        if(request.getRequester().is(player)) return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
 
         final Player friend = playerService.findOne(request.getRequester().getId());
         if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
