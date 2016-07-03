@@ -14,11 +14,6 @@ public class PlayerHolder {
         setName(player.getName());
     }
 
-    public PlayerHolder(String id, String name) {
-        setId(id);
-        setName(name);
-    }
-
     public String getId() {
         return id;
     }
@@ -33,6 +28,10 @@ public class PlayerHolder {
 
     private void setName(String name) {
         this.name = name;
+    }
+
+    public boolean is(Player player) {
+        return player.getId().equalsIgnoreCase(this.getId());
     }
 
     @Override
