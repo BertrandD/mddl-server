@@ -3,11 +3,11 @@ package com.gameserver.controllers;
 import com.auth.Account;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
-import com.util.response.SystemMessageId;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.PlayerService;
 import com.util.response.JsonResponse;
+import com.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -39,7 +41,9 @@ public class BaseController {
         if(pAccount.getCurrentPlayer() == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
-        return new JsonResponse(player.getBases());
+        final List<Base> bases = player.getBases();
+        bases.forEach(k->k.initializeStats(true));
+        return new JsonResponse(bases);
     }
 
     @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)

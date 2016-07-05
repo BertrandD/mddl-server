@@ -7,6 +7,41 @@
 					<xs:complexType>
                         <xs:sequence>
                             <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                <xs:element name="stats" maxOccurs="1">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+                                                <xs:complexType>
+                                                    <xs:attribute name="baseStat" use="required">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="SLOT_CARGO" />
+                                                                <xs:enumeration value="SLOT_ENGINE" />
+                                                                <xs:enumeration value="SLOT_MODULE" />
+                                                                <xs:enumeration value="SLOT_TECHNOLOGY" />
+                                                                <xs:enumeration value="SLOT_WEAPON" />
+                                                                <xs:enumeration value="RESOURCE_FEO" />
+                                                                <xs:enumeration value="RESOURCE_C" />
+                                                                <xs:enumeration value="RESOURCE_CH4" />
+                                                                <xs:enumeration value="RESOURCE_ATO3" />
+                                                                <xs:enumeration value="RESOURCE_H2O" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:attribute>
+                                                    <xs:attribute name="op" use="required">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="DIFF" />
+                                                                <xs:enumeration value="PER" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:attribute>
+                                                    <xs:attribute name="value" type="xs:double" use="required" />
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
                                 <xs:element name="requirements" minOccurs="0" maxOccurs="1">
                                     <xs:complexType>
                                         <xs:sequence>

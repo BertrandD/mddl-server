@@ -3,7 +3,7 @@ package com.gameserver.data.xml.impl;
 import com.config.Config;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
-import com.gameserver.enums.Stat;
+import com.gameserver.model.stats.BaseStat;
 import com.gameserver.enums.StatOp;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.FuncHolder;
@@ -11,7 +11,7 @@ import com.gameserver.holders.ItemHolder;
 import com.gameserver.holders.PropertiesHolder;
 import com.gameserver.holders.PropertyHolder;
 import com.gameserver.holders.PropertyListHolder;
-import com.gameserver.holders.StatModifierHolder;
+import com.gameserver.holders.StatHolder;
 import com.gameserver.interfaces.IXmlReader;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.ModulableBuilding;
@@ -76,7 +76,7 @@ public class BuildingData implements IXmlReader {
                         final HashMap<String, Module> modules = new HashMap<>();
                         final long[] buildTimes = new long[set.getInt("maxLevel", 1)];
                         final long[] energies = new long[set.getInt("maxLevel", 1)];
-                        final List<StatModifierHolder> stats = new ArrayList<>();
+                        final List<StatHolder> stats = new ArrayList<>();
 
                         for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
@@ -163,9 +163,27 @@ public class BuildingData implements IXmlReader {
                                 {
                                     attrs = d.getAttributes();
                                     if ("stat".equalsIgnoreCase(d.getNodeName())) {
-                                        final Stat stat = parseEnum(attrs, Stat.class, "name");
+                                        final BaseStat baseStat = parseEnum(attrs, BaseStat.class, "name");
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
-                                        final StatModifierHolder holder = new StatModifierHolder(stat, op);
+                                        final StatHolder holder = new StatHolder(baseStat, op);
+
+                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
+                                        {
+                                            attrs = e.getAttributes();
+                                            if ("set".equalsIgnoreCase(e.getNodeName()))
+                                            {
+                                                final String function = parseString(attrs, "function", null);
+                                                final double[] values = new double[set.getInt("maxLevel")];
+
+                                                if(function != null) {
+                                                    for(int i = 0; i < values.length; i++) {
+                                                        final String func = function.replace("$level", "" + (i+1));
+                                                        values[i] = ((Number) Evaluator.getInstance().eval(func)).doubleValue();
+                                                    }
+                                                    holder.setValues(values);
+                                                }
+                                            }
+                                        }
                                         stats.add(holder);
                                     }
                                 }
@@ -350,34 +368,6 @@ public class BuildingData implements IXmlReader {
         final List<Building> buildings = new ArrayList<>(_buildings.values());
         buildings.forEach(k->k.setLang(lang));
         return buildings;
-    }
-
-    /**
-     * Used for live reload when Config.SOME_CONFIG has changed.
-     * DONT USE LIVE RELOAD ON LIVE SERVERS !!!!!
-     */
-    public void resetBuildings()
-    {
-        for (int i = 0; i < getBuildings().size(); i++)
-        {
-            final Building current = getBuildings().get(i);
-            final long[] useEnergy = new long[current.getMaxLevel()];
-            final long[] buildTimes = new long[current.getMaxLevel()];
-
-
-            // Recalculate use of energy
-            for (int j = 0; j < current.getUseEnergy().length; j++) {
-                useEnergy[j] = (long)(current.getUseEnergyAtLevel(j+1) * Config.USE_ENERGY_MODIFIER);
-            }
-
-            // Recalculate build times
-            for (int j = 0; j < current.getBuildTimes().length; j++) {
-                buildTimes[j] = (long)(current.getBuildTimeAtLevel(j+1) * Config.BUILDTIME_MODIFIER);
-            }
-
-            current.setUseEnergy(useEnergy);
-            current.setBuildTimes(buildTimes);
-        }
     }
 
     public static BuildingData getInstance()

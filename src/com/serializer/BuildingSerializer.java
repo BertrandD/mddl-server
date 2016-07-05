@@ -4,19 +4,13 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.gameserver.holders.StatHolder;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.model.buildings.Extractor;
 import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.buildings.ModuleFactory;
-import com.gameserver.model.buildings.PowerFactory;
-import com.gameserver.model.buildings.RobotFactory;
-import com.gameserver.model.buildings.Storage;
-import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 
 /**
  * @author LEBOC Philippe
@@ -54,41 +48,17 @@ public class BuildingSerializer extends JsonSerializer<Building> {
             }
         }
 
-        if(value instanceof RobotFactory)
+        if(!value.getStats().isEmpty())
         {
-            gen.writeArrayFieldStart("cooldownReduction");
-            for(double cooldown : ((RobotFactory) value).getCooldownReduction()) {
-                final DecimalFormat df = new DecimalFormat("#0.0000");
-                final DecimalFormatSymbols sym = DecimalFormatSymbols.getInstance();
-                sym.setDecimalSeparator('.');
-                df.setDecimalFormatSymbols(sym);
-                gen.writeNumber(df.format(cooldown));
+            gen.writeObjectFieldStart("stats");
+            for (StatHolder holder : value.getStats()) {
+                gen.writeArrayFieldStart(holder.getBaseStat().name());
+                for (double v : holder.getValues()) {
+                    gen.writeNumber(v);
+                }
+                gen.writeEndArray();
             }
-            gen.writeEndArray();
-        }
-
-        if(value instanceof PowerFactory)
-        {
-            gen.writeArrayFieldStart("power");
-            for(long power : ((PowerFactory) value).getPower())
-                gen.writeNumber(power);
-            gen.writeEndArray();
-        }
-
-        if(value instanceof Storage)
-        {
-            gen.writeArrayFieldStart("capacity");
-            for(long capacity : ((Storage) value).getCapacity())
-                gen.writeNumber(capacity);
-            gen.writeEndArray();
-        }
-
-        if(value instanceof Extractor)
-        {
-            gen.writeArrayFieldStart("produceItems");
-            for(GameItem item : ((Extractor) value).getProduceItems())
-                gen.writeString(item.getItemId());
-            gen.writeEndArray();
+            gen.writeEndObject();
         }
 
         if(value instanceof ModuleFactory)

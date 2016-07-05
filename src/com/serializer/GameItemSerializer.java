@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.gameserver.holders.StatHolder;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.Engine;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Item;
-import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
 
@@ -35,17 +35,17 @@ public class GameItemSerializer extends JsonSerializer<GameItem> {
         if(value instanceof Engine)
             gen.writeNumberField("power", ((Engine) value).getPower());
 
-        if(value instanceof Module)
-        {
-            gen.writeStringField("effected", ((Module) value).getAffected());
-            gen.writeNumberField("multiplicator", ((Module) value).getMultiplicator());
-        }
-
         if(value instanceof Structure)
             gen.writeObjectField("slots", ((Structure) value).getAvailablesSlots());
 
         if(value instanceof Weapon)
             gen.writeNumberField("damage", ((Weapon) value).getDamage());
+
+        gen.writeObjectFieldStart("stats");
+        for (StatHolder holder : value.getStats()) {
+            gen.writeNumberField(holder.getBaseStat().name(), holder.getValue());
+        }
+        gen.writeEndObject();
 
         if(value instanceof Item)
         {

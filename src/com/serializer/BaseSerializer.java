@@ -14,7 +14,7 @@ import java.io.IOException;
 public class BaseSerializer extends JsonSerializer<Base> {
     @Override
     public void serialize(Base value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
-        value.initializeStats(false);
+        value.initializeStats(true);
 
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());

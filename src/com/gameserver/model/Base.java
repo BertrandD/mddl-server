@@ -4,20 +4,20 @@ import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.BuildingCategory;
-import com.gameserver.enums.Stat;
+import com.gameserver.model.stats.BaseStat;
 import com.gameserver.enums.StatOp;
 import com.gameserver.holders.StatHolder;
-import com.gameserver.holders.StatModifierHolder;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.Extractor;
-import com.gameserver.model.stats.BaseStat;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.items.Module;
+import com.gameserver.model.stats.ObjectStat;
 import com.serializer.BaseSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -39,14 +39,19 @@ public final class Base
 
     private String name;
 
+    private long currentHealth;
+    private long currentShield;
+    private double healthRegenRate;
+    private double shieldRegenRate;
+    private HashMap<Integer, String> buildingPositions;
+
     @DBRef
+    @Indexed
     @JsonManagedReference
     private Player owner;
 
     @Transient
-    private BaseStat baseStat;
-
-    private HashMap<Integer, String> buildingPositions;
+    private ObjectStat baseStat;
 
     @DBRef
     @JsonManagedReference
@@ -59,16 +64,20 @@ public final class Base
     public Base() {
         setBuildingPositions(new HashMap<>());
         setBuildings(new ArrayList<>());
-        setBaseStat(new BaseStat());
+        setBaseStat(new ObjectStat());
     }
 
     public Base(String name, Player owner) {
         setId(new ObjectId().toString());
         setName(name);
         setOwner(owner);
-        setBaseStat(new BaseStat());
         setBuildings(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
+        setCurrentHealth(Config.BASE_INITIAL_MAX_HEALTH);
+        setCurrentShield(Config.BASE_INITIAL_MAX_SHIELD);
+        setHealthRegenRate(100.0);
+        setShieldRegenRate(100.0);
+        setBaseStat(new ObjectStat());
     }
 
     /**
@@ -78,31 +87,35 @@ public final class Base
      *               That's why we need initialize stats hand made
      */
     public void initializeStats(boolean force) {
-        if(!force && !getBaseStat().getStats().isEmpty()) return;
+        if(!force && getBaseStat() != null) return;
 
         // Intialize all existing stats
-        for (Stat stat : Stat.values()) {
-            getBaseStat().addStat(new StatHolder(stat));
+        for (BaseStat baseStat : BaseStat.values()) {
+            getBaseStat().addStat(baseStat);
         }
+
+        // Base stats
+        getBaseStat().add(BaseStat.HEALTH, getCurrentHealth(), StatOp.DIFF);
+        getBaseStat().add(BaseStat.SHIELD, getCurrentShield(), StatOp.DIFF);
 
         // Buildings stats
         long energyConsumption = 0;
         for (BuildingInstance building : getBuildings()) {
             final Building template = building.getTemplate();
 
-            for (StatModifierHolder holder : template.getStats()) {
-                getBaseStat().getStat(holder.getStat()).add(template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp());
+            for (StatHolder holder : template.getStats()) {
+                getBaseStat().add(holder.getBaseStat(), template.getStatValue(holder.getBaseStat(), building.getCurrentLevel()), holder.getOp());
             }
 
             energyConsumption += (template.getUseEnergyAtLevel(building.getCurrentLevel()) * Config.USE_ENERGY_MODIFIER);
         }
 
         // Building energy consumption
-        getBaseStat().getStat(Stat.ENERGY).add(-energyConsumption, StatOp.DIFF);
+        getBaseStat().add(BaseStat.ENERGY, -energyConsumption, StatOp.DIFF);
     }
 
     public HashMap<String, Double> getProduction() {
-        initializeStats(false);
+        initializeStats(true);
 
         final HashMap<String, Double> production = new HashMap<>();
         final List<BuildingInstance> extractors = getBuildings().stream().filter(k ->
@@ -116,7 +129,7 @@ public final class Base
             for (Map.Entry<String, Long> entry : template.getProductionAtLevel(extractor.getCurrentLevel()).entrySet()) {
                 if (!production.containsKey(entry.getKey()))
                 {
-                    production.put(entry.getKey(), entry.getValue() * getBaseStat().getStat(Stat.RESOURCE_PRODUCTION_SPEED).getValue());
+                    production.put(entry.getKey(), entry.getValue() * getBaseStat().getValue(BaseStat.RESOURCE_PRODUCTION_SPEED));
                 }
                 else
                 {
@@ -130,10 +143,8 @@ public final class Base
         // Calculate resources modules bonus
         for (BuildingInstance extractor : extractors) {
             for (Module module : extractor.getModules()) {
-                Double resource = production.get(module.getAffected());
-                if (resource != null) {
-                    resource = resource * module.getMultiplicator(); // apply module multiplicator
-                    production.replace(module.getAffected(), resource);
+                for (StatHolder holder : module.getStats()) {
+                    getBaseStat().add(holder.getBaseStat(), holder.getValue(), holder.getOp());
                 }
             }
         }
@@ -165,11 +176,49 @@ public final class Base
         this.owner = owner;
     }
 
-    public BaseStat getBaseStat() {
+    public long getCurrentHealth() {
+        return currentHealth;
+    }
+
+    public void setCurrentHealth(long currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public long getCurrentShield() {
+        return currentShield;
+    }
+
+    public void setCurrentShield(long currentShield) {
+        this.currentShield = currentShield;
+    }
+
+    /**
+     * @return the amount of SHIELD regeneration per hour
+     */
+    public double getHealthRegenRate() {
+        return healthRegenRate;
+    }
+
+    public void setHealthRegenRate(double healthRegenRate) {
+        this.healthRegenRate = healthRegenRate;
+    }
+
+    /**
+     * @return the amount of HP regeneration per hour
+     */
+    public double getShieldRegenRate() {
+        return shieldRegenRate;
+    }
+
+    public void setShieldRegenRate(double shieldRegenRate) {
+        this.shieldRegenRate = shieldRegenRate;
+    }
+
+    public ObjectStat getBaseStat() {
         return baseStat;
     }
 
-    public void setBaseStat(BaseStat baseStat) {
+    public void setBaseStat(ObjectStat baseStat) {
         this.baseStat = baseStat;
     }
 

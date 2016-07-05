@@ -4,14 +4,20 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
+import com.gameserver.model.stats.BaseStat;
+import com.gameserver.holders.StatHolder;
+import com.gameserver.interfaces.IStat;
 import com.gameserver.model.commons.StatsSet;
 import com.serializer.GameItemSerializer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
 @JsonSerialize(using = GameItemSerializer.class)
-public abstract class GameItem {
+public abstract class GameItem implements IStat {
 
     private String itemId;
     private String nameId;
@@ -20,6 +26,7 @@ public abstract class GameItem {
     private long weight;
     private long volume;
     private Lang lang;
+    private List<StatHolder> stats;
 
     public GameItem(StatsSet set){
         setItemId(set.getString("id"));
@@ -29,6 +36,7 @@ public abstract class GameItem {
         setWeight(set.getLong("weight", 0));
         setVolume(set.getLong("volume", 0));
         setLang(Lang.EN);
+        setStats(new ArrayList<>());
     }
 
     public String getItemId() {
@@ -97,6 +105,25 @@ public abstract class GameItem {
 
     public void setLang(Lang lang) {
         this.lang = lang;
+    }
+
+    public StatHolder getStat(BaseStat baseStat) {
+        return stats.stream().filter(k -> k.getBaseStat().name().equals(baseStat.name())).findFirst().get();
+    }
+
+    @Override
+    public List<StatHolder> getStats() {
+        return stats;
+    }
+
+    @Override
+    public void setStats(List<StatHolder> stats) {
+        this.stats = stats;
+    }
+
+    @Override
+    public double getStatValue(BaseStat baseStat, int level) {
+        return getStats().stream().filter(k -> k.getBaseStat().name().equals(baseStat.name())).findFirst().get().getValue();
     }
 
     @Override

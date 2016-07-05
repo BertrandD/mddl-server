@@ -2,10 +2,9 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
     <!-- Resources Optimizers -->
     <item id="module_optimizer_feo" nameId="module_optimizer_feo_n" type="MODULE" descriptionId="module_optimizer_feo_d" volume="1">
-        <properties>
-            <set name="multiplicator" value="1.25"/> <!-- 25 % -->
-            <set name="affected" value="resource_feo" />
-        </properties>
+        <stats>
+            <set baseStat="RESOURCE_FEO" op="PER" value="1.25" />
+        </stats>
         <requirements>
             <item id="resource_feo" count="100" />
             <item id="resource_h2o" count="100" />
@@ -13,10 +12,9 @@
         </requirements>
     </item>
     <item id="module_optimizer_c" nameId="module_optimizer_c_n" type="MODULE" descriptionId="module_optimizer_c_d" volume="1">
-        <properties>
-            <set name="multiplicator" value="1.25"/> <!-- 25 % -->
-            <set name="affected" value="resource_c" />
-        </properties>
+        <stats>
+            <set baseStat="RESOURCE_C" op="PER" value="1.25" />
+        </stats>
         <requirements>
             <item id="resource_feo" count="100" />
             <item id="resource_h2o" count="100" />
@@ -24,10 +22,9 @@
         </requirements>
     </item>
     <item id="module_optimizer_ato3" nameId="module_optimizer_ato3_n" type="MODULE" descriptionId="module_optimizer_ato3_d" volume="1">
-        <properties>
-            <set name="multiplicator" value="1.25"/> <!-- 25 % -->
-            <set name="affected" value="resource_ato3" />
-        </properties>
+        <stats>
+            <set baseStat="RESOURCE_ATO3" op="PER" value="1.25" />
+        </stats>
         <requirements>
             <item id="resource_feo" count="100" />
             <item id="resource_h2o" count="100" />
@@ -35,10 +32,9 @@
         </requirements>
     </item>
     <item id="module_optimizer_ch4" nameId="module_optimizer_ch4_n" type="MODULE" descriptionId="module_optimizer_ch4_d" volume="1">
-        <properties>
-            <set name="multiplicator" value="1.2"/> <!-- 20 % -->
-            <set name="affected" value="resource_ch4" />
-        </properties>
+        <stats>
+            <set baseStat="RESOURCE_CH4" op="PER" value="1.25" />
+        </stats>
         <requirements>
             <item id="resource_feo" count="100" />
             <item id="resource_h2o" count="100" />
@@ -46,10 +42,9 @@
         </requirements>
     </item>
     <item id="module_optimizer_h2o" nameId="module_optimizer_h2o_n" type="MODULE" descriptionId="module_optimizer_h2o_d" volume="1">
-        <properties>
-            <set name="multiplicator" value="1.2"/> <!-- 20 % -->
-            <set name="affected" value="resource_h2o" />
-        </properties>
+        <stats>
+            <set baseStat="RESOURCE_H2O" op="PER" value="1.25" />
+        </stats>
         <requirements>
             <item id="resource_feo" count="100" />
             <item id="resource_h2o" count="100" />

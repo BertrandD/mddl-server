@@ -1,37 +1,47 @@
 package com.gameserver.model.stats;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.enums.Stat;
-import com.gameserver.holders.StatHolder;
-import com.serializer.BaseStatSerializer;
-
-import java.util.HashMap;
+import com.config.Config;
 
 /**
  * @author LEBOC Philippe
  */
-@JsonSerialize(using = BaseStatSerializer.class)
-public class BaseStat {
+public enum BaseStat {
+    ENERGY(0),
 
-    private HashMap<Stat, StatHolder> stats;
+    // Production
+    RESOURCE_FEO(0),
+    RESOURCE_C(0),
+    RESOURCE_CH4(0),
+    RESOURCE_H2O(0),
+    RESOURCE_ATO3(0),
 
-    public BaseStat() {
-        setStats(new HashMap<>());
+    // Base
+    HEALTH(0),
+    SHIELD(0),
+    MAX_HEALTH(Config.BASE_INITIAL_MAX_HEALTH),
+    MAX_SHIELD(Config.BASE_INITIAL_MAX_SHIELD),
+
+    // Storage
+    MAX_VOLUME(1000),
+    MAX_WIEGHT(0),
+
+    // Univers
+    BUILD_COOLDOWN_REDUCTION(Config.BUILDTIME_MODIFIER),
+    RESOURCE_PRODUCTION_SPEED(Config.RESOURCE_PRODUCTION_MODIFIER), // TODO: remove ?
+    SHIP_SPEED(1.0);
+
+    private double value;
+
+    BaseStat(double value)
+    {
+        setValue(value);
     }
 
-    public void addStat(StatHolder holder) {
-        if(!getStats().containsKey(holder.getStat())) getStats().put(holder.getStat(), holder);
+    public double getValue() {
+        return value;
     }
 
-    public StatHolder getStat(Stat stat) {
-        return getStats().get(stat);
-    }
-
-    public HashMap<Stat, StatHolder> getStats() {
-        return stats;
-    }
-
-    private void setStats(HashMap<Stat, StatHolder> stat) {
-        this.stats = stat;
+    private void setValue(double value) {
+        this.value = value;
     }
 }

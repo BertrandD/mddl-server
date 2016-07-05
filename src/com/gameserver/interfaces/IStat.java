@@ -1,7 +1,7 @@
 package com.gameserver.interfaces;
 
-import com.gameserver.enums.Stat;
-import com.gameserver.holders.StatModifierHolder;
+import com.gameserver.model.stats.BaseStat;
+import com.gameserver.holders.StatHolder;
 
 import java.util.List;
 
@@ -9,7 +9,14 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 public interface IStat {
-    void setStats(List<StatModifierHolder> stats);
-    List<StatModifierHolder> getStats();
-    double getStatValue(Stat stat, int level);
+
+    List<StatHolder> getStats();
+
+    void setStats(List<StatHolder> stats);
+
+    StatHolder getStat(BaseStat baseStat);
+
+    default double getStatValue(BaseStat baseStat, int level) {
+        return getStat(baseStat).getValue(level);
+    }
 }

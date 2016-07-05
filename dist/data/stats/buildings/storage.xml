@@ -5,11 +5,10 @@
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <stats>
-            <stat name="MAX_VOLUME" op="DIFF" />
+            <baseStat name="MAX_VOLUME" op="DIFF">
+                <set function="(1000+(Math.pow($level, 2)*100))*10" />
+            </baseStat>
         </stats>
-        <properties>
-            <property name="capacity" value="(1000+(Math.pow($level, 2)*100))*10" />
-        </properties>
         <requirements>
             <functions>
                 <function fromLevel="2" itemId="resource_c" value="0,2*Math.pow($level,4)"/>

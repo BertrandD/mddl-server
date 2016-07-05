@@ -5,7 +5,9 @@
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <stats>
-            <stat name="MAX_SHIELD" op="DIFF" />
+            <baseStat name="MAX_SHIELD" op="DIFF">
+                <set function="1000 * $level"/>
+            </baseStat>
         </stats>
         <modules>
             <module id="module_building_shield_laser" />

@@ -4,18 +4,21 @@ import com.config.Config;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
 import com.gameserver.enums.Rank;
+import com.gameserver.model.stats.BaseStat;
+import com.gameserver.enums.StatOp;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
+import com.gameserver.holders.StatHolder;
+import com.gameserver.interfaces.IXmlReader;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
-import com.gameserver.model.items.Engine;
-import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
+import com.gameserver.model.items.Engine;
+import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
 import com.gameserver.model.items.Weapon;
-import com.gameserver.interfaces.IXmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -94,6 +97,7 @@ public class ItemData implements IXmlReader {
                         // Requirements Holders
                         final List<BuildingHolder> buildingHolders = new ArrayList<>();
                         final List<ItemHolder> itemHolders = new ArrayList<>();
+                        final List<StatHolder> stats = new ArrayList<>();
 
                         for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
@@ -116,6 +120,22 @@ public class ItemData implements IXmlReader {
                                     }
                                 }
                             }
+                            else if ("stats".equalsIgnoreCase(c.getNodeName()))
+                            {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
+                                {
+                                    attrs = d.getAttributes();
+                                    if ("set".equalsIgnoreCase(d.getNodeName())) {
+                                        final BaseStat baseStat = parseEnum(attrs, BaseStat.class, "baseStat");
+                                        final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
+                                        final double value = parseDouble(attrs, "value", 0.0);
+                                        final StatHolder holder = new StatHolder(baseStat, op);
+                                        holder.setValue(value);
+
+                                        stats.add(holder);
+                                    }
+                                }
+                            }
                             else if("properties".equalsIgnoreCase(c.getNodeName()))
                             {
                                 for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
@@ -128,14 +148,14 @@ public class ItemData implements IXmlReader {
                                 }
                             }
                         }
-                        makeItem(set, new Requirement(itemHolders, buildingHolders));
+                        makeItem(set, new Requirement(itemHolders, buildingHolders), stats);
                     }
                 }
             }
         }
     }
 
-    private void makeItem(StatsSet set, Requirement requirement)
+    private void makeItem(StatsSet set, Requirement requirement, List<StatHolder> stats)
     {
         final String id = set.getString("id");
         final ItemType type = set.getEnum("type", ItemType.class, ItemType.NONE);
@@ -178,7 +198,11 @@ public class ItemData implements IXmlReader {
                 _weapons.put(id, (Weapon)item); break;
             }
         }
-        if(item != null) _all.put(id, item);
+
+        if(item != null) {
+            item.setStats(stats);
+            _all.put(id, item);
+        }
     }
 
     public List<CommonItem> getResources(Lang lang) {

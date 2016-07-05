@@ -5,11 +5,10 @@
             <set fromLevel="1" function="1750*$level" />
         </buildTime>
         <stats>
-            <stat name="BUILD_COOLDOWN_REDUCTION" op="DIFF" />
+            <baseStat name="BUILD_COOLDOWN_REDUCTION" op="PER">
+                <set function="($level * (0.0085))"/>
+            </baseStat>
         </stats>
-        <properties>
-            <property name="cooldown_reduction" value="($level * (0.0085))"/>
-        </properties>
         <requirements>
             <functions>
                 <function fromLevel="1" itemId="resource_ch4" value="100*$level"/>

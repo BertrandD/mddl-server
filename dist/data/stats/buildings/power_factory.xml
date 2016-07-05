@@ -5,11 +5,10 @@
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <stats>
-            <stat name="ENERGY" op="DIFF" />
+            <baseStat name="ENERGY" op="DIFF">
+                <set function="18*Math.pow($level,2)+150"/>
+            </baseStat>
         </stats>
-        <properties>
-            <property name="production" value="18*Math.pow($level,2)+150"/>
-        </properties>
         <requirements>
             <functions>
                 <function fromLevel="1" itemId="resource_feo" value="0,2*Math.pow($level,4)"/>

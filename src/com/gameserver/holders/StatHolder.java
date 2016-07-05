@@ -1,6 +1,6 @@
 package com.gameserver.holders;
 
-import com.gameserver.enums.Stat;
+import com.gameserver.model.stats.BaseStat;
 import com.gameserver.enums.StatOp;
 
 /**
@@ -8,41 +8,51 @@ import com.gameserver.enums.StatOp;
  */
 public class StatHolder {
 
-    private Stat stat;
-    private double value;
+    private BaseStat baseStat;
+    private StatOp op;
+    private double value; // direct baseStat value
+    private double[] values; // buildings: values indexed by levels
 
-    public StatHolder(Stat stat) {
-        setStat(stat);
-        setValue(stat.getBaseValue());
+    public StatHolder(BaseStat baseStat, StatOp op) {
+        setBaseStat(baseStat);
+        setOp(op);
     }
 
-    public Stat getStat() {
-        return stat;
+    public BaseStat getBaseStat() {
+        return baseStat;
     }
 
-    private void setStat(Stat stat) {
-        this.stat = stat;
+    private void setBaseStat(BaseStat baseStat) {
+        this.baseStat = baseStat;
+    }
+
+    public StatOp getOp() {
+        return op;
+    }
+
+    private void setOp(StatOp op) {
+        this.op = op;
     }
 
     public double getValue() {
         return value;
     }
 
-    private void setValue(double value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
-    public void add(final double val, final StatOp op) {
-        switch (op)
-        {
-            case DIFF:
-                setValue(getValue() + val);
-                break;
-            case PER:
-                setValue(getValue() * val);
-                break;
-            default:
-                break;
-        }
+    public double[] getValues() {
+        return values;
+    }
+
+    public void setValues(double[] values) {
+        this.values = values;
+    }
+
+    public double getValue(int level) {
+        if(level < 1 || level > values.length)
+            if(op.equals(StatOp.DIFF)) return 0; else return 1;
+        return values[level-1];
     }
 }

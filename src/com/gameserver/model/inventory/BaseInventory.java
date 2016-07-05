@@ -2,7 +2,7 @@ package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.enums.Stat;
+import com.gameserver.model.stats.BaseStat;
 import com.gameserver.model.Base;
 import com.serializer.BaseInventorySerializer;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -49,6 +49,6 @@ public class BaseInventory extends Inventory {
 
     @Override
     public long getMaxVolume() {
-        return (long) Math.floor(getBase().getBaseStat().getStat(Stat.MAX_VOLUME).getValue());
+        return (long) Math.floor(getBase().getBaseStat().getValue(BaseStat.MAX_VOLUME));
     }
 }

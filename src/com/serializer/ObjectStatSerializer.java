@@ -4,20 +4,21 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.gameserver.holders.StatHolder;
 import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.stats.ObjectStat;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author LEBOC Philippe
  */
-public class BaseStatSerializer extends JsonSerializer<BaseStat> {
+public class ObjectStatSerializer extends JsonSerializer<ObjectStat> {
     @Override
-    public void serialize(BaseStat value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+    public void serialize(ObjectStat value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
         gen.writeStartObject();
-        for(StatHolder holder : value.getStats().values()) {
-            gen.writeNumberField(holder.getStat().toString(), holder.getValue());
+        for (Map.Entry<BaseStat, Double> entry : value.getStats().entrySet()) {
+            gen.writeNumberField(entry.getKey().toString(), entry.getValue());
         }
         gen.writeEndObject();
     }

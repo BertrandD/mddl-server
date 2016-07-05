@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
-import com.gameserver.enums.Stat;
-import com.gameserver.holders.StatModifierHolder;
+import com.gameserver.model.stats.BaseStat;
+import com.gameserver.holders.StatHolder;
 import com.gameserver.interfaces.IStat;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
@@ -28,7 +28,7 @@ public abstract class Building implements IStat {
     private int maxLevel;
     private long[] buildTimes;
     private long[] useEnergy;
-    private List<StatModifierHolder> stats;
+    private List<StatHolder> stats;
     private HashMap<Integer, Requirement> requirements;
     private Lang lang = Lang.EN;
 
@@ -135,18 +135,18 @@ public abstract class Building implements IStat {
     }
 
     @Override
-    public List<StatModifierHolder> getStats() {
+    public StatHolder getStat(BaseStat baseStat) {
+        return stats.stream().filter(k -> k.getBaseStat().name().equals(baseStat.name())).findFirst().get();
+    }
+
+    @Override
+    public List<StatHolder> getStats() {
         return stats;
     }
 
     @Override
-    public void setStats(List<StatModifierHolder> stats) {
+    public void setStats(List<StatHolder> stats) {
         this.stats = stats;
-    }
-
-    @Override
-    public double getStatValue(Stat stat, int level) {
-        return 0;
     }
 
     @Override
