@@ -3,6 +3,7 @@ package com;
 import com.config.Config;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.impl.ShopData;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import org.jsondoc.spring.boot.starter.EnableJSONDoc;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +30,7 @@ public class Application {
         SystemMessageData.getInstance();
         ItemData.getInstance();
         BuildingData.getInstance();
+        ShopData.getInstance();
 
         // Spring
         System.setProperty("spring.config.location", MODE+Config.APPLICATION_CONFIG_LOCATION);
