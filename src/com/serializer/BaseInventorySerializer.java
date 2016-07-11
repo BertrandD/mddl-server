@@ -15,13 +15,11 @@ import java.io.IOException;
 public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
     @Override
     public void serialize(BaseInventory value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
-        //gen.writeStartObject();
+        gen.writeStartObject();
 
-        gen.writeStartArray();
         for(ItemInstance item : value.getItems()){
             gen.writeObjectField(item.getTemplateId(), item);
         }
-        gen.writeEndArray();
 
         /**
         *
@@ -54,6 +52,6 @@ public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
         gen.writeEndArray();
         */
 
-        //gen.writeEndObject();
+        gen.writeEndObject();
     }
 }
