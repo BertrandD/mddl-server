@@ -68,6 +68,7 @@
                                                     <xs:attribute name="name" use="required">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="unlock_stat" />
                                                                 <xs:enumeration value="shield_defense" />
                                                                 <xs:enumeration value="affected" />
                                                                 <xs:enumeration value="multiplicator" />

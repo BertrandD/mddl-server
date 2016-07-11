@@ -51,6 +51,11 @@
 																<xs:enumeration value="RESOURCE_CH4" />
 																<xs:enumeration value="RESOURCE_ATO3" />
 																<xs:enumeration value="RESOURCE_H2O" />
+																<xs:enumeration value="MAX_RESOURCE_FEO" />
+																<xs:enumeration value="MAX_RESOURCE_C" />
+																<xs:enumeration value="MAX_RESOURCE_CH4" />
+																<xs:enumeration value="MAX_RESOURCE_ATO3" />
+																<xs:enumeration value="MAX_RESOURCE_H2O" />
 															</xs:restriction>
 														</xs:simpleType>
 													</xs:attribute>
@@ -188,7 +193,7 @@
                         <xs:attribute name="type" type="xs:normalizedString" use="required" />
                         <xs:attribute name="descriptionId" type="xs:normalizedString" use="required" />
                         <xs:attribute name="maxLevel" type="xs:positiveInteger" use="required"/>
-						<xs:attribute name="useEnergy" type="xs:string" use="optional" />
+						<xs:attribute name="maxBuild" type="xs:positiveInteger" use="optional" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
