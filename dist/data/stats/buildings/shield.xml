@@ -16,7 +16,6 @@
         </modules>
         <properties>
             <property name="max_modules" value="1" />
-            <property name="armor" value="10000 + (5000 * $level)" />
         </properties>
         <requirements>
             <functions>
