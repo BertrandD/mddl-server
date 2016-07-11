@@ -105,7 +105,8 @@ public final class Base
             final Building template = building.getTemplate();
 
             for (StatHolder holder : template.getStats()) {
-                getBaseStat().add(holder.getStat(), template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp());
+                if(holder != null && !holder.getStat().equals(BaseStat.NONE))
+                    getBaseStat().add(holder.getStat(), template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp());
             }
 
             energyConsumption += (template.getUseEnergyAtLevel(building.getCurrentLevel()) * Config.USE_ENERGY_MODIFIER);
