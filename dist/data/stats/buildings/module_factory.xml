@@ -7,18 +7,27 @@
         <propertiesByLevel>
             <properties level="1">
                 <list name="unlock_modules">
-                    <set name="module" value="module_optimizer_feo" />
-                    <set name="module" value="module_optimizer_c" />
+                    <set name="module" value="module_silo_improve_feo" />
+                    <set name="module" value="module_silo_improve_c" />
                 </list>
             </properties>
             <properties level="2">
                 <list name="unlock_modules">
-                    <set name="module" value="module_optimizer_ato3" />
+                    <set name="module" value="module_silo_improve_ato3" />
+                    <set name="module" value="module_silo_improve_ch4" />
+                    <set name="module" value="module_silo_improve_h2o" />
+                    <set name="module" value="module_optimizer_feo" />
+                </list>
+            </properties>
+            <properties level="3">
+                <list name="unlock_modules">
+                    <set name="module" value="module_optimizer_c" />
                 </list>
             </properties>
             <properties level="5">
                 <list name="unlock_modules">
                     <set name="module" value="module_optimizer_ch4" />
+                    <set name="module" value="module_optimizer_ato3" />
                 </list>
             </properties>
             <properties level="7">
