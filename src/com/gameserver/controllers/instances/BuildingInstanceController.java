@@ -155,8 +155,9 @@ public class BuildingInstanceController {
 
         final Base base = player.getCurrentBase();
         if(base == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BASE_NOT_FOUND);
+        base.initializeStats();
 
-        BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(buildingInstId)).findFirst().orElse(null);
+        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(buildingInstId)).findFirst().orElse(null);
         if(building == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
 
         final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId) && k.getCount() > 0).findFirst().orElse(null);
@@ -167,10 +168,10 @@ public class BuildingInstanceController {
 
         if(building.getModules().size() >= ((ModulableBuilding)building.getTemplate()).getMaxModules()) return new JsonResponse(JsonResponseType.ERROR, "Maximum modules reached !"); // TODO System Message
 
-        if(inventoryService.consumeItem(module, 1))
-            building.addModule(module.getTemplateId());
-        else
+        if(!inventoryService.consumeItem(module, 1))
             return new JsonResponse(JsonResponseType.ERROR, "Incorrect items count.");
+
+        building.addModule(module.getTemplateId());
         buildingService.update(building);
 
         return new JsonResponse(building);
