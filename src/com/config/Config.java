@@ -27,6 +27,7 @@ public final class Config {
     public static int MAX_PLAYER_IN_ACCOUNT;
     public static long BASE_INITIAL_MAX_SHIELD;
     public static long BASE_INITIAL_MAX_HEALTH;
+    public static long BASE_INITIAL_MAX_RESOURCE_STORAGE;
 
     // Slack
     public static String SLACK_URL;
@@ -54,19 +55,20 @@ public final class Config {
 
         DATA_ROOT_DIRECTORY = general.getString("DataRootDirectory", "data/");
         FORBIDDEN_NAMES = general.getString("ForbiddenNames", "").split(",");
-        MAX_PLAYER_INVENTORY_CAPACITY = general.getLong("MaxPlayerInventoryCapacity", 1000000000);
+        MAX_PLAYER_INVENTORY_CAPACITY = general.getLong("MaxPlayerInventoryCapacity", 9999999);
         MAX_PLAYER_IN_ACCOUNT = general.getInt("MaxPlayerInAccount", 1);
         BASE_INITIAL_MAX_SHIELD = general.getLong("InitialMaxShield", 0);
         BASE_INITIAL_MAX_HEALTH = general.getLong("InitialMaxHealth", 0);
+        BASE_INITIAL_MAX_RESOURCE_STORAGE = general.getLong("InitialMaxResourceStorage", 500);
 
         // Slack
-        SLACK_URL = general.getString("SlackURL", "");
-        SLACK_WARNING_CHANNEL = general.getString("SlackWarningChannel", "");
-        SLACK_WARNING_BOT_NAME = general.getString("SlackWarningBotName", "");
-        SLACK_WARNING_BOT_ICON = general.getString("SlackWarningBotIcon", "");
-        SLACK_INFO_CHANNEL = general.getString("SlackInfoChannel", "");
-        SLACK_INFO_BOT_NAME = general.getString("SlackInfoBotName", "");
-        SLACK_INFO_BOT_ICON = general.getString("SlackInfoBotIcon", "");
+        SLACK_URL = general.getString("SlackURL", "https://hooks.slack.com/services/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");
+        SLACK_WARNING_CHANNEL = general.getString("SlackWarningChannel", "#warnings");
+        SLACK_WARNING_BOT_NAME = general.getString("SlackWarningBotName", "Game API");
+        SLACK_WARNING_BOT_ICON = general.getString("SlackWarningBotIcon", ":warning:");
+        SLACK_INFO_CHANNEL = general.getString("SlackInfoChannel", "#info");
+        SLACK_INFO_BOT_NAME = general.getString("SlackInfoBotName", "Game API");
+        SLACK_INFO_BOT_ICON = general.getString("SlackInfoBotIcon", ":information_source:");
 
         // Univers
         BUILDTIME_MODIFIER = univers.getDouble("BuildTimeModifier", 1.0);
