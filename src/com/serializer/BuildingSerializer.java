@@ -52,7 +52,7 @@ public class BuildingSerializer extends JsonSerializer<Building> {
         {
             gen.writeObjectFieldStart("stats");
             for (StatHolder holder : value.getStats()) {
-                gen.writeArrayFieldStart(holder.getBaseStat().name());
+                gen.writeArrayFieldStart(holder.getStat().name());
                 for (double v : holder.getValues()) {
                     gen.writeNumber(v);
                 }

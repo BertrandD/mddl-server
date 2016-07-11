@@ -5,9 +5,7 @@
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <stats>
-            <baseStat name="MAX_VOLUME" op="DIFF">
-                <set function="(1000+(Math.pow($level, 2)*100))*10" />
-            </baseStat>
+            <stat name="MAX_VOLUME" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
         </stats>
         <requirements>
             <functions>

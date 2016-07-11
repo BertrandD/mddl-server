@@ -1,40 +1,38 @@
 package com.gameserver.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.gameserver.model.Player;
+import com.gameserver.model.vehicles.Fleet;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "player_inventory")
-public final class PlayerInventory extends AbstractMultiStorageInventory {
+public final class FleetInventory extends AbstractMultiStorageInventory {
 
     @DBRef
     @JsonBackReference
-    private Player player;
+    private Fleet fleet;
 
-    public PlayerInventory() {
+    public FleetInventory() {
         super();
     }
 
-    public PlayerInventory(Player player) {
+    public FleetInventory(Fleet fleet) {
         super();
-        setPlayer(player);
+        setFleet(fleet);
     }
 
-    public Player getPlayer() {
-        return player;
+    public Fleet getFleet() {
+        return fleet;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setFleet(Fleet fleet) {
+        this.fleet = fleet;
     }
 
     @Override
     public long getMaxWeight() {
-        return 9999999L;
+        return 0;
     }
 
     @Override
@@ -49,7 +47,7 @@ public final class PlayerInventory extends AbstractMultiStorageInventory {
 
     @Override
     public long getMaxVolume() {
-        return 9999999L;
+        return 0;
     }
 
     @Override
@@ -59,6 +57,6 @@ public final class PlayerInventory extends AbstractMultiStorageInventory {
 
     @Override
     public long getFreeVolume() {
-        return 9999999L;
+        return 0;
     }
 }

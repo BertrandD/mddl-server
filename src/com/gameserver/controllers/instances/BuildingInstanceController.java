@@ -7,7 +7,6 @@ import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.ModulableBuilding;
-import com.util.response.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.tasks.BuildingTask;
@@ -19,6 +18,7 @@ import com.gameserver.services.PlayerService;
 import com.gameserver.services.ValidatorService;
 import com.util.response.JsonResponse;
 import com.util.response.JsonResponseType;
+import com.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -86,6 +86,7 @@ public class BuildingInstanceController {
 
         final Base base = player.getCurrentBase();
         if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
+        base.initializeStats();
 
         final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
         if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
@@ -106,7 +107,7 @@ public class BuildingInstanceController {
         base.addBuilding(building, base.getBuildingPositions().size()+1); // temp position disable
         baseService.update(base);
 
-        base.initializeStats(false);
+        base.initializeStats();
         buildingTaskManager.ScheduleUpgrade(building);
 
         JsonResponse response = new JsonResponse(building);
@@ -137,7 +138,7 @@ public class BuildingInstanceController {
 
         collector.forEach(inventoryService::consumeItem);
 
-        base.initializeStats(false);
+        base.initializeStats();
         buildingTaskManager.ScheduleUpgrade(building);
         final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
 

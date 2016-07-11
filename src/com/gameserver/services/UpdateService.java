@@ -1,6 +1,7 @@
 package com.gameserver.services;
 
 import com.gameserver.model.Base;
+import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.model.social.FriendRequest;
 import com.gameserver.model.Player;
 import com.gameserver.model.instances.BuildingInstance;
@@ -37,6 +38,7 @@ public class UpdateService {
 
     public void resetDatabase() {
         mongoOperations.remove(new Query(), ItemInstance.class);
+        mongoOperations.remove(new Query(), ResourceInventory.class);
         mongoOperations.remove(new Query(), PlayerInventory.class);
         mongoOperations.remove(new Query(), BaseInventory.class);
         mongoOperations.remove(new Query(), BuildingTask.class);

@@ -42,7 +42,7 @@ public class BaseController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
         final List<Base> bases = player.getBases();
-        bases.forEach(k->k.initializeStats(true));
+        bases.forEach(Base::initializeStats);
         return new JsonResponse(bases);
     }
 

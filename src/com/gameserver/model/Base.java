@@ -3,15 +3,14 @@ package com.gameserver.model;
 import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.enums.BuildingCategory;
-import com.gameserver.model.stats.BaseStat;
 import com.gameserver.enums.StatOp;
 import com.gameserver.holders.StatHolder;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.model.buildings.Extractor;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.model.items.Module;
+import com.gameserver.model.stats.BaseStat;
 import com.gameserver.model.stats.ObjectStat;
 import com.serializer.BaseSerializer;
 import org.bson.types.ObjectId;
@@ -24,8 +23,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -61,10 +58,15 @@ public final class Base
     @JsonManagedReference
     private BaseInventory baseInventory;
 
+    @DBRef
+    @JsonManagedReference
+    private List<ResourceInventory> resources;
+
     public Base() {
         setBuildingPositions(new HashMap<>());
         setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
+        setResources(new ArrayList<>());
     }
 
     public Base(String name, Player owner) {
@@ -78,6 +80,7 @@ public final class Base
         setHealthRegenRate(100.0);
         setShieldRegenRate(100.0);
         setBaseStat(new ObjectStat());
+        setResources(new ArrayList<>());
     }
 
     /**
@@ -86,9 +89,7 @@ public final class Base
      *      Warning: @PostContruct does not work fine with Spring & MongoDB.
      *               That's why we need initialize stats hand made
      */
-    public void initializeStats(boolean force) {
-        if(!force && getBaseStat() != null) return;
-
+    public void initializeStats() {
         // Intialize all existing stats
         for (BaseStat baseStat : BaseStat.values()) {
             getBaseStat().addStat(baseStat);
@@ -104,7 +105,7 @@ public final class Base
             final Building template = building.getTemplate();
 
             for (StatHolder holder : template.getStats()) {
-                getBaseStat().add(holder.getBaseStat(), template.getStatValue(holder.getBaseStat(), building.getCurrentLevel()), holder.getOp());
+                getBaseStat().add(holder.getStat(), template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp());
             }
 
             energyConsumption += (template.getUseEnergyAtLevel(building.getCurrentLevel()) * Config.USE_ENERGY_MODIFIER);
@@ -112,44 +113,15 @@ public final class Base
 
         // Building energy consumption
         getBaseStat().add(BaseStat.ENERGY, -energyConsumption, StatOp.DIFF);
-    }
 
-    public HashMap<String, Double> getProduction() {
-        initializeStats(true);
-
-        final HashMap<String, Double> production = new HashMap<>();
-        final List<BuildingInstance> extractors = getBuildings().stream().filter(k ->
-                k.getTemplate().getType().equals(BuildingCategory.Extractor) &&
-                k.getCurrentLevel() > 0).collect(Collectors.toList());
-
-        if(extractors.isEmpty()) return null;
-
-        for (BuildingInstance extractor : extractors) {
-            final Extractor template = ((Extractor) extractor.getTemplate());
-            for (Map.Entry<String, Long> entry : template.getProductionAtLevel(extractor.getCurrentLevel()).entrySet()) {
-                if (!production.containsKey(entry.getKey()))
-                {
-                    production.put(entry.getKey(), entry.getValue() * getBaseStat().getValue(BaseStat.RESOURCE_PRODUCTION_SPEED));
-                }
-                else
-                {
-                    double currentCnt = production.get(entry.getKey());
-                    currentCnt += entry.getValue();
-                    production.replace(entry.getKey(), currentCnt);
-                }
-            }
-        }
-
-        // Calculate resources modules bonus
-        for (BuildingInstance extractor : extractors) {
-            for (Module module : extractor.getModules()) {
+        // Module
+        for (BuildingInstance inst : getBuildings()) {
+            for (Module module : inst.getModules()) {
                 for (StatHolder holder : module.getStats()) {
-                    getBaseStat().add(holder.getBaseStat(), holder.getValue(), holder.getOp());
+                    getBaseStat().add(holder.getStat(), holder.getValue(), holder.getOp());
                 }
             }
         }
-
-        return production;
     }
 
     public String getId() {
@@ -247,7 +219,19 @@ public final class Base
         return baseInventory;
     }
 
-    public void setBaseInventory(BaseInventory baseInventory) {
+    public void setBaseInventory(final BaseInventory baseInventory) {
         this.baseInventory = baseInventory;
+    }
+
+    public List<ResourceInventory> getResources() {
+        return resources;
+    }
+
+    public void setResources(final List<ResourceInventory> resources) {
+        this.resources = resources;
+    }
+
+    public void addResourceInventory(final ResourceInventory inventory) {
+        this.resources.add(inventory);
     }
 }

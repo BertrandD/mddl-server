@@ -56,8 +56,7 @@ public class Player {
         setFriendRequests(new ArrayList<>());
     }
 
-    public Player(Account account, String name)
-    {
+    public Player(Account account, String name) {
         setId(new ObjectId().toString());
         setName(name);
         setAccount(account);

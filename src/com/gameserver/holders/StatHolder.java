@@ -8,22 +8,22 @@ import com.gameserver.enums.StatOp;
  */
 public class StatHolder {
 
-    private BaseStat baseStat;
+    private BaseStat stat;
     private StatOp op;
     private double value; // direct baseStat value
     private double[] values; // buildings: values indexed by levels
 
     public StatHolder(BaseStat baseStat, StatOp op) {
-        setBaseStat(baseStat);
+        setStat(baseStat);
         setOp(op);
     }
 
-    public BaseStat getBaseStat() {
-        return baseStat;
+    public BaseStat getStat() {
+        return stat;
     }
 
-    private void setBaseStat(BaseStat baseStat) {
-        this.baseStat = baseStat;
+    private void setStat(BaseStat stat) {
+        this.stat = stat;
     }
 
     public StatOp getOp() {

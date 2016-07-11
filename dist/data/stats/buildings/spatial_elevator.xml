@@ -7,7 +7,6 @@
         <requirements>
             <functions>
                 <function fromLevel="1" toLevel="5" itemId="resource_feo" value="0,2*Math.pow($level,4)" />
-                <function fromLevel="2" itemId="resource_steel" value="0,2*Math.pow($level,4)" />
             </functions>
             <requirement level="3">
                 <building id="operation_center" level="2" />

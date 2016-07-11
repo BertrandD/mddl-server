@@ -15,24 +15,18 @@ import java.io.IOException;
 public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
     @Override
     public void serialize(BaseInventory value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
-        gen.writeStartObject();
-        gen.writeStringField("baseId", value.getBase().getId());
-        gen.writeNumberField("lastRefresh", value.getLastRefresh());
+        //gen.writeStartObject();
 
-        gen.writeObjectFieldStart("items");
+        gen.writeStartArray();
         for(ItemInstance item : value.getItems()){
             gen.writeObjectField(item.getTemplateId(), item);
         }
-        gen.writeEndObject();
+        gen.writeEndArray();
 
         /**
         *
         * DETAILLED INFORMATION
         *
-        gen.writeArrayFieldStart("resource");
-        for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isResource).collect(Collectors.toList()))
-            gen.writeObject(item);
-        gen.writeEndArray();
 
         gen.writeArrayFieldStart("cargo");
         for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()))
@@ -60,6 +54,6 @@ public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
         gen.writeEndArray();
         */
 
-        gen.writeEndObject();
+        //gen.writeEndObject();
     }
 }

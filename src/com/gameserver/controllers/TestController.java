@@ -58,7 +58,7 @@ public class TestController {
         GameItem item = ItemData.getInstance().getTemplate(itemId);
         if(item == null) return new JsonResponse(JsonResponseType.ERROR, "Item ["+itemId+"] doesnt exist !");
 
-        base.initializeStats(false);
+        base.initializeStats();
         inventoryService.addItem(base.getBaseInventory(), itemId, count);
 
         return new JsonResponse("Item added successful !");

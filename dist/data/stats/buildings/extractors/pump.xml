@@ -7,6 +7,10 @@
         <properties>
             <property name="max_modules" value="2" />
         </properties>
+        <stats>
+            <stat name="RESOURCE_CH4" function="100+(35*$level)" op="DIFF" />
+            <stat name="RESOURCE_H2O" function="100+(100*$level)" op="DIFF" />
+        </stats>
         <modules>
             <module id="module_optimizer_h2o" />
             <module id="module_optimizer_ch4" />
@@ -22,9 +26,5 @@
                 <item id="resource_h2o" count="250" />
             </requirement>
         </requirements>
-        <productions>
-            <produce itemId="resource_ch4" function="100+(35*$level)" />
-            <produce itemId="resource_h2o" function="100+(100*$level)" />
-        </productions>
     </building>
 </list>

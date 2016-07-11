@@ -135,8 +135,8 @@ public abstract class Building implements IStat {
     }
 
     @Override
-    public StatHolder getStat(BaseStat baseStat) {
-        return stats.stream().filter(k -> k.getBaseStat().name().equals(baseStat.name())).findFirst().get();
+    public StatHolder getStat(BaseStat stat) {
+        return stats.stream().filter(k -> k.getStat().name().equals(stat.name())).findFirst().get();
     }
 
     @Override

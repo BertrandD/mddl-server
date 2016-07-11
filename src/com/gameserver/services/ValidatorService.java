@@ -1,17 +1,21 @@
 package com.gameserver.services;
 
+import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.model.Base;
 import com.gameserver.model.commons.Requirement;
-import com.util.response.SystemMessageId;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.Inventory;
+import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.ResourceInventory;
+import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Item;
 import com.util.response.JsonResponse;
 import com.util.response.JsonResponseType;
+import com.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +42,7 @@ public class ValidatorService {
         final Requirement requirements = building.getTemplate().getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
-        inventoryService.refreshResource(base);
+        inventoryService.refresh(base);
 
         if(!validateBuildings(base, requirements)) {
             return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
@@ -52,7 +56,7 @@ public class ValidatorService {
     }
 
     public JsonResponse validateItemRequirements(Base base, Item item, HashMap<ItemInstance, Long> collector, Lang lang) {
-        inventoryService.refreshResource(base);
+        inventoryService.refresh(base);
 
         if(!validateBuildings(base, item.getRequirement())) {
             return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
@@ -87,14 +91,26 @@ public class ValidatorService {
         while(meetRequirements && i < requirements.getItems().size())
         {
             final ItemHolder holder = requirements.getItems().get(i);
-            final Inventory inventory = base.getBaseInventory();
-            final ItemInstance iInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+            final BaseInventory bInventory = base.getBaseInventory();
 
-            if(iInst == null || iInst.getCount() < holder.getCount()) {
-                meetRequirements = false;
+            final GameItem template = ItemData.getInstance().getTemplate(holder.getId());
+
+            if(template.getType().equals(ItemType.RESOURCE))
+            {
+                final ResourceInventory rInventory = base.getResources().stream().filter(k -> k.getItem().getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
+                if(rInventory == null || rInventory.getItem().getCount() < holder.getCount())
+                    meetRequirements = false;
+                else
+                    collector.put(rInventory.getItem(), holder.getCount());
             }
-
-            collector.put(iInst, holder.getCount());
+            else
+            {
+                final ItemInstance iInst = bInventory.getItems().stream().filter(k -> k.getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
+                if(iInst == null || iInst.getCount() < holder.getCount())
+                    meetRequirements = false;
+                else
+                    collector.put(iInst, holder.getCount());
+            }
             i++;
         }
         return meetRequirements;

@@ -34,15 +34,8 @@
 								<xs:element name="stats" maxOccurs="1">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="baseStat" minOccurs="1" maxOccurs="unbounded">
+											<xs:element name="stat" minOccurs="1" maxOccurs="unbounded">
 												<xs:complexType>
-													<xs:sequence>
-														<xs:element name="set" minOccurs="1" maxOccurs="unbounded">
-															<xs:complexType>
-																<xs:attribute name="function" type="xs:string" use="required" />
-															</xs:complexType>
-														</xs:element>
-													</xs:sequence>
 													<xs:attribute name="name" use="required">
 														<xs:simpleType>
 															<xs:restriction base="xs:string">
@@ -53,9 +46,15 @@
 																<xs:enumeration value="BUILD_COOLDOWN_REDUCTION" />
 																<xs:enumeration value="RESOURCE_PRODUCTION_SPEED" />
 																<xs:enumeration value="SHIP_SPEED" />
+																<xs:enumeration value="RESOURCE_FEO" />
+																<xs:enumeration value="RESOURCE_C" />
+																<xs:enumeration value="RESOURCE_CH4" />
+																<xs:enumeration value="RESOURCE_ATO3" />
+																<xs:enumeration value="RESOURCE_H2O" />
 															</xs:restriction>
 														</xs:simpleType>
 													</xs:attribute>
+													<xs:attribute name="function" type="xs:string" use="required" />
 													<xs:attribute name="op" use="required">
 														<xs:simpleType>
 															<xs:restriction base="xs:string">
@@ -179,18 +178,6 @@
 													</xs:complexType>
 												</xs:element>
 											</xs:choice>
-										</xs:sequence>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="productions">
-									<xs:complexType>
-										<xs:sequence>
-											<xs:element name="produce" minOccurs="1" maxOccurs="unbounded">
-												<xs:complexType>
-													<xs:attribute name="itemId" type="xs:string" />
-													<xs:attribute name="function" type="xs:string" />
-												</xs:complexType>
-											</xs:element>
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>

@@ -5,9 +5,7 @@
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
         <stats>
-            <baseStat name="ENERGY" op="DIFF">
-                <set function="18*Math.pow($level,2)+150"/>
-            </baseStat>
+            <stat name="ENERGY" function="18*Math.pow($level,2)+150" op="DIFF" />
         </stats>
         <requirements>
             <functions>

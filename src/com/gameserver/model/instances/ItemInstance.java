@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.ItemData;
 import com.gameserver.enums.ItemType;
-import com.gameserver.model.inventory.Inventory;
+import com.gameserver.interfaces.IInventory;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;
@@ -33,7 +33,7 @@ public class ItemInstance
 
     @DBRef
     @JsonManagedReference
-    private Inventory inventory;
+    private IInventory inventory;
 
     public ItemInstance(){}
 
@@ -45,7 +45,7 @@ public class ItemInstance
         setCount(count);
     }
 
-    public ItemInstance(Inventory inventory, String itemId, double count)
+    public ItemInstance(IInventory inventory, String itemId, double count)
     {
         setId(new ObjectId().toString());
         setTemplateId(itemId);
@@ -116,17 +116,21 @@ public class ItemInstance
         setCount(getCount() + count);
     }
 
+    public void removeCount(long count) {
+        addCount(-count);
+    }
+
     public double getCount() {
         return count;
     }
 
     public void setCount(double count) { this.count = count; }
 
-    public Inventory getInventory() {
+    public IInventory getInventory() {
         return inventory;
     }
 
-    public void setInventory(Inventory inventory) {
+    public void setInventory(IInventory inventory) {
         this.inventory = inventory;
     }
 

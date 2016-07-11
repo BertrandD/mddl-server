@@ -5,9 +5,7 @@
             <set fromLevel="1" function="1750*$level" />
         </buildTime>
         <stats>
-            <baseStat name="BUILD_COOLDOWN_REDUCTION" op="PER">
-                <set function="($level * (0.0085))"/>
-            </baseStat>
+            <stat name="BUILD_COOLDOWN_REDUCTION" function="($level * (0.0085))" op="PER" />
         </stats>
         <requirements>
             <functions>

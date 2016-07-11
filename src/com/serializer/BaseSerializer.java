@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gameserver.model.Base;
+import com.gameserver.model.inventory.ResourceInventory;
 
 import java.io.IOException;
 
@@ -14,8 +15,6 @@ import java.io.IOException;
 public class BaseSerializer extends JsonSerializer<Base> {
     @Override
     public void serialize(Base value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
-        value.initializeStats(true);
-
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
 
@@ -24,13 +23,20 @@ public class BaseSerializer extends JsonSerializer<Base> {
         gen.writeStringField("name", value.getOwner().getName());
         gen.writeEndObject();
 
-        gen.writeObjectField("baseStat", value.getBaseStat());
+        gen.writeArrayFieldStart("resources");
+        for (ResourceInventory inventory : value.getResources()) {
+            gen.writeStartObject();
+            gen.writeNumberField(inventory.getItem().getTemplateId(), inventory.getItem().getCount());
+            gen.writeNumberField("lastRefresh", inventory.getLastRefresh());
+            gen.writeEndObject();
+        }
+        gen.writeEndArray();
 
-        if(value.getProduction() != null)
-            gen.writeObjectField("production", value.getProduction());
+        gen.writeObjectField("baseStat", value.getBaseStat());
 
         gen.writeObjectField("buildings", value.getBuildings());
         gen.writeObjectField("inventory", value.getBaseInventory());
+
         gen.writeEndObject();
     }
 }

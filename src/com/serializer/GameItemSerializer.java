@@ -43,7 +43,7 @@ public class GameItemSerializer extends JsonSerializer<GameItem> {
 
         gen.writeObjectFieldStart("stats");
         for (StatHolder holder : value.getStats()) {
-            gen.writeNumberField(holder.getBaseStat().name(), holder.getValue());
+            gen.writeNumberField(holder.getStat().name(), holder.getValue());
         }
         gen.writeEndObject();
 

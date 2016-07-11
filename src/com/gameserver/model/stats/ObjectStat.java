@@ -28,7 +28,11 @@ public class ObjectStat {
     }
 
     public double getValue(BaseStat baseStat) {
-        return getStats().get(baseStat);
+        return getValue(baseStat, 0);
+    }
+
+    public double getValue(BaseStat baseStat, double defaultValue) {
+        return getStats().get(baseStat) == null ? defaultValue : getStats().get(baseStat);
     }
 
     public HashMap<BaseStat, Double> getStats() {

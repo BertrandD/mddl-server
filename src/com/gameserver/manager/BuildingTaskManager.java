@@ -1,10 +1,10 @@
 package com.gameserver.manager;
 
 import com.config.Config;
-import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Extractor;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.inventory.Inventory;
+import com.gameserver.model.stats.BaseStat;
 import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
@@ -111,7 +111,7 @@ public class BuildingTaskManager {
             if(building.getBuildingId().equals(BUILDING_STORAGE_ID))
             {
                 // Updating resources (lastrefresh) before expanding inventory
-                inventoryService.refreshResource(building.getBase());
+                inventoryService.refresh(building.getBase());
             }
 
             building.setCurrentLevel(getCurrentTask().getLevel());
@@ -130,16 +130,16 @@ public class BuildingTaskManager {
 
             if(building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1)
             {
-                final Inventory inventory = building.getBase().getBaseInventory();
+                final Base base = building.getBase();
                 final Extractor mine = (Extractor) building.getTemplate();
-                mine.getProduceItems().forEach(k -> inventoryService.addVoidItem(inventory, k.getItemId(), 0));
+                mine.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
             }
 
             if(building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1)
             {
-                final Inventory inventory = building.getBase().getBaseInventory();
-                final Extractor mine = (Extractor) building.getTemplate();
-                mine.getProduceItems().forEach(k -> inventoryService.addVoidItem(inventory, k.getItemId(), 0));
+                final Base base = building.getBase();
+                final Extractor pump = (Extractor) building.getTemplate();
+                pump.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
             }
 
             restart();

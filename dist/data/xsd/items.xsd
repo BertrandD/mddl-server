@@ -12,7 +12,7 @@
                                         <xs:sequence>
                                             <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
                                                 <xs:complexType>
-                                                    <xs:attribute name="baseStat" use="required">
+                                                    <xs:attribute name="stat" use="required">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
                                                                 <xs:enumeration value="SLOT_CARGO" />

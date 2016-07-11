@@ -45,14 +45,20 @@ public class BaseService extends DatabaseService<Base> {
     @Override
     public Base findOne(String id) {
         final Base base = super.findOne(id);
-        if(base != null) inventoryService.refreshResource(base);
+        if(base != null) {
+            base.initializeStats();
+            inventoryService.refresh(base);
+        }
         return base;
     }
 
     @Override
     public List<Base> findAll() {
         final List<Base> bases = super.findAll();
-        bases.forEach(inventoryService::refreshResource);
+        for (Base base : bases) {
+            base.initializeStats();
+            inventoryService.refresh(base);
+        }
         return bases;
     }
 }

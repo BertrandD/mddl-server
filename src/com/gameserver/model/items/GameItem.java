@@ -108,7 +108,7 @@ public abstract class GameItem implements IStat {
     }
 
     public StatHolder getStat(BaseStat baseStat) {
-        return stats.stream().filter(k -> k.getBaseStat().name().equals(baseStat.name())).findFirst().get();
+        return stats.stream().filter(k -> k.getStat().name().equals(baseStat.name())).findFirst().get();
     }
 
     @Override
@@ -122,8 +122,8 @@ public abstract class GameItem implements IStat {
     }
 
     @Override
-    public double getStatValue(BaseStat baseStat, int level) {
-        return getStats().stream().filter(k -> k.getBaseStat().name().equals(baseStat.name())).findFirst().get().getValue();
+    public double getStatValue(BaseStat stat, int level) {
+        return getStats().stream().filter(k -> k.getStat().name().equals(stat.name())).findFirst().get().getValue();
     }
 
     @Override

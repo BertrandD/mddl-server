@@ -3,7 +3,7 @@
     <!-- Resources Optimizers -->
     <item id="module_optimizer_feo" nameId="module_optimizer_feo_n" type="MODULE" descriptionId="module_optimizer_feo_d" volume="1">
         <stats>
-            <set baseStat="RESOURCE_FEO" op="PER" value="1.25" />
+            <set stat="RESOURCE_FEO" op="PER" value="1.25" />
         </stats>
         <requirements>
             <item id="resource_feo" count="100" />
@@ -13,7 +13,7 @@
     </item>
     <item id="module_optimizer_c" nameId="module_optimizer_c_n" type="MODULE" descriptionId="module_optimizer_c_d" volume="1">
         <stats>
-            <set baseStat="RESOURCE_C" op="PER" value="1.25" />
+            <set stat="RESOURCE_C" op="PER" value="1.25" />
         </stats>
         <requirements>
             <item id="resource_feo" count="100" />
@@ -23,7 +23,7 @@
     </item>
     <item id="module_optimizer_ato3" nameId="module_optimizer_ato3_n" type="MODULE" descriptionId="module_optimizer_ato3_d" volume="1">
         <stats>
-            <set baseStat="RESOURCE_ATO3" op="PER" value="1.25" />
+            <set stat="RESOURCE_ATO3" op="PER" value="1.25" />
         </stats>
         <requirements>
             <item id="resource_feo" count="100" />
@@ -33,7 +33,7 @@
     </item>
     <item id="module_optimizer_ch4" nameId="module_optimizer_ch4_n" type="MODULE" descriptionId="module_optimizer_ch4_d" volume="1">
         <stats>
-            <set baseStat="RESOURCE_CH4" op="PER" value="1.25" />
+            <set stat="RESOURCE_CH4" op="PER" value="1.25" />
         </stats>
         <requirements>
             <item id="resource_feo" count="100" />
@@ -43,7 +43,7 @@
     </item>
     <item id="module_optimizer_h2o" nameId="module_optimizer_h2o_n" type="MODULE" descriptionId="module_optimizer_h2o_d" volume="1">
         <stats>
-            <set baseStat="RESOURCE_H2O" op="PER" value="1.25" />
+            <set stat="RESOURCE_H2O" op="PER" value="1.25" />
         </stats>
         <requirements>
             <item id="resource_feo" count="100" />

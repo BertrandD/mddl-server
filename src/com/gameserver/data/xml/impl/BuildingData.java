@@ -3,10 +3,8 @@ package com.gameserver.data.xml.impl;
 import com.config.Config;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
-import com.gameserver.model.stats.BaseStat;
 import com.gameserver.enums.StatOp;
 import com.gameserver.holders.BuildingHolder;
-import com.gameserver.holders.FuncHolder;
 import com.gameserver.holders.ItemHolder;
 import com.gameserver.holders.PropertiesHolder;
 import com.gameserver.holders.PropertyHolder;
@@ -18,6 +16,7 @@ import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.Module;
+import com.gameserver.model.stats.BaseStat;
 import com.util.Evaluator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,26 +163,19 @@ public class BuildingData implements IXmlReader {
                                     attrs = d.getAttributes();
                                     if ("stat".equalsIgnoreCase(d.getNodeName())) {
                                         final BaseStat baseStat = parseEnum(attrs, BaseStat.class, "name");
+                                        final String function = parseString(attrs, "function", null);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
                                         final StatHolder holder = new StatHolder(baseStat, op);
 
-                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-                                        {
-                                            attrs = e.getAttributes();
-                                            if ("set".equalsIgnoreCase(e.getNodeName()))
-                                            {
-                                                final String function = parseString(attrs, "function", null);
-                                                final double[] values = new double[set.getInt("maxLevel")];
-
-                                                if(function != null) {
-                                                    for(int i = 0; i < values.length; i++) {
-                                                        final String func = function.replace("$level", "" + (i+1));
-                                                        values[i] = ((Number) Evaluator.getInstance().eval(func)).doubleValue();
-                                                    }
-                                                    holder.setValues(values);
-                                                }
+                                        final double[] values = new double[set.getInt("maxLevel")];
+                                        if(function != null) {
+                                            for(int i = 0; i < values.length; i++) {
+                                                final String func = function.replace("$level", "" + (i+1));
+                                                values[i] = ((Number) Evaluator.getInstance().eval(func)).doubleValue();
                                             }
+                                            holder.setValues(values);
                                         }
+
                                         stats.add(holder);
                                     }
                                 }
@@ -266,22 +258,6 @@ public class BuildingData implements IXmlReader {
                                     }
                                 }
                                 set.set("propertiesByLevel", propertiesHolder);
-                            }
-                            else if ("productions".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                final List<FuncHolder> productions = new ArrayList<>();
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
-                                    attrs = d.getAttributes();
-                                    if("produce".equalsIgnoreCase(d.getNodeName())) {
-                                        final String itemId = parseString(attrs, "itemId");
-                                        final String func = parseString(attrs, "function");
-                                        productions.add(new FuncHolder(itemId, func));
-                                    }
-                                }
-
-                                if(!productions.isEmpty()){
-                                    set.set("production", productions);
-                                }
                             }
                         }
 

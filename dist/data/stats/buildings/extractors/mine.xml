@@ -7,6 +7,11 @@
         <energy>
             <set fromLevel="2" function="100 + ($level * 125)" />
         </energy>
+        <stats>
+            <stat name="RESOURCE_FEO" function="(18*Math.pow($level,2)+150)" op="DIFF" />
+            <stat name="RESOURCE_C" function="(18*Math.pow($level,2)+150)" op="DIFF" />
+            <stat name="RESOURCE_ATO3" function="(18*Math.pow($level,2)+150)" op="DIFF" />
+        </stats>
         <modules>
             <module id="module_optimizer_feo" />
             <module id="module_optimizer_c" />
@@ -23,10 +28,5 @@
                 <building id="storage" level="1" />
             </requirement>
         </requirements>
-        <productions>
-            <produce itemId="resource_feo" function="(18*Math.pow($level,2)+150)" />
-            <produce itemId="resource_c" function="(18*Math.pow($level,2)+150)" />
-            <produce itemId="resource_ato3" function="(18*Math.pow($level,2)+150)" />
-        </productions>
     </building>
 </list>
