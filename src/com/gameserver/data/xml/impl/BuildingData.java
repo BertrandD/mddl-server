@@ -72,7 +72,7 @@ public class BuildingData implements IXmlReader {
                         }
 
                         final HashMap<Integer, Requirement> requirements = new HashMap<>();
-                        final HashMap<String, Module> modules = new HashMap<>();
+                        final List<Module> modules = new ArrayList<>();
                         final long[] buildTimes = new long[set.getInt("maxLevel", 1)];
                         final long[] energies = new long[set.getInt("maxLevel", 1)];
                         final List<StatHolder> stats = new ArrayList<>();
@@ -207,7 +207,7 @@ public class BuildingData implements IXmlReader {
                                         final String id = parseString(attrs, "id");
                                         final Module module = ItemData.getInstance().getModule(id);
                                         if(module != null)
-                                            modules.put(id, module);
+                                            modules.add(module);
                                     }
                                 }
                             }

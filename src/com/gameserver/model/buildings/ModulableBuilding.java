@@ -3,27 +3,28 @@ package com.gameserver.model.buildings;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.Module;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
 public abstract class ModulableBuilding extends Building {
 
-    private HashMap<String, Module> modules;
+    private List<Module> modules;
     private int maxModules;
 
     public ModulableBuilding(StatsSet set) {
         super(set);
-        setModules(new HashMap<>());
+        setModules(new ArrayList<>());
         setMaxModules(set.getInt("max_modules", 0));
     }
 
-    public HashMap<String, Module> getModules() {
+    public List<Module> getModules() {
         return modules;
     }
 
-    public void setModules(HashMap<String, Module> modules) {
+    public void setModules(List<Module> modules) {
         this.modules = modules;
     }
 

@@ -26,6 +26,7 @@ public abstract class Building implements IStat {
     private String descriptionId;
     private BuildingCategory type;
     private int maxLevel;
+    private int maxBuild;
     private long[] buildTimes;
     private long[] useEnergy;
     private List<StatHolder> stats;
@@ -38,6 +39,7 @@ public abstract class Building implements IStat {
         setType(set.getEnum("type", BuildingCategory.class));
         setDescriptionId(set.getString("descriptionId"));
         setMaxLevel(set.getInt("maxLevel", 1));
+        setMaxBuild(set.getInt("maxBuild", 1));
 
         setRequirements(new HashMap<>());
         setStats(new ArrayList<>());
@@ -89,6 +91,14 @@ public abstract class Building implements IStat {
 
     public void setMaxLevel(int maxlevel) {
         this.maxLevel = maxlevel;
+    }
+
+    public int getMaxBuild() {
+        return maxBuild;
+    }
+
+    public void setMaxBuild(int maxBuild) {
+        this.maxBuild = maxBuild;
     }
 
     public long[] getUseEnergy() {

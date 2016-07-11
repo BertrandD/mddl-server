@@ -7,6 +7,8 @@ import com.gameserver.model.instances.BuildingInstance;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author LEBOC Philippe
  */
@@ -32,10 +34,10 @@ public class BuildingService extends DatabaseService<BuildingInstance> {
     }
 
     public BuildingInstance findBy(Base base, String id) {
-        return findOneBy(new Criteria[]{Criteria.where("id").is(id), (Criteria.where("base").is(base))});
+        return findOneBy(Criteria.where("id").is(id), (Criteria.where("base").is(base)));
     }
 
-    public BuildingInstance findByBaseAndBuildingId(Base base, String buildingId) {
-        return findOneBy(new Criteria[]{Criteria.where("base").is(base), (Criteria.where("buildingId").is(buildingId))});
+    public List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId) {
+        return findBy(Criteria.where("base").is(base), (Criteria.where("buildingId").is(buildingId)));
     }
 }

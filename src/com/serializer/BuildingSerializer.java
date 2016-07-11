@@ -42,8 +42,8 @@ public class BuildingSerializer extends JsonSerializer<Building> {
             if(!((ModulableBuilding) value).getModules().isEmpty())
             {
                 gen.writeArrayFieldStart("availablesModules");
-                for(String moduleId : ((ModulableBuilding) value).getModules().keySet())
-                    gen.writeString(moduleId);
+                for (Module module : ((ModulableBuilding) value).getModules())
+                    gen.writeString(module.getItemId());
                 gen.writeEndArray();
             }
         }

@@ -88,10 +88,11 @@ public class BuildingInstanceController {
         if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
         base.initializeStats();
 
-        final BuildingInstance hasBuilding = buildingService.findByBaseAndBuildingId(base, templateId);
-        if(hasBuilding != null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST);
+        final Building template = BuildingData.getInstance().getBuilding(templateId);
+        if(template == null) return new JsonResponse(JsonResponseType.ERROR, "Building " + templateId + " does not exist.");
 
-        if(BuildingData.getInstance().getBuilding(templateId) == null) return new JsonResponse(JsonResponseType.ERROR, "Building " + templateId + " does not exist.");
+        final List<BuildingInstance> existingBuildings = buildingService.findByBaseAndBuildingId(base, templateId);
+        if(existingBuildings != null && existingBuildings.size() >= template.getMaxBuild()) return new JsonResponse(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST); // TODO: SysMsg MAX REACHED !
 
         final BuildingInstance tempBuilding = new BuildingInstance(base, templateId);
 
