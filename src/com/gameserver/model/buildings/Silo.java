@@ -4,12 +4,10 @@ import com.gameserver.model.commons.StatsSet;
 
 /**
  * @author LEBOC Philippe
+ * DONT DELETE ME ! (instanceof used somewhere)
  */
-public class Silo extends ModulableBuilding {
-
+public final class Silo extends ModulableBuilding {
     public Silo(StatsSet set) {
         super(set);
     }
-
-
 }

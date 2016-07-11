@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
-    <building id="pump" nameId="building_pump_n" type="Extractor" descriptionId="building_pump_d" maxLevel="100">
+    <building id="pump" nameId="building_pump_n" type="Extractor" class="ModulableCommonBuilding" descriptionId="building_pump_d" maxLevel="100">
         <buildTime>
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>

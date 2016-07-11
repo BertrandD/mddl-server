@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * @author LEBOC Philippe
  */
-public class ModuleFactory extends Building {
+public final class ModuleFactory extends Building {
 
     private static final Logger logger = Logger.getLogger(Building.class.getName());
     private HashMap<Integer, List<Module>> modulesByLevel;

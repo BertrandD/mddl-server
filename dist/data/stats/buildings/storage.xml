@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="storage" type="Storage" nameId="building_storage_n" maxLevel="5" descriptionId="building_storage_d">
+    <building id="storage" type="Storage" class="CommonBuilding" nameId="building_storage_n" maxLevel="5" descriptionId="building_storage_d">
         <buildTime>
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>

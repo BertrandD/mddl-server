@@ -3,7 +3,7 @@ package com.gameserver.manager;
 import com.config.Config;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.Base;
-import com.gameserver.model.buildings.Extractor;
+import com.gameserver.model.buildings.ModulableCommonBuilding;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.stats.BaseStat;
 import com.gameserver.model.tasks.BuildingTask;
@@ -34,7 +34,6 @@ public class BuildingTaskManager {
 
     private static final String BUILDING_MINE_ID = "mine";
     private static final String BUILDING_PUMP_ID = "pump";
-    private static final String BUILDING_STORAGE_ID = "storage";
 
     private ScheduledFuture<?> scheduledFuture;
     private BuildingTask currentTask;
@@ -129,14 +128,14 @@ public class BuildingTaskManager {
             if(building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1)
             {
                 final Base base = building.getBase();
-                final Extractor mine = (Extractor) building.getTemplate();
+                final ModulableCommonBuilding mine = (ModulableCommonBuilding) building.getTemplate();
                 mine.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
             }
 
             if(building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1)
             {
                 final Base base = building.getBase();
-                final Extractor pump = (Extractor) building.getTemplate();
+                final ModulableCommonBuilding pump = (ModulableCommonBuilding) building.getTemplate();
                 pump.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
             }
 

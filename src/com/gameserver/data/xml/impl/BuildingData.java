@@ -321,7 +321,7 @@ public class BuildingData implements IXmlReader {
 
     private Building makeBuilding(StatsSet set) throws InvocationTargetException {
         try {
-            final Constructor<?> c = Class.forName("com.gameserver.model.buildings." + set.getString("type")).getConstructor(StatsSet.class);
+            final Constructor<?> c = Class.forName("com.gameserver.model.buildings." + set.getString("class", "CommonBuilding")).getConstructor(StatsSet.class);
             return (Building) c.newInstance(set);
         } catch (Exception e) {
             throw new InvocationTargetException(e);
