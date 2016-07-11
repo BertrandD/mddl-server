@@ -108,7 +108,6 @@ public class BuildingInstanceController {
         base.addBuilding(building, base.getBuildingPositions().size()+1); // temp position disable
         baseService.update(base);
 
-        base.initializeStats();
         buildingTaskManager.ScheduleUpgrade(building);
 
         JsonResponse response = new JsonResponse(building);
