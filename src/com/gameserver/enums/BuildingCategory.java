@@ -8,6 +8,7 @@ public enum BuildingCategory {
     Shield,
     Extractor,
     Storage,
+    Silo,
     ModuleFactory,
     PowerFactory,
     CommonBuilding,
