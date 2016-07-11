@@ -1,6 +1,7 @@
 package com.gameserver.manager;
 
 import com.config.Config;
+import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Extractor;
 import com.gameserver.model.instances.BuildingInstance;
@@ -108,11 +109,8 @@ public class BuildingTaskManager {
         {
             final BuildingInstance building = getCurrentTask().getBuilding();
 
-            if(building.getBuildingId().equals(BUILDING_STORAGE_ID))
-            {
-                // Updating resources (lastrefresh) before expanding inventory
+            if(building.getTemplate().getType().equals(BuildingCategory.Silo) && building.getCurrentLevel() >= 1)
                 inventoryService.refresh(building.getBase());
-            }
 
             building.setCurrentLevel(getCurrentTask().getLevel());
             buildingTaskService.delete(getCurrentTask());
