@@ -109,7 +109,7 @@ public class BuildingTaskManager {
         {
             final BuildingInstance building = getCurrentTask().getBuilding();
 
-            if(building.getTemplate().getType().equals(BuildingCategory.Silo) && building.getCurrentLevel() >= 1)
+            if(building.getTemplate().getType().equals(BuildingCategory.Silo))
                 inventoryService.refresh(building.getBase());
 
             building.setCurrentLevel(getCurrentTask().getLevel());

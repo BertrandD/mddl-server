@@ -159,6 +159,12 @@ public class InventoryService implements IInventoryService {
         }
 
         if(add == 0) {
+            // if caused by a full inventory: update lastrefresh to now, else simply return.
+            if(inventory.getFreeVolume() < template.getVolume()) {
+                inventory.setLastRefresh(now);
+                resourceInventoryService.update(inventory);
+                return;
+            }
             logger.info("addItem " + template.getItemId() + " not added because there is inventory place to store him... Its not an error :)");
             logger.info("\t(current capacity is " + inventory.getVolume() + "/" + inventory.getMaxVolume() + ")");
             return;
