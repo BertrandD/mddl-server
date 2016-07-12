@@ -283,6 +283,30 @@ public class ItemData implements IXmlReader {
         return item;
     }
 
+    public List<Cargo> getCargos(List<String> ids) {
+        final List<Cargo> res = new ArrayList<>();
+        ids.forEach(k -> res.add(getCargo(k)));
+        return res;
+    }
+
+    public List<Engine> getEngines(List<String> ids) {
+        final List<Engine> res = new ArrayList<>();
+        ids.forEach(k -> res.add(getEngine(k)));
+        return res;
+    }
+
+    public List<Module> getModules(List<String> ids) {
+        final List<Module> res = new ArrayList<>();
+        ids.forEach(k -> res.add(getModule(k)));
+        return res;
+    }
+
+    public List<Weapon> getWeapons(List<String> ids) {
+        final List<Weapon> res = new ArrayList<>();
+        ids.forEach(k -> res.add(getWeapon(k)));
+        return res;
+    }
+
     public int getSize() {
         return _all.size();
     }
