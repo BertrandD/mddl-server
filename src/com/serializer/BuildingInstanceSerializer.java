@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.gameserver.model.instances.BuildingInstance;
+import com.gameserver.model.items.Module;
 
 import java.io.IOException;
 
@@ -23,9 +24,11 @@ public class BuildingInstanceSerializer extends JsonSerializer<BuildingInstance>
         gen.writeNumberField("startedAt", value.getStartedAt());
         gen.writeNumberField("endsAt", value.getEndsAt());
 
-        if(!value.getModules().isEmpty())
-        {
-            gen.writeObjectField("modules", value.getModules());
+        if(!value.getModules().isEmpty()) {
+            gen.writeArrayFieldStart("modules");
+            for (Module module : value.getModules())
+                gen.writeString(module.getItemId());
+            gen.writeEndArray();
         }
 
         gen.writeEndObject();
