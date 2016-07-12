@@ -8,19 +8,19 @@ import com.gameserver.model.commons.StatsSet;
  */
 public final class Weapon extends Item {
 
-    private int damage;
+    private double damage;
 
     public Weapon(StatsSet set, Requirement req)
     {
         super(set, req);
-        setDamage(set.getInt("damage", 0));
+        setDamage(set.getDouble("damage", 0));
     }
 
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(double damage) {
         this.damage = damage;
     }
 }

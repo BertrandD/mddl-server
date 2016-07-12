@@ -15,6 +15,7 @@
                                                     <xs:attribute name="stat" use="required">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="DAMAGE" />
                                                                 <xs:enumeration value="SLOT_CARGO" />
                                                                 <xs:enumeration value="SLOT_ENGINE" />
                                                                 <xs:enumeration value="SLOT_MODULE" />
@@ -68,6 +69,7 @@
                                                     <xs:attribute name="name" use="required">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="damage" />
                                                                 <xs:enumeration value="unlock_stat" />
                                                                 <xs:enumeration value="shield_defense" />
                                                                 <xs:enumeration value="affected" />
