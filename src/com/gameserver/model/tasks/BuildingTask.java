@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author LEBOC Philippe
  */
-@Document(collection = "tasks")
+@Document(collection = "building_tasks")
 public class BuildingTask {
 
     @Id
