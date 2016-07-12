@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.StatOp;
 import com.gameserver.holders.StatHolder;
 import com.gameserver.model.buildings.Building;
-import com.gameserver.model.buildings.Silo;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.ResourceInventory;
@@ -105,19 +104,8 @@ public final class Base
         for (BuildingInstance building : getBuildings()) {
             final Building template = building.getTemplate();
 
-            // TODO: REWORK THAT SHIT
-            if(template instanceof Silo) {
-                final Module module = building.getModules().get(0);
-                if(module != null && !module.getUnlockStat().equals(BaseStat.NONE)){
-                    getBaseStat().add(module.getUnlockStat(), template.getStatValue(module.getUnlockStat(), building.getCurrentLevel()), StatOp.DIFF);
-                }
-            }else{
-                for (StatHolder holder : template.getStats()) {
-                    if(holder != null && !holder.getStat().equals(BaseStat.NONE)){
-                        getBaseStat().add(holder.getStat(), template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp());
-                    }
-                }
-            }
+            building.getStats().stream().filter(holder -> holder != null && !holder.getStat().equals(BaseStat.NONE)).
+                    forEach(holder -> getBaseStat().add(holder.getStat(), template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp()));
 
             energyConsumption += (template.getUseEnergyAtLevel(building.getCurrentLevel()) * Config.USE_ENERGY_MODIFIER);
         }

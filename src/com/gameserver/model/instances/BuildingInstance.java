@@ -4,10 +4,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
+import com.gameserver.enums.StatOp;
+import com.gameserver.holders.StatHolder;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.items.Module;
+import com.gameserver.model.stats.BaseStat;
 import com.serializer.BuildingInstanceSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -124,7 +128,7 @@ public class BuildingInstance
     }
 
     public List<Module> getModules() {
-    List<Module> all = new ArrayList<>();
+        final  List<Module> all = new ArrayList<>();
         for (String module : modules) {
             Module m = ItemData.getInstance().getModule(module);
             if(m != null) all.add(m);
@@ -147,5 +151,25 @@ public class BuildingInstance
             return (this.id.equalsIgnoreCase(building.id));
         }
         return false;
+    }
+
+    public List<StatHolder> getStats() {
+        if(getTemplate().getType().equals(BuildingCategory.Silo)) {
+            final List<StatHolder> holders = new ArrayList<>();
+            final Module specialization = getModules().get(0);
+            if(specialization != null) holders.add(new StatHolder(specialization.getUnlockStat(), StatOp.DIFF));
+            return holders;
+        }
+        return getTemplate().getStats();
+    }
+
+    public StatHolder getStat(BaseStat stat) {
+        return getTemplate().getStat(stat);
+    }
+
+    public double getStatValue(BaseStat stat, int level) {
+        final StatHolder holder = getTemplate().getStat(stat);
+        if(holder == null) return 0;
+        return holder.getValue(level);
     }
 }
