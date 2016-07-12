@@ -8,5 +8,9 @@ public enum VehicleMission {
     ATTACK,
     DEFEND,
     BASING,
-    TRADE
+    STAY_ON_ORBIT,
+    TRADE,
+    COLONIZE,
+    SCANNING,
+    MINING
 }
