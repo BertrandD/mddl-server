@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/items.xsd">
+    <!-- Silo specialization -->
+    <item id="module_silo_improve_feo" nameId="module_silo_improve_feo_n" type="MODULE" descriptionId="module_silo_improve_feo_d" >
+        <properties>
+            <set name="unlock_stat" value="MAX_RESOURCE_FEO"/>
+        </properties>
+    </item>
+    <item id="module_silo_improve_c" nameId="module_silo_improve_c_n" type="MODULE" descriptionId="module_silo_improve_c_d" >
+        <properties>
+            <set name="unlock_stat" value="MAX_RESOURCE_C"/>
+        </properties>
+    </item>
+    <item id="module_silo_improve_ato3" nameId="module_silo_improve_ato3_n" type="MODULE" descriptionId="module_silo_improve_ato3_d" >
+        <properties>
+            <set name="unlock_stat" value="MAX_RESOURCE_ATO3"/>
+        </properties>
+    </item>
+    <item id="module_silo_improve_ch4" nameId="module_silo_improve_ch4_n" type="MODULE" descriptionId="module_silo_improve_ch4_d" >
+        <properties>
+            <set name="unlock_stat" value="MAX_RESOURCE_CH4"/>
+        </properties>
+    </item>
+    <item id="module_silo_improve_h2o" nameId="module_silo_improve_h2o_n" type="MODULE" descriptionId="module_silo_improve_h2o_d" >
+        <properties>
+            <set name="unlock_stat" value="MAX_RESOURCE_H2O"/>
+        </properties>
+    </item>
+</list>
