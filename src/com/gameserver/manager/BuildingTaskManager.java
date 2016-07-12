@@ -5,7 +5,7 @@ import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.ModulableCommonBuilding;
 import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.stats.Stats;
 import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
@@ -81,7 +81,7 @@ public class BuildingTaskManager {
         final long now = System.currentTimeMillis();
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
 
-        long buildTime = (long)(building.getBuildTime() * building.getBase().getBaseStat().getValue(BaseStat.BUILD_COOLDOWN_REDUCTION));
+        long buildTime = (long)(building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION));
         long endupgrade = now + buildTime;
 
         if(lastInQueue == null){

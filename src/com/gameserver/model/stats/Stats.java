@@ -5,7 +5,9 @@ import com.config.Config;
 /**
  * @author LEBOC Philippe
  */
-public enum BaseStat {
+public enum Stats {
+
+    // Others
     NONE(0),
     ENERGY(0),
 
@@ -23,24 +25,27 @@ public enum BaseStat {
     MAX_RESOURCE_H2O(Config.BASE_INITIAL_MAX_RESOURCE_STORAGE),
     MAX_RESOURCE_ATO3(Config.BASE_INITIAL_MAX_RESOURCE_STORAGE),
 
-    // Base general items storage
-    MAX_VOLUME(1000),
-    MAX_WIEGHT(0),
-
     // Base
-    HEALTH(0),
-    SHIELD(0),
-    MAX_HEALTH(Config.BASE_INITIAL_MAX_HEALTH),
-    MAX_SHIELD(Config.BASE_INITIAL_MAX_SHIELD),
+    BASE_HEALTH(0),
+    BASE_SHIELD(0),
+    BASE_MAX_HEALTH(Config.BASE_INITIAL_MAX_HEALTH),
+    BASE_MAX_SHIELD(Config.BASE_INITIAL_MAX_SHIELD),
+    BASE_MAX_STORAGE_VOLUME(1000),
+
+    // Fleet
+    FLEET_HEALTH(0),
+    FLEET_SHIELD(0),
+    FLEET_MAX_HEALTH(0),
+    FLEET_MAX_SHIELD(0),
+    FLEET_DAMAGE(0),
+    FLEET_CARGO(0),
 
     // Univers
-    BUILD_COOLDOWN_REDUCTION(Config.BUILDTIME_MODIFIER),
-    RESOURCE_PRODUCTION_SPEED(Config.RESOURCE_PRODUCTION_MODIFIER), // TODO: remove ?
-    SHIP_SPEED(1.0);
+    BUILD_COOLDOWN_REDUCTION(Config.BUILDTIME_MODIFIER);
 
     private double value;
 
-    BaseStat(double value)
+    Stats(double value)
     {
         setValue(value);
     }

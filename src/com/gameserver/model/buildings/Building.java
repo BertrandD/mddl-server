@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
-import com.gameserver.model.stats.BaseStat;
 import com.gameserver.holders.StatHolder;
 import com.gameserver.interfaces.IStat;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
+import com.gameserver.model.stats.ObjectStat;
 import com.serializer.BuildingSerializer;
 
 import java.util.ArrayList;
@@ -144,9 +144,8 @@ public abstract class Building implements IStat {
         this.lang = lang;
     }
 
-    @Override
-    public StatHolder getStat(BaseStat stat) {
-        return stats.stream().filter(k -> k.getStat().name().equals(stat.name())).findFirst().get();
+    public void handleEffect(final ObjectStat stats, int level) {
+        this.getStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
     }
 
     @Override

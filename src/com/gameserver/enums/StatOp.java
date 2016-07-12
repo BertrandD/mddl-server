@@ -7,5 +7,5 @@ public enum StatOp {
     NONE,
     DIFF,
     PER,
-    BASE
+    UNLOCK
 }

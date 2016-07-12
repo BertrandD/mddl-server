@@ -40,12 +40,11 @@
 														<xs:simpleType>
 															<xs:restriction base="xs:string">
 																<xs:enumeration value="ENERGY" />
-																<xs:enumeration value="MAX_HEALTH" />
-																<xs:enumeration value="MAX_SHIELD" />
-																<xs:enumeration value="MAX_VOLUME" />
+																<xs:enumeration value="BASE_MAX_HEALTH" />
+																<xs:enumeration value="BASE_MAX_SHIELD" />
+																<xs:enumeration value="BASE_MAX_STORAGE_VOLUME" />
 																<xs:enumeration value="BUILD_COOLDOWN_REDUCTION" />
 																<xs:enumeration value="RESOURCE_PRODUCTION_SPEED" />
-																<xs:enumeration value="SHIP_SPEED" />
 																<xs:enumeration value="RESOURCE_FEO" />
 																<xs:enumeration value="RESOURCE_C" />
 																<xs:enumeration value="RESOURCE_CH4" />

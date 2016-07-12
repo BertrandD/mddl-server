@@ -15,39 +15,45 @@ public class ObjectStat {
 
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    private HashMap<BaseStat, Double> stats;
+    private HashMap<Stats, Double> stats;
 
     public ObjectStat() {
         setStats(new HashMap<>());
     }
 
-    public void addStat(BaseStat baseStat) {
-        if(!getStats().containsKey(baseStat))
-            getStats().put(baseStat, baseStat.getValue());
-        else logger.warn("Trying to replace an existing baseStat (" + baseStat.name() + "). Abort.");
+    public void addStat(final Stats stat) {
+        if(!getStats().containsKey(stat))
+            getStats().put(stat, stat.getValue());
+        else logger.warn("Trying to replace an existing stat (" + stat.name() + "). Abort.");
     }
 
-    public double getValue(BaseStat baseStat) {
-        return getValue(baseStat, 0);
+    public double getValue(Stats stat) {
+        return getValue(stat, 0);
     }
 
-    public double getValue(BaseStat baseStat, double defaultValue) {
-        return getStats().get(baseStat) == null ? defaultValue : getStats().get(baseStat);
+    public double getValue(Stats stat, double defaultValue) {
+        return getStats().get(stat) == null ? defaultValue : getStats().get(stat);
     }
 
-    public HashMap<BaseStat, Double> getStats() {
+    public HashMap<Stats, Double> getStats() {
         return stats;
     }
 
-    private void setStats(HashMap<BaseStat, Double> stats) {
+    private void setStats(HashMap<Stats, Double> stats) {
         this.stats = stats;
     }
 
-    public void add(final BaseStat baseStat, final double val, final StatOp op) {
-        switch (op)
-        {
-            case DIFF: getStats().replace(baseStat, getValue(baseStat) + val); break;
-            case PER: getStats().replace(baseStat, getValue(baseStat) * val); break;
+    public void add(final Stats stat, final double val, final StatOp op) {
+
+        if(!getStats().containsKey(stat) && op != StatOp.UNLOCK) {
+            logger.warn("Trying an operator on an non registered stat: "+stat.name());
+            return;
+        }
+
+        switch (op) {
+            case DIFF: getStats().replace(stat, getValue(stat) + val); break;
+            case PER: getStats().replace(stat, getValue(stat) * val); break;
+            case UNLOCK: addStat(stat); break;
             default: break;
         }
     }

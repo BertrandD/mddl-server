@@ -3,7 +3,7 @@ package com.gameserver.model.inventory;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.model.Base;
-import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.stats.Stats;
 import com.serializer.BaseInventorySerializer;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -53,7 +53,7 @@ public final class BaseInventory extends AbstractMultiStorageInventory {
 
     @Override
     public long getMaxVolume() {
-        return (long) Math.floor(getBase().getBaseStat().getValue(BaseStat.MAX_VOLUME));
+        return (long) Math.floor(getBase().getBaseStat().getValue(Stats.BASE_MAX_STORAGE_VOLUME));
     }
 
     @Override

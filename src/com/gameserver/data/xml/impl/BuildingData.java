@@ -16,7 +16,7 @@ import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.commons.StatsSet;
 import com.gameserver.model.items.Module;
-import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.stats.Stats;
 import com.util.Evaluator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,7 +162,7 @@ public class BuildingData implements IXmlReader {
                                 {
                                     attrs = d.getAttributes();
                                     if ("stat".equalsIgnoreCase(d.getNodeName())) {
-                                        final BaseStat baseStat = parseEnum(attrs, BaseStat.class, "name");
+                                        final Stats baseStat = parseEnum(attrs, Stats.class, "name");
                                         final String function = parseString(attrs, "function", null);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
                                         final StatHolder holder = new StatHolder(baseStat, op);

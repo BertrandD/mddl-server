@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.SystemMessageData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
-import com.gameserver.model.stats.BaseStat;
 import com.gameserver.holders.StatHolder;
 import com.gameserver.interfaces.IStat;
 import com.gameserver.model.commons.StatsSet;
+import com.gameserver.model.stats.ObjectStat;
 import com.serializer.GameItemSerializer;
 
 import java.util.ArrayList;
@@ -107,8 +107,8 @@ public abstract class GameItem implements IStat {
         this.lang = lang;
     }
 
-    public StatHolder getStat(BaseStat baseStat) {
-        return stats.stream().filter(k -> k.getStat().name().equals(baseStat.name())).findFirst().get();
+    public void handleEffect(final ObjectStat stats) {
+        getStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(), stat.getOp()));
     }
 
     @Override
@@ -119,11 +119,6 @@ public abstract class GameItem implements IStat {
     @Override
     public void setStats(List<StatHolder> stats) {
         this.stats = stats;
-    }
-
-    @Override
-    public double getStatValue(BaseStat stat, int level) {
-        return getStats().stream().filter(k -> k.getStat().name().equals(stat.name())).findFirst().get().getValue();
     }
 
     @Override

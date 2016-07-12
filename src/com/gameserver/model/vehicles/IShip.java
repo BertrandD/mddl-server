@@ -1,4 +1,4 @@
-package com.gameserver.model.ship;
+package com.gameserver.model.vehicles;
 
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.Engine;
@@ -14,9 +14,9 @@ import java.util.List;
 public interface IShip {
 
     Structure getStructure();
+    List<Engine> getEngines();
 
     List<Cargo> getCargos();
-    List<Engine> getEngines();
     List<Module> getModules();
     List<Weapon> getWeapons();
 

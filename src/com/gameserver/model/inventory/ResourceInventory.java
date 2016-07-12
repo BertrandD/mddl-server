@@ -3,7 +3,7 @@ package com.gameserver.model.inventory;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.stats.Stats;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,7 +17,7 @@ public final class ResourceInventory extends AbstractInventory {
     @JsonBackReference
     private Base base;
 
-    private BaseStat stat;
+    private Stats stat;
 
     @DBRef
     @JsonBackReference
@@ -28,7 +28,7 @@ public final class ResourceInventory extends AbstractInventory {
     public ResourceInventory(Base base, ItemInstance item) {
         super();
         setBase(base);
-        setStat(BaseStat.valueOf(item.getTemplateId().toUpperCase()));
+        setStat(Stats.valueOf(item.getTemplateId().toUpperCase()));
         setItem(item);
         setLastRefresh(System.currentTimeMillis());
     }
@@ -49,11 +49,11 @@ public final class ResourceInventory extends AbstractInventory {
         this.base = base;
     }
 
-    public BaseStat getStat() {
+    public Stats getStat() {
         return stat;
     }
 
-    public void setStat(BaseStat stat) {
+    public void setStat(Stats stat) {
         this.stat = stat;
     }
 
@@ -90,7 +90,7 @@ public final class ResourceInventory extends AbstractInventory {
 
     @Override
     public long getMaxVolume() {
-        return (long)(getBase().getBaseStat().getValue(BaseStat.valueOf("MAX_" + getStat()), 0)); // TODO: check cast
+        return (long)(getBase().getBaseStat().getValue(Stats.valueOf("MAX_" + getStat()), 0)); // TODO: check cast
     }
 
     @Override

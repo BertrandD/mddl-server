@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
     <item id="structure_test" type="STRUCTURE" nameId="structure_test_n" descriptionId="structure_test_d" rank="A" buildTime="60" volume="72">
-        <stats>
-            <set stat="SLOT_CARGO" op="DIFF" value="3" />
-            <set stat="SLOT_ENGINE" op="DIFF" value="2" />
-            <set stat="SLOT_MODULE" op="DIFF" value="1" />
-            <set stat="SLOT_TECHNOLOGY" op="DIFF" value="1" />
-            <set stat="SLOT_WEAPON" op="DIFF" value="2" />
-        </stats>
         <requirements>
             <item id="metal" count="50" />
         </requirements>

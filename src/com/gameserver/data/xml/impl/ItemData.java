@@ -4,7 +4,7 @@ import com.config.Config;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
 import com.gameserver.enums.Rank;
-import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.stats.Stats;
 import com.gameserver.enums.StatOp;
 import com.gameserver.holders.BuildingHolder;
 import com.gameserver.holders.ItemHolder;
@@ -58,7 +58,7 @@ public class ItemData implements IXmlReader {
         _weapons.clear();
         _resources.clear();
         _commons.clear();
-        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/items", false);
+        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/items", true);
         LOGGER.info("Loaded " + _structures.size() + " structures templates.");
         LOGGER.info("Loaded " + _cargos.size() + " cargos templates.");
         LOGGER.info("Loaded " + _engines.size() + " engines templates.");
@@ -126,10 +126,10 @@ public class ItemData implements IXmlReader {
                                 {
                                     attrs = d.getAttributes();
                                     if ("set".equalsIgnoreCase(d.getNodeName())) {
-                                        final BaseStat baseStat = parseEnum(attrs, BaseStat.class, "baseStat");
+                                        final Stats stat = parseEnum(attrs, Stats.class, "stat", Stats.NONE);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
                                         final double value = parseDouble(attrs, "value", 0.0);
-                                        final StatHolder holder = new StatHolder(baseStat, op);
+                                        final StatHolder holder = new StatHolder(stat, op);
                                         holder.setValue(value);
 
                                         stats.add(holder);

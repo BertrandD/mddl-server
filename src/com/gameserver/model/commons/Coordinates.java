@@ -2,20 +2,22 @@ package com.gameserver.model.commons;
 
 /**
  * @author LEBOC Philippe
- * Coordinates are writed by Galaxy, Solar System, Planet number in solar system and base.
- * Every part of coordinates are writed on 4 digits (Exemple: 0020:1565:0001:0016)
+ * Coordinates are writed by Galaxy, Solar System, Astral object number in solar system and base.
+ *      Minimum value : [00:00:000:0]
+ *      Maximum value : [99:99:999:9]
+ * (Exemple: 01:65:621:6)
  */
 public class Coordinates {
 
     private int galaxy;
     private int system;
-    private int planet;
+    private int object;
     private int base;
 
-    public Coordinates(int galaxy, int system, int planet, int base){
+    public Coordinates(int galaxy, int system, int object, int base){
         setGalaxy(galaxy);
         setSystem(system);
-        setPlanet(planet);
+        setObject(object);
         setBase(base);
     }
 
@@ -35,12 +37,12 @@ public class Coordinates {
         this.system = system;
     }
 
-    public int getPlanet() {
-        return planet;
+    public int getObject() {
+        return object;
     }
 
-    private void setPlanet(int planet) {
-        this.planet = planet;
+    private void setObject(int object) {
+        this.object = object;
     }
 
     public int getBase() {
@@ -52,6 +54,6 @@ public class Coordinates {
     }
 
     public String toString(){
-        return String.format("%04d", galaxy) + ":" + String.format("%04d", system) + ":" + String.format("%04d", planet) + ":" + String.format("%04d", base);
+        return String.format("%04d", galaxy) + ":" + String.format("%04d", system) + ":" + String.format("%04d", object) + ":" + String.format("%04d", base);
     }
 }

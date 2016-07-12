@@ -1,6 +1,6 @@
 package com.gameserver.holders;
 
-import com.gameserver.model.stats.BaseStat;
+import com.gameserver.model.stats.Stats;
 import com.gameserver.enums.StatOp;
 
 /**
@@ -8,21 +8,21 @@ import com.gameserver.enums.StatOp;
  */
 public class StatHolder {
 
-    private BaseStat stat;
+    private Stats stat;
     private StatOp op;
     private double value; // direct baseStat value
     private double[] values; // buildings: values indexed by levels
 
-    public StatHolder(BaseStat baseStat, StatOp op) {
-        setStat(baseStat);
+    public StatHolder(Stats stats, StatOp op) {
+        setStat(stats);
         setOp(op);
     }
 
-    public BaseStat getStat() {
+    public Stats getStat() {
         return stat;
     }
 
-    private void setStat(BaseStat stat) {
+    private void setStat(Stats stat) {
         this.stat = stat;
     }
 

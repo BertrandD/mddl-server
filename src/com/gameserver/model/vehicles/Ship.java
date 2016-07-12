@@ -1,164 +1,97 @@
 package com.gameserver.model.vehicles;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.enums.StructureSlot;
+import com.gameserver.enums.VehicleState;
 import com.gameserver.model.Base;
-import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.Engine;
+import com.gameserver.model.items.Module;
 import com.gameserver.model.items.Structure;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import com.gameserver.model.items.Weapon;
+import com.serializer.ShipSerializer;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @deprecated
  * @author LEBOC Philippe
  */
 @Document(collection = "ships")
+@JsonSerialize(using = ShipSerializer.class)
 public class Ship extends Vehicle {
 
-    private long count;
+    private String structureId;
+    private List<String> cargoIds;
+    private List<String> engineIds;
+    private List<String> moduleIds;
+    private List<String> weaponIds;
 
-    @DBRef
-    private Base base;
-
-    private String structure;
-
-    private ArrayList<String> cargos;
-
-    private ArrayList<String> engines;
-
-    private ArrayList<String> modules;
-
-    private ArrayList<String> weapons;
-
-    // TODO: private ArrayList<String> technologies;
-
-    public Ship(){
-        setCargos(new ArrayList<>());
-        setEngines(new ArrayList<>());
-        setModules(new ArrayList<>());
-        setWeapons(new ArrayList<>());
+    public Ship() {
+        super();
+        setCargoIds(new ArrayList<>());
+        setEngineIds(new ArrayList<>());
+        setModuleIds(new ArrayList<>());
+        setWeaponIds(new ArrayList<>());
     }
 
-    public Ship(Base base, String structure, long count){
+    public Ship(Base base, String structureId, long count) {
+        super();
+        setId(new ObjectId().toString());
         setBase(base);
-        setStructure(structure);
+        setStructureId(structureId);
         setCount(count);
-        setCargos(new ArrayList<>());
-        setEngines(new ArrayList<>());
-        setModules(new ArrayList<>());
-        setWeapons(new ArrayList<>());
+        setState(VehicleState.BASED);
+        setCargoIds(new ArrayList<>());
+        setEngineIds(new ArrayList<>());
+        setModuleIds(new ArrayList<>());
+        setWeaponIds(new ArrayList<>());
+    }
+
+    public void setStructureId(String structureId) {
+        this.structureId = structureId;
+    }
+
+    public void setCargoIds(List<String> cargoIds) {
+        this.cargoIds = cargoIds;
+    }
+
+    public void setEngineIds(List<String> engineIds) {
+        this.engineIds = engineIds;
+    }
+
+    public void setModuleIds(List<String> modulesIds) {
+        this.moduleIds = modulesIds;
+    }
+
+    public void setWeaponIds(List<String> weaponIds) {
+        this.weaponIds = weaponIds;
     }
 
     @Override
-    public long getMaxSpeed() {
-        int power = 0;
-        for(String engineId : getEngines())
-        {
-            final Engine engine = ItemData.getInstance().getEngine(engineId);
-            if(engine != null)
-                power += engine.getPower();
-        }
-        return power;
+    public Structure getStructure() {
+        return ItemData.getInstance().getStructure(this.structureId);
     }
 
-    public boolean addCargo(ItemInstance item){
-        final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isCargo() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.CARGO) > getCargos().size())){
-            getCargos().add(item.getTemplateId()); // TODO add checks
-            return true;
-        }
-        return false;
+    @Override
+    public List<Cargo> getCargos() {
+        return ItemData.getInstance().getCargos(this.cargoIds);
     }
 
-    public boolean addEngine(ItemInstance item){
-        final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isEngine() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.ENGINE) > getCargos().size())){
-            getEngines().add(item.getTemplateId()); // TODO add checks
-            return true;
-        }
-        return false;
+    @Override
+    public List<Engine> getEngines() {
+        return ItemData.getInstance().getEngines(this.engineIds);
     }
 
-    public boolean addModule(ItemInstance item){
-        final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isModule() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.MODULE) > getCargos().size())){
-            getModules().add(item.getTemplateId()); // TODO add checks
-            return true;
-        }
-        return false;
+    @Override
+    public List<Module> getModules() {
+        return ItemData.getInstance().getModules(this.moduleIds);
     }
 
-    public boolean addTechnology(){
-        // TODO technology
-        return false;
-    }
-
-    public boolean addWeapon(ItemInstance item){
-        final Structure structure = ItemData.getInstance().getStructure(getStructure());
-        if(item.isWeapon() && structure != null && (structure.getAvailablesSlots().get(StructureSlot.WEAPON) > getCargos().size())){
-            getWeapons().add(item.getTemplateId()); // TODO add checks
-            return true;
-        }
-        return false;
-    }
-
-    public long getCount() {
-        return count;
-    }
-
-    public void setCount(long count) {
-        this.count = count;
-    }
-
-    public Base getBase() {
-        return base;
-    }
-
-    public void setBase(Base base) {
-        this.base = base;
-    }
-
-    public String getStructure() {
-        return structure;
-    }
-
-    public void setStructure(String structure) {
-        if(getStructure() == null)
-            this.structure = structure;
-    }
-
-    public ArrayList<String> getCargos() {
-        return cargos;
-    }
-
-    public void setCargos(ArrayList<String> cargos) {
-        this.cargos = cargos;
-    }
-
-    public ArrayList<String> getEngines() {
-        return engines;
-    }
-
-    public void setEngines(ArrayList<String> engines) {
-        this.engines = engines;
-    }
-
-    public ArrayList<String> getModules() {
-        return modules;
-    }
-
-    public void setModules(ArrayList<String> modules) {
-        this.modules = modules;
-    }
-
-    public ArrayList<String> getWeapons() {
-        return weapons;
-    }
-
-    public void setWeapons(ArrayList<String> weapons) {
-        this.weapons = weapons;
+    @Override
+    public List<Weapon> getWeapons() {
+        return ItemData.getInstance().getWeapons(this.weaponIds);
     }
 }

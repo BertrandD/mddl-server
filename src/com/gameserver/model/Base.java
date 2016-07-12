@@ -4,14 +4,15 @@ import com.config.Config;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.enums.StatOp;
-import com.gameserver.holders.StatHolder;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.ResourceInventory;
 import com.gameserver.model.items.Module;
-import com.gameserver.model.stats.BaseStat;
 import com.gameserver.model.stats.ObjectStat;
+import com.gameserver.model.stats.Stats;
+import com.gameserver.model.vehicles.Fleet;
+import com.gameserver.model.vehicles.Ship;
 import com.serializer.BaseSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -23,6 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -33,13 +35,7 @@ public final class Base
 {
     @Id
     private String id;
-
     private String name;
-
-    private long currentHealth;
-    private long currentShield;
-    private double healthRegenRate;
-    private double shieldRegenRate;
     private HashMap<Integer, String> buildingPositions;
 
     @DBRef
@@ -49,6 +45,13 @@ public final class Base
 
     @Transient
     private ObjectStat baseStat;
+
+    @DBRef
+    @JsonManagedReference
+    private List<Ship> ship;
+
+    @DBRef
+    private List<Fleet> fleets;
 
     @DBRef
     @JsonManagedReference
@@ -67,6 +70,8 @@ public final class Base
         setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
         setResources(new ArrayList<>());
+        setShip(new ArrayList<>());
+        setFleets(new ArrayList<>());
     }
 
     public Base(String name, Player owner) {
@@ -75,12 +80,10 @@ public final class Base
         setOwner(owner);
         setBuildings(new ArrayList<>());
         setBuildingPositions(new HashMap<>());
-        setCurrentHealth(Config.BASE_INITIAL_MAX_HEALTH);
-        setCurrentShield(Config.BASE_INITIAL_MAX_SHIELD);
-        setHealthRegenRate(100.0);
-        setShieldRegenRate(100.0);
         setBaseStat(new ObjectStat());
         setResources(new ArrayList<>());
+        setShip(new ArrayList<>());
+        setFleets(new ArrayList<>());
     }
 
     /**
@@ -90,35 +93,44 @@ public final class Base
      *               That's why we need initialize stats hand made
      */
     public void initializeStats() {
-        // Intialize all existing stats
-        for (BaseStat baseStat : BaseStat.values()) {
-            getBaseStat().addStat(baseStat);
+        final ObjectStat stats = getBaseStat();
+
+        // Register base stats
+        stats.addStat(Stats.BASE_HEALTH);
+        stats.addStat(Stats.BASE_MAX_HEALTH);
+        stats.addStat(Stats.BASE_SHIELD);
+        stats.addStat(Stats.BASE_MAX_SHIELD);
+
+        stats.addStat(Stats.ENERGY);
+        stats.addStat(Stats.BASE_MAX_STORAGE_VOLUME);
+
+        stats.addStat(Stats.RESOURCE_FEO);
+        stats.addStat(Stats.RESOURCE_C);
+        stats.addStat(Stats.RESOURCE_ATO3);
+        stats.addStat(Stats.RESOURCE_CH4);
+        stats.addStat(Stats.RESOURCE_H2O);
+
+        // Applying module that's unlock stats.
+        final List<BuildingInstance> silos = getBuildings().stream().filter(r -> r.getBuildingId().equalsIgnoreCase("silo")).collect(Collectors.toList());
+        if(silos != null && !silos.isEmpty()) {
+            silos.forEach(silo -> silo.getModules().forEach(module -> module.handleEffect(stats))); // Warning: CAN'T WORK IF WE ADD OTHERS STATS THAN MAX_RESOURCE_XX UNLOCK
         }
 
-        // Base stats
-        getBaseStat().add(BaseStat.HEALTH, getCurrentHealth(), StatOp.DIFF);
-        getBaseStat().add(BaseStat.SHIELD, getCurrentShield(), StatOp.DIFF);
-
-        // Buildings stats
+        // Applying buildings stats
         long energyConsumption = 0;
         for (BuildingInstance building : getBuildings()) {
             final Building template = building.getTemplate();
-
-            building.getStats().stream().filter(holder -> holder != null && !holder.getStat().equals(BaseStat.NONE)).
-                    forEach(holder -> getBaseStat().add(holder.getStat(), template.getStatValue(holder.getStat(), building.getCurrentLevel()), holder.getOp()));
-
+            template.handleEffect(stats, building.getCurrentLevel());
             energyConsumption += (template.getUseEnergyAtLevel(building.getCurrentLevel()) * Config.USE_ENERGY_MODIFIER);
         }
 
         // Building energy consumption
-        getBaseStat().add(BaseStat.ENERGY, -energyConsumption, StatOp.DIFF);
+        stats.add(Stats.ENERGY, -energyConsumption, StatOp.DIFF);
 
-        // Module
+        // Applying Module stats
         for (BuildingInstance inst : getBuildings()) {
             for (Module module : inst.getModules()) {
-                for (StatHolder holder : module.getStats()) {
-                    getBaseStat().add(holder.getStat(), holder.getValue(), holder.getOp());
-                }
+                module.handleEffect(stats);
             }
         }
     }
@@ -145,44 +157,6 @@ public final class Base
 
     public void setOwner(Player owner) {
         this.owner = owner;
-    }
-
-    public long getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(long currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public long getCurrentShield() {
-        return currentShield;
-    }
-
-    public void setCurrentShield(long currentShield) {
-        this.currentShield = currentShield;
-    }
-
-    /**
-     * @return the amount of SHIELD regeneration per hour
-     */
-    public double getHealthRegenRate() {
-        return healthRegenRate;
-    }
-
-    public void setHealthRegenRate(double healthRegenRate) {
-        this.healthRegenRate = healthRegenRate;
-    }
-
-    /**
-     * @return the amount of HP regeneration per hour
-     */
-    public double getShieldRegenRate() {
-        return shieldRegenRate;
-    }
-
-    public void setShieldRegenRate(double shieldRegenRate) {
-        this.shieldRegenRate = shieldRegenRate;
     }
 
     public ObjectStat getBaseStat() {
@@ -232,5 +206,21 @@ public final class Base
 
     public void addResourceInventory(final ResourceInventory inventory) {
         this.resources.add(inventory);
+    }
+
+    public List<Ship> getShip() {
+        return ship;
+    }
+
+    public void setShip(List<Ship> ship) {
+        this.ship = ship;
+    }
+
+    public List<Fleet> getFleets() {
+        return fleets;
+    }
+
+    public void setFleets(List<Fleet> fleets) {
+        this.fleets = fleets;
     }
 }

@@ -26,6 +26,11 @@
                                                                 <xs:enumeration value="RESOURCE_CH4" />
                                                                 <xs:enumeration value="RESOURCE_ATO3" />
                                                                 <xs:enumeration value="RESOURCE_H2O" />
+                                                                <xs:enumeration value="MAX_RESOURCE_FEO" />
+                                                                <xs:enumeration value="MAX_RESOURCE_C" />
+                                                                <xs:enumeration value="MAX_RESOURCE_CH4" />
+                                                                <xs:enumeration value="MAX_RESOURCE_ATO3" />
+                                                                <xs:enumeration value="MAX_RESOURCE_H2O" />
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:attribute>
@@ -34,10 +39,11 @@
                                                             <xs:restriction base="xs:string">
                                                                 <xs:enumeration value="DIFF" />
                                                                 <xs:enumeration value="PER" />
+                                                                <xs:enumeration value="UNLOCK" />
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:attribute>
-                                                    <xs:attribute name="value" type="xs:double" use="required" />
+                                                    <xs:attribute name="value" type="xs:double" use="optional" />
                                                 </xs:complexType>
                                             </xs:element>
                                         </xs:sequence>
