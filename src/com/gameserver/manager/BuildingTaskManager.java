@@ -81,7 +81,7 @@ public class BuildingTaskManager {
         final long now = System.currentTimeMillis();
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
 
-        long buildTime = (long)(building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION));
+        long buildTime = (long)(building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION, Config.BUILDTIME_MODIFIER));
         long endupgrade = now + buildTime;
 
         if(lastInQueue == null){
