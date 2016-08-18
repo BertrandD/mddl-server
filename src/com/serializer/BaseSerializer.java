@@ -17,6 +17,7 @@ public class BaseSerializer extends JsonSerializer<Base> {
     public void serialize(Base value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
+        gen.writeStringField("name", value.getName());
 
         gen.writeObjectFieldStart("owner");
         gen.writeStringField("id", value.getOwner().getId());
