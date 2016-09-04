@@ -71,6 +71,8 @@ public class BuildingData implements IXmlReader {
                             set.set(att.getNodeName(), att.getNodeValue());
                         }
 
+                        set.set("type", set.getString("id").toUpperCase());
+
                         final HashMap<Integer, Requirement> requirements = new HashMap<>();
                         final List<Module> modules = new ArrayList<>();
                         final long[] buildTimes = new long[set.getInt("maxLevel", 1)];

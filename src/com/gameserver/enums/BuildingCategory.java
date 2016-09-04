@@ -4,13 +4,18 @@ package com.gameserver.enums;
  * @author LEBOC Philippe
  */
 public enum BuildingCategory {
-    None,
-    Shield,
-    Extractor,
-    Storage,
-    Silo,
-    ModuleFactory,
-    PowerFactory,
-    CommonBuilding,
-    RobotFactory
+    NONE,
+    TEST,
+    SHIELD,
+    MINE,
+    PUMP,
+    STORAGE,
+    SILO,
+    MODULE_FACTORY,
+    OPERATION_CENTER,
+    MARKET,
+    POWER_FACTORY,
+    EMBASSY,
+    ROBOT_FACTORY,
+    SPATIAL_ELEVATOR
 }

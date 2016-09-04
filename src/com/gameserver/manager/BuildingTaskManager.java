@@ -3,7 +3,7 @@ package com.gameserver.manager;
 import com.config.Config;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.model.Base;
-import com.gameserver.model.buildings.ModulableCommonBuilding;
+import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.stats.Stats;
 import com.gameserver.model.tasks.BuildingTask;
@@ -108,7 +108,7 @@ public class BuildingTaskManager {
         {
             final BuildingInstance building = getCurrentTask().getBuilding();
 
-            if(building.getTemplate().getType().equals(BuildingCategory.Silo))
+            if(building.getTemplate().getType().equals(BuildingCategory.SILO))
                 inventoryService.refresh(building.getBase());
 
             building.setCurrentLevel(getCurrentTask().getLevel());
@@ -128,14 +128,14 @@ public class BuildingTaskManager {
             if(building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1)
             {
                 final Base base = building.getBase();
-                final ModulableCommonBuilding mine = (ModulableCommonBuilding) building.getTemplate();
+                final ModulableBuilding mine = (ModulableBuilding) building.getTemplate();
                 mine.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
             }
 
             if(building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1)
             {
                 final Base base = building.getBase();
-                final ModulableCommonBuilding pump = (ModulableCommonBuilding) building.getTemplate();
+                final ModulableBuilding pump = (ModulableBuilding) building.getTemplate();
                 pump.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
             }
 

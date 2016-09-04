@@ -16,6 +16,7 @@ public interface IInventory {
     }
 
     default long getAmountThatCanBeStored(long volume) {
+        if(volume == 0) return -1; // TODO: change me
         return Math.max(0, Math.floorDiv(getFreeVolume(), volume));
     }
 

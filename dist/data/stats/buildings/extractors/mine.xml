@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
-    <building id="mine" type="Extractor" class="ModulableCommonBuilding" nameId="building_mine_n" maxLevel="100" descriptionId="building_mine_d">
+    <building id="mine" class="ModulableBuilding" nameId="building_mine_n" maxLevel="100" descriptionId="building_mine_d">
         <buildTime>
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
