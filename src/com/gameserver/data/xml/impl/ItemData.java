@@ -206,37 +206,37 @@ public class ItemData implements IXmlReader {
     }
 
     public List<CommonItem> getResources(Lang lang) {
-        _resources.values().stream().forEach(k->k.setLang(lang));
+        _resources.values().forEach(k->k.setLang(lang));
         return new ArrayList<>(_resources.values());
     }
 
     public List<CommonItem> getCommonItems(Lang lang) {
-        _commons.values().stream().forEach(k->k.setLang(lang));
+        _commons.values().forEach(k->k.setLang(lang));
         return new ArrayList<>(_commons.values());
     }
 
     public List<Cargo> getCargos(Lang lang) {
-        _cargos.values().stream().forEach(k->k.setLang(lang));
+        _cargos.values().forEach(k->k.setLang(lang));
         return new ArrayList<>(_cargos.values());
     }
 
     public List<Engine> getEngines(Lang lang) {
-        _engines.values().stream().forEach(k->k.setLang(lang));
+        _engines.values().forEach(k->k.setLang(lang));
         return new ArrayList<>(_engines.values());
     }
 
     public List<Module> getModules(Lang lang) {
-        _modules.values().stream().forEach(k->k.setLang(lang));
+        _modules.values().forEach(k -> k.setLang(lang));
         return new ArrayList<>(_modules.values());
     }
 
     public List<Weapon> getWeapons(Lang lang) {
-        _weapons.values().stream().forEach(k->k.setLang(lang));
+        _weapons.values().forEach(k->k.setLang(lang));
         return new ArrayList<>(_weapons.values());
     }
 
     public List<Structure> getStructures(Lang lang) {
-        _structures.values().stream().forEach(k->k.setLang(lang));
+        _structures.values().forEach(k->k.setLang(lang));
         return new ArrayList<>( _structures.values());
     }
 
