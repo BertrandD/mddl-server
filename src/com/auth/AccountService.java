@@ -4,9 +4,6 @@ import com.gameserver.enums.Lang;
 import com.util.slack.Slack;
 import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,11 +24,11 @@ import java.util.UUID;
 public class AccountService implements UserDetailsService {
 
     @Autowired
-    private MongoOperations mongoOperations;
+    private AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final Account account = findByUsername(username);
+        final Account account = accountRepository.findByUsername(username);
         if(account == null){
             throw new UsernameNotFoundException(username);
         }else{
@@ -40,17 +37,15 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account findOne(String id){
-        final Query query = new Query(Criteria.where("id").is(id));
-        return mongoOperations.findOne(query, Account.class);
+        return accountRepository.findOne(id);
     }
 
     public Account findByUsername(String username){
-        final Query query = new Query(Criteria.where("Username").is(username));
-        return mongoOperations.findOne(query, Account.class);
+        return accountRepository.findByUsername(username);
     }
 
     public List<Account> findAll(){
-        return mongoOperations.findAll(Account.class);
+        return accountRepository.findAll();
     }
 
     public Account create(String username, String password){
@@ -58,11 +53,10 @@ public class AccountService implements UserDetailsService {
         final List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        final Account account = new Account(username, passwordEncoder.encode(password), roles, null, Lang.EN, null, null, UUID.randomUUID().toString());
-        mongoOperations.insert(account);
+        Account account = new Account(username, passwordEncoder.encode(password), roles, null, Lang.EN, null, null, UUID.randomUUID().toString());
+        account = accountRepository.save(account);
 
-        // TODO: check if exist before insert
-
+        if(account == null) return null;
         Utils.println("New account : "+username+" with role USER");
         Slack.sendInfo("New account : "+username);
         return account;
@@ -73,11 +67,10 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account getUserFromToken(String token) {
-        final Query query = new Query(Criteria.where("token").is(token));
-        return mongoOperations.findOne(query, Account.class);
+        return accountRepository.findByToken(token);
     }
 
     public void update(Account account) {
-        mongoOperations.save(account);
+        accountRepository.save(account);
     }
 }

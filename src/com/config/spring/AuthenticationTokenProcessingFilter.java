@@ -25,16 +25,16 @@ import java.io.IOException;
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     @Autowired
-    AccountService accountService;
+    AuthenticationManager authManager;
 
     @Autowired
-    AuthenticationManager authManager;
+    AccountService accountService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         @SuppressWarnings("unchecked")
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        final HttpServletRequest httpRequest = (HttpServletRequest) request;
         // FIXME ? Là je pars du principe que le token est dans le header X-auth-token, est-ce qu'on fait ça ou on le met dans les cookies ? ça change pas grand chose pour le back, à voir pour le front
         String token = httpRequest.getHeader("X-auth-token");
 
@@ -50,10 +50,14 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
                     // set the authentication into the SecurityContext
                     SecurityContextHolder.getContext().setAuthentication(authManager.authenticate(authentication));
+                } else {
+                    Utils.println("Account is null");
                 }
             } else {
                 Utils.println("Invalid token !");
             }
+        } else {
+            Utils.println("Token is null");
         }
         // continue thru the filter chain
         chain.doFilter(request, response);

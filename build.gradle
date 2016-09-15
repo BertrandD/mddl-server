@@ -1,5 +1,4 @@
 buildscript {
-
 	repositories {
 		mavenCentral()
 	}
@@ -27,12 +26,11 @@ repositories {
 
 
 dependencies {
-	compile("org.springframework.boot:spring-boot-starter-data-rest")
+	//compile('org.springframework.session:spring-session-data-mongo')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-starter-security")
-	compile ('org.springframework.session:spring-session:1.2.1.RELEASE')
-	compile ('org.jsondoc:spring-boot-starter-jsondoc:1.2.13')
+	//compile ('org.springframework.session:spring-session:1.2.2.RELEASE')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

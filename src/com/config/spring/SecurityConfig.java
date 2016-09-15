@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	AccountService accountService;
+	private AccountService accountService;
 
 	@Autowired
 	AuthenticationTokenProcessingFilter authenticationTokenProcessingFilter;
