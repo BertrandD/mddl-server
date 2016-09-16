@@ -24,10 +24,9 @@ public class BaseSerializer extends JsonSerializer<Base> {
         gen.writeStringField("name", value.getOwner().getName());
         gen.writeEndObject();
 
-        gen.writeArrayFieldStart("resources");
+        gen.writeObjectFieldStart("resources");
         for (ResourceInventory inventory : value.getResources()) {
-            gen.writeStartObject();
-            gen.writeStringField("id", inventory.getItem().getId());
+            gen.writeObjectFieldStart(inventory.getItem().getId());
             gen.writeStringField("templateId", inventory.getItem().getTemplateId());
             gen.writeNumberField("count", inventory.getItem().getCount());
             gen.writeNumberField("maxVolume", inventory.getMaxVolume());
@@ -35,7 +34,7 @@ public class BaseSerializer extends JsonSerializer<Base> {
             gen.writeNumberField("lastRefresh", inventory.getLastRefresh());
             gen.writeEndObject();
         }
-        gen.writeEndArray();
+        gen.writeEndObject();
 
         gen.writeObjectField("baseStat", value.getBaseStat());
 
