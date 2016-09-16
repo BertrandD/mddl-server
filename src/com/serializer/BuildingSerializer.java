@@ -46,6 +46,8 @@ public class BuildingSerializer extends JsonSerializer<Building> {
                     gen.writeString(module.getItemId());
                 gen.writeEndArray();
             }
+        } else {
+            gen.writeNumberField("maxModules", 0);
         }
 
         if(!value.getStats().isEmpty())
@@ -63,7 +65,7 @@ public class BuildingSerializer extends JsonSerializer<Building> {
 
         if(value instanceof ModuleFactory)
         {
-            gen.writeObjectFieldStart("modules");
+            gen.writeObjectFieldStart("unlockModules");
             for(int level : ((ModuleFactory) value).getModulesByLevel().keySet()) {
                 gen.writeArrayFieldStart(""+level);
                 for(Module module : ((ModuleFactory) value).getModulesByLevel(level))

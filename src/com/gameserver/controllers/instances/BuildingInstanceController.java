@@ -174,6 +174,6 @@ public class BuildingInstanceController {
         building.addModule(module.getTemplateId());
         buildingService.update(building);
 
-        return new JsonResponse(building);
+        return new JsonResponse(base);
     }
 }

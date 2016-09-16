@@ -70,6 +70,6 @@ public class ModuleFactoryController {
         final ItemInstance item = inventoryService.addItem(base.getBaseInventory(), module.getItemId(), 1);
         if(item == null) return new JsonResponse(JsonResponseType.ERROR, "Module cannot be created.");
 
-        return new JsonResponse(item);
+        return new JsonResponse(base);
     }
 }
