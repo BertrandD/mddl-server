@@ -17,12 +17,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * @author Bertrand
  */
 @Component
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
+
+    private final Logger logger = Logger.getLogger(AuthenticationTokenProcessingFilter.class.getName());
 
     @Autowired
     AuthenticationManager authManager;
@@ -36,6 +39,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         @SuppressWarnings("unchecked")
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         // FIXME ? Là je pars du principe que le token est dans le header X-auth-token, est-ce qu'on fait ça ou on le met dans les cookies ? ça change pas grand chose pour le back, à voir pour le front
+        // TODO ! Il faut que ce token soit dans les cookies pour éviter les failles XSS
         String token = httpRequest.getHeader("X-auth-token");
 
         if (token != null) {
@@ -51,13 +55,13 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
                     // set the authentication into the SecurityContext
                     SecurityContextHolder.getContext().setAuthentication(authManager.authenticate(authentication));
                 } else {
-                    Utils.println("Account is null");
+                    logger.info("Account is null");
                 }
             } else {
-                Utils.println("Invalid token !");
+                logger.info("Invalid token !");
             }
         } else {
-            Utils.println("Token is null");
+            logger.info("Token is null");
         }
         // continue thru the filter chain
         chain.doFilter(request, response);
