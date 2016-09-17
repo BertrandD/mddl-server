@@ -32,7 +32,7 @@ import java.util.List;
 @RequestMapping(value = "/pm", produces = "application/json")
 public class PrivateMessageController {
 
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+    private final Logger logger = Logger.getLogger(PrivateMessageController.class.getName());
 
     @Autowired
     private PrivateMessageService service;
@@ -80,7 +80,7 @@ public class PrivateMessageController {
         // TODO: Convert tag likes [Base:462323846], [Player:Shadow38], [Planet:4658545], ...
         // TODO: Check forbidden words (hating, ad, etc...)
 
-        final PrivateMessage pm = service.create(new PlayerHolder(receiver), new PlayerHolder(player), message);
+        final PrivateMessage pm = service.create(new PlayerHolder(player), new PlayerHolder(receiver), message);
         if(pm == null) return new JsonResponse(JsonResponseType.ERROR, "An error occurred. We can't send your private message.");
 
         return new JsonResponse(pm);
