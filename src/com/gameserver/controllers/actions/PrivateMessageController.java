@@ -28,8 +28,8 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @RestController
+@PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/pm", produces = "application/json")
-@PreAuthorize("hasRoles('ROLE_USER')")
 public class PrivateMessageController {
 
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
