@@ -3,9 +3,11 @@ package com.gameserver.controllers;
 import com.auth.Account;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
+import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.PlayerService;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util;
 import com.util.response.JsonResponse;
 import com.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +61,7 @@ public class BaseController {
         playerService.update(base.getOwner());
 
         final JsonResponse response = new JsonResponse(base);
-        response.addMeta("queue", buildingTaskService.findByBaseOrderByEndsAtAsc(base.getId()));
+        response.addMeta("queue", buildingTaskService.findByBaseOrderByEndsAtAsc(base));
         return response;
     }
 

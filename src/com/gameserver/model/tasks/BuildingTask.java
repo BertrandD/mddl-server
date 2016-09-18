@@ -1,7 +1,9 @@
 package com.gameserver.model.tasks;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;
+import com.serializer.BuildingTaskSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -11,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author LEBOC Philippe
  */
 @Document(collection = "building_tasks")
+@JsonSerialize(using = BuildingTaskSerializer.class)
 public class BuildingTask {
 
     @Id

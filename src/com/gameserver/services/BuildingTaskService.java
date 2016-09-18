@@ -1,5 +1,6 @@
 package com.gameserver.services;
 
+import com.gameserver.model.Base;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.tasks.BuildingTask;
 import org.bson.types.ObjectId;
@@ -35,7 +36,7 @@ public class BuildingTaskService extends DatabaseService<BuildingTask> {
 
     public BuildingTask findFirstByOrderByEndsAtAsc() {
         final Query query = new Query();
-        query.with(new Sort(Sort.Direction.ASC, "EndsAt"));
+        query.with(new Sort(Sort.Direction.ASC, "endsAt"));
         query.limit(1);
         return mongoOperations.findOne(query, BuildingTask.class);
     }
@@ -44,18 +45,18 @@ public class BuildingTaskService extends DatabaseService<BuildingTask> {
         return findBy(Criteria.where("building").is(new ObjectId(id)));
     }
     public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) {
-        return findBy(new Sort(Sort.Direction.ASC, "EndsAt"), Criteria.where("building").is(new ObjectId(id)));
+        return findBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("building").is(new ObjectId(id)));
     }
 
-    public List<BuildingTask> findByBaseOrderByEndsAtAsc(String id) {
-        return findBy(new Sort(Sort.Direction.ASC, "EndsAt"), Criteria.where("base").is(new ObjectId(id)));
+    public List<BuildingTask> findByBaseOrderByEndsAtAsc(Base base) {
+        return findBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("base").is(base));
     }
 
     public BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id) {
-        return findOneBy(new Sort(Sort.Direction.ASC, "EndsAt"), Criteria.where("building").is(new ObjectId(id)));
+        return findOneBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("building").is(new ObjectId(id)));
     }
 
     public BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id) {
-        return findOneBy(new Sort(Sort.Direction.DESC, "EndsAt"), Criteria.where("building").is(new ObjectId(id)));
+        return findOneBy(new Sort(Sort.Direction.DESC, "endsAt"), Criteria.where("building").is(new ObjectId(id)));
     }
 }
