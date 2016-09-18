@@ -9,6 +9,7 @@ import com.gameserver.model.buildings.Building;
 import com.gameserver.model.buildings.ModulableBuilding;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.items.Module;
 import com.gameserver.model.tasks.BuildingTask;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
@@ -163,10 +164,15 @@ public class BuildingInstanceController {
         final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId) && k.getCount() > 0).findFirst().orElse(null);
         if(module == null) return new JsonResponse(JsonResponseType.ERROR, "You havent module in your inventory !"); // TODO System message
 
-        // TODO: multiple same can be attach ! Remove this line
         //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new JsonResponse(JsonResponseType.ERROR, "Module already attached !"); // TODO System message
 
-        if(building.getModules().size() >= ((ModulableBuilding)building.getTemplate()).getMaxModules()) return new JsonResponse(JsonResponseType.ERROR, "Maximum modules reached !"); // TODO System Message
+        if(building.getModules().size() >= ((ModulableBuilding)building.getTemplate()).getMaxModules())
+            return new JsonResponse(JsonResponseType.ERROR, "Maximum modules reached !"); // TODO System Message
+
+        // TODO: MAKE A TEST !!!!
+        if(!((ModulableBuilding) building.getTemplate()).getModules().contains((Module)module.getTemplate()))
+            return new JsonResponse(JsonResponseType.ERROR, "The Module isn't allowed to be attached here !");
+
 
         if(!inventoryService.consumeItem(module, 1))
             return new JsonResponse(JsonResponseType.ERROR, "Incorrect items count.");
