@@ -20,6 +20,7 @@ public class PlayerSerializer extends JsonSerializer<Player> {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
         gen.writeStringField("name", value.getName());
+        gen.writeStringField("lang", value.getAccount().getLang().name());
 
         if(value.getCurrentBase() != null)
             gen.writeStringField("currentBase", value.getCurrentBase().getId());

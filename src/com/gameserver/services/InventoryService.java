@@ -64,7 +64,7 @@ public class InventoryService implements IInventoryService {
             return null;
         }
 
-        long addcnt = amount;
+        double addcnt = amount;
         if(!inventory.canBeStored(amount, template.getVolume())) {
             addcnt = inventory.getAmountThatCanBeStored(template.getVolume());
         }
@@ -148,7 +148,7 @@ public class InventoryService implements IInventoryService {
         if((now - last) <= 0) return;
 
         // Auto-add calculation
-        long add = (long)(((prodPerHour / 3600) * ((now - last) / 1000)));
+        double add = (((prodPerHour / 3600) * ((now - last) / 1000)));
 
 
         logger.info("Trying to add " + add + " " + template.getItemId());

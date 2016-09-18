@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="robot_factory" class="CommonBuilding" nameId="robot_factory_n" maxLevel="30" descriptionId="robot_factory_d">
+    <building id="robot_factory" class="CommonBuilding" nameId="building_robot_factory_n" maxLevel="30" descriptionId="building_robot_factory_d">
         <buildTime>
             <set fromLevel="1" function="1750*$level" />
         </buildTime>

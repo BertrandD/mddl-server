@@ -32,6 +32,7 @@
         <message id="building_robot_factory_n" text="Robot Factory" />
         <message id="building_market_n" text="Market" />
         <message id="building_module_factory_n" text="Module Factory" />
+        <message id="building_silo_n" text="Silo" />
         <!-- Buildings descriptions -->
         <message id="building_mine_d" text="Metal is necessary to extract the main resources from the ground." />
         <message id="building_storage_d" text="The storage building increase your basement metal storage capacity. You can up this building to improve the capacity to your conveniences." />
@@ -43,6 +44,7 @@
         <message id="building_robot_factory_d" text="description is not done, its in todo list" />
         <message id="building_market_d" text="description is not done, its in todo list" />
         <message id="module_factory_d" text="Module factory allow you to upgrade your ships and your building by putting modules engines on them" />
+        <message id="building_silo_d" text="description is not done, its in todo list" />
         <!-- Items -->
         <message id="item_not_found" text="L'objet n'existe pas" />
         <message id="item_cannot_create" text="L'objet ne peut pas être créé" />
