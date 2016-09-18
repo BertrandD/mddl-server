@@ -89,4 +89,13 @@ public class PrivateMessage {
     public void setReadDate(long readDate) {
         this.readDate = readDate;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof PrivateMessage){
+            final PrivateMessage pm = (PrivateMessage) o;
+            if(pm.getId().equalsIgnoreCase(this.getId())) return true;
+        }
+        return false;
+    }
 }

@@ -9,6 +9,8 @@ public class PlayerHolder {
     private String id;
     private String name;
 
+    public PlayerHolder(){}
+
     public PlayerHolder(Player player) {
         setId(player.getId());
         setName(player.getName());

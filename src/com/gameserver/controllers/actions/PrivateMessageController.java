@@ -9,7 +9,6 @@ import com.gameserver.services.PlayerService;
 import com.gameserver.services.PrivateMessageService;
 import com.util.response.JsonResponse;
 import com.util.response.JsonResponseType;
-import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 /**
  * @author LEBOC Philippe
  */
@@ -31,8 +28,6 @@ import java.util.List;
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/pm", produces = "application/json")
 public class PrivateMessageController {
-
-    private final Logger logger = Logger.getLogger(PrivateMessageController.class.getName());
 
     @Autowired
     private PrivateMessageService service;
@@ -44,11 +39,7 @@ public class PrivateMessageController {
     public JsonResponse showAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
-        final List<PrivateMessage> pms = service.findBy(
-                new Sort(Sort.Direction.DESC, "date"),
-                Criteria.where("receiver").is(new ObjectId(player.getId())),
-                Criteria.where("author").is(new ObjectId(player.getId())));
-        return new JsonResponse(pms);
+        return new JsonResponse(service.findBy(new Sort(Sort.Direction.DESC, "date"), Criteria.where("author._id").is(new ObjectId(player.getId())).orOperator(Criteria.where("receiver._id").is(new ObjectId(player.getId())))));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -75,6 +66,8 @@ public class PrivateMessageController {
 
         final Player receiver = playerService.findOne(receiverId);
         if(receiver == null) return new JsonResponse(JsonResponseType.ERROR, "Invalid receiver. Player not found");
+
+        // TODO: Check sender != receiver
 
         // TODO: Convert tag likes [b], [u], [url], [emote], ...
         // TODO: Convert tag likes [Base:462323846], [Player:Shadow38], [Planet:4658545], ...
