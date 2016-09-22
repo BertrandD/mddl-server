@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/items.xsd">
     <!-- Resources Optimizers -->
-    <item id="module_optimizer_feo" nameId="module_optimizer_feo_n" type="MODULE" descriptionId="module_optimizer_feo_d" volume="1">
+    <item id="module_optimizer_feo" nameId="module_optimizer_feo_n" type="MODULE" descriptionId="module_optimizer_feo_d" volume="0">
         <stats>
             <set stat="RESOURCE_FEO" op="PER" value="1.25" />
         </stats>
@@ -11,7 +11,7 @@
             <item id="resource_c" count="100" />
         </requirements>
     </item>
-    <item id="module_optimizer_c" nameId="module_optimizer_c_n" type="MODULE" descriptionId="module_optimizer_c_d" volume="1">
+    <item id="module_optimizer_c" nameId="module_optimizer_c_n" type="MODULE" descriptionId="module_optimizer_c_d" volume="0">
         <stats>
             <set stat="RESOURCE_C" op="PER" value="1.25" />
         </stats>
@@ -21,7 +21,7 @@
             <item id="resource_c" count="100" />
         </requirements>
     </item>
-    <item id="module_optimizer_ato3" nameId="module_optimizer_ato3_n" type="MODULE" descriptionId="module_optimizer_ato3_d" volume="1">
+    <item id="module_optimizer_ato3" nameId="module_optimizer_ato3_n" type="MODULE" descriptionId="module_optimizer_ato3_d" volume="0">
         <stats>
             <set stat="RESOURCE_ATO3" op="PER" value="1.25" />
         </stats>
@@ -31,7 +31,7 @@
             <item id="resource_c" count="100" />
         </requirements>
     </item>
-    <item id="module_optimizer_ch4" nameId="module_optimizer_ch4_n" type="MODULE" descriptionId="module_optimizer_ch4_d" volume="1">
+    <item id="module_optimizer_ch4" nameId="module_optimizer_ch4_n" type="MODULE" descriptionId="module_optimizer_ch4_d" volume="0">
         <stats>
             <set stat="RESOURCE_CH4" op="PER" value="1.25" />
         </stats>
@@ -41,7 +41,7 @@
             <item id="resource_c" count="100" />
         </requirements>
     </item>
-    <item id="module_optimizer_h2o" nameId="module_optimizer_h2o_n" type="MODULE" descriptionId="module_optimizer_h2o_d" volume="1">
+    <item id="module_optimizer_h2o" nameId="module_optimizer_h2o_n" type="MODULE" descriptionId="module_optimizer_h2o_d" volume="0">
         <stats>
             <set stat="RESOURCE_H2O" op="PER" value="1.25" />
         </stats>
