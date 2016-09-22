@@ -8,7 +8,6 @@ import com.gameserver.model.Base;
 import com.gameserver.model.inventory.ResourceInventory;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -39,7 +38,7 @@ public class BaseSerializer extends JsonSerializer<Base> {
 
         gen.writeObjectField("baseStat", value.getBaseStat());
 
-        gen.writeObjectField("buildings", value.getBuildings().stream().filter(k -> k.getEndsAt() == -1).collect(Collectors.toList()));
+        gen.writeObjectField("buildings", value.getBuildings());
         gen.writeObjectField("inventory", value.getBaseInventory());
 
         gen.writeEndObject();
