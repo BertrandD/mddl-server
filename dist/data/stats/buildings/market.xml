@@ -10,7 +10,7 @@
                 <function fromLevel="5" itemId="resource_steel" value="0,2*Math.pow($level,4)" />
             </functions>
             <requirement level="3">
-                <building id="mine_metal" level="1" />
+                <building id="mine" level="1" />
             </requirement>
             <requirement level="5">
                 <building id="mine" level="2" />
