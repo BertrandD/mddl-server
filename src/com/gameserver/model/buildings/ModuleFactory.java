@@ -45,7 +45,11 @@ public final class ModuleFactory extends Building {
     }
 
     public List<Module> getModulesByLevel(int level) {
-        return getModulesByLevel().get(level);
+        final List<Module> all = new ArrayList<>();
+        for (int i = 1; i <= level; i++)
+            if(getModulesByLevel().containsKey(i))
+                all.addAll(getModulesByLevel().get(i));
+        return all;
     }
 
     public HashMap<Integer, List<Module>> getModulesByLevel() {
