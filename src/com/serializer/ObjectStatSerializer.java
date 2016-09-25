@@ -18,7 +18,16 @@ public class ObjectStatSerializer extends JsonSerializer<ObjectStat> {
     public void serialize(ObjectStat value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
         gen.writeStartObject();
         for (Map.Entry<Stats, Double> entry : value.getStats().entrySet()) {
-            gen.writeNumberField(entry.getKey().toString(), entry.getValue());
+            switch(entry.getKey())
+            {
+                case RESOURCE_ATO3:
+                case RESOURCE_C:
+                case RESOURCE_CH4:
+                case RESOURCE_FEO:
+                case RESOURCE_H2O:
+                    break;
+                default: gen.writeNumberField(entry.getKey().toString(), entry.getValue());
+            }
         }
         gen.writeEndObject();
     }
