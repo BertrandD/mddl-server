@@ -5,3 +5,7 @@ build/
 *.ipr
 *.iws
 /dist/logs/*.log
+gradlew
+gradlew.bat
+gradlew/
+gradle/
