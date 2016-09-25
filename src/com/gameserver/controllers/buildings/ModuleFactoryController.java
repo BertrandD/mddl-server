@@ -52,6 +52,8 @@ public class ModuleFactoryController {
         final Base base = player.getCurrentBase();
         if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
 
+        base.initializeStats();
+
         final Module module = ItemData.getInstance().getModule(moduleId);
         if(module == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
