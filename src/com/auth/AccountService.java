@@ -2,7 +2,6 @@ package com.auth;
 
 import com.gameserver.enums.Lang;
 import com.util.slack.Slack;
-import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -57,7 +56,6 @@ public class AccountService implements UserDetailsService {
         account = accountRepository.save(account);
 
         if(account == null) return null;
-        Utils.println("New account : "+username+" with role USER");
         Slack.sendInfo("New account : "+username);
         return account;
     }

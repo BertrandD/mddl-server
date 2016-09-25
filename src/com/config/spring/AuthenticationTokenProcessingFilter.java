@@ -2,7 +2,6 @@ package com.config.spring;
 
 import com.auth.Account;
 import com.auth.AccountService;
-import com.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
