@@ -30,6 +30,6 @@ public class ItemService extends DatabaseService<ItemInstance> {
     }
 
     public ItemInstance findOneBy(BaseInventory inventory, String templateId) {
-        return findOneBy(Criteria.where("inventory").is(inventory).andOperator(Criteria.where("templateId").is(templateId)));
+        return findOneBy(Criteria.where("inventory.$id").is(new ObjectId(inventory.getId())).andOperator(Criteria.where("templateId").is(templateId)));
     }
 }

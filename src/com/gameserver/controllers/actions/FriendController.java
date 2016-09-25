@@ -88,7 +88,7 @@ public class FriendController {
         friend.getFriendRequests().remove(request);
         player.getFriendRequests().remove(request);
 
-        friendRequestService.delete(request);
+        friendRequestService.deleteAsync(request);
         playerService.update(friend);
         playerService.update(player);
 
@@ -111,7 +111,7 @@ public class FriendController {
         friend.getFriendRequests().remove(request);
         player.getFriendRequests().remove(request);
 
-        friendRequestService.delete(request);
+        friendRequestService.deleteAsync(request);
         playerService.update(friend);
         playerService.update(player);
 

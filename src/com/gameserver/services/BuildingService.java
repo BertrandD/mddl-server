@@ -4,6 +4,7 @@ import com.gameserver.data.xml.impl.BuildingData;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.instances.BuildingInstance;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +35,10 @@ public class BuildingService extends DatabaseService<BuildingInstance> {
     }
 
     public BuildingInstance findBy(Base base, String id) {
-        return findOneBy(Criteria.where("id").is(id), (Criteria.where("base").is(base)));
+        return findOneBy(Criteria.where("id").is(id), (Criteria.where("base.$id").is(new ObjectId(base.getId()))));
     }
 
     public List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId) {
-        return findBy(Criteria.where("base").is(base), (Criteria.where("buildingId").is(buildingId)));
+        return findBy(Criteria.where("base").is(new ObjectId(base.getId())).andOperator(Criteria.where("buildingId").is(buildingId)));
     }
 }

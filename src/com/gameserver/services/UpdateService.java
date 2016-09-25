@@ -11,9 +11,7 @@ import com.gameserver.model.inventory.PlayerInventory;
 import com.gameserver.model.tasks.BuildingTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,11 +27,13 @@ public class UpdateService {
      * When some Models update (field changes) are executed, execute this method to update.
      */
     public void updateDatabase() {
-        // All update will be writed here.
-        Update update = new Update();
-        update.unset("lastRefresh");
+        // USE IT FOR LIVE SERVERS
 
-        mongoOperations.findAndModify(new Query(Criteria.where("lastRefresh").exists(true)), update, ItemInstance.class);
+        // All update will be writed here.
+        //Update update = new Update();
+        //update.unset("lastRefresh");
+
+        //mongoOperations.findAndModify(new Query(Criteria.where("lastRefresh").exists(true)), update, ItemInstance.class);
     }
 
     public void resetDatabase() {

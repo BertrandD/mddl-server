@@ -102,12 +102,16 @@ public abstract class DatabaseService<T> {
     }
 
     @Async
+    public void deleteAsync(T object) {
+        mongoOperations.remove(object);
+    }
+
     public void delete(T object) {
         mongoOperations.remove(object);
     }
 
     @Async
-    public void delete(String id) {
+    public void deleteAsync(String id) {
         mongoOperations.remove(new Query(Criteria.where("id").is(id)), getClazz());
     }
 

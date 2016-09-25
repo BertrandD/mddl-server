@@ -3,6 +3,7 @@ package com.gameserver.services;
 import com.auth.Account;
 import com.gameserver.model.Player;
 import com.gameserver.model.inventory.PlayerInventory;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -40,6 +41,6 @@ public class PlayerService extends DatabaseService<Player> {
     }
 
    public List<Player> findBy(Account account) {
-       return findBy(Criteria.where("account").is(account));
+       return findBy(Criteria.where("account.$id").is(new ObjectId(account.getId())));
    }
 }

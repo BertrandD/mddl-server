@@ -42,21 +42,21 @@ public class BuildingTaskService extends DatabaseService<BuildingTask> {
     }
 
     public List<BuildingTask> findByBuilding(String id) {
-        return findBy(Criteria.where("building").is(new ObjectId(id)));
+        return findBy(Criteria.where("building.$id").is(new ObjectId(id)));
     }
     public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) {
-        return findBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("building").is(new ObjectId(id)));
+        return findBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("building.$id").is(new ObjectId(id)));
     }
 
     public List<BuildingTask> findByBaseOrderByEndsAtAsc(Base base) {
-        return findBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("base").is(base));
+        return findBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("base.$id").is(new ObjectId(base.getId())));
     }
 
     public BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id) {
-        return findOneBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("building").is(new ObjectId(id)));
+        return findOneBy(new Sort(Sort.Direction.ASC, "endsAt"), Criteria.where("building.$id").is(new ObjectId(id)));
     }
 
     public BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id) {
-        return findOneBy(new Sort(Sort.Direction.DESC, "endsAt"), Criteria.where("building").is(new ObjectId(id)));
+        return findOneBy(new Sort(Sort.Direction.DESC, "endsAt"), Criteria.where("building.$id").is(new ObjectId(id)));
     }
 }
