@@ -37,10 +37,5 @@ public class Application {
         // Spring
         System.setProperty("spring.config.location", MODE+Config.APPLICATION_CONFIG_LOCATION);
         SpringApplication.run(Application.class, args);
-
-        // Console
-        //final Scanner scanner = new Scanner(System.in);
-        //Thread console = new Thread(new ConsoleImpl(scanner));
-        //console.start();
     }
 }
