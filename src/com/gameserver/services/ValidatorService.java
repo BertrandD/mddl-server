@@ -75,7 +75,7 @@ public class ValidatorService {
         while(meetRequirements && i < requirements.getBuildings().size())
         {
             final BuildingHolder holder = requirements.getBuildings().get(i);
-            final BuildingInstance bInst = base.getBuildings().stream().filter(k -> k.getBuildingId().equals(holder.getId())).findFirst().orElse(null);
+            final BuildingInstance bInst = base.getBuildings().stream().filter(k -> k.getBuildingId().equals(holder.getTemplateId())).findFirst().orElse(null);
             if(bInst == null || bInst.getCurrentLevel() < holder.getLevel()) {
                 meetRequirements = false;
             }

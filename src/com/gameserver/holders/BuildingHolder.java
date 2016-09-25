@@ -9,20 +9,20 @@ import com.gameserver.model.buildings.Building;
  */
 public class BuildingHolder {
 
-    private String id;
+    private String templateId;
     private int level;
 
-    public BuildingHolder(String id, int level) {
-        setId(id);
+    public BuildingHolder(String templateId, int level) {
+        setTemplateId(templateId);
         setLevel(level);
     }
 
-    public String getId() {
-        return id;
+    public String getTemplateId() {
+        return templateId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 
     public int getLevel() {
@@ -35,6 +35,6 @@ public class BuildingHolder {
 
     @JsonIgnore
     public Building getTemplate(){
-        return BuildingData.getInstance().getBuilding(id);
+        return BuildingData.getInstance().getBuilding(templateId);
     }
 }
