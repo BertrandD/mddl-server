@@ -129,14 +129,14 @@ public class BuildingTaskManager {
             {
                 final Base base = building.getBase();
                 final ModulableBuilding mine = (ModulableBuilding) building.getTemplate();
-                mine.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
+                mine.getStats().forEach(k -> inventoryService.addResourceContainer(base, k.getStat().name().toLowerCase()));
             }
 
             if(building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1)
             {
                 final Base base = building.getBase();
                 final ModulableBuilding pump = (ModulableBuilding) building.getTemplate();
-                pump.getStats().forEach(k -> inventoryService.addResourceInventory(base, k.getStat().name().toLowerCase()));
+                pump.getStats().forEach(k -> inventoryService.addResourceContainer(base, k.getStat().name().toLowerCase()));
             }
 
             restart();

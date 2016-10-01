@@ -2,8 +2,8 @@ package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.data.xml.impl.BuildingData;
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.BuildingData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.enums.Lang;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;

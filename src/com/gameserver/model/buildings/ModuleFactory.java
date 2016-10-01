@@ -1,6 +1,6 @@
 package com.gameserver.model.buildings;
 
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.holders.PropertiesHolder;
 import com.gameserver.holders.PropertyHolder;
 import com.gameserver.holders.PropertyListHolder;

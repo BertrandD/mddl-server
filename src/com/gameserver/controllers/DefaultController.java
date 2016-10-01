@@ -2,7 +2,7 @@ package com.gameserver.controllers;
 
 import com.auth.Account;
 import com.auth.AccountService;
-import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.data.xml.SystemMessageData;
 import com.gameserver.enums.Lang;
 import com.util.response.SystemMessageId;
 import com.gameserver.services.UpdateService;

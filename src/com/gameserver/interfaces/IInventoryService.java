@@ -1,7 +1,7 @@
 package com.gameserver.interfaces;
 
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.AbstractMultiStorageInventory;
+import com.gameserver.model.inventory.Inventory;
 
 /**
  * @author LEBOC Philippe
@@ -9,7 +9,7 @@ import com.gameserver.model.inventory.AbstractMultiStorageInventory;
 public interface IInventoryService {
 
     //ItemInstance addItem(ItemInstance item, final long amount);
-    ItemInstance addItem(AbstractMultiStorageInventory inventory, String templateId, final long amount);
+    ItemInstance addItem(Inventory inventory, String templateId, final long amount);
 
     boolean consumeItem(ItemInstance item, final long amount);
     //boolean consumeItem(IInventory inventory, String id, final long amount);

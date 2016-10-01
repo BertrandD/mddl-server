@@ -1,6 +1,6 @@
 package com.gameserver.services;
 
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
 import com.gameserver.holders.BuildingHolder;
@@ -10,7 +10,7 @@ import com.gameserver.model.commons.Requirement;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.instances.ItemInstance;
 import com.gameserver.model.inventory.BaseInventory;
-import com.gameserver.model.inventory.ResourceInventory;
+import com.gameserver.model.inventory.ItemContainer;
 import com.gameserver.model.items.GameItem;
 import com.gameserver.model.items.Item;
 import com.util.response.JsonResponse;
@@ -97,7 +97,7 @@ public class ValidatorService {
 
             if(template.getType().equals(ItemType.RESOURCE))
             {
-                final ResourceInventory rInventory = base.getResources().stream().filter(k -> k.getItem().getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
+                final ItemContainer rInventory = base.getResources().stream().filter(k -> k.getItem().getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
                 if(rInventory == null || rInventory.getItem().getCount() < holder.getCount())
                     meetRequirements = false;
                 else
@@ -105,7 +105,7 @@ public class ValidatorService {
             }
             else
             {
-                final ItemInstance iInst = bInventory.getItems().stream().filter(k -> k.getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
+                final ItemInstance iInst = bInventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
                 if(iInst == null || iInst.getCount() < holder.getCount())
                     meetRequirements = false;
                 else

@@ -7,7 +7,7 @@ import com.gameserver.enums.StatOp;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.inventory.BaseInventory;
-import com.gameserver.model.inventory.ResourceInventory;
+import com.gameserver.model.inventory.ItemContainer;
 import com.gameserver.model.items.Module;
 import com.gameserver.model.stats.ObjectStat;
 import com.gameserver.model.stats.Stats;
@@ -63,7 +63,7 @@ public final class Base
 
     @DBRef
     @JsonManagedReference
-    private List<ResourceInventory> resources;
+    private List<ItemContainer> resources;
 
     public Base() {
         setBuildingPositions(new HashMap<>());
@@ -196,15 +196,15 @@ public final class Base
         this.baseInventory = baseInventory;
     }
 
-    public List<ResourceInventory> getResources() {
+    public List<ItemContainer> getResources() {
         return resources;
     }
 
-    public void setResources(final List<ResourceInventory> resources) {
+    public void setResources(final List<ItemContainer> resources) {
         this.resources = resources;
     }
 
-    public void addResourceInventory(final ResourceInventory inventory) {
+    public void addResourceInventory(final ItemContainer inventory) {
         this.resources.add(inventory);
     }
 

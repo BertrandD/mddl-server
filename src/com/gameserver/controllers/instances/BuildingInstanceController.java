@@ -1,7 +1,7 @@
 package com.gameserver.controllers.instances;
 
 import com.auth.Account;
-import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.data.xml.BuildingData;
 import com.gameserver.manager.BuildingTaskManager;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
@@ -161,7 +161,7 @@ public class BuildingInstanceController {
         final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(buildingInstId)).findFirst().orElse(null);
         if(building == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
 
-        final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId) && k.getCount() > 0).findFirst().orElse(null);
+        final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId)).findFirst().orElse(null);
         if(module == null) return new JsonResponse(JsonResponseType.ERROR, "You havent module in your inventory !"); // TODO System message
 
         //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new JsonResponse(JsonResponseType.ERROR, "Module already attached !"); // TODO System message

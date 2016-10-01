@@ -1,10 +1,10 @@
 package com;
 
 import com.config.Config;
-import com.gameserver.data.xml.impl.BuildingData;
-import com.gameserver.data.xml.impl.ItemData;
-import com.gameserver.data.xml.impl.ShopData;
-import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.data.xml.BuildingData;
+import com.gameserver.data.xml.ItemData;
+import com.gameserver.data.xml.ShopData;
+import com.gameserver.data.xml.SystemMessageData;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

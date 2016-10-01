@@ -1,7 +1,7 @@
 package com.gameserver.model.items;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.data.xml.SystemMessageData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.enums.Lang;
 import com.gameserver.holders.StatHolder;

@@ -1,7 +1,7 @@
 package com.gameserver.model.buildings;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.data.xml.SystemMessageData;
 import com.gameserver.enums.BuildingCategory;
 import com.gameserver.enums.Lang;
 import com.gameserver.holders.StatHolder;

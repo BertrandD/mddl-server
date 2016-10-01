@@ -1,6 +1,6 @@
 package com.gameserver.services;
 
-import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.data.xml.BuildingData;
 import com.gameserver.model.Base;
 import com.gameserver.model.buildings.Building;
 import com.gameserver.model.instances.BuildingInstance;

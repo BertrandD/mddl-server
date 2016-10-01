@@ -28,10 +28,9 @@ public class BaseService extends DatabaseService<Base> {
         final String name = (String) params[0];
         final Player player = (Player) params[1];
         final Base base = new Base(name, player);
-        final BaseInventory inventory = new BaseInventory();
+        final BaseInventory inventory = new BaseInventory(base);
 
         base.setBaseInventory(inventory);
-        inventory.setBase(base);
 
         player.addBase(base);
         player.setCurrentBase(base);

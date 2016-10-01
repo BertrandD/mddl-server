@@ -1,6 +1,6 @@
 package com.util.response;
 
-import com.gameserver.data.xml.impl.SystemMessageData;
+import com.gameserver.data.xml.SystemMessageData;
 import com.gameserver.enums.Lang;
 
 import java.util.HashMap;

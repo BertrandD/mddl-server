@@ -1,7 +1,7 @@
 package com.gameserver.model.vehicles;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.enums.VehicleState;
 import com.gameserver.model.Base;
 import com.gameserver.model.items.Cargo;

@@ -21,37 +21,6 @@ public class BaseInventorySerializer extends JsonSerializer<BaseInventory> {
             gen.writeObjectField(item.getTemplateId(), item);
         }
 
-        /**
-        *
-        * DETAILLED INFORMATION
-        *
-
-        gen.writeArrayFieldStart("cargo");
-        for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isCargo).collect(Collectors.toList()))
-            gen.writeObject(item);
-        gen.writeEndArray();
-
-        gen.writeArrayFieldStart("engine");
-        for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isEngine).collect(Collectors.toList()))
-            gen.writeObject(item);
-        gen.writeEndArray();
-
-        gen.writeArrayFieldStart("module");
-        for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isModule).collect(Collectors.toList()))
-            gen.writeObject(item);
-        gen.writeEndArray();
-
-        gen.writeArrayFieldStart("structure");
-        for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isStructure).collect(Collectors.toList()))
-            gen.writeObject(item);
-        gen.writeEndArray();
-
-        gen.writeArrayFieldStart("weapon");
-        for(ItemInstance item : value.getItems().stream().filter(ItemInstance::isWeapon).collect(Collectors.toList()))
-            gen.writeObject(item);
-        gen.writeEndArray();
-        */
-
         gen.writeEndObject();
     }
 }

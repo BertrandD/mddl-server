@@ -3,8 +3,8 @@ package com.gameserver.model.inventory;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.model.Base;
-import com.gameserver.model.stats.Stats;
 import com.serializer.BaseInventorySerializer;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "base_inventory")
 @JsonSerialize(using = BaseInventorySerializer.class)
-public final class BaseInventory extends AbstractMultiStorageInventory {
+public final class BaseInventory extends Inventory {
 
     @DBRef
     @JsonBackReference
@@ -25,6 +25,7 @@ public final class BaseInventory extends AbstractMultiStorageInventory {
 
     public BaseInventory(Base base){
         super();
+        setId(new ObjectId().toString());
         setBase(base);
     }
 
@@ -34,35 +35,5 @@ public final class BaseInventory extends AbstractMultiStorageInventory {
 
     public void setBase(Base base) {
         this.base = base;
-    }
-
-    @Override
-    public long getMaxWeight() {
-        return 0;
-    }
-
-    @Override
-    public long getWeight() {
-        return 0;
-    }
-
-    @Override
-    public long getFreeWeight() {
-        return 0;
-    }
-
-    @Override
-    public long getMaxVolume() {
-        return (long) Math.floor(getBase().getBaseStat().getValue(Stats.BASE_MAX_STORAGE_VOLUME));
-    }
-
-    @Override
-    public long getVolume() {
-        return 0;
-    }
-
-    @Override
-    public long getFreeVolume() {
-        return getMaxVolume() - getVolume();
     }
 }

@@ -1,20 +1,20 @@
 package com.gameserver.services;
 
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.interfaces.IInventory;
 import com.gameserver.interfaces.IInventoryService;
 import com.gameserver.model.Base;
 import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.AbstractMultiStorageInventory;
+import com.gameserver.model.inventory.Inventory;
 import com.gameserver.model.inventory.BaseInventory;
 import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.model.inventory.ResourceInventory;
+import com.gameserver.model.inventory.ItemContainer;
 import com.gameserver.model.items.GameItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.logging.Logger;
 
 /**
  * @author LEBOC Philippe
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Service
 public class InventoryService implements IInventoryService {
 
-    private final Logger logger = Logger.getLogger(InventoryService.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(InventoryService.class);
 
     @Autowired
     private PlayerInventoryService playerInventoryService;
@@ -34,52 +34,85 @@ public class InventoryService implements IInventoryService {
     private BaseInventoryService baseInventoryService;
 
     @Autowired
-    private ResourceInventoryService resourceInventoryService;
+    private ItemContainerService itemContainerService;
 
-    public synchronized void addResourceInventory(final Base base, final String templateId) {
+    public synchronized void addResourceContainer(final Base base, final String templateId) {
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
         if(template == null) {
-            logger.warning("addResourceInventory: template is null for item "+templateId);
+            logger.debug("addResourceContainer: template is null for item "+templateId);
             return;
         }
 
-        logger.info("addResourceInventory: 0 "+templateId);
-        final ResourceInventory inventory = resourceInventoryService.create(base, templateId);
+        logger.info("addResourceContainer: 0 "+templateId);
+        final ItemContainer inventory = itemContainerService.create(base, templateId);
         if(inventory == null) {
-            logger.warning("Cannot create resource inventory because returned null on creation !");
+            logger.debug("Cannot create resource inventory because returned null on creation !");
         }
     }
 
-    @Override
-    public synchronized ItemInstance addItem(final AbstractMultiStorageInventory inventory, final String templateId, final long amount) {
+    public synchronized ItemInstance addItem(final ItemContainer container, final long amount) {
+        refresh(container);
 
-        final GameItem template = ItemData.getInstance().getTemplate(templateId);
+        final GameItem template = container.getItem().getTemplate();
         if(template == null) {
-            logger.warning("addItem(Inventory, String, long): template is null for item "+templateId);
+            logger.debug("addItem(Container, long): item template is null for container "+container.getId());
             return null;
         }
 
         if(amount == 0) {
-            logger.warning("Abort addItem " + templateId + " because amount that can be added is " + amount);
+            logger.debug("addItem(Container, long): Abort addItem " + template.getItemId() + " because amount is " + amount);
+            return null;
+        }
+
+        double addcnt = amount;
+        if(!container.canBeStored(amount, template.getVolume())) {
+            addcnt = container.getAmountThatCanBeStored(template.getVolume());
+            logger.debug("addItem(Container, long): amount has been edited because total amount > free capacity volume. new value is " + addcnt);
+        }
+
+        if(addcnt <= 0) {
+            logger.debug("addItem(Container, long): x" + addcnt + " " + template.getItemId() + " not added ! amount is <= 0");
+            return null;
+        }
+
+        container.getItem().addCount(addcnt);
+        itemService.updateAsync(container.getItem());
+
+        logger.debug("addItem(Container, long) [FINAL]: successfully make " + amount + " "+template.getItemId());
+        return container.getItem();
+    }
+
+    @Override
+    public synchronized ItemInstance addItem(final Inventory inventory, final String templateId, final long amount) {
+
+        final GameItem template = ItemData.getInstance().getTemplate(templateId);
+        if(template == null) {
+            logger.debug("addItem(Inventory, String, long): template is null for item "+templateId);
+            return null;
+        }
+
+        if(amount == 0) {
+            logger.debug("addItem(Inventory, String, long): Abort addItem " + templateId + " because amount is " + amount);
             return null;
         }
 
         double addcnt = amount;
         if(!inventory.canBeStored(amount, template.getVolume())) {
             addcnt = inventory.getAmountThatCanBeStored(template.getVolume());
+            logger.debug("addItem(Inventory, String, long): amount has been edited because total amount > free capacity volume. new value is " + addcnt);
         }
 
-        if(addcnt == 0) {
-            logger.info("addItem " + templateId + " not added because there is inventory place to store him... Its not an error :)");
+        if(addcnt <= 0) {
+            logger.debug("addItem(Inventory, String, long): x" + addcnt + " " + templateId + " not added ! amount is <= 0");
             return null;
         }
 
         ItemInstance item = itemService.findOneBy((BaseInventory)inventory, templateId);
-
-        if(item == null) {
+        if(item == null)
+        {
             item = itemService.create(inventory, templateId, amount);
             if(item == null) {
-                logger.warning("Abort due to a problem with creation of ItemInstance with temple id = " + templateId);
+                logger.debug("addItem(Inventory, String, long): Abort due to a problem with creation of ItemInstance with temple id = " + templateId);
                 return null;
             }
             inventory.addItem(item);
@@ -89,13 +122,13 @@ public class InventoryService implements IInventoryService {
             itemService.updateAsync(item);
         }
 
-        logger.info("addItem: " + amount + " "+templateId);
+        logger.debug("addItem(Inventory, String, long) [FINAL]: successfully make " + amount + " "+templateId);
         return item;
     }
 
     @Override
     public synchronized boolean consumeItem(ItemInstance item, final long amount) {
-        logger.info("consumeItem(ItemInstance:"+item.getTemplateId()+", "+amount+")");
+        logger.debug("consumeItem(ItemInstance:"+item.getTemplateId()+", "+amount+")");
 
         if(item.getType().equals(ItemType.RESOURCE)) return consumeResource(item, amount);
 
@@ -105,30 +138,29 @@ public class InventoryService implements IInventoryService {
 
             if(item.getCount() == 0) {
                 final IInventory inv = item.getInventory();
-                ((AbstractMultiStorageInventory)inv).getItems().remove(item);
-                update((AbstractMultiStorageInventory)inv); // deleteAsync from inventory
+                ((Inventory)inv).getItems().remove(item.getTemplateId());
+                update((Inventory)inv); // deleteAsync from inventory
                 itemService.deleteAsync(item.getId()); // deleteAsync from items in mongo
             } else {
                 itemService.update(item);
             }
-
             return true;
         }
         return false;
     }
 
     public synchronized boolean consumeResource(ItemInstance item, final long amount) {
-        final ResourceInventory inventory = (ResourceInventory)item.getInventory();
-        refresh(inventory);
+        final ItemContainer container = (ItemContainer)item.getInventory();
+        refresh(container);
 
         if(item.getCount() < amount) {
-            logger.warning("Cannot consume resource " + item.getTemplateId() + " count " +amount + " because current count is minder");
+            logger.debug("Cannot consume resource " + item.getTemplateId() + " count " +amount + " because current count is minder");
             return false;
         }
 
         item.removeCount(amount);
         logger.info("consumeResource(ItemInstance, amount): -"+amount);
-        resourceInventoryService.update(inventory);
+        itemContainerService.update(container);
         return true;
     }
 
@@ -136,52 +168,61 @@ public class InventoryService implements IInventoryService {
         base.getResources().forEach(this::refresh);
     }
 
-    public synchronized void refresh(final ResourceInventory inventory) {
-        final Base base = inventory.getBase();
+    public synchronized void refresh(final ItemContainer container) {
+        final Base base = container.getBase();
         final long now = System.currentTimeMillis();
-        final long last = inventory.getLastRefresh();
-        final double prodPerHour = base.getBaseStat().getValue(inventory.getStat());
-        final ItemInstance item = inventory.getItem();
+        final long last = container.getLastRefresh();
+        final double prodPerHour = base.getBaseStat().getValue(container.getStat());
+        final ItemInstance item = container.getItem();
         final GameItem template = item.getTemplate();
 
         // Security
-        if((now - last) <= 0) return;
-
-        // Auto-add calculation
-        double add = (((prodPerHour / 3600) * ((now - last) / 1000)));
-
-
-        logger.info("Trying to add " + add + " " + template.getItemId());
-
-        if(add != 0 && !inventory.canBeStored(add, template.getVolume())) {
-            add = inventory.getAmountThatCanBeStored(template.getVolume());
-            logger.info("\tCan't be added (current capacity is " + inventory.getVolume() + "/" + inventory.getMaxVolume() + "), recalculating amount that can be stored : " + add);
+        // Dont refresh if passed time is less than 1 second (1000 millis)
+        if((now - last) <= 1000) {
+            logger.debug("refresh: now - last <= 1000 ? Check possible spam");
+            return;
         }
 
-        if(add == 0) {
-            // if caused by a full inventory: update lastrefresh to now, else simply return.
-            if(inventory.getFreeVolume() < template.getVolume()) {
-                inventory.setLastRefresh(now);
-                resourceInventoryService.update(inventory);
+        if(prodPerHour <= 0 || template == null) {
+            logger.debug("refresh: security problem");
+            return;
+        }
+
+        // Auto-add calculation
+        // (amount per second) * (time without refreshing)
+        double add = (((prodPerHour / 3600) * ((now - last) / 1000)));
+
+        logger.info("refresh: Trying add " + add + " " + template.getItemId());
+
+        if(add > 0 && !container.canBeStored(add, template.getVolume())) {
+            add = container.getAmountThatCanBeStored(template.getVolume());
+            logger.info("\tCan't be added (current capacity is " + container.getVolume() + "/" + container.getMaxVolume() + "), recalculating amount that can be stored : " + add);
+        }
+
+        if(add <= 0) {
+            // if caused by a full container: update lastrefresh to now, else return.
+            if(container.getFreeVolume() < template.getVolume()) {
+                container.setLastRefresh(now);
+                itemContainerService.update(container);
                 return;
             }
-            logger.info("addItem " + template.getItemId() + " not added because there is inventory place to store him... Its not an error :)");
-            logger.info("\t(current capacity is " + inventory.getVolume() + "/" + inventory.getMaxVolume() + ")");
+            logger.info("addItem " + template.getItemId() + " not added because there is container place to store him... Its not an error :)");
+            logger.info("\t(current capacity is " + container.getVolume() + "/" + container.getMaxVolume() + ")");
             return;
         }
 
         item.addCount(add);
-        inventory.setLastRefresh(now);
+        container.setLastRefresh(now);
         itemService.updateAsync(item);
-        resourceInventoryService.update(inventory);
+        itemContainerService.update(container);
     }
 
-    public void updateAsync(AbstractMultiStorageInventory inventory) {
+    public void updateAsync(Inventory inventory) {
         if(inventory instanceof BaseInventory) baseInventoryService.updateAsync((BaseInventory)inventory);
         else playerInventoryService.updateAsync((PlayerInventory)inventory);
     }
 
-    public void update(AbstractMultiStorageInventory inventory) {
+    public void update(Inventory inventory) {
         if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory) inventory);
         else playerInventoryService.update((PlayerInventory)inventory);
     }

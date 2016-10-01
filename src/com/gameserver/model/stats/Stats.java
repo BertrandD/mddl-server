@@ -34,8 +34,8 @@ public enum Stats {
 
     // Fleet
     FLEET_HEALTH(0),
-    FLEET_SHIELD(0),
     FLEET_MAX_HEALTH(0),
+    FLEET_SHIELD(0),
     FLEET_MAX_SHIELD(0),
     FLEET_DAMAGE(0),
     FLEET_CARGO(0),

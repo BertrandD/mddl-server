@@ -1,7 +1,7 @@
 package com.gameserver.controllers.statics;
 
 import com.auth.Account;
-import com.gameserver.data.xml.impl.BuildingData;
+import com.gameserver.data.xml.BuildingData;
 import com.gameserver.model.buildings.Building;
 import com.util.response.SystemMessageId;
 import com.util.response.JsonResponse;

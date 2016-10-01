@@ -2,16 +2,10 @@ package com.gameserver.model.instances;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.enums.ItemType;
 import com.gameserver.interfaces.IInventory;
-import com.gameserver.model.items.Cargo;
-import com.gameserver.model.items.CommonItem;
-import com.gameserver.model.items.Engine;
 import com.gameserver.model.items.GameItem;
-import com.gameserver.model.items.Module;
-import com.gameserver.model.items.Structure;
-import com.gameserver.model.items.Weapon;
 import com.serializer.ItemInstanceSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -62,30 +56,30 @@ public class ItemInstance
         return (getTemplate().getWeight() * (long)Math.floor(getCount()));
     }
 
-    public boolean isResource() { return isCommonItem() && getType().equals(ItemType.RESOURCE); }
+    public boolean isResource() { return getType().equals(ItemType.RESOURCE); }
 
     public boolean isCargo(){
-        return getTemplate() instanceof Cargo;
+        return getType() == ItemType.CARGO;
     }
 
     public boolean isEngine(){
-        return getTemplate() instanceof Engine;
+        return getType() == ItemType.ENGINE;
     }
 
     public boolean isModule(){
-        return getTemplate() instanceof Module;
+        return getType() == ItemType.MODULE;
     }
 
     public boolean isWeapon(){
-        return getTemplate() instanceof Weapon;
+        return getType() == ItemType.WEAPON;
     }
 
     public boolean isStructure(){
-        return getTemplate() instanceof Structure;
+        return getType() == ItemType.STRUCTURE;
     }
 
     public boolean isCommonItem(){
-        return getTemplate() instanceof CommonItem;
+        return getType() == ItemType.RESOURCE;
     }
 
     public String getId() {

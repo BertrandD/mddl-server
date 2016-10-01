@@ -1,7 +1,7 @@
 package com.gameserver.controllers.statics;
 
 import com.auth.Account;
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.CommonItem;
 import com.gameserver.model.items.Engine;

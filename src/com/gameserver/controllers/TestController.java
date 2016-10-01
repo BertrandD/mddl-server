@@ -1,7 +1,7 @@
 package com.gameserver.controllers;
 
 import com.auth.Account;
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.model.Base;
 import com.gameserver.model.Player;
 import com.util.response.SystemMessageId;

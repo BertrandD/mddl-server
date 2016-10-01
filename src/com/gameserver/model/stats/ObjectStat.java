@@ -32,7 +32,7 @@ public class ObjectStat {
     }
 
     public double getValue(Stats stat, double defaultValue) {
-        return getStats().get(stat) == null ? defaultValue : getStats().get(stat);
+        return !getStats().containsKey(stat) ? defaultValue : getStats().get(stat);
     }
 
     public HashMap<Stats, Double> getStats() {

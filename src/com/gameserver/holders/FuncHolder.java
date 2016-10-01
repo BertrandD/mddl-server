@@ -1,7 +1,7 @@
 package com.gameserver.holders;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.model.items.GameItem;
 
 /**

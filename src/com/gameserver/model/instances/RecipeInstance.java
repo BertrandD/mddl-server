@@ -1,6 +1,6 @@
 package com.gameserver.model.instances;
 
-import com.gameserver.data.xml.impl.ItemData;
+import com.gameserver.data.xml.ItemData;
 import com.gameserver.model.Player;
 import com.gameserver.model.items.Cargo;
 import com.gameserver.model.items.Engine;
