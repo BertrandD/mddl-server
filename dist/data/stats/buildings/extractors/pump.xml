@@ -4,14 +4,11 @@
         <buildTime>
             <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
         </buildTime>
-        <properties>
-            <property name="max_modules" value="2" />
-        </properties>
         <stats>
             <stat name="RESOURCE_CH4" function="100+(35*$level)" op="DIFF" />
             <stat name="RESOURCE_H2O" function="100+(100*$level)" op="DIFF" />
         </stats>
-        <modules>
+        <modules max="2">
             <module id="module_optimizer_h2o" />
             <module id="module_optimizer_ch4" />
         </modules>

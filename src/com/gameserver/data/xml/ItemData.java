@@ -125,8 +125,8 @@ public class ItemData implements IXmlReader {
                                 for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
                                 {
                                     attrs = d.getAttributes();
-                                    if ("set".equalsIgnoreCase(d.getNodeName())) {
-                                        final Stats stat = parseEnum(attrs, Stats.class, "stat", Stats.NONE);
+                                    if ("stat".equalsIgnoreCase(d.getNodeName())) {
+                                        final Stats stat = parseEnum(attrs, Stats.class, "name", Stats.NONE);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
                                         final double value = parseDouble(attrs, "value", 0.0);
                                         final StatHolder holder = new StatHolder(stat, op);

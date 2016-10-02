@@ -12,14 +12,11 @@
             <stat name="RESOURCE_C" function="(18*Math.pow($level,2)+150)" op="DIFF" />
             <stat name="RESOURCE_ATO3" function="(18*Math.pow($level,2)+150)" op="DIFF" />
         </stats>
-        <modules>
+        <modules max="2">
             <module id="module_optimizer_feo" />
             <module id="module_optimizer_c" />
             <module id="module_optimizer_ato3" />
         </modules>
-        <properties>
-            <property name="max_modules" value="2" />
-        </properties>
         <requirements>
             <functions>
                 <function fromLevel="2" itemId="resource_feo" value="0,2*Math.pow($level,4)"/>

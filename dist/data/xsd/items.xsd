@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
 	<xs:element name="list">
 		<xs:complexType>
 			<xs:sequence>
@@ -7,66 +8,8 @@
 					<xs:complexType>
                         <xs:sequence>
                             <xs:choice maxOccurs="unbounded" minOccurs="0">
-                                <xs:element name="stats" maxOccurs="1">
-                                    <xs:complexType>
-                                        <xs:sequence>
-                                            <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
-                                                <xs:complexType>
-                                                    <xs:attribute name="stat" use="required">
-                                                        <xs:simpleType>
-                                                            <xs:restriction base="xs:string">
-                                                                <xs:enumeration value="DAMAGE" />
-                                                                <xs:enumeration value="SLOT_CARGO" />
-                                                                <xs:enumeration value="SLOT_ENGINE" />
-                                                                <xs:enumeration value="SLOT_MODULE" />
-                                                                <xs:enumeration value="SLOT_TECHNOLOGY" />
-                                                                <xs:enumeration value="SLOT_WEAPON" />
-                                                                <xs:enumeration value="RESOURCE_FEO" />
-                                                                <xs:enumeration value="RESOURCE_C" />
-                                                                <xs:enumeration value="RESOURCE_CH4" />
-                                                                <xs:enumeration value="RESOURCE_ATO3" />
-                                                                <xs:enumeration value="RESOURCE_H2O" />
-                                                                <xs:enumeration value="MAX_RESOURCE_FEO" />
-                                                                <xs:enumeration value="MAX_RESOURCE_C" />
-                                                                <xs:enumeration value="MAX_RESOURCE_CH4" />
-                                                                <xs:enumeration value="MAX_RESOURCE_ATO3" />
-                                                                <xs:enumeration value="MAX_RESOURCE_H2O" />
-                                                            </xs:restriction>
-                                                        </xs:simpleType>
-                                                    </xs:attribute>
-                                                    <xs:attribute name="op" use="required">
-                                                        <xs:simpleType>
-                                                            <xs:restriction base="xs:string">
-                                                                <xs:enumeration value="DIFF" />
-                                                                <xs:enumeration value="PER" />
-                                                                <xs:enumeration value="UNLOCK" />
-                                                            </xs:restriction>
-                                                        </xs:simpleType>
-                                                    </xs:attribute>
-                                                    <xs:attribute name="value" type="xs:double" use="optional" />
-                                                </xs:complexType>
-                                            </xs:element>
-                                        </xs:sequence>
-                                    </xs:complexType>
-                                </xs:element>
-                                <xs:element name="requirements" minOccurs="0" maxOccurs="1">
-                                    <xs:complexType>
-                                        <xs:sequence>
-                                            <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
-                                                <xs:complexType>
-                                                    <xs:attribute name="id" type="xs:normalizedString" use="required" />
-                                                    <xs:attribute name="count" type="xs:long" use="required" />
-                                                </xs:complexType>
-                                            </xs:element>
-                                            <xs:element name="building" minOccurs="0" maxOccurs="unbounded">
-                                                <xs:complexType>
-                                                    <xs:attribute name="id" type="xs:normalizedString" use="required" />
-                                                    <xs:attribute name="level" type="xs:integer" use="required" />
-                                                </xs:complexType>
-                                            </xs:element>
-                                        </xs:sequence>
-                                    </xs:complexType>
-                                </xs:element>
+                                <xs:element name="stats" type="element_stats" maxOccurs="1" />
+                                <xs:element name="requirements" type="element_requirement" minOccurs="0" maxOccurs="1" />
                                 <xs:element name="properties" minOccurs="0" maxOccurs="1">
                                     <xs:complexType>
                                         <xs:sequence>
@@ -102,24 +45,7 @@
                         <xs:attribute name="nameId" type="xs:string" use="required" />
                         <xs:attribute name="type" type="xs:normalizedString" use="required" />
                         <xs:attribute name="descriptionId" type="xs:string" use="required" />
-                        <xs:attribute name="rank" use="optional">
-                            <xs:simpleType>
-                                <xs:restriction base="xs:string">
-                                    <xs:enumeration value="NONE" />
-                                    <xs:enumeration value="A" />
-                                    <xs:enumeration value="B" />
-                                    <xs:enumeration value="C" />
-                                    <xs:enumeration value="D" />
-                                    <xs:enumeration value="E" />
-                                    <xs:enumeration value="F" />
-                                    <xs:enumeration value="G" />
-                                    <xs:enumeration value="H" />
-                                    <xs:enumeration value="I" />
-                                    <xs:enumeration value="J" />
-                                    <xs:enumeration value="K" />
-                                </xs:restriction>
-                            </xs:simpleType>
-                        </xs:attribute>
+                        <xs:attribute name="rank" type="attribute_rank" use="optional" />
                         <xs:attribute name="buildTime" type="xs:long" use="optional" />
                         <xs:attribute name="weight" type="xs:long" use="optional" />
                         <xs:attribute name="volume" type="xs:long" use="optional" />

@@ -81,6 +81,7 @@ public class BuildingData implements IXmlReader {
 
                         for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
+                            attrs = c.getAttributes();
                             if ("requirements".equalsIgnoreCase(c.getNodeName()))
                             {
                                 final List<FunctionHolder> functions = new ArrayList<>();
@@ -201,7 +202,7 @@ public class BuildingData implements IXmlReader {
                             }
                             else if("modules".equalsIgnoreCase(c.getNodeName()))
                             {
-
+                                set.set("max_modules", parseInteger(attrs, "max", 1));
                                 for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
                                 {
                                     attrs = d.getAttributes();

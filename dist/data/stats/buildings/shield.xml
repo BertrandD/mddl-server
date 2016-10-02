@@ -7,16 +7,13 @@
         <stats>
             <stat name="BASE_MAX_SHIELD" function="1000 * $level" op="DIFF" />
         </stats>
-        <modules>
+        <modules max="1">
             <module id="module_building_shield_laser" />
             <module id="module_building_shield_ion" />
             <module id="module_building_shield_photon" />
             <module id="module_building_shield_plasma" />
             <module id="module_building_shield_graviton" />
         </modules>
-        <properties>
-            <property name="max_modules" value="1" />
-        </properties>
         <requirements>
             <functions>
                 <function fromLevel="1" itemId="resource_c" value="0,2*Math.pow($level,4)"/>

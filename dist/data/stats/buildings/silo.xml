@@ -11,10 +11,7 @@
             <stat name="MAX_RESOURCE_ATO3" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
             <stat name="MAX_RESOURCE_H2O" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
         </stats>
-        <properties>
-            <property name="max_modules" value="1" />
-        </properties>
-        <modules>
+        <modules max="1">
             <module id="module_silo_improve_feo" />
             <module id="module_silo_improve_c" />
             <module id="module_silo_improve_ato3" />

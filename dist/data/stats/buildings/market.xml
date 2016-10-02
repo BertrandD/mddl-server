@@ -11,6 +11,7 @@
             </functions>
             <requirement level="3">
                 <building id="mine" level="1" />
+                <item id="dfd" count="5" />
             </requirement>
             <requirement level="5">
                 <building id="mine" level="2" />
