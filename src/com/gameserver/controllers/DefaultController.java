@@ -26,11 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-
 /**
  * @author LEBOC Philippe
  */
 @RestController
+@RequestMapping(produces = "application/json")
 public class DefaultController implements ErrorController{
 
     private static final String ERROR_PATH = "/error";
@@ -44,15 +44,15 @@ public class DefaultController implements ErrorController{
     @Autowired
     private UpdateService updateService;
 
-    @RequestMapping(value = "/", produces = "application/json")
+    @RequestMapping(value = "/")
     public JsonResponse index()
     {
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/reset", method = RequestMethod.GET, produces = "application/json")
-    public boolean resetDatabase(@AuthenticationPrincipal Account pAccount){
+    @RequestMapping(value = "/reset", method = RequestMethod.GET)
+    public boolean resetDatabase(@AuthenticationPrincipal Account pAccount) {
         updateService.resetDatabase();
         pAccount.setCurrentPlayer(null);
         pAccount.getPlayers().clear();
@@ -63,7 +63,7 @@ public class DefaultController implements ErrorController{
         return true;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public JsonResponse login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
         final SystemMessageData SystemMessage = SystemMessageData.getInstance();
         final Account account = accountService.findByUsername(username);
@@ -81,30 +81,30 @@ public class DefaultController implements ErrorController{
         return new JsonResponse(account);
     }
 
-    @RequestMapping(value = "/invalidate", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
     public JsonResponse logout(@AuthenticationPrincipal Account account) {
         account.setToken(UUID.randomUUID().toString());
         accountService.update(account);
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
-    public JsonResponse register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password){
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public JsonResponse register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
         final Account account = accountService.findByUsername(username);
         if(account != null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(Lang.EN, SystemMessageId.ACCOUNT_ALREADY_EXIST));
         return new JsonResponse(accountService.create(username, password));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/me", method = RequestMethod.GET, produces = "application/json")
-    public JsonResponse aboutMe(@AuthenticationPrincipal Account account){
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
+    public JsonResponse aboutMe(@AuthenticationPrincipal Account account) {
         final Account reqAccount = accountService.findOne(account.getId());
         return new JsonResponse(reqAccount);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/lang", method = RequestMethod.POST, produces = "application/json")
-    public JsonResponse changeLanguage(@AuthenticationPrincipal Account account, @RequestParam(value = "lang") String lang){
+    @RequestMapping(value = "/lang", method = RequestMethod.POST)
+    public JsonResponse changeLanguage(@AuthenticationPrincipal Account account, @RequestParam(value = "lang") String lang) {
         final Lang newLang = Lang.valueOf(lang.toUpperCase()); // TODO: Exception
         final Account currentAccount = accountService.findOne(account.getId());
         account.setLang(newLang);
@@ -113,7 +113,7 @@ public class DefaultController implements ErrorController{
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
-    @RequestMapping(value = ERROR_PATH, produces = "application/json")
+    @RequestMapping(value = ERROR_PATH)
     public JsonResponse error(HttpServletRequest request) {
         final RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         return new JsonResponse(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
