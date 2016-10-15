@@ -9,24 +9,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan
-public class Application {
+@ComponentScan("com")
+public class Application extends AsyncConfigurerSupport {
 
     public static void main(String[] args)
     {
-        String MODE = Config.DEV_CONFIG_DIRECTORY;
-
-        if(args.length > 0){
-            if(args[0].equalsIgnoreCase("prod")){
-                MODE = Config.PROD_CONFIG_DIRECTORY;
-            }
-        }
-
         // Config
-        Config.load(MODE);
+        Config.load();
 
         // Parse
         SystemMessageData.getInstance();
@@ -35,7 +31,18 @@ public class Application {
         ShopData.getInstance();
 
         // Spring
-        System.setProperty("spring.config.location", MODE+Config.APPLICATION_CONFIG_LOCATION);
+        System.setProperty("spring.config.location", Config.APPLICATION_CONFIG_LOCATION);
         SpringApplication.run(Application.class, args);
+    }
+
+    @Override
+    public Executor getAsyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(4);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("MiddleWar-");
+        executor.initialize();
+        return executor;
     }
 }
