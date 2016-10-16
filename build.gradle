@@ -5,7 +5,6 @@ buildscript {
 
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
-		classpath('org.junit.platform:junit-platform-gradle-plugin:1.0.0-M2')
 	}
 }
 
@@ -13,7 +12,6 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-apply plugin: 'org.junit.platform.gradle.plugin'
 
 jar {
 	baseName = 'mddl'
@@ -26,22 +24,6 @@ repositories {
 	mavenCentral()
 }
 
-junitPlatform {
-	// platformVersion '1.0.0-M2'
-	engines {
-		// include 'junit-jupiter', 'junit-vintage'
-		// exclude 'custom-engine'
-	}
-	tags {
-		// include 'fast'
-		exclude 'slow'
-	}
-	// includeClassNamePattern '.*Test'
-	// enableStandardTestTask true
-	// reportsDir file('build/test-results/junit-platform') // this is the default
-	logManager 'org.apache.logging.log4j.jul.LogManager'
-}
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-web')
@@ -50,9 +32,7 @@ dependencies {
 	compile('org.springframework:spring-aspects:3.2.8.RELEASE')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	//testCompile("junit:junit")
-	//testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M2")
-	//testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M2")
+	testCompile("junit:junit")
 }
 
 
@@ -70,10 +50,15 @@ task wrapper(type: Wrapper) {
 sourceSets {
 	main {
 		java {
-			srcDir 'src'
+			srcDir 'src/main'
 		}
 		resources {
-			srcDir 'dist'
+			srcDir 'resources'
+		}
+	}
+	test {
+		java {
+			srcDir 'test'
 		}
 	}
 }

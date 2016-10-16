@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+    <building id="spatial_elevator" class="CommonBuilding" nameId="building_spatial_elevator_n" maxLevel="5" descriptionId="building_spatial_elevator_d">
+        <buildTime>
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
+        </buildTime>
+        <requirements>
+            <functions>
+                <function fromLevel="1" toLevel="5" itemId="resource_feo" value="0,2*Math.pow($level,4)" />
+            </functions>
+            <requirement level="3">
+                <building id="operation_center" level="2" />
+            </requirement>
+            <requirement level="5">
+                <building id="shield" level="2" />
+                <building id="operation_center" level="5" />
+            </requirement>
+        </requirements>
+    </building>
+</list>
