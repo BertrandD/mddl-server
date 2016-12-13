@@ -1,9 +1,9 @@
 package com.gameserver.controllers.actions;
 
-import com.auth.Account;
-import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.social.FriendRequest;
-import com.gameserver.model.Player;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.social.FriendRequest;
+import com.middlewar.core.model.Player;
 import com.util.response.SystemMessageId;
 import com.gameserver.services.FriendRequestService;
 import com.gameserver.services.PlayerService;

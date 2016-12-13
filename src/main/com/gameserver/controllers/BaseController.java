@@ -1,14 +1,14 @@
 package com.gameserver.controllers;
 
-import com.auth.Account;
-import com.gameserver.data.xml.BuildingData;
-import com.gameserver.holders.BuildingHolder;
-import com.gameserver.holders.BuildingInstanceHolder;
-import com.gameserver.model.Base;
-import com.gameserver.model.Player;
-import com.gameserver.model.buildings.Building;
-import com.gameserver.model.commons.Requirement;
-import com.gameserver.model.instances.BuildingInstance;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.data.xml.BuildingData;
+import com.middlewar.core.holders.BuildingHolder;
+import com.middlewar.core.holders.BuildingInstanceHolder;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.buildings.Building;
+import com.middlewar.core.model.commons.Requirement;
+import com.middlewar.core.model.instances.BuildingInstance;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.PlayerService;

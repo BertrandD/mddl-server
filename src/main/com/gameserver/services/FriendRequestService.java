@@ -1,7 +1,7 @@
 package com.gameserver.services;
 
-import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.social.FriendRequest;
+import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.social.FriendRequest;
 import org.springframework.stereotype.Service;
 
 /**

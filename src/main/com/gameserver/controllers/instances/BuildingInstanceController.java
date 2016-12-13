@@ -1,16 +1,16 @@
 package com.gameserver.controllers.instances;
 
-import com.auth.Account;
-import com.gameserver.data.xml.BuildingData;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.data.xml.BuildingData;
 import com.gameserver.manager.BuildingTaskManager;
-import com.gameserver.model.Base;
-import com.gameserver.model.Player;
-import com.gameserver.model.buildings.Building;
-import com.gameserver.model.buildings.ModulableBuilding;
-import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.items.Module;
-import com.gameserver.model.tasks.BuildingTask;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.buildings.Building;
+import com.middlewar.core.model.buildings.ModulableBuilding;
+import com.middlewar.core.model.instances.BuildingInstance;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.tasks.BuildingTask;
 import com.gameserver.services.BaseService;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;

@@ -1,7 +1,7 @@
 package com.gameserver.services;
 
-import com.gameserver.model.Base;
-import com.gameserver.model.vehicles.Ship;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

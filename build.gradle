@@ -1,6 +1,7 @@
 buildscript {
 	repositories {
 		mavenCentral()
+		mavenLocal()
 	}
 
 	dependencies {
@@ -12,6 +13,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+apply plugin: 'maven'
 
 jar {
 	baseName = 'mddl'
@@ -22,6 +24,7 @@ targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
 
 dependencies {
@@ -30,6 +33,7 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-security")
 	compile("org.springframework.boot:spring-boot-starter-actuator")
 	compile('org.springframework:spring-aspects:3.2.8.RELEASE')
+	compile('com.middlewar:core:1.0-SNAPSHOT')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile("junit:junit")

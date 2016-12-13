@@ -1,8 +1,8 @@
 package com.gameserver.services;
 
-import com.auth.Account;
-import com.gameserver.model.Player;
-import com.gameserver.model.inventory.PlayerInventory;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.inventory.PlayerInventory;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

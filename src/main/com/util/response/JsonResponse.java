@@ -1,7 +1,7 @@
 package com.util.response;
 
-import com.gameserver.data.xml.SystemMessageData;
-import com.gameserver.enums.Lang;
+import com.middlewar.core.data.xml.SystemMessageData;
+import com.middlewar.core.enums.Lang;
 
 import java.util.HashMap;
 

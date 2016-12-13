@@ -1,6 +1,6 @@
 package com;
 
-import com.gameserver.model.Player;
+import com.middlewar.core.model.Player;
 import com.gameserver.services.PlayerService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

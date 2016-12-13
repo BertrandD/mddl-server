@@ -1,8 +1,8 @@
 package com.gameserver.services;
 
-import com.gameserver.enums.VehicleMission;
-import com.gameserver.model.commons.Coordinates;
-import com.gameserver.model.vehicles.Fleet;
+import com.middlewar.core.enums.VehicleMission;
+import com.middlewar.core.model.commons.Coordinates;
+import com.middlewar.core.model.vehicles.Fleet;
 
 /**
  * @author LEBOC Philippe

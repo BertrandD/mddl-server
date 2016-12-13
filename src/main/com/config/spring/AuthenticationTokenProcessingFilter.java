@@ -1,6 +1,6 @@
 package com.config.spring;
 
-import com.auth.Account;
+import com.middlewar.core.model.Account;
 import com.auth.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,5 +1,6 @@
 package com.auth;
 
+import com.middlewar.core.model.Account;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

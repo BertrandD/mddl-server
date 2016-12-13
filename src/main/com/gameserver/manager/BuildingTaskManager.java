@@ -1,12 +1,12 @@
 package com.gameserver.manager;
 
-import com.config.Config;
-import com.gameserver.enums.BuildingCategory;
-import com.gameserver.model.Base;
-import com.gameserver.model.buildings.ModulableBuilding;
-import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.stats.Stats;
-import com.gameserver.model.tasks.BuildingTask;
+import com.middlewar.core.config.Config;
+import com.middlewar.core.enums.BuildingCategory;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.buildings.ModulableBuilding;
+import com.middlewar.core.model.instances.BuildingInstance;
+import com.middlewar.core.model.stats.Stats;
+import com.middlewar.core.model.tasks.BuildingTask;
 import com.gameserver.services.BuildingService;
 import com.gameserver.services.BuildingTaskService;
 import com.gameserver.services.InventoryService;

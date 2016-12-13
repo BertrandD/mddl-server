@@ -1,8 +1,8 @@
 package com.gameserver.services;
 
-import com.gameserver.model.Base;
-import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.ItemContainer;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.inventory.ItemContainer;
 import org.springframework.stereotype.Service;
 
 /**

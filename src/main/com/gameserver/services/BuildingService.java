@@ -1,9 +1,9 @@
 package com.gameserver.services;
 
-import com.gameserver.data.xml.BuildingData;
-import com.gameserver.model.Base;
-import com.gameserver.model.buildings.Building;
-import com.gameserver.model.instances.BuildingInstance;
+import com.middlewar.core.data.xml.BuildingData;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.buildings.Building;
+import com.middlewar.core.model.instances.BuildingInstance;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;

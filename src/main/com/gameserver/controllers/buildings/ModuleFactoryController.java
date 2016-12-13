@@ -1,14 +1,14 @@
 package com.gameserver.controllers.buildings;
 
-import com.auth.Account;
-import com.gameserver.data.xml.ItemData;
-import com.gameserver.model.Base;
-import com.gameserver.model.Player;
-import com.gameserver.model.buildings.ModuleFactory;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.buildings.ModuleFactory;
 import com.util.response.SystemMessageId;
-import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.items.Module;
+import com.middlewar.core.model.instances.BuildingInstance;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.items.Module;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.gameserver.services.ValidatorService;

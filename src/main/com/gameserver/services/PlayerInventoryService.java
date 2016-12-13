@@ -1,7 +1,7 @@
 package com.gameserver.services;
 
-import com.gameserver.model.Player;
-import com.gameserver.model.inventory.PlayerInventory;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.inventory.PlayerInventory;
 import org.springframework.stereotype.Service;
 
 /**

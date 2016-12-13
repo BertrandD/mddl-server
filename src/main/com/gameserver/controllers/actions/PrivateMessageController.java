@@ -1,10 +1,10 @@
 package com.gameserver.controllers.actions;
 
-import com.auth.Account;
-import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.Player;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.Player;
 import com.util.response.SystemMessageId;
-import com.gameserver.model.social.PrivateMessage;
+import com.middlewar.core.model.social.PrivateMessage;
 import com.gameserver.services.PlayerService;
 import com.gameserver.services.PrivateMessageService;
 import com.util.response.JsonResponse;

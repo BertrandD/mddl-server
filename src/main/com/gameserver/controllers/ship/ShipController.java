@@ -1,13 +1,13 @@
 package com.gameserver.controllers.ship;
 
-import com.auth.Account;
-import com.gameserver.data.xml.ItemData;
-import com.gameserver.model.Base;
-import com.gameserver.model.Player;
-import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.BaseInventory;
-import com.gameserver.model.items.GameItem;
-import com.gameserver.model.vehicles.Ship;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.inventory.BaseInventory;
+import com.middlewar.core.model.items.GameItem;
+import com.middlewar.core.model.vehicles.Ship;
 import com.gameserver.services.InventoryService;
 import com.gameserver.services.PlayerService;
 import com.gameserver.services.ShipService;

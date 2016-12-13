@@ -1,14 +1,14 @@
 package com.gameserver.services;
 
-import com.gameserver.model.Base;
-import com.gameserver.model.inventory.ItemContainer;
-import com.gameserver.model.social.FriendRequest;
-import com.gameserver.model.Player;
-import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.BaseInventory;
-import com.gameserver.model.inventory.PlayerInventory;
-import com.gameserver.model.tasks.BuildingTask;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.inventory.ItemContainer;
+import com.middlewar.core.model.social.FriendRequest;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.instances.BuildingInstance;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.inventory.BaseInventory;
+import com.middlewar.core.model.inventory.PlayerInventory;
+import com.middlewar.core.model.tasks.BuildingTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;

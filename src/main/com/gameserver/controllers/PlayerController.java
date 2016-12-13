@@ -1,9 +1,9 @@
 package com.gameserver.controllers;
 
-import com.auth.Account;
+import com.middlewar.core.model.Account;
 import com.auth.AccountService;
-import com.config.Config;
-import com.gameserver.model.Player;
+import com.middlewar.core.config.Config;
+import com.middlewar.core.model.Player;
 import com.util.response.SystemMessageId;
 import com.gameserver.services.PlayerService;
 import com.util.response.JsonResponse;

@@ -1,6 +1,6 @@
 package com.util.slack;
 
-import com.config.Config;
+import com.middlewar.core.config.Config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.net.ssl.HttpsURLConnection;

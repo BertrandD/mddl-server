@@ -1,6 +1,7 @@
 package com.auth;
 
-import com.gameserver.enums.Lang;
+import com.middlewar.core.enums.Lang;
+import com.middlewar.core.model.Account;
 import com.util.slack.Slack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

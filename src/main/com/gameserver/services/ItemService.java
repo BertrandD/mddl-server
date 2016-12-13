@@ -1,8 +1,8 @@
 package com.gameserver.services;
 
-import com.gameserver.interfaces.IInventory;
-import com.gameserver.model.instances.ItemInstance;
-import com.gameserver.model.inventory.BaseInventory;
+import com.middlewar.core.interfaces.IInventory;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.inventory.BaseInventory;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;

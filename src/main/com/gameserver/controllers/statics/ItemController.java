@@ -1,14 +1,14 @@
 package com.gameserver.controllers.statics;
 
-import com.auth.Account;
-import com.gameserver.data.xml.ItemData;
-import com.gameserver.model.items.Cargo;
-import com.gameserver.model.items.CommonItem;
-import com.gameserver.model.items.Engine;
-import com.gameserver.model.items.GameItem;
-import com.gameserver.model.items.Module;
-import com.gameserver.model.items.Structure;
-import com.gameserver.model.items.Weapon;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.model.items.Cargo;
+import com.middlewar.core.model.items.CommonItem;
+import com.middlewar.core.model.items.Engine;
+import com.middlewar.core.model.items.GameItem;
+import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.items.Structure;
+import com.middlewar.core.model.items.Weapon;
 import com.util.response.JsonResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
