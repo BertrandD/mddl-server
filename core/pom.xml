@@ -4,17 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.middlewar</groupId>
-    <artifactId>core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <parent>
+        <groupId>com.middlewar</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
-    <properties>
-        <java.version>8</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <jackson-2-version>2.8.5</jackson-2-version>
-        <spring-version>4.3.4.RELEASE</spring-version>
-    </properties>
+    <artifactId>core</artifactId>
+
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
