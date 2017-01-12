@@ -138,7 +138,7 @@ public class InventoryService implements IInventoryService {
 
             if(item.getCount() == 0) {
                 final IInventory inv = item.getInventory();
-                ((Inventory)inv).getItems().remove(item.getTemplateId());
+                ((Inventory)inv).getItems().remove(item);
                 update((Inventory)inv); // deleteAsync from inventory
                 itemService.deleteAsync(item.getId()); // deleteAsync from items in mongo
             } else {
