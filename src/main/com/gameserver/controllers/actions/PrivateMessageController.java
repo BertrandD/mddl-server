@@ -39,7 +39,9 @@ public class PrivateMessageController {
     public JsonResponse showAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
-        return new JsonResponse(service.findBy(new Sort(Sort.Direction.DESC, "date"), Criteria.where("author._id").is(new ObjectId(player.getId())).orOperator(Criteria.where("receiver._id").is(new ObjectId(player.getId())))));
+        
+        Criteria c = new Criteria().orOperator(Criteria.where("author._id").is(new ObjectId(player.getId())), Criteria.where("receiver._id").is(new ObjectId(player.getId())));
+        return new JsonResponse(service.findBy(new Sort(Sort.Direction.DESC, "date"), c));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

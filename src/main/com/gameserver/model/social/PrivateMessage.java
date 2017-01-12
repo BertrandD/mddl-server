@@ -1,7 +1,9 @@
 package com.gameserver.model.social;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gameserver.holders.PlayerHolder;
+import com.serializer.PrivateMessageSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author LEBOC Philippe
  */
 @Document(collection = "private_messages")
+@JsonSerialize(using = PrivateMessageSerializer.class)
 public class PrivateMessage {
 
     @Id
