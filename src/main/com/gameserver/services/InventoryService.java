@@ -118,6 +118,7 @@ public class InventoryService implements IInventoryService {
             inventory.addItem(item);
             updateAsync(inventory);
         } else {
+            inventory.getItems().get(inventory.getItems().indexOf(item)).addCount(amount);
             item.addCount(amount);
             itemService.updateAsync(item);
         }
