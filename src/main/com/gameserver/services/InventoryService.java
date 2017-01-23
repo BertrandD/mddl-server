@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author LEBOC Philippe
  */
@@ -42,11 +44,27 @@ public class InventoryService implements IInventoryService {
             logger.debug("addResourceContainer: template is null for item "+templateId);
             return;
         }
+        List<ItemContainer> resources = base.getResources();
+        int k = 0;
+        ItemContainer itemContainer;
+        try {
+            itemContainer = resources.get(0);
+            while (itemContainer != null && !itemContainer.getItem().getTemplateId().equals(templateId)) {
+                k++;
+                itemContainer = resources.get(k);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            itemContainer = null;
+        }
 
-        logger.info("addResourceContainer: 0 "+templateId);
-        final ItemContainer inventory = itemContainerService.create(base, templateId);
-        if(inventory == null) {
-            logger.debug("Cannot create resource inventory because returned null on creation !");
+        if (itemContainer != null) {
+            logger.info("addResourceContainer: itemContainer for " + templateId + " already exists so it's not created");
+        } else {
+            logger.info("addResourceContainer: 0 "+templateId);
+            final ItemContainer inventory = itemContainerService.create(base, templateId);
+            if(inventory == null) {
+                logger.debug("Cannot create resource inventory because returned null on creation !");
+            }
         }
     }
 
