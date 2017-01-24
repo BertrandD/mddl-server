@@ -46,7 +46,7 @@ public class ShipController {
     public JsonResponse create(@AuthenticationPrincipal Account pAccount,
                                @RequestParam(value = "count") long count,
                                @RequestParam(value = "structureId") String structure,
-                               @RequestParam(value = "attachments") List<String> ids) {
+                               @RequestParam(value = "attachments", required = false) List<String> ids) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
@@ -79,7 +79,9 @@ public class ShipController {
 
         final Ship ship = shipService.create(base, structure, count, ids);
         if(ship == null) return new JsonResponse(JsonResponseType.ERROR, "Cannot create Ship");
-        return new JsonResponse(ship);
+        JsonResponse response = new JsonResponse(ship);
+        response.addMeta("base", base);
+        return response;
     }
 
 }
