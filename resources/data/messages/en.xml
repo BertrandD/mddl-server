@@ -47,6 +47,7 @@
         <message id="building_silo_d" text="description is not done, its in todo list" />
         <!-- Items -->
         <message id="item_not_found" text="L'objet n'existe pas" />
+        <message id="item_not_found_in_inventory" text="Item not found in inventory" />
         <message id="item_cannot_create" text="L'objet ne peut pas être créé" />
         <!-- Inventories -->
         <message id="inventory_not_found" text="L'inventaire n'existe pas" />

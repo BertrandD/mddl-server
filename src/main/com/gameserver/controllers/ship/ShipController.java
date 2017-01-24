@@ -61,7 +61,7 @@ public class ShipController {
         final List<ItemInstance> collector = new ArrayList<>();
 
         final ItemInstance structuresInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(structure)).findFirst().orElse(null);
-        if(structuresInst == null || structuresInst.getCount() < count) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND); // todo: make a new sysmsg
+        if(structuresInst == null || structuresInst.getCount() < count) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND_IN_INVENTORY);
 
         boolean faillure = false;
         for (int i = 0; i < ids.size() && !faillure; i++){
