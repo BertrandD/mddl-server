@@ -1,10 +1,10 @@
-package com.serializer;
+package com.middlewar.core.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.gameserver.model.social.PrivateMessage;
+import com.middlewar.core.model.social.PrivateMessage;
 
 import java.io.IOException;
 

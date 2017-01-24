@@ -21,7 +21,6 @@
     <modules>
         <module>core</module>
         <module>api</module>
-        <module>ai</module>
     </modules>
 
 </project>

@@ -1,4 +1,3 @@
-/*
 package com;
 
 import com.middlewar.core.model.Player;
@@ -15,10 +14,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-*/
 /**
  * @author Leboc Philippe.
- *//*
+ */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PlayerTest {
@@ -47,4 +45,3 @@ public class PlayerTest {
         Assertions.assertThat(player.getId()).isNotNull();
     }
 }
-*/

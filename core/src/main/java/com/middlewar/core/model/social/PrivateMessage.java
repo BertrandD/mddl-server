@@ -3,7 +3,7 @@ package com.middlewar.core.model.social;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.holders.PlayerHolder;
-import com.serializer.PrivateMessageSerializer;
+import com.middlewar.core.serializer.PrivateMessageSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
