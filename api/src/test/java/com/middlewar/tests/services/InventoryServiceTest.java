@@ -1,17 +1,18 @@
-package com.middlewar.tests.services;
+package com;
 
-import com.middlewar.api.gameserver.services.BaseInventoryService;
-import com.middlewar.api.gameserver.services.InventoryService;
-import com.middlewar.api.gameserver.services.ItemContainerService;
-import com.middlewar.api.gameserver.services.ItemService;
+import com.middlewar.api.services.BaseInventoryService;
+import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.ItemContainerService;
+import com.middlewar.api.services.ItemService;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.inventory.ItemContainer;
-import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import org.assertj.core.api.Assertions;
@@ -28,7 +29,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class InventoryServiceTest extends MiddlewarTest{
+public class InventoryServiceTest {
 
     private final int INITIAL_ITEM_COUNT = 10;
     private final int PRODUCTION_RESOURCE_PER_HOUR = 20;
@@ -52,27 +53,29 @@ public class InventoryServiceTest extends MiddlewarTest{
     private Player _player;
 
     public InventoryServiceTest() {
-        super();
+        Config.load();
+
+        // Parse
+        SystemMessageData.getInstance();
         ItemData.getInstance();
     }
 
     public void init() {
         _player = Mockito.mock(Player.class);
-        Planet planet = Mockito.mock(Planet.class);
-        _base = new Base("Test base", _player, planet);
+        _base = new Base("Test base", _player);
         ObjectStat baseStat = new ObjectStat();
-        baseStat.addStat(Stats.RESOURCE_1);
-        baseStat.add(Stats.RESOURCE_1, PRODUCTION_RESOURCE_PER_HOUR, StatOp.DIFF);
+        baseStat.addStat(Stats.RESOURCE_FEO);
+        baseStat.add(Stats.RESOURCE_FEO, PRODUCTION_RESOURCE_PER_HOUR, StatOp.DIFF);
         _base.setBaseStat(baseStat);
     }
 
     public ItemInstance generateItemInstance() {
-        return new ItemInstance("resource_1", INITIAL_ITEM_COUNT);
+        return new ItemInstance("resource_feo", INITIAL_ITEM_COUNT);
     }
 
     public ItemContainer generateItemContainer(ItemInstance itemInstance) {
         ItemContainer itemContainer = new ItemContainer(_base, itemInstance);
-        itemContainer.setStat(Stats.RESOURCE_1);
+        itemContainer.setStat(Stats.RESOURCE_FEO);
         return itemContainer;
     }
 
@@ -80,7 +83,7 @@ public class InventoryServiceTest extends MiddlewarTest{
         return generateItemContainer(generateItemInstance());
     }
 
-//    @Test
+    @Test
     public void testRefresh() {
         init();
         ItemContainer itemContainer = generateItemContainer();
@@ -90,7 +93,7 @@ public class InventoryServiceTest extends MiddlewarTest{
 
         Assertions.assertThat(itemContainer.getItem().getCount()).isEqualTo(INITIAL_ITEM_COUNT + PRODUCTION_RESOURCE_PER_HOUR);
 
-        _base.getBaseStat().add(Stats.RESOURCE_1, Double.POSITIVE_INFINITY, StatOp.DIFF);
+        _base.getBaseStat().add(Stats.RESOURCE_FEO, Double.POSITIVE_INFINITY, StatOp.DIFF);
         itemContainer.setLastRefresh(System.currentTimeMillis() - (60 * 60 * 1000));
 
         inventoryService.refresh(itemContainer);
@@ -117,7 +120,7 @@ public class InventoryServiceTest extends MiddlewarTest{
     @Test
     public void testConsumeItem() {
         init();
-        ItemInstance itemInstance = new ItemInstance("module_silo_improve_2", INITIAL_ITEM_COUNT);
+        ItemInstance itemInstance = new ItemInstance("module_silo_improve_c", INITIAL_ITEM_COUNT);
         BaseInventory baseInventory = new BaseInventory(_base);
         itemInstance.setInventory(baseInventory);
         baseInventory.getItems().add(itemInstance);

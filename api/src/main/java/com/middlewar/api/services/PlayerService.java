@@ -1,7 +1,7 @@
-package com.gameserver.services;
+package com.middlewar.api.services;
 
-import com.auth.Account;
-import com.gameserver.model.Player;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Player;
 
 import java.util.List;
 

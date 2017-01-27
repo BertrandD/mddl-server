@@ -1,10 +1,10 @@
-package com.gameserver.services.impl;
+package com.middlewar.api.services.impl;
 
-import com.gameserver.dao.BuildingTaskDao;
-import com.gameserver.model.Base;
-import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.tasks.BuildingTask;
-import com.gameserver.services.BuildingTaskService;
+import com.middlewar.api.dao.BuildingTaskDao;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.instances.BuildingInstance;
+import com.middlewar.core.model.tasks.BuildingTask;
+import com.middlewar.api.services.BuildingTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

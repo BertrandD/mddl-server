@@ -1,12 +1,12 @@
-package com.gameserver.services.impl;
+package com.middlewar.api.services.impl;
 
-import com.gameserver.dao.BaseDao;
-import com.gameserver.dao.BaseInventoryDao;
-import com.gameserver.dao.PlayerDao;
-import com.gameserver.model.Base;
-import com.gameserver.model.Player;
-import com.gameserver.model.inventory.BaseInventory;
-import com.gameserver.services.BaseService;
+import com.middlewar.api.dao.BaseDao;
+import com.middlewar.api.dao.BaseInventoryDao;
+import com.middlewar.api.dao.PlayerDao;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.inventory.BaseInventory;
+import com.middlewar.api.services.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

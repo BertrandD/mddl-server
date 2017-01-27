@@ -1,14 +1,14 @@
-package com.gameserver.controllers.actions;
+package com.middlewar.api.controllers.actions;
 
-import com.auth.Account;
-import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.social.FriendRequest;
-import com.gameserver.model.Player;
-import com.util.response.SystemMessageId;
-import com.gameserver.services.impl.FriendRequestServiceImpl;
-import com.gameserver.services.PlayerService;
-import com.util.response.JsonResponse;
-import com.util.response.JsonResponseType;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.social.FriendRequest;
+import com.middlewar.core.model.Player;
+import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.api.services.impl.FriendRequestServiceImpl;
+import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.util.response.JsonResponse;
+import com.middlewar.api.util.response.JsonResponseType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

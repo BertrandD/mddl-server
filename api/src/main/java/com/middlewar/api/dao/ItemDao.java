@@ -1,6 +1,6 @@
-package com.gameserver.dao;
+package com.middlewar.api.dao;
 
-import com.gameserver.model.instances.ItemInstance;
+import com.middlewar.core.model.instances.ItemInstance;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

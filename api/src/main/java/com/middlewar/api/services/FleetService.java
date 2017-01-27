@@ -1,4 +1,4 @@
-package com.middlewar.api.gameserver.services;
+package com.middlewar.api.services;
 
 import com.middlewar.core.enums.VehicleMission;
 import com.middlewar.core.model.commons.Coordinates;

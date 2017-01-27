@@ -1,15 +1,15 @@
-package com.gameserver.controllers;
+package com.middlewar.api.controllers;
 
-import com.auth.Account;
-import com.gameserver.data.xml.ItemData;
-import com.gameserver.model.Base;
-import com.gameserver.model.Player;
-import com.util.response.SystemMessageId;
-import com.gameserver.model.items.GameItem;
-import com.gameserver.services.impl.InventoryService;
-import com.gameserver.services.PlayerService;
-import com.util.response.JsonResponse;
-import com.util.response.JsonResponseType;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
+import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.model.items.GameItem;
+import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.util.response.JsonResponse;
+import com.middlewar.api.util.response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,18 +32,9 @@ public class TestController {
     @Autowired
     private InventoryService inventoryService;
 
-    @Autowired
-    private UpdateService updateService;
-
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public JsonResponse test() {
         return new JsonResponse();
-    }
-
-    @RequestMapping(value = "/mongodb/update", method = RequestMethod.GET)
-    public JsonResponse updateDatabase() {
-        updateService.updateDatabase();
-        return new JsonResponse("Static message : Database updated successfully !");
     }
 
     @RequestMapping(value = "/create/item", method = RequestMethod.POST)

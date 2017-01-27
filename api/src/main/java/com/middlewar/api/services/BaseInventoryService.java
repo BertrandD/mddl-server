@@ -1,7 +1,7 @@
-package com.gameserver.services;
+package com.middlewar.api.services;
 
-import com.gameserver.model.Base;
-import com.gameserver.model.inventory.BaseInventory;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.inventory.BaseInventory;
 
 /**
  * @author Leboc Philippe.

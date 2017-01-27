@@ -1,4 +1,4 @@
-package com.gameserver.services.impl;
+package com.middlewar.api.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

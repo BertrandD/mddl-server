@@ -1,4 +1,4 @@
-package com.middlewar.api.gameserver.manager;
+package com.middlewar.api.manager;
 
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;

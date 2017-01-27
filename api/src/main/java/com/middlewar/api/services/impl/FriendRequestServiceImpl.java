@@ -1,10 +1,10 @@
-package com.gameserver.services.impl;
+package com.middlewar.api.services.impl;
 
-import com.gameserver.dao.FriendRequestDao;
-import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.Player;
-import com.gameserver.model.social.FriendRequest;
-import com.gameserver.services.FriendRequestService;
+import com.middlewar.api.dao.FriendRequestDao;
+import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.social.FriendRequest;
+import com.middlewar.api.services.FriendRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

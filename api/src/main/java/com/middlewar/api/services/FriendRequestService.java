@@ -1,7 +1,7 @@
-package com.gameserver.services;
+package com.middlewar.api.services;
 
-import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.social.FriendRequest;
+import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.social.FriendRequest;
 
 /**
  * @author Leboc Philippe.

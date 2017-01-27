@@ -1,6 +1,6 @@
-package com.gameserver.dao;
+package com.middlewar.api.dao;
 
-import com.gameserver.model.vehicles.Fleet;
+import com.middlewar.core.model.vehicles.Fleet;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

@@ -1,9 +1,9 @@
-package com.gameserver.services.impl;
+package com.middlewar.api.services.impl;
 
-import com.gameserver.dao.PrivateMessageDao;
-import com.gameserver.holders.PlayerHolder;
-import com.gameserver.model.social.PrivateMessage;
-import com.gameserver.services.PrivateMessageService;
+import com.middlewar.api.dao.PrivateMessageDao;
+import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.social.PrivateMessage;
+import com.middlewar.api.services.PrivateMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

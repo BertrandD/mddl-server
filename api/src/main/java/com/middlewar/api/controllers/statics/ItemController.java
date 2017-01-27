@@ -1,4 +1,4 @@
-package com.middlewar.api.gameserver.controllers.statics;
+package com.middlewar.api.controllers.statics;
 
 import com.middlewar.core.model.Account;
 import com.middlewar.core.data.xml.ItemData;

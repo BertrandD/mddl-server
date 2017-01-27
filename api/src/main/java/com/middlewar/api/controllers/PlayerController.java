@@ -1,11 +1,11 @@
-package com.middlewar.api.gameserver.controllers;
+package com.middlewar.api.controllers;
 
 import com.middlewar.core.model.Account;
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Player;
 import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.api.gameserver.services.PlayerService;
+import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

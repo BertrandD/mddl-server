@@ -1,7 +1,7 @@
-package com.gameserver.services;
+package com.middlewar.api.services;
 
-import com.gameserver.interfaces.IInventory;
-import com.gameserver.model.instances.ItemInstance;
+import com.middlewar.core.interfaces.IInventory;
+import com.middlewar.core.model.instances.ItemInstance;
 
 /**
  * @author Leboc Philippe.

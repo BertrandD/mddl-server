@@ -1,9 +1,9 @@
-package com.gameserver.services.impl;
+package com.middlewar.api.services.impl;
 
-import com.auth.Account;
-import com.gameserver.dao.PlayerDao;
-import com.gameserver.model.Player;
-import com.gameserver.services.PlayerService;
+import com.middlewar.core.model.Account;
+import com.middlewar.api.dao.PlayerDao;
+import com.middlewar.core.model.Player;
+import com.middlewar.api.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

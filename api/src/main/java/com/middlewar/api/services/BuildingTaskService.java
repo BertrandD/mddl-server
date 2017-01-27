@@ -1,8 +1,8 @@
-package com.gameserver.services;
+package com.middlewar.api.services;
 
-import com.gameserver.model.Base;
-import com.gameserver.model.instances.BuildingInstance;
-import com.gameserver.model.tasks.BuildingTask;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.instances.BuildingInstance;
+import com.middlewar.core.model.tasks.BuildingTask;
 
 import java.util.List;
 

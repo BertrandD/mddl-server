@@ -1,10 +1,10 @@
-package com.gameserver.services.impl;
+package com.middlewar.api.services.impl;
 
-import com.gameserver.dao.FleetDao;
-import com.gameserver.enums.VehicleMission;
-import com.gameserver.model.commons.Coordinates;
-import com.gameserver.model.vehicles.Fleet;
-import com.gameserver.services.FleetService;
+import com.middlewar.api.dao.FleetDao;
+import com.middlewar.core.enums.VehicleMission;
+import com.middlewar.core.model.commons.Coordinates;
+import com.middlewar.core.model.vehicles.Fleet;
+import com.middlewar.api.services.FleetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

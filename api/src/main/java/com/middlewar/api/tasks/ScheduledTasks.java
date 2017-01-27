@@ -1,4 +1,4 @@
-package com.middlewar.api.gameserver.tasks;
+package com.middlewar.api.tasks;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

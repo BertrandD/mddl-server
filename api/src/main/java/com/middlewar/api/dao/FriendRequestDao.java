@@ -1,6 +1,6 @@
-package com.gameserver.dao;
+package com.middlewar.api.dao;
 
-import com.gameserver.model.social.FriendRequest;
+import com.middlewar.core.model.social.FriendRequest;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
