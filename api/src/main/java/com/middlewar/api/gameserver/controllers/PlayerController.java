@@ -9,7 +9,6 @@ import com.middlewar.api.gameserver.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +55,7 @@ public class PlayerController {
     public JsonResponse create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
         if(account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT) return new JsonResponse("Maximum player creation reached !"); // TODO: SysMsg
 
-        if(playerService.findOneBy(Criteria.where("name").is(name)) != null) return new JsonResponse(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST);
+        if(playerService.findByName(name) != null) return new JsonResponse(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST);
 
         // Check if name is forbidden (Like 'fuck', 'admin', ...)
         if (Config.FORBIDDEN_NAMES.length > 1)

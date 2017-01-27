@@ -1,18 +1,15 @@
-package com.middlewar.api.gameserver.controllers.actions;
+package com.gameserver.controllers.actions;
 
-import com.middlewar.core.model.Account;
-import com.middlewar.core.holders.PlayerHolder;
-import com.middlewar.core.model.Player;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.model.social.PrivateMessage;
-import com.middlewar.api.gameserver.services.PlayerService;
-import com.middlewar.api.gameserver.services.PrivateMessageService;
-import com.middlewar.api.util.response.JsonResponse;
-import com.middlewar.api.util.response.JsonResponseType;
-import org.bson.types.ObjectId;
+import com.auth.Account;
+import com.gameserver.holders.PlayerHolder;
+import com.gameserver.model.Player;
+import com.util.response.SystemMessageId;
+import com.gameserver.model.social.PrivateMessage;
+import com.gameserver.services.PlayerService;
+import com.gameserver.services.impl.PrivateMessageServiceImpl;
+import com.util.response.JsonResponse;
+import com.util.response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PrivateMessageController {
 
     @Autowired
-    private PrivateMessageService service;
+    private PrivateMessageServiceImpl service;
 
     @Autowired
     private PlayerService playerService;
@@ -39,9 +36,8 @@ public class PrivateMessageController {
     public JsonResponse showAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
-        
-        Criteria c = new Criteria().orOperator(Criteria.where("author._id").is(new ObjectId(player.getId())), Criteria.where("receiver._id").is(new ObjectId(player.getId())));
-        return new JsonResponse(service.findBy(new Sort(Sort.Direction.DESC, "date"), c));
+        //service.findBy(new Sort(Sort.Direction.DESC, "date"), Criteria.where("author._id").is(new ObjectId(player.getId())).orOperator(Criteria.where("receiver._id").is(new ObjectId(player.getId()))));
+        return new JsonResponse(JsonResponseType.ERROR, "TODO: implement me");
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

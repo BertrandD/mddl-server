@@ -1,19 +1,19 @@
-package com.middlewar.api.gameserver.controllers.ship;
+package com.gameserver.controllers.ship;
 
-import com.middlewar.core.model.Account;
-import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.model.Base;
-import com.middlewar.core.model.Player;
-import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.core.model.items.GameItem;
-import com.middlewar.core.model.vehicles.Ship;
-import com.middlewar.api.gameserver.services.InventoryService;
-import com.middlewar.api.gameserver.services.PlayerService;
-import com.middlewar.api.gameserver.services.ShipService;
-import com.middlewar.api.util.response.JsonResponse;
-import com.middlewar.api.util.response.JsonResponseType;
-import com.middlewar.api.util.response.SystemMessageId;
+import com.auth.Account;
+import com.gameserver.data.xml.ItemData;
+import com.gameserver.model.Base;
+import com.gameserver.model.Player;
+import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.items.GameItem;
+import com.gameserver.model.vehicles.Ship;
+import com.gameserver.services.impl.InventoryService;
+import com.gameserver.services.PlayerService;
+import com.gameserver.services.impl.ShipService;
+import com.util.response.JsonResponse;
+import com.util.response.JsonResponseType;
+import com.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,7 +46,7 @@ public class ShipController {
     public JsonResponse create(@AuthenticationPrincipal Account pAccount,
                                @RequestParam(value = "count") long count,
                                @RequestParam(value = "structureId") String structure,
-                               @RequestParam(value = "attachments", required = false) List<String> ids) {
+                               @RequestParam(value = "attachments") List<String> ids) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
@@ -61,31 +61,25 @@ public class ShipController {
         final List<ItemInstance> collector = new ArrayList<>();
 
         final ItemInstance structuresInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(structure)).findFirst().orElse(null);
-        if(structuresInst == null || structuresInst.getCount() < count) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND_IN_INVENTORY);
-
-        collector.add(structuresInst);
+        if(structuresInst == null || structuresInst.getCount() < count) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND); // todo: make a new sysmsg
 
         boolean faillure = false;
-        if (ids != null) {
-            for (int i = 0; i < ids.size() && !faillure; i++){
-                final GameItem template = ItemData.getInstance().getTemplate(ids.get(i));
-                if(template == null) faillure = true; else {
-                    final ItemInstance inst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(template.getItemId())).findFirst().orElse(null);
-                    if(inst != null && inst.getCount() >= count) collector.add(inst); else faillure = true;
-                }
+        for (int i = 0; i < ids.size() && !faillure; i++){
+            final GameItem template = ItemData.getInstance().getTemplate(ids.get(i));
+            if(template == null) faillure = true; else {
+                final ItemInstance inst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(template.getItemId())).findFirst().orElse(null);
+                if(inst != null && inst.getCount() >= count) collector.add(inst); else faillure = true;
             }
         }
 
         if(faillure) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
         for (ItemInstance inst : collector)
-            inventoryService.consumeItem(inst, count);
+            inventoryService.consumeItem(inst, 1);
 
         final Ship ship = shipService.create(base, structure, count, ids);
         if(ship == null) return new JsonResponse(JsonResponseType.ERROR, "Cannot create Ship");
-        JsonResponse response = new JsonResponse(ship);
-        response.addMeta("base", base);
-        return response;
+        return new JsonResponse(ship);
     }
 
 }

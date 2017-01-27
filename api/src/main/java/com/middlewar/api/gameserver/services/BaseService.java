@@ -1,68 +1,11 @@
-package com.middlewar.api.gameserver.services;
+package com.gameserver.services;
 
-import com.middlewar.core.model.Base;
-import com.middlewar.core.model.Player;
-import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.core.model.space.Planet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import com.gameserver.model.Base;
+import com.gameserver.model.Player;
 
 /**
- * @author LEBOC Philippe
+ * @author Leboc Philippe.
  */
-@Service
-public class BaseService extends DatabaseService<Base> {
-
-    @Autowired
-    private InventoryService inventoryService;
-
-    protected BaseService() {
-        super(Base.class);
-    }
-
-    @Override
-    public Base create(Object... params) {
-        if(params.length != 3) return null;
-
-        final String name = (String) params[0];
-        final Player player = (Player) params[1];
-        final Planet planet = (Planet) params[2];
-        final Base base = new Base(name, player, planet);
-        final BaseInventory inventory = new BaseInventory(base);
-
-        base.setBaseInventory(inventory);
-
-        player.addBase(base);
-        player.setCurrentBase(base);
-
-        planet.getBases().add(base);
-
-        mongoOperations.insert(base);
-        mongoOperations.insert(inventory);
-        mongoOperations.save(player);
-        mongoOperations.save(planet);
-        return base;
-    }
-
-    @Override
-    public Base findOne(String id) {
-        final Base base = super.findOne(id);
-        if(base != null) {
-            base.initializeStats();
-            inventoryService.refresh(base);
-        }
-        return base;
-    }
-
-    @Override
-    public List<Base> findAll() {
-        final List<Base> bases = super.findAll();
-        for (Base base : bases) {
-            base.initializeStats();
-            inventoryService.refresh(base);
-        }
-        return bases;
-    }
+public interface BaseService extends DefaultService<Base> {
+    Base create(String name, Player player);
 }

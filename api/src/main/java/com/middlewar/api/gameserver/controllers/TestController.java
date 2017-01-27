@@ -1,16 +1,15 @@
-package com.middlewar.api.gameserver.controllers;
+package com.gameserver.controllers;
 
-import com.middlewar.core.model.Account;
-import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.model.Base;
-import com.middlewar.core.model.Player;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.model.items.GameItem;
-import com.middlewar.api.gameserver.services.InventoryService;
-import com.middlewar.api.gameserver.services.PlayerService;
-import com.middlewar.api.gameserver.services.UpdateService;
-import com.middlewar.api.util.response.JsonResponse;
-import com.middlewar.api.util.response.JsonResponseType;
+import com.auth.Account;
+import com.gameserver.data.xml.ItemData;
+import com.gameserver.model.Base;
+import com.gameserver.model.Player;
+import com.util.response.SystemMessageId;
+import com.gameserver.model.items.GameItem;
+import com.gameserver.services.impl.InventoryService;
+import com.gameserver.services.PlayerService;
+import com.util.response.JsonResponse;
+import com.util.response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

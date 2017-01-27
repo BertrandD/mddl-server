@@ -1,16 +1,15 @@
-package com.gameserver.services;
+package com.gameserver.dao;
 
 import com.gameserver.model.Base;
-import com.gameserver.model.instances.BuildingInstance;
 import com.gameserver.model.tasks.BuildingTask;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
 /**
  * @author Leboc Philippe.
  */
-public interface BuildingTaskService extends DefaultService<BuildingTask> {
-    BuildingTask create(BuildingInstance inst, long timestamp, int level);
+public interface BuildingTaskDao extends MongoRepository<BuildingTask, String> {
     BuildingTask findFirstByOrderByEndsAtAsc();
     List<BuildingTask> findByBuilding(String id);
     List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id);

@@ -1,24 +1,9 @@
-package com.middlewar.api.gameserver.services;
+package com.gameserver.services;
 
-import com.middlewar.core.model.Player;
-import com.middlewar.core.model.inventory.PlayerInventory;
-import org.springframework.stereotype.Service;
+import com.gameserver.model.inventory.PlayerInventory;
 
 /**
- * @author LEBOC Philippe
+ * @author Leboc Philippe.
  */
-@Service
-public class PlayerInventoryService extends DatabaseService<PlayerInventory> {
-
-    protected PlayerInventoryService() {
-        super(PlayerInventory.class);
-    }
-
-    @Override
-    public PlayerInventory create(Object... params) {
-        final PlayerInventory inventory = new PlayerInventory();
-        if(params.length == 1) inventory.setPlayer((Player)params[0]);
-        mongoOperations.insert(inventory);
-        return inventory;
-    }
+public interface PlayerInventoryService extends DefaultService<PlayerInventory> {
 }

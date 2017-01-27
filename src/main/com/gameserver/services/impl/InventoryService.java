@@ -1,22 +1,22 @@
-package com.middlewar.api.gameserver.services;
+package com.gameserver.services.impl;
 
-import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.enums.ItemType;
-import com.middlewar.core.interfaces.IInventory;
-import com.middlewar.core.interfaces.IInventoryService;
-import com.middlewar.core.model.Base;
-import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.inventory.Inventory;
-import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.core.model.inventory.PlayerInventory;
-import com.middlewar.core.model.inventory.ItemContainer;
-import com.middlewar.core.model.items.GameItem;
+import com.gameserver.data.xml.ItemData;
+import com.gameserver.enums.ItemType;
+import com.gameserver.interfaces.IInventory;
+import com.gameserver.interfaces.IInventoryService;
+import com.gameserver.model.Base;
+import com.gameserver.model.instances.ItemInstance;
+import com.gameserver.model.inventory.Inventory;
+import com.gameserver.model.inventory.BaseInventory;
+import com.gameserver.model.inventory.PlayerInventory;
+import com.gameserver.model.inventory.ItemContainer;
+import com.gameserver.model.items.GameItem;
+import com.gameserver.services.ItemContainerService;
+import com.gameserver.services.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -33,7 +33,7 @@ public class InventoryService implements IInventoryService {
     private ItemService itemService;
 
     @Autowired
-    private BaseInventoryService baseInventoryService;
+    private BaseInventoryServiceImpl baseInventoryService;
 
     @Autowired
     private ItemContainerService itemContainerService;
@@ -44,27 +44,11 @@ public class InventoryService implements IInventoryService {
             logger.debug("addResourceContainer: template is null for item "+templateId);
             return;
         }
-        List<ItemContainer> resources = base.getResources();
-        int k = 0;
-        ItemContainer itemContainer;
-        try {
-            itemContainer = resources.get(0);
-            while (itemContainer != null && !itemContainer.getItem().getTemplateId().equals(templateId)) {
-                k++;
-                itemContainer = resources.get(k);
-            }
-        } catch (IndexOutOfBoundsException e) {
-            itemContainer = null;
-        }
 
-        if (itemContainer != null) {
-            logger.info("addResourceContainer: itemContainer for " + templateId + " already exists so it's not created");
-        } else {
-            logger.info("addResourceContainer: 0 "+templateId);
-            final ItemContainer inventory = itemContainerService.create(base, templateId);
-            if(inventory == null) {
-                logger.debug("Cannot create resource inventory because returned null on creation !");
-            }
+        logger.info("addResourceContainer: 0 "+templateId);
+        final ItemContainer inventory = itemContainerService.create(base, templateId);
+        if(inventory == null) {
+            logger.debug("Cannot create resource inventory because returned null on creation !");
         }
     }
 
@@ -94,7 +78,7 @@ public class InventoryService implements IInventoryService {
         }
 
         container.getItem().addCount(addcnt);
-        itemService.updateAsync(container.getItem());
+        itemService.update(container.getItem());
 
         logger.debug("addItem(Container, long) [FINAL]: successfully make " + amount + " "+template.getItemId());
         return container.getItem();
@@ -125,7 +109,9 @@ public class InventoryService implements IInventoryService {
             return null;
         }
 
-        ItemInstance item = itemService.findOneBy((BaseInventory)inventory, templateId);
+        // TODO: repair
+        // itemService.findOneBy((BaseInventory)inventory, templateId);
+        ItemInstance item = null;
         if(item == null)
         {
             item = itemService.create(inventory, templateId, amount);
@@ -136,9 +122,8 @@ public class InventoryService implements IInventoryService {
             inventory.addItem(item);
             updateAsync(inventory);
         } else {
-            inventory.getItems().get(inventory.getItems().indexOf(item)).addCount(amount);
             item.addCount(amount);
-            itemService.updateAsync(item);
+            itemService.update(item);
         }
 
         logger.debug("addItem(Inventory, String, long) [FINAL]: successfully make " + amount + " "+templateId);
@@ -157,9 +142,9 @@ public class InventoryService implements IInventoryService {
 
             if(item.getCount() == 0) {
                 final IInventory inv = item.getInventory();
-                ((Inventory)inv).getItems().remove(item);
+                ((Inventory)inv).getItems().remove(item.getTemplateId());
                 update((Inventory)inv); // deleteAsync from inventory
-                itemService.deleteAsync(item.getId()); // deleteAsync from items in mongo
+                itemService.remove(item); // deleteAsync from items in mongo
             } else {
                 itemService.update(item);
             }
@@ -232,12 +217,12 @@ public class InventoryService implements IInventoryService {
 
         item.addCount(add);
         container.setLastRefresh(now);
-        itemService.updateAsync(item);
+        itemService.update(item);
         itemContainerService.update(container);
     }
 
     public void updateAsync(Inventory inventory) {
-        if(inventory instanceof BaseInventory) baseInventoryService.updateAsync((BaseInventory)inventory);
+        if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
         else playerInventoryService.updateAsync((PlayerInventory)inventory);
     }
 

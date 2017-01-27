@@ -1,14 +1,14 @@
-package com.middlewar.api.gameserver.controllers.actions;
+package com.gameserver.controllers.actions;
 
-import com.middlewar.core.model.Account;
-import com.middlewar.core.holders.PlayerHolder;
-import com.middlewar.core.model.social.FriendRequest;
-import com.middlewar.core.model.Player;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.api.gameserver.services.FriendRequestService;
-import com.middlewar.api.gameserver.services.PlayerService;
-import com.middlewar.api.util.response.JsonResponse;
-import com.middlewar.api.util.response.JsonResponseType;
+import com.auth.Account;
+import com.gameserver.holders.PlayerHolder;
+import com.gameserver.model.social.FriendRequest;
+import com.gameserver.model.Player;
+import com.util.response.SystemMessageId;
+import com.gameserver.services.impl.FriendRequestServiceImpl;
+import com.gameserver.services.PlayerService;
+import com.util.response.JsonResponse;
+import com.util.response.JsonResponseType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +33,7 @@ public class FriendController {
     private PlayerService playerService;
 
     @Autowired
-    private FriendRequestService friendRequestService;
+    private FriendRequestServiceImpl friendRequestService;
 
     @RequestMapping(value = "/request", method = RequestMethod.POST)
     public JsonResponse sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "playerId") String friendId, @RequestParam(value = "message") String message) {
@@ -88,7 +88,7 @@ public class FriendController {
         friend.getFriendRequests().remove(request);
         player.getFriendRequests().remove(request);
 
-        friendRequestService.deleteAsync(request);
+        friendRequestService.remove(request);
         playerService.update(friend);
         playerService.update(player);
 
@@ -111,7 +111,7 @@ public class FriendController {
         friend.getFriendRequests().remove(request);
         player.getFriendRequests().remove(request);
 
-        friendRequestService.deleteAsync(request);
+        friendRequestService.remove(request);
         playerService.update(friend);
         playerService.update(player);
 
