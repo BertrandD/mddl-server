@@ -63,19 +63,23 @@ public class ShipController {
         final ItemInstance structuresInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(structure)).findFirst().orElse(null);
         if(structuresInst == null || structuresInst.getCount() < count) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND_IN_INVENTORY);
 
+        collector.add(structuresInst);
+
         boolean faillure = false;
-        for (int i = 0; i < ids.size() && !faillure; i++){
-            final GameItem template = ItemData.getInstance().getTemplate(ids.get(i));
-            if(template == null) faillure = true; else {
-                final ItemInstance inst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(template.getItemId())).findFirst().orElse(null);
-                if(inst != null && inst.getCount() >= count) collector.add(inst); else faillure = true;
+        if (ids != null) {
+            for (int i = 0; i < ids.size() && !faillure; i++){
+                final GameItem template = ItemData.getInstance().getTemplate(ids.get(i));
+                if(template == null) faillure = true; else {
+                    final ItemInstance inst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(template.getItemId())).findFirst().orElse(null);
+                    if(inst != null && inst.getCount() >= count) collector.add(inst); else faillure = true;
+                }
             }
         }
 
         if(faillure) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
         for (ItemInstance inst : collector)
-            inventoryService.consumeItem(inst, 1);
+            inventoryService.consumeItem(inst, count);
 
         final Ship ship = shipService.create(base, structure, count, ids);
         if(ship == null) return new JsonResponse(JsonResponseType.ERROR, "Cannot create Ship");

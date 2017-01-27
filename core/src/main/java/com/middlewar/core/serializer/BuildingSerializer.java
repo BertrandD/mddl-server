@@ -8,7 +8,9 @@ import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.buildings.ModuleFactory;
+import com.middlewar.core.model.buildings.StructureFactory;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.items.Structure;
 
 import java.io.IOException;
 
@@ -66,10 +68,23 @@ public class BuildingSerializer extends JsonSerializer<Building> {
         if(value instanceof ModuleFactory)
         {
             gen.writeObjectFieldStart("unlockModules");
-            for(int level : ((ModuleFactory) value).getModulesByLevel().keySet()) {
+            for(int level : ((ModuleFactory) value).getItemsByLevel().keySet()) {
                 gen.writeArrayFieldStart(""+level);
-                for(Module module : ((ModuleFactory) value).getModulesByLevel(level))
+                for(Module module : ((ModuleFactory) value).getItemsByLevel(level))
                     gen.writeString(module.getItemId());
+                gen.writeEndArray();
+            }
+            gen.writeEndObject();
+        }
+
+
+        if(value instanceof StructureFactory)
+        {
+            gen.writeObjectFieldStart("unlockStructures");
+            for(int level : ((StructureFactory) value).getItemsByLevel().keySet()) {
+                gen.writeArrayFieldStart(""+level);
+                for(Structure structure: ((StructureFactory) value).getItemsByLevel(level))
+                    gen.writeString(structure.getItemId());
                 gen.writeEndArray();
             }
             gen.writeEndObject();

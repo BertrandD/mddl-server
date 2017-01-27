@@ -12,6 +12,7 @@ public enum BuildingCategory {
     STORAGE,
     SILO,
     MODULE_FACTORY,
+    STRUCTURE_FACTORY,
     OPERATION_CENTER,
     MARKET,
     POWER_FACTORY,

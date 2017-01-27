@@ -1,19 +1,19 @@
 package com.middlewar.api.gameserver.controllers.buildings;
 
-import com.middlewar.core.model.Account;
-import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.model.Base;
-import com.middlewar.core.model.Player;
-import com.middlewar.core.model.buildings.ModuleFactory;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.model.instances.BuildingInstance;
-import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.items.Module;
 import com.middlewar.api.gameserver.services.InventoryService;
 import com.middlewar.api.gameserver.services.PlayerService;
 import com.middlewar.api.gameserver.services.ValidatorService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
+import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.model.buildings.StructureFactory;
+import com.middlewar.core.model.instances.BuildingInstance;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.items.Structure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,10 +29,10 @@ import java.util.HashMap;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/modulefactory", produces = "application/json")
-public class ModuleFactoryController {
+@RequestMapping(value = "/structurefactory", produces = "application/json")
+public class StructureFactoryController {
 
-    private static final String MODULE_FACTORY = "module_factory";
+    private static final String STRUCTURE_FACTORY = "structure_factory";
 
     @Autowired
     private PlayerService playerService;
@@ -44,7 +44,7 @@ public class ModuleFactoryController {
     private ValidatorService validator;
 
     @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
-    public JsonResponse createModule(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") String moduleId) {
+    public JsonResponse createStructure(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") String structureId) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
@@ -54,23 +54,23 @@ public class ModuleFactoryController {
 
         base.initializeStats();
 
-        final Module module = ItemData.getInstance().getModule(moduleId);
-        if(module == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
+        final Structure structure = ItemData.getInstance().getStructure(structureId);
+        if(structure == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
-        final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getBuildingId().equals(MODULE_FACTORY)).findFirst().orElse(null);
+        final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getBuildingId().equals(STRUCTURE_FACTORY)).findFirst().orElse(null);
         if(factory == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
 
-        final ModuleFactory factoryTemplate = (ModuleFactory)factory.getTemplate();
-        if(!factoryTemplate.hasItem(factory.getCurrentLevel(), module.getItemId())) return new JsonResponse(JsonResponseType.ERROR, "Module not unlocked !");
+        final StructureFactory factoryTemplate = (StructureFactory) factory.getTemplate();
+        if(!factoryTemplate.hasItem(factory.getCurrentLevel(), structure.getItemId())) return new JsonResponse(JsonResponseType.ERROR, "Structure not unlocked !");
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse faillure = validator.validateItemRequirements(base, module, collector, pAccount.getLang());
+        final JsonResponse faillure = validator.validateItemRequirements(base, structure, collector, pAccount.getLang());
         if(faillure != null) return faillure;
 
         collector.forEach(inventoryService::consumeItem);
 
-        final ItemInstance item = inventoryService.addItem(base.getBaseInventory(), module.getItemId(), 1);
-        if(item == null) return new JsonResponse(JsonResponseType.ERROR, "Module cannot be created.");
+        final ItemInstance item = inventoryService.addItem(base.getBaseInventory(), structure.getItemId(), 1);
+        if(item == null) return new JsonResponse(JsonResponseType.ERROR, "Structure cannot be created.");
 
         return new JsonResponse(base);
     }
