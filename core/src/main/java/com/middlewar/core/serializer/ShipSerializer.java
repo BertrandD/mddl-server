@@ -24,7 +24,7 @@ public class ShipSerializer extends JsonSerializer<Ship> {
         gen.writeStringField("baseId", value.getBase().getId());
         gen.writeNumberField("count", value.getCount());
         gen.writeStringField("state", value.getState().name());
-        gen.writeObjectField("structure", value.getStructure());
+        gen.writeObjectField("structureId", value.getStructure().getItemId());
 
         gen.writeArrayFieldStart("engines");
         for (Engine engine : value.getEngines()) {

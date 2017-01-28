@@ -29,6 +29,7 @@ public class ShipService extends DatabaseService<Ship>{
             ids = (List<String>) params[3];
 
         final Ship ship = new Ship(base, structure, count);
+        base.getShips().add(ship);
         if(ids != null) {
             ship.setCargoIds(ids.stream().filter(k -> k.startsWith("cargo_")).collect(Collectors.toList()));
             ship.setEngineIds(ids.stream().filter(k -> k.startsWith("engine_")).collect(Collectors.toList()));
@@ -36,6 +37,7 @@ public class ShipService extends DatabaseService<Ship>{
             ship.setWeaponIds(ids.stream().filter(k -> k.startsWith("weapon_")).collect(Collectors.toList()));
         }
         mongoOperations.insert(ship);
+        mongoOperations.save(base);
         return ship;
     }
 }

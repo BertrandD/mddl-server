@@ -48,7 +48,7 @@ public final class Base
 
     @DBRef
     @JsonManagedReference
-    private List<Ship> ship;
+    private List<Ship> ships;
 
     @DBRef
     private List<Fleet> fleets;
@@ -70,7 +70,7 @@ public final class Base
         setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
         setResources(new ArrayList<>());
-        setShip(new ArrayList<>());
+        setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
     }
 
@@ -82,7 +82,7 @@ public final class Base
         setBuildingPositions(new HashMap<>());
         setBaseStat(new ObjectStat());
         setResources(new ArrayList<>());
-        setShip(new ArrayList<>());
+        setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
     }
 
@@ -208,12 +208,12 @@ public final class Base
         this.resources.add(inventory);
     }
 
-    public List<Ship> getShip() {
-        return ship;
+    public List<Ship> getShips() {
+        return ships;
     }
 
-    public void setShip(List<Ship> ship) {
-        this.ship = ship;
+    public void setShips(List<Ship> ships) {
+        this.ships = ships;
     }
 
     public List<Fleet> getFleets() {
