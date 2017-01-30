@@ -10,10 +10,12 @@ import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.model.buildings.StructureFactory;
+import com.middlewar.core.model.buildings.ItemFactory;
+import com.middlewar.core.model.buildings.ModuleFactory;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.items.Structure;
+import com.middlewar.core.model.items.Item;
+import com.middlewar.core.model.items.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,9 +31,10 @@ import java.util.HashMap;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/structurefactory", produces = "application/json")
-public class StructureFactoryController {
+@RequestMapping(value = "/factory", produces = "application/json")
+public class ItemFactoryController {
 
+    private static final String MODULE_FACTORY = "module_factory";
     private static final String STRUCTURE_FACTORY = "structure_factory";
 
     @Autowired
@@ -43,8 +46,10 @@ public class StructureFactoryController {
     @Autowired
     private ValidatorService validator;
 
-    @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
-    public JsonResponse createStructure(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") String structureId) {
+    @RequestMapping(value = "/{factory}/create/{id}", method = RequestMethod.POST)
+    public JsonResponse createItem(@AuthenticationPrincipal Account pAccount,
+                                   @PathVariable(value = "factory") String factoryType,
+                                   @PathVariable(value = "id") String itemId) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
@@ -54,23 +59,36 @@ public class StructureFactoryController {
 
         base.initializeStats();
 
-        final Structure structure = ItemData.getInstance().getStructure(structureId);
-        if(structure == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
+        // TODO : I'm sure we can improve this...
+        Item item = null;
+        String buildingType = "";
+        switch (factoryType) {
+            case "module":
+                item = ItemData.getInstance().getModule(itemId);
+                buildingType = MODULE_FACTORY;
+                break;
+            case "structure":
+                item = ItemData.getInstance().getStructure(itemId);
+                buildingType = STRUCTURE_FACTORY;
+                break;
+        }
+        if(item == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
-        final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getBuildingId().equals(STRUCTURE_FACTORY)).findFirst().orElse(null);
+        final String finalBuildingType = buildingType;
+        final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getBuildingId().equals(finalBuildingType)).findFirst().orElse(null);
         if(factory == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
 
-        final StructureFactory factoryTemplate = (StructureFactory) factory.getTemplate();
-        if(!factoryTemplate.hasItem(factory.getCurrentLevel(), structure.getItemId())) return new JsonResponse(JsonResponseType.ERROR, "Structure not unlocked !");
+        final ItemFactory factoryTemplate = (ItemFactory)factory.getTemplate();
+        if(!factoryTemplate.hasItem(factory.getCurrentLevel(), item.getItemId())) return new JsonResponse(JsonResponseType.ERROR, "Module not unlocked !");
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse faillure = validator.validateItemRequirements(base, structure, collector, pAccount.getLang());
+        final JsonResponse faillure = validator.validateItemRequirements(base, item, collector, pAccount.getLang());
         if(faillure != null) return faillure;
 
         collector.forEach(inventoryService::consumeItem);
 
-        final ItemInstance item = inventoryService.addItem(base.getBaseInventory(), structure.getItemId(), 1);
-        if(item == null) return new JsonResponse(JsonResponseType.ERROR, "Structure cannot be created.");
+        final ItemInstance itemInstance = inventoryService.addItem(base.getBaseInventory(), item.getItemId(), 1);
+        if(itemInstance == null) return new JsonResponse(JsonResponseType.ERROR, "Item cannot be created.");
 
         return new JsonResponse(base);
     }
