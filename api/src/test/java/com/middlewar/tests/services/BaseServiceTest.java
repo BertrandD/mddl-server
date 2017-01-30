@@ -30,7 +30,7 @@ public class BaseServiceTest {
 
     @Test
     public void testCreate() {
-        final Player player = new Player();
+        final Player player = new Player(null, "Bertrand");
         final Base base = baseService.create("", player);
 
         Assertions.assertThat(base).isNotNull();
