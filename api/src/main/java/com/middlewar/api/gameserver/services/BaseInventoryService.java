@@ -17,8 +17,9 @@ public class BaseInventoryService extends DatabaseService<BaseInventory> {
 
     @Override
     public BaseInventory create(Object... params) {
-        final BaseInventory inventory = new BaseInventory();
-        if(params.length == 1) inventory.setBase((Base)params[0]);
+        if(params.length != 1)
+            return null;
+        final BaseInventory inventory = new BaseInventory((Base)params[0]);
         mongoOperations.insert(inventory);
         return inventory;
     }

@@ -1,7 +1,8 @@
-package com;
+package com.middlewar.tests.services;
 
-import com.middlewar.core.model.Player;
 import com.middlewar.api.gameserver.services.PlayerService;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Player;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,15 +12,12 @@ import org.mockito.Mockito;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Leboc Philippe.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class PlayerTest {
+public class PlayerServiceTest {
 
     @InjectMocks
     private PlayerService service;
@@ -28,20 +26,12 @@ public class PlayerTest {
     private MongoOperations mongo;
 
     @Test
-    public void testFinAllUsers() {
-        final List<Player> players = new ArrayList<>();
-        players.add(new Player(null, "Bertrand"));
-        players.add(new Player(null, "Philippe"));
-
-        Mockito.when(mongo.findAll(Player.class)).thenReturn(players);
-
-        Assertions.assertThat(service.findAll()).isNotNull().isNotEmpty().hasSize(2);
-    }
-
-    @Test
     public void testCreatePlayer() {
-        final Player player = service.create(null, "Philippe");
+        final Account account = Mockito.mock(Account.class);
+        final Player player = service.create(account, "Philippe");
         Assertions.assertThat(player).isNotNull();
         Assertions.assertThat(player.getId()).isNotNull();
+        Assertions.assertThat(player.getInventory()).isNotNull();
+        Assertions.assertThat(player.getInventory().getPlayer()).isEqualTo(player);
     }
 }

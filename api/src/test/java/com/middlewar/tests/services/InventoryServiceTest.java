@@ -1,12 +1,10 @@
-package com;
+package com.middlewar.tests.services;
 
 import com.middlewar.api.gameserver.services.BaseInventoryService;
 import com.middlewar.api.gameserver.services.InventoryService;
 import com.middlewar.api.gameserver.services.ItemContainerService;
 import com.middlewar.api.gameserver.services.ItemService;
-import com.middlewar.core.config.Config;
 import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
@@ -29,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class InventoryServiceTest {
+public class InventoryServiceTest extends MiddlewarTest{
 
     private final int INITIAL_ITEM_COUNT = 10;
     private final int PRODUCTION_RESOURCE_PER_HOUR = 20;
@@ -53,10 +51,7 @@ public class InventoryServiceTest {
     private Player _player;
 
     public InventoryServiceTest() {
-        Config.load();
-
-        // Parse
-        SystemMessageData.getInstance();
+        super();
         ItemData.getInstance();
     }
 
