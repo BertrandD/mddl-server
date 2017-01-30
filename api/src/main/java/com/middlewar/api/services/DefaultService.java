@@ -15,5 +15,5 @@ public interface DefaultService<T> {
 
     void remove(T object);
 
-    void clearAll();
+    void deleteAll();
 }

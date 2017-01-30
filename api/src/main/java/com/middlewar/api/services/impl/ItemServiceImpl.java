@@ -51,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         itemDao.deleteAll();
     }
 }

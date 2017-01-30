@@ -45,7 +45,7 @@ public class FleetServiceImpl implements FleetService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         fleetDao.deleteAll();
     }
 }

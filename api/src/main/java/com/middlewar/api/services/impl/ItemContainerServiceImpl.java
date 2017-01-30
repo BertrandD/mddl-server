@@ -59,7 +59,7 @@ public class ItemContainerServiceImpl implements ItemContainerService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         itemContainerDao.deleteAll();
     }
 }

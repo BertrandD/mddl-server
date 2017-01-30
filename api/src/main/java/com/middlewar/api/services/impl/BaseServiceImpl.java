@@ -79,7 +79,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         baseDao.deleteAll();
     }
 }

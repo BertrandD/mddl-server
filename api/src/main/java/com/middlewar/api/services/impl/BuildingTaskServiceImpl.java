@@ -68,7 +68,7 @@ public class BuildingTaskServiceImpl implements BuildingTaskService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         buildingTaskDao.deleteAll();
     }
 }

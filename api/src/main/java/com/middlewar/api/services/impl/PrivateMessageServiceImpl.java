@@ -44,7 +44,7 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         privateMessageDao.deleteAll();
     }
 }

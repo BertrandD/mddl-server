@@ -57,7 +57,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         buildingDao.deleteAll();
     }
 }

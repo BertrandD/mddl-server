@@ -49,7 +49,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         friendRequestDao.deleteAll();
     }
 }

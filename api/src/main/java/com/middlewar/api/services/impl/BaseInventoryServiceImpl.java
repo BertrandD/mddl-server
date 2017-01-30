@@ -45,7 +45,7 @@ public class BaseInventoryServiceImpl implements BaseInventoryService{
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         baseInventoryDao.deleteAll();
     }
 }

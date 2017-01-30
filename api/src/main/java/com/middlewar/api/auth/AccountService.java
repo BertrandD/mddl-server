@@ -72,4 +72,8 @@ public class AccountService implements UserDetailsService {
     public void update(Account account) {
         accountRepository.save(account);
     }
+
+    public void deleteAll() {
+        accountRepository.deleteAll();
+    }
 }
