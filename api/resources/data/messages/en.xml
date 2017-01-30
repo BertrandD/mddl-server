@@ -11,11 +11,13 @@
         <!-- Player -->
         <message id="player_not_found" text="Player not found" />
         <message id="choose_player" text="Choose a player" />
+        <message id="maximum_player_creation_reached" text="Maximum player creation reached" />
+        <message id="player_creation_failed" text="Player creation failed" />
         <!-- Base -->
         <message id="base_not_found" text="Base not found" />
         <message id="base_position_already_taken" text="The position is already taken" />
         <!-- Static buildings -->
-        <message id="static_building_doesnt_exist" text="The requested building doesn't exist !" />
+        <message id="static_building_doesnt_exist" text="The requested building doesn't exist" />
         <!-- Buildings -->
         <message id="building_cannot_create" text="Cannot create the building" />
         <message id="building_not_found" text="Building not found" />

@@ -11,12 +11,15 @@ public final class SystemMessageId {
     public static final String ACCOUNT_ALREADY_EXIST = "account_already_exist";
 
     // common
+    public static final String INVALID_PARAMETERS = "INVALID PARAMETERS"; // Used to check Request parameters
     public static final String INCORRECT_CREDENTIALS = "incorrect_credentials";
     public static final String FORBIDDEN_NAME = "forbidden_name";
     public static final String CHOOSE_PLAYER = "choose_player";
 
     // player
     public static final String PLAYER_NOT_FOUND = "player_not_found";
+    public static final String MAXIMUM_PLAYER_CREATION_REACHED = "maximum_player_creation_reached";
+    public static final String PLAYER_CREATION_FAILED = "player_creation_failed";
 
     // base
     public static final String BASE_NOT_FOUND = "base_not_found";

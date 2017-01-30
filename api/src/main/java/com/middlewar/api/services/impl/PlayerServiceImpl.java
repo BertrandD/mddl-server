@@ -1,5 +1,6 @@
 package com.middlewar.api.services.impl;
 
+import com.middlewar.api.auth.AccountService;
 import com.middlewar.core.model.Account;
 import com.middlewar.api.dao.PlayerDao;
 import com.middlewar.core.model.Player;
@@ -18,9 +19,28 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     private PlayerDao dao;
 
+    @Autowired
+    private AccountService accountService;
+
     @Override
     public Player create(Account account, String name) {
-        return dao.insert(new Player(account, name));
+
+        // Retrieve account
+        final Account playerAccount = accountService.findOne(account.getId());
+        if(playerAccount == null) return null;
+
+        final Player player = dao.insert(new Player(account, name));
+
+        // Update database account
+        playerAccount.addPlayer(player.getId());
+        playerAccount.setCurrentPlayer(player.getId());
+        accountService.update(playerAccount);
+
+        // update current AuthenticationPrincipal
+        account.addPlayer(player.getId());
+        account.setCurrentPlayer(player.getId());
+
+        return player;
     }
 
     @Override
@@ -54,7 +74,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void clearAll() {
+    public void deleteAll() {
         dao.deleteAll();
     }
 }
