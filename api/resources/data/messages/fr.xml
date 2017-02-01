@@ -32,6 +32,8 @@
         <message id="building_robot_factory_n" text="Usine de robots" />
         <message id="building_market_n" text="Marché" />
         <message id="building_module_factory_n" text="Usine de modules" />
+        <message id="building_structure_factory_n" text="Usine de structures" />
+        <message id="building_spatial_elevator_n" text="Station de lancement" />
         <message id="building_silo_n" text="Silo" />
         <!-- Buildings descriptions -->
         <message id="building_mine_d" text="La mine permet l'extraction de ressources précieuses contenue dans les entrailles de la planète." />
@@ -44,6 +46,9 @@
         <message id="building_robot_factory_d" text="Fr: description is not done, its in todo list" />
         <message id="building_market_d" text="Fr: description is not done, its in todo list" />
         <message id="building_module_factory_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_structure_factory_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_structure_factory_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_spatial_elevator_d" text="Description is not done, its in todo list" />
         <message id="building_silo_d" text="Fr: description is not done, its in todo list" />
         <!-- Items -->
         <message id="item_not_found" text="Item not found" />
