@@ -10,6 +10,11 @@ public final class SystemMessageId {
     public static final String USERNAME_ALREADY_EXIST = "username_already_exist";
     public static final String ACCOUNT_ALREADY_EXIST = "account_already_exist";
 
+    // FriendRequest
+    public static final String FRIEND_REQUEST_DOESNT_EXIST = "friendrequest_doesnt_exist";
+    public static final String FAILED_TO_SEND_FRIEND_REQUEST = "friendrequest_faile_to_send_friend_request";
+    public static final String YOU_CANNOT_REQUEST_YOURSELF = "friendrequest_you_cannot_request_yourself";
+
     // common
     public static final String INVALID_PARAMETERS = "INVALID PARAMETERS"; // Used to check Request parameters
     public static final String INCORRECT_CREDENTIALS = "incorrect_credentials";

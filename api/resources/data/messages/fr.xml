@@ -6,6 +6,10 @@
         <message id="username_already_exist" text="Nom d'utilisateur déjà utilisé" />
         <message id="account_already_exist" text="Ce compte existe déjà" />
         <message id="incorrect_credentials" text="Mot de passe incorrect" />
+        <!-- FriendRequest -->
+        <message id="friendrequest_doesnt_exist" text="La requête n'existe pas" />
+        <message id="friendrequest_faile_to_send_friend_request" text="La requête d'ami n'a pas abouti" />
+        <message id="friendrequest_you_cannot_request_yourself" text="Vous ne pouvez pas vous demandez vous-même en ami" />
         <!-- Commons -->
         <message id="forbidden_name" text="Ce nom est interdit" />
         <!-- Player -->

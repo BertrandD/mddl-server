@@ -6,6 +6,10 @@
         <message id="username_already_exist" text="Username already exist" />
         <message id="account_already_exist" text="Account already exist" />
         <message id="incorrect_credentials" text="Incorrect credentials" />
+        <!-- FriendRequest -->
+        <message id="friendrequest_doesnt_exist" text="The request doesn't exist" />
+        <message id="friendrequest_faile_to_send_friend_request" text="Failed to send friend request" />
+        <message id="friendrequest_you_cannot_request_yourself" text="You cannot request yourself" />
         <!-- Commons -->
         <message id="forbidden_name" text="Forbidden name" />
         <!-- Player -->
@@ -22,7 +26,7 @@
         <message id="building_cannot_create" text="Cannot create the building" />
         <message id="building_not_found" text="Building not found" />
         <message id="building_already_exist" text="Building already exist" />
-        <message id="building_max_level_reached" text="Max building level reached." />
+        <message id="building_max_level_reached" text="Max building level reached" />
         <!-- Buildings names -->
         <message id="building_mine_n" text="Mine" />
         <message id="building_storage_n" text="Storage" />
