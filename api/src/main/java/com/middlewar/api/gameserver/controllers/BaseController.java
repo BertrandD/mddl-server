@@ -1,27 +1,26 @@
 package com.middlewar.api.gameserver.controllers;
 
-import com.middlewar.core.model.Account;
+import com.middlewar.api.gameserver.services.BaseService;
+import com.middlewar.api.gameserver.services.BuildingTaskService;
+import com.middlewar.api.gameserver.services.PlayerService;
+import com.middlewar.api.gameserver.services.SpyReportService;
+import com.middlewar.api.util.response.JsonResponse;
+import com.middlewar.api.util.response.JsonResponseType;
+import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.BuildingInstanceHolder;
+import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.instances.BuildingInstance;
-import com.middlewar.api.gameserver.services.BaseService;
-import com.middlewar.api.gameserver.services.BuildingTaskService;
-import com.middlewar.api.gameserver.services.PlayerService;
-import com.middlewar.api.util.response.JsonResponse;
-import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.model.report.SpyReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,10 @@ public class BaseController {
 
     @Autowired
     private BuildingTaskService buildingTaskService;
+
+    @Autowired
+    private SpyReportService spyReportService;
+
 
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
     public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
@@ -114,6 +117,24 @@ public class BaseController {
         });
 
         return new JsonResponse(nextBuildings);
+    }
+
+    /**
+     * @param pAccount
+     * @return list of all building that can be builded (Checking only buildings requirement)
+     */
+    @RequestMapping(value = "/base/spy/{id}", method = RequestMethod.GET)
+    public JsonResponse spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
+        final Base baseTarget = baseService.findOne(id);
+        if(baseTarget == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
+
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+
+        final SpyReport report = spyReportService.create(player.getCurrentBase(), baseTarget);
+        if(report == null) return new JsonResponse(JsonResponseType.ERROR, "An error occurred. We can't send your private message.");
+
+        return new JsonResponse(report);
     }
 
     private boolean hasRequirements(Base base, Building building, int nextLevel)
