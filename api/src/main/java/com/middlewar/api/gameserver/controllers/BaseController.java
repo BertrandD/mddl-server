@@ -131,8 +131,8 @@ public class BaseController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        final SpyReport report = spyReportService.create(player.getCurrentBase(), baseTarget);
-        if(report == null) return new JsonResponse(JsonResponseType.ERROR, "An error occurred. We can't send your private message.");
+        final SpyReport report = spyReportService.create(player, player.getCurrentBase(), baseTarget);
+        if(report == null) return new JsonResponse(JsonResponseType.ERROR, "An error occurred. We can't create the spy report");
 
         return new JsonResponse(report);
     }

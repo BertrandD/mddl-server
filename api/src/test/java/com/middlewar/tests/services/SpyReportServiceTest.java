@@ -3,6 +3,7 @@ package com.middlewar.tests.services;
 import com.middlewar.api.gameserver.services.SpyReportService;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.ItemContainer;
 import com.middlewar.core.model.report.SpyReport;
@@ -32,14 +33,14 @@ public class SpyReportServiceTest extends MiddlewarTest{
 
     @Test
     public void testCreateSpyReport() {
-        final Account account = Mockito.mock(Account.class);
+        final Player player = Mockito.mock(Player.class);
         final Base baseSrc = new Base();
         final Base baseTarget = new Base();
         baseTarget.getShips().add(new Ship(baseTarget, "structure_test", 5));
 
         baseTarget.getResources().add(new ItemContainer(baseTarget, new ItemInstance("resource_feo", 100)));
 
-        SpyReport report =  service.create(baseSrc, baseTarget);
+        SpyReport report =  service.create(player, baseSrc, baseTarget);
         Assertions.assertThat(report).isNotNull();
         Assertions.assertThat(report.getBaseSrc()).isEqualTo(baseSrc);
         Assertions.assertThat(report.getBaseTarget()).isEqualTo(baseTarget);

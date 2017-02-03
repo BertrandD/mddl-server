@@ -5,9 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.SpyReportCategory;
 import com.middlewar.core.enums.SpyReportStatus;
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.serializer.SpyReportSerializer;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.ArrayList;
@@ -18,10 +17,7 @@ import java.util.List;
  * @author bertrand.
  */
 @JsonSerialize(using = SpyReportSerializer.class)
-public class SpyReport {
-
-    @Id
-    private String id;
+public class SpyReport extends Report{
 
     @DBRef
     @JsonBackReference
@@ -35,8 +31,8 @@ public class SpyReport {
 
     private HashMap<SpyReportCategory, List<SpyReportEntry>> entries;
 
-    public SpyReport(Base baseSrc, Base baseTarget, SpyReportStatus reportStatus) {
-        setId(new ObjectId().toString());
+    public SpyReport(Player owner, Base baseSrc, Base baseTarget, SpyReportStatus reportStatus) {
+        super(owner);
         setBaseSrc(baseSrc);
         setBaseTarget(baseTarget);
         setReportStatus(reportStatus);
@@ -81,13 +77,5 @@ public class SpyReport {
 
     public void setEntries(HashMap<SpyReportCategory, List<SpyReportEntry>> entries) {
         this.entries = entries;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

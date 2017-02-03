@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.inventory.PlayerInventory;
+import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.serializer.PlayerSerializer;
 import org.bson.types.ObjectId;
@@ -49,10 +50,14 @@ public class Player {
     @DBRef
     private List<FriendRequest> friendRequests;
 
+    @DBRef
+    private List<Report> reports;
+
     public Player() {
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
         setFriendRequests(new ArrayList<>());
+        setReports(new ArrayList<>());
     }
 
     public Player(Account account, String name) {
@@ -62,6 +67,7 @@ public class Player {
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
         setFriendRequests(new ArrayList<>());
+        setReports(new ArrayList<>());
     }
 
     public String getId() {
@@ -147,5 +153,13 @@ public class Player {
             if(player.getId().equalsIgnoreCase(this.getId())) return true;
         }
         return false;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 }

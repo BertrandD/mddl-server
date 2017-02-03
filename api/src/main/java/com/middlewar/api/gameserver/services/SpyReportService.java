@@ -1,6 +1,7 @@
 package com.middlewar.api.gameserver.services;
 
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.model.inventory.ItemContainer;
 import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.enums.SpyReportCategory;
@@ -19,14 +20,17 @@ public class SpyReportService extends DatabaseService<SpyReport> {
 
     @Override
     public SpyReport create(Object... params) {
-        if(params.length != 2) return null;
+        if(params.length != 3) return null;
 
-        final Base baseSrc = (Base) params[0];
-        final Base baseTarget = (Base) params[1];
+        final Player owner = (Player) params[0];
+        final Base baseSrc = (Base) params[1];
+        final Base baseTarget = (Base) params[2];
 
         // TODO : add logic for spy defense
 
-        final SpyReport report = new SpyReport(baseSrc, baseTarget, SpyReportStatus.SUCCESS);
+        final SpyReport report = new SpyReport(owner, baseSrc, baseTarget, SpyReportStatus.SUCCESS);
+
+        owner.getReports().add(report);
 
         for (Ship ship : baseTarget.getShips()) {
             //TODO : instead of getting structure, we should get the Recipe
@@ -36,10 +40,11 @@ public class SpyReportService extends DatabaseService<SpyReport> {
         }
 
         for (ItemContainer resource : baseTarget.getResources()) {
-            report.addEntry(resource.getItem().getTemplateId(), resource.getItem().getCount(), SpyReportCategory.RESOURCES);
+            report.addEntry(resource.getItem().getTemplateId(), (int)resource.getItem().getCount(), SpyReportCategory.RESOURCES);
         }
 
         mongoOperations.insert(report);
+        mongoOperations.save(owner);
         return report;
     }
 }
