@@ -10,7 +10,7 @@ public final class Config {
     // --------------------------------------------------
     // Initialization File Definitions
     // --------------------------------------------------
-    public static final String APPLICATION_CONFIG_LOCATION = "resources/config/application.properties";
+    public static final String APPLICATION_CONFIG_LOCATION = "resources/config/";
     public static final String GENERAL_CONFIG_FILE = "resources/config/general.properties";
     public static final String UNIVERS_CONFIG_FILE = "resources/config/univers.properties";
 

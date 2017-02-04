@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.middlewar.core.interfaces.IOConsumer;
 import com.middlewar.core.model.Base;
-import com.middlewar.core.model.inventory.ItemContainer;
 
 import java.io.IOException;
 
@@ -23,17 +23,19 @@ public class BaseSerializer extends JsonSerializer<Base> {
         gen.writeStringField("id", value.getOwner().getId());
         gen.writeStringField("name", value.getOwner().getName());
         gen.writeEndObject();
+
         gen.writeObjectFieldStart("resources");
-        for (ItemContainer container: value.getResources()) {
-            gen.writeObjectFieldStart(container.getItem().getId());
-            gen.writeStringField("templateId", container.getItem().getTemplateId());
-            gen.writeNumberField("count", container.getItem().getCount());
-            gen.writeNumberField("maxVolume", container.getMaxVolume());
-            gen.writeNumberField("production", value.getBaseStat().getValue(container.getStat()));
-            gen.writeNumberField("lastRefresh", container.getLastRefresh());
+        IOConsumer.forEach(value.getResources().stream(), itemContainer -> {
+            gen.writeObjectFieldStart(itemContainer.getItem().getId());
+            gen.writeStringField("templateId", itemContainer.getItem().getTemplateId());
+            gen.writeNumberField("count", itemContainer.getItem().getCount());
+            gen.writeNumberField("maxVolume", itemContainer.getMaxVolume());
+            gen.writeNumberField("production", value.getBaseStat().getValue(itemContainer.getStat()));
+            gen.writeNumberField("lastRefresh", itemContainer.getLastRefresh());
             gen.writeEndObject();
-        }
+        });
         gen.writeEndObject();
+
         gen.writeObjectField("baseStat", value.getBaseStat());
         gen.writeObjectField("buildings", value.getBuildings());
         gen.writeObjectField("inventory", value.getBaseInventory());
