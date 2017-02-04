@@ -7,6 +7,8 @@ import com.middlewar.core.model.Player;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author LEBOC Philippe
  */
+@Api(value = "players", produces = "application/json")
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(produces = "application/json")
@@ -36,6 +39,7 @@ public class PlayerController {
         return new JsonResponse(playerService.findBy(pAccount));
     }
 
+    @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN", response = JsonResponse.class)
     @RequestMapping(value = "/players", method = RequestMethod.GET)
     public JsonResponse showAllPlayers() {
         // TODO: used for tests. Remove when administration will be done

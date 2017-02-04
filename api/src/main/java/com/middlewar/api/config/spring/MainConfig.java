@@ -13,7 +13,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 @Import(value = {
     WebConfig.class,
-    SecurityConfig.class
+    SecurityConfig.class,
+    SwaggerConfig.class
 })
 public class MainConfig {
 }

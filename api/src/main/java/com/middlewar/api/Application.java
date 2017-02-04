@@ -16,7 +16,7 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan("com")
+@ComponentScan("com.middlewar")
 public class Application extends AsyncConfigurerSupport {
 
     public static void main(String[] args)
