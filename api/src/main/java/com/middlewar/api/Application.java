@@ -16,7 +16,7 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan("com.middlewar")
+@ComponentScan("com")
 public class Application extends AsyncConfigurerSupport {
 
     public static void main(String[] args)
@@ -31,7 +31,7 @@ public class Application extends AsyncConfigurerSupport {
         ShopData.getInstance();
 
         // Spring
-        //System.setProperty("spring.config.location", Config.APPLICATION_CONFIG_LOCATION);
+        System.setProperty("spring.config.location", Config.APPLICATION_CONFIG_LOCATION);
         SpringApplication.run(Application.class, args);
     }
 
