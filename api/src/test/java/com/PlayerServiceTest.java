@@ -43,7 +43,7 @@ public class PlayerServiceTest {
     @Before
     public void init() {
         Config.load();
-        account = accountService.create("TestAccount", "TestPassword");
+        account = accountService.create("PlayerTest", "password");
     }
 
     @After
