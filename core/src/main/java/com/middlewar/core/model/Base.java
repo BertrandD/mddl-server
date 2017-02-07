@@ -1,5 +1,6 @@
 package com.middlewar.core.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.middlewar.core.config.Config;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -9,6 +10,7 @@ import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.inventory.ItemContainer;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.model.vehicles.Fleet;
@@ -65,6 +67,10 @@ public final class Base
     @JsonManagedReference
     private List<ItemContainer> resources;
 
+    @DBRef
+    @JsonBackReference
+    private Planet planet;
+
     public Base() {
         setBuildingPositions(new HashMap<>());
         setBuildings(new ArrayList<>());
@@ -74,7 +80,7 @@ public final class Base
         setFleets(new ArrayList<>());
     }
 
-    public Base(String name, Player owner) {
+    public Base(String name, Player owner, Planet planet) {
         setId(new ObjectId().toString());
         setName(name);
         setOwner(owner);
@@ -84,6 +90,7 @@ public final class Base
         setResources(new ArrayList<>());
         setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
+        setPlanet(planet);
     }
 
     /**
@@ -222,5 +229,13 @@ public final class Base
 
     public void setFleets(List<Fleet> fleets) {
         this.fleets = fleets;
+    }
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
     }
 }

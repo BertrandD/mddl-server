@@ -1,9 +1,6 @@
 package com.middlewar.api.gameserver.controllers;
 
-import com.middlewar.api.gameserver.services.BaseService;
-import com.middlewar.api.gameserver.services.BuildingTaskService;
-import com.middlewar.api.gameserver.services.PlayerService;
-import com.middlewar.api.gameserver.services.SpyReportService;
+import com.middlewar.api.gameserver.services.*;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -17,7 +14,10 @@ import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.report.SpyReport;
+import com.middlewar.core.model.space.AstralObject;
+import com.middlewar.core.model.space.Planet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +45,9 @@ public class BaseController {
 
     @Autowired
     private SpyReportService spyReportService;
+
+    @Autowired
+    private AstralObjectService astralObjectService;
 
 
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
@@ -76,9 +79,11 @@ public class BaseController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
 
+        Planet planet = (Planet)astralObjectService.findOneByName("P65");
+
         // TODO: Base creation conditions.
 
-        final Base base = baseService.create(name, player);
+        final Base base = baseService.create(name, player, planet);
         if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_CANNOT_CREATE);
         return new JsonResponse(base);
     }

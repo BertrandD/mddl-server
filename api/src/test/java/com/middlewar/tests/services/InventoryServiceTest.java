@@ -11,6 +11,7 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.inventory.ItemContainer;
+import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import org.assertj.core.api.Assertions;
@@ -57,7 +58,8 @@ public class InventoryServiceTest extends MiddlewarTest{
 
     public void init() {
         _player = Mockito.mock(Player.class);
-        _base = new Base("Test base", _player);
+        Planet planet = Mockito.mock(Planet.class);
+        _base = new Base("Test base", _player, planet);
         ObjectStat baseStat = new ObjectStat();
         baseStat.addStat(Stats.RESOURCE_FEO);
         baseStat.add(Stats.RESOURCE_FEO, PRODUCTION_RESOURCE_PER_HOUR, StatOp.DIFF);

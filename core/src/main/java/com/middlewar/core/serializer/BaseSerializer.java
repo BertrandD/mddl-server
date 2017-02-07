@@ -38,6 +38,7 @@ public class BaseSerializer extends JsonSerializer<Base> {
         gen.writeObjectField("buildings", value.getBuildings());
         gen.writeObjectField("inventory", value.getBaseInventory());
         gen.writeObjectField("ships", value.getShips());
+        gen.writeObjectField("planet", value.getPlanet());
         gen.writeEndObject();
     }
 }

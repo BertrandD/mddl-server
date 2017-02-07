@@ -3,6 +3,7 @@ package com.middlewar.api.gameserver.services;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.inventory.BaseInventory;
+import com.middlewar.core.model.space.Planet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,12 @@ public class BaseService extends DatabaseService<Base> {
 
     @Override
     public Base create(Object... params) {
-        if(params.length != 2) return null;
+        if(params.length != 3) return null;
 
         final String name = (String) params[0];
         final Player player = (Player) params[1];
-        final Base base = new Base(name, player);
+        final Planet planet = (Planet) params[2];
+        final Base base = new Base(name, player, planet);
         final BaseInventory inventory = new BaseInventory(base);
 
         base.setBaseInventory(inventory);

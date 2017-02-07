@@ -1,6 +1,8 @@
 package com.middlewar.core.model.space;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.serializer.AstralObjectSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -14,6 +16,7 @@ import java.util.List;
 /**
  * @author bertrand.
  */
+@JsonSerialize(using = AstralObjectSerializer.class)
 @Document(collection = "universe")
 public abstract class AstralObject {
 

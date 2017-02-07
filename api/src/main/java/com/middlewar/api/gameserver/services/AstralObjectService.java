@@ -1,6 +1,8 @@
 package com.middlewar.api.gameserver.services;
 
 import com.middlewar.core.model.space.AstralObject;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -24,5 +26,9 @@ public class AstralObjectService extends DatabaseService<AstralObject> {
             astralObject.getSatellites().forEach(this::saveUniverse);
         }
         mongoOperations.save(astralObject);
+    }
+
+    public AstralObject findOneByName(String name) {
+        return findOneBy(Criteria.where("name").is(name));
     }
 }
