@@ -1,5 +1,7 @@
 package com.middlewar.api.gameserver.controllers;
 
+import com.middlewar.api.gameserver.services.AstralObjectService;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.core.data.xml.SystemMessageData;
@@ -8,6 +10,7 @@ import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.api.gameserver.services.UpdateService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
+import com.middlewar.core.model.space.AstralObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -44,6 +47,9 @@ public class DefaultController implements ErrorController{
     @Autowired
     private UpdateService updateService;
 
+    @Autowired
+    private AstralObjectService astralObjectService;
+
     @RequestMapping(value = "/")
     public JsonResponse index()
     {
@@ -61,6 +67,14 @@ public class DefaultController implements ErrorController{
         account.setCurrentPlayer(null);
         accountService.update(account);
         return true;
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/init", method = RequestMethod.GET)
+    public JsonResponse initDatabase(@AuthenticationPrincipal Account pAccount) {
+        AstralObject blackHole = WorldData.getInstance().getWorld();
+        astralObjectService.saveUniverse(blackHole);
+        return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

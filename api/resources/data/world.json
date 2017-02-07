@@ -1,0 +1,580 @@
+{
+  "type": "BlackHole",
+  "name": "B58",
+  "stats": {
+    "size": 23,
+    "orbit": 0,
+    "rotateSpeed": 0.1
+  },
+  "satellites": [
+    {
+      "type": "Star",
+      "name": "S71",
+      "stats": {
+        "size": 20,
+        "orbit": 711,
+        "rotateSpeed": 6
+      },
+      "satellites": [
+        {
+          "type": "Planet",
+          "name": "P87",
+          "stats": {
+            "size": 4,
+            "orbit": 92,
+            "rotateSpeed": 19
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M26",
+              "stats": {
+                "size": 0.3,
+                "orbit": 10,
+                "rotateSpeed": 33
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M46",
+              "stats": {
+                "size": 1.3,
+                "orbit": 15,
+                "rotateSpeed": 37
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M22",
+              "stats": {
+                "size": 1.3,
+                "orbit": 10,
+                "rotateSpeed": 33
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P94",
+          "stats": {
+            "size": 3,
+            "orbit": 87,
+            "rotateSpeed": 19
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M71",
+              "stats": {
+                "size": 1.3,
+                "orbit": 8,
+                "rotateSpeed": 37
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P68",
+          "stats": {
+            "size": 4,
+            "orbit": 51,
+            "rotateSpeed": 16
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M74",
+              "stats": {
+                "size": 0.3,
+                "orbit": 11,
+                "rotateSpeed": 40
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M21",
+              "stats": {
+                "size": 0.3,
+                "orbit": 14,
+                "rotateSpeed": 40
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M100",
+              "stats": {
+                "size": 0.3,
+                "orbit": 8,
+                "rotateSpeed": 38
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M15",
+              "stats": {
+                "size": 0.3,
+                "orbit": 9,
+                "rotateSpeed": 34
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P65",
+          "stats": {
+            "size": 4,
+            "orbit": 95,
+            "rotateSpeed": 15
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M68",
+              "stats": {
+                "size": 0.3,
+                "orbit": 12,
+                "rotateSpeed": 31
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M33",
+              "stats": {
+                "size": 0.3,
+                "orbit": 13,
+                "rotateSpeed": 38
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M45",
+              "stats": {
+                "size": 0.3,
+                "orbit": 12,
+                "rotateSpeed": 36
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M58",
+              "stats": {
+                "size": 0.3,
+                "orbit": 13,
+                "rotateSpeed": 34
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M73",
+              "stats": {
+                "size": 0.3,
+                "orbit": 11,
+                "rotateSpeed": 33
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P32",
+          "stats": {
+            "size": 4,
+            "orbit": 81,
+            "rotateSpeed": 19
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M29",
+              "stats": {
+                "size": 1.3,
+                "orbit": 12,
+                "rotateSpeed": 31
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M52",
+              "stats": {
+                "size": 0.3,
+                "orbit": 11,
+                "rotateSpeed": 35
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M9",
+              "stats": {
+                "size": 1.3,
+                "orbit": 13,
+                "rotateSpeed": 40
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Star",
+      "name": "S91",
+      "stats": {
+        "size": 15,
+        "orbit": 695,
+        "rotateSpeed": 8
+      },
+      "satellites": [
+        {
+          "type": "Planet",
+          "name": "P97",
+          "stats": {
+            "size": 3,
+            "orbit": 93,
+            "rotateSpeed": 18
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M19",
+              "stats": {
+                "size": 1.3,
+                "orbit": 13,
+                "rotateSpeed": 31
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M25",
+              "stats": {
+                "size": 1.3,
+                "orbit": 13,
+                "rotateSpeed": 38
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M77",
+              "stats": {
+                "size": 0.3,
+                "orbit": 14,
+                "rotateSpeed": 36
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M83",
+              "stats": {
+                "size": 1.3,
+                "orbit": 8,
+                "rotateSpeed": 39
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M60",
+              "stats": {
+                "size": 0.3,
+                "orbit": 15,
+                "rotateSpeed": 30
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P22",
+          "stats": {
+            "size": 5,
+            "orbit": 73,
+            "rotateSpeed": 16
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M93",
+              "stats": {
+                "size": 1.3,
+                "orbit": 9,
+                "rotateSpeed": 33
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M76",
+              "stats": {
+                "size": 0.3,
+                "orbit": 11,
+                "rotateSpeed": 32
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Star",
+      "name": "S58",
+      "stats": {
+        "size": 10,
+        "orbit": 979,
+        "rotateSpeed": 8
+      },
+      "satellites": [
+        {
+          "type": "Planet",
+          "name": "P8",
+          "stats": {
+            "size": 3,
+            "orbit": 95,
+            "rotateSpeed": 18
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M31",
+              "stats": {
+                "size": 0.3,
+                "orbit": 9,
+                "rotateSpeed": 34
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M5",
+              "stats": {
+                "size": 1.3,
+                "orbit": 15,
+                "rotateSpeed": 35
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M90",
+              "stats": {
+                "size": 0.3,
+                "orbit": 8,
+                "rotateSpeed": 30
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M0",
+              "stats": {
+                "size": 0.3,
+                "orbit": 10,
+                "rotateSpeed": 32
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Star",
+      "name": "S40",
+      "stats": {
+        "size": 14,
+        "orbit": 755,
+        "rotateSpeed": 5
+      },
+      "satellites": []
+    },
+    {
+      "type": "Star",
+      "name": "S47",
+      "stats": {
+        "size": 11,
+        "orbit": 902,
+        "rotateSpeed": 7
+      },
+      "satellites": [
+        {
+          "type": "Planet",
+          "name": "P90",
+          "stats": {
+            "size": 5,
+            "orbit": 74,
+            "rotateSpeed": 20
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M44",
+              "stats": {
+                "size": 0.3,
+                "orbit": 11,
+                "rotateSpeed": 31
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M11",
+              "stats": {
+                "size": 0.3,
+                "orbit": 10,
+                "rotateSpeed": 32
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M56",
+              "stats": {
+                "size": 1.3,
+                "orbit": 13,
+                "rotateSpeed": 40
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M24",
+              "stats": {
+                "size": 0.3,
+                "orbit": 8,
+                "rotateSpeed": 35
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P7",
+          "stats": {
+            "size": 5,
+            "orbit": 48,
+            "rotateSpeed": 19
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M14",
+              "stats": {
+                "size": 1.3,
+                "orbit": 14,
+                "rotateSpeed": 38
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P47",
+          "stats": {
+            "size": 3,
+            "orbit": 66,
+            "rotateSpeed": 16
+          },
+          "satellites": []
+        },
+        {
+          "type": "Planet",
+          "name": "P95",
+          "stats": {
+            "size": 5,
+            "orbit": 77,
+            "rotateSpeed": 20
+          },
+          "satellites": []
+        },
+        {
+          "type": "Planet",
+          "name": "P71",
+          "stats": {
+            "size": 4,
+            "orbit": 82,
+            "rotateSpeed": 16
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M33",
+              "stats": {
+                "size": 1.3,
+                "orbit": 11,
+                "rotateSpeed": 31
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M94",
+              "stats": {
+                "size": 1.3,
+                "orbit": 13,
+                "rotateSpeed": 30
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P85",
+          "stats": {
+            "size": 3,
+            "orbit": 85,
+            "rotateSpeed": 20
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M7",
+              "stats": {
+                "size": 1.3,
+                "orbit": 9,
+                "rotateSpeed": 36
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P73",
+          "stats": {
+            "size": 3,
+            "orbit": 59,
+            "rotateSpeed": 17
+          },
+          "satellites": [
+            {
+              "type": "Moon",
+              "name": "M97",
+              "stats": {
+                "size": 0.3,
+                "orbit": 12,
+                "rotateSpeed": 31
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M10",
+              "stats": {
+                "size": 1.3,
+                "orbit": 8,
+                "rotateSpeed": 38
+              }
+            },
+            {
+              "type": "Moon",
+              "name": "M67",
+              "stats": {
+                "size": 0.3,
+                "orbit": 8,
+                "rotateSpeed": 37
+              }
+            }
+          ]
+        },
+        {
+          "type": "Planet",
+          "name": "P29",
+          "stats": {
+            "size": 3,
+            "orbit": 56,
+            "rotateSpeed": 15
+          },
+          "satellites": []
+        }
+      ]
+    }
+  ]
+}
