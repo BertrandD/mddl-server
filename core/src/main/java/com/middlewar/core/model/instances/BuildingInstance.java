@@ -9,6 +9,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -21,6 +22,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "buildings")
 @JsonSerialize(using = BuildingInstanceSerializer.class)
 public class BuildingInstance
@@ -58,62 +60,6 @@ public class BuildingInstance
         if(building != null)
             building.setLang(getLang());
         return building;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Base getBase() {
-        return base;
-    }
-
-    public void setBase(Base base) {
-        this.base = base;
-    }
-
-    public String getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(String buildingId) {
-        this.buildingId = buildingId;
-    }
-
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
-    }
-
-    public long getEndsAt() {
-        return endsAt;
-    }
-
-    public void setEndsAt(long endsAt) {
-        this.endsAt = endsAt;
-    }
-
-    public long getStartedAt() {
-        return startedAt;
-    }
-
-    public void setStartedAt(long startedAt) {
-        this.startedAt = startedAt;
-    }
-
-    private Lang getLang() {
-        return lang;
-    }
-
-    public void setLang(Lang lang) {
-        this.lang = lang;
     }
 
     /**

@@ -12,7 +12,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.core.model.inventory.ItemContainer;
+import com.middlewar.core.model.inventory.ResourceInventory;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import org.assertj.core.api.Assertions;
@@ -73,32 +73,32 @@ public class InventoryServiceTest {
         return new ItemInstance("resource_feo", INITIAL_ITEM_COUNT);
     }
 
-    public ItemContainer generateItemContainer(ItemInstance itemInstance) {
-        ItemContainer itemContainer = new ItemContainer(_base, itemInstance);
-        itemContainer.setStat(Stats.RESOURCE_FEO);
-        return itemContainer;
+    public ResourceInventory generateItemContainer(ItemInstance itemInstance) {
+        ResourceInventory resourceInventory = new ResourceInventory(_base, itemInstance);
+        resourceInventory.setStat(Stats.RESOURCE_FEO);
+        return resourceInventory;
     }
 
-    public ItemContainer generateItemContainer() {
+    public ResourceInventory generateItemContainer() {
         return generateItemContainer(generateItemInstance());
     }
 
     @Test
     public void testRefresh() {
         init();
-        ItemContainer itemContainer = generateItemContainer();
-        itemContainer.setLastRefresh(System.currentTimeMillis() - (60 * 60 * 1000));
+        ResourceInventory resourceInventory = generateItemContainer();
+        resourceInventory.setLastRefresh(System.currentTimeMillis() - (60 * 60 * 1000));
 
-        inventoryService.refresh(itemContainer);
+        inventoryService.refresh(resourceInventory);
 
-        Assertions.assertThat(itemContainer.getItem().getCount()).isEqualTo(INITIAL_ITEM_COUNT + PRODUCTION_RESOURCE_PER_HOUR);
+        Assertions.assertThat(resourceInventory.getItem().getCount()).isEqualTo(INITIAL_ITEM_COUNT + PRODUCTION_RESOURCE_PER_HOUR);
 
         _base.getBaseStat().add(Stats.RESOURCE_FEO, Double.POSITIVE_INFINITY, StatOp.DIFF);
-        itemContainer.setLastRefresh(System.currentTimeMillis() - (60 * 60 * 1000));
+        resourceInventory.setLastRefresh(System.currentTimeMillis() - (60 * 60 * 1000));
 
-        inventoryService.refresh(itemContainer);
+        inventoryService.refresh(resourceInventory);
 
-        Assertions.assertThat(itemContainer.getItem().getCount()).isEqualTo(itemContainer.getMaxVolume());
+        Assertions.assertThat(resourceInventory.getItem().getCount()).isEqualTo(resourceInventory.getMaxVolume());
     }
 
     @Test

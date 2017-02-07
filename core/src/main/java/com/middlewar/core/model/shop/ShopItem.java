@@ -1,8 +1,11 @@
 package com.middlewar.core.model.shop;
 
+import lombok.Data;
+
 /**
  * @author LEBOC Philippe
  */
+@Data
 public class ShopItem {
     private String itemId;
     private long count;
@@ -14,38 +17,6 @@ public class ShopItem {
         setCount(count);
         setPrice(price);
         setDisabled(disabled);
-    }
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    private void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
-
-    public long getCount() {
-        return count;
-    }
-
-    private void setCount(long count) {
-        this.count = count;
-    }
-
-    public long getPrice() {
-        return price;
-    }
-
-    private void setPrice(long price) {
-        this.price = price;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    private void setDisabled(boolean disabled) {
-        this.disabled = disabled;
     }
 
     @Override

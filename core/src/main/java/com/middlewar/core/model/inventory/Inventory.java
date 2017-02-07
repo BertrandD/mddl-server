@@ -6,8 +6,7 @@ import com.middlewar.core.model.instances.ItemInstance;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author LEBOC Philippe
@@ -19,11 +18,10 @@ public abstract class Inventory implements IInventory {
 
     @DBRef
     @JsonManagedReference
-    private List<ItemInstance> items;
-
+    private ConcurrentHashMap<String, ItemInstance> items;
 
     protected Inventory() {
-        setItems(new ArrayList<>());
+        setItems(new ConcurrentHashMap<>());
     }
 
     public String getId() {
@@ -34,17 +32,11 @@ public abstract class Inventory implements IInventory {
         this.id = id;
     }
 
-    public List<ItemInstance> getItems() {
+    public ConcurrentHashMap<String, ItemInstance> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemInstance> items) {
+    public void setItems(ConcurrentHashMap<String, ItemInstance> items) {
         this.items = items;
-    }
-
-    public void addItem(ItemInstance item) {
-        if(getItems().stream().filter(k -> k.getTemplateId().equals(item.getTemplateId())).findFirst().orElse(null) == null)
-            getItems().add(item);
-        else System.out.println("TODO: not an error but must be rewrited.");
     }
 }

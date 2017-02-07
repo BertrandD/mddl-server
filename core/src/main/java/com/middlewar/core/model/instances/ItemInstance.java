@@ -7,6 +7,7 @@ import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.interfaces.IInventory;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.serializer.ItemInstanceSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "items")
 @JsonSerialize(using = ItemInstanceSerializer.class)
 public class ItemInstance
@@ -82,50 +84,12 @@ public class ItemInstance
         return getType() == ItemType.RESOURCE;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTemplateId() {
-        return templateId;
-    }
-
-    public void setTemplateId(String templateId) {
-        this.templateId = templateId;
-    }
-
-    public ItemType getType() {
-        return type;
-    }
-
-    public void setType(ItemType type) {
-        this.type = type;
-    }
-
     public void addCount(double count) {
         setCount(getCount() + count);
     }
 
     public void removeCount(long count) {
         addCount(-count);
-    }
-
-    public double getCount() {
-        return count;
-    }
-
-    public void setCount(double count) { this.count = count; }
-
-    public IInventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(IInventory inventory) {
-        this.inventory = inventory;
     }
 
     @Override

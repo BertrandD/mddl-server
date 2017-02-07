@@ -71,7 +71,7 @@ public class BuildingInstanceController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public JsonResponse findOne(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
+    public JsonResponse getMyBuildingInformation(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
         final BuildingInstance building = buildingService.findBy(player.getCurrentBase(), id);
@@ -116,7 +116,7 @@ public class BuildingInstanceController {
         return response;
     }
 
-    @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.PUT)
     public JsonResponse upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         final Base base = player.getCurrentBase();
@@ -140,6 +140,7 @@ public class BuildingInstanceController {
         collector.forEach(inventoryService::consumeItem);
 
         base.initializeStats();
+
         buildingTaskManager.ScheduleUpgrade(building);
         final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
 
@@ -162,7 +163,7 @@ public class BuildingInstanceController {
         if(building == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
 
         final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId)).findFirst().orElse(null);
-        if(module == null) return new JsonResponse(JsonResponseType.ERROR, "You havent module in your inventory !"); // TODO System message
+        if(module == null) return new JsonResponse(JsonResponseType.ERROR, "You haven't module in your inventory !"); // TODO System message
 
         //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new JsonResponse(JsonResponseType.ERROR, "Module already attached !"); // TODO System message
 
@@ -172,7 +173,6 @@ public class BuildingInstanceController {
         // TODO: MAKE A TEST !!!!
         if(!((ModulableBuilding) building.getTemplate()).getModules().contains((Module)module.getTemplate()))
             return new JsonResponse(JsonResponseType.ERROR, "The Module isn't allowed to be attached here !");
-
 
         if(!inventoryService.consumeItem(module, 1))
             return new JsonResponse(JsonResponseType.ERROR, "Incorrect items count.");

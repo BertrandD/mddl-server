@@ -18,6 +18,7 @@
         <spring-version>4.3.4.RELEASE</spring-version>
         <swagger2.version>2.6.1</swagger2.version>
         <swagger2-ui.version>2.6.1</swagger2-ui.version>
+        <lombok.version>1.16.12</lombok.version>
     </properties>
 
     <modules>

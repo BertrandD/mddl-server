@@ -87,11 +87,11 @@ public abstract class Vehicle implements IShip {
 
     @Override
     public double getMaxStorableVolume() {
-        return getCargos().stream().mapToDouble(Cargo::getCapacity).sum() * getCount(); // TODO: change capacity for capacity volume
+        return getCargos().stream().mapToDouble(Cargo::getCapacity).sum() * getCount(); // TODO: change this shit
     }
 
     @Override
     public double getMaxStorableWeight() {
-        return getCargos().stream().mapToDouble(Cargo::getCapacity).sum() * getCount(); // TODO: change capacity for capacity weight
+        return getCargos().stream().mapToDouble(Cargo::getCapacity).sum() * getCount(); // TODO: change this shit
     }
 }

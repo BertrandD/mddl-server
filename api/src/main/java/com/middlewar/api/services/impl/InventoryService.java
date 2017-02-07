@@ -9,7 +9,7 @@ import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.inventory.PlayerInventory;
-import com.middlewar.core.model.inventory.ItemContainer;
+import com.middlewar.core.model.inventory.ResourceInventory;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.api.services.ItemContainerService;
 import com.middlewar.api.services.ItemService;
@@ -46,13 +46,13 @@ public class InventoryService implements IInventoryService {
         }
 
         logger.info("addResourceContainer: 0 "+templateId);
-        final ItemContainer inventory = itemContainerService.create(base, templateId);
+        final ResourceInventory inventory = itemContainerService.create(base, templateId);
         if(inventory == null) {
             logger.debug("Cannot create resource inventory because returned null on creation !");
         }
     }
 
-    public synchronized ItemInstance addItem(final ItemContainer container, final long amount) {
+    public synchronized ItemInstance addItem(final ResourceInventory container, final long amount) {
         refresh(container);
 
         final GameItem template = container.getItem().getTemplate();
@@ -120,7 +120,7 @@ public class InventoryService implements IInventoryService {
                 return null;
             }
             inventory.addItem(item);
-            updateAsync(inventory);
+            update(inventory);
         } else {
             item.addCount(amount);
             itemService.update(item);
@@ -154,7 +154,7 @@ public class InventoryService implements IInventoryService {
     }
 
     public synchronized boolean consumeResource(ItemInstance item, final long amount) {
-        final ItemContainer container = (ItemContainer)item.getInventory();
+        final ResourceInventory container = (ResourceInventory)item.getInventory();
         refresh(container);
 
         if(item.getCount() < amount) {
@@ -172,7 +172,7 @@ public class InventoryService implements IInventoryService {
         base.getResources().forEach(this::refresh);
     }
 
-    public synchronized void refresh(final ItemContainer container) {
+    public synchronized void refresh(final ResourceInventory container) {
         final Base base = container.getBase();
         final long now = System.currentTimeMillis();
         final long last = container.getLastRefresh();
@@ -219,11 +219,6 @@ public class InventoryService implements IInventoryService {
         container.setLastRefresh(now);
         itemService.update(item);
         itemContainerService.update(container);
-    }
-
-    public void updateAsync(Inventory inventory) {
-        if(inventory instanceof BaseInventory) baseInventoryService.update((BaseInventory)inventory);
-        else playerInventoryService.updateAsync((PlayerInventory)inventory);
     }
 
     public void update(Inventory inventory) {

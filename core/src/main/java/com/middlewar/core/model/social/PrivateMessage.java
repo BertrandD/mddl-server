@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.PrivateMessageSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "private_messages")
 @JsonSerialize(using = PrivateMessageSerializer.class)
 public class PrivateMessage {
@@ -32,65 +34,8 @@ public class PrivateMessage {
         setReceiver(receiver);
         setDate(System.currentTimeMillis());
         setMessage(message);
-        setIsRead(false);
+        setRead(false);
         setReadDate(0);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public PlayerHolder getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(PlayerHolder author) {
-        this.author = author;
-    }
-
-    public PlayerHolder getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(PlayerHolder receiver) {
-        this.receiver = receiver;
-    }
-
-    public long getDate() {
-        return date;
-    }
-
-    private void setDate(long date) {
-        this.date = date;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    private void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isRead() {
-        return isRead;
-    }
-
-    public void setIsRead(boolean isRead) {
-        this.isRead = isRead;
-    }
-
-    @JsonIgnore
-    public long getReadDate() {
-        return readDate;
-    }
-
-    public void setReadDate(long readDate) {
-        this.readDate = readDate;
     }
 
     @Override

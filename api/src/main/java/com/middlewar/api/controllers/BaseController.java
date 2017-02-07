@@ -102,10 +102,6 @@ public class BaseController {
         return new JsonResponse(base);
     }
 
-    /**
-     * @param pAccount
-     * @return list of all building that can be builded (Checking only buildings requirement)
-     */
     @RequestMapping(value = "/base/buildables", method = RequestMethod.GET)
     public JsonResponse calc(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());

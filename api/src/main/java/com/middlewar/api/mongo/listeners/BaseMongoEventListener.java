@@ -1,7 +1,9 @@
 package com.middlewar.api.mongo.listeners;
 
+import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.model.Base;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.mapping.event.*;
 
 /**
@@ -12,6 +14,9 @@ import org.springframework.data.mongodb.core.mapping.event.*;
 public class BaseMongoEventListener extends AbstractMongoEventListener<Base> {
 
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+
+    @Autowired
+    private InventoryService inventoryService;
 
     /**
      * WARNING: This event is handled only for these action :
@@ -27,6 +32,7 @@ public class BaseMongoEventListener extends AbstractMongoEventListener<Base> {
         // TODO: Don't touch me please. I will be removed later
         logger.error("Initalizing stats for base : "+event.getSource().getName());
         event.getSource().initializeStats();
+        inventoryService.refresh(event.getSource());
         super.onAfterConvert(event);
     }
 }

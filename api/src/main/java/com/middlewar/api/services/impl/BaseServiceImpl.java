@@ -50,12 +50,7 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public Base findOne(String id) {
-        final Base base = baseDao.findOne(id);
-        if(base != null) {
-            base.initializeStats();
-            inventoryService.refresh(base);
-        }
-        return base;
+        return baseDao.findOne(id);
     }
 
     @Override

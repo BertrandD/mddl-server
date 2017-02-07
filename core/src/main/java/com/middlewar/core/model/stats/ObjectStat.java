@@ -3,6 +3,7 @@ package com.middlewar.core.model.stats;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.serializer.ObjectStatSerializer;
+import lombok.Data;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @JsonSerialize(using = ObjectStatSerializer.class)
 public class ObjectStat {
 
@@ -33,14 +35,6 @@ public class ObjectStat {
 
     public double getValue(Stats stat, double defaultValue) {
         return !getStats().containsKey(stat) ? defaultValue : getStats().get(stat);
-    }
-
-    public HashMap<Stats, Double> getStats() {
-        return stats;
-    }
-
-    private void setStats(HashMap<Stats, Double> stats) {
-        this.stats = stats;
     }
 
     public void add(final Stats stat, final double val, final StatOp op) {

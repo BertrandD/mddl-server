@@ -10,6 +10,7 @@ import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.projections.BaseLight;
 import com.middlewar.core.serializer.PlayerSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -24,6 +25,7 @@ import java.util.Map;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "players")
 @JsonSerialize(using = PlayerSerializer.class)
 public class Player {
@@ -79,76 +81,8 @@ public class Player {
         setPlanetScans(new HashMap<>());
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Base> getBases() {
-        return bases;
-    }
-
-    public void setBases(List<Base> bases) {
-        this.bases = bases;
-    }
-
-    public void addBase(Base base) {
-        this.bases.add(base);
-    }
-
-    public Base getCurrentBase() {
-        return currentBase;
-    }
-
-    public void setCurrentBase(Base currentBase) {
-        this.currentBase = currentBase;
-    }
-
-    public PlayerInventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(PlayerInventory inventory) {
-        this.inventory = inventory;
-    }
-
-    public List<PlayerHolder> getFriends() {
-        return friends;
-    }
-
-    public void setFriends(List<PlayerHolder> friends) {
-        this.friends = friends;
-    }
-
     public boolean addFriend(PlayerHolder friend) {
         return !getFriends().contains(friend) && getFriends().add(friend);
-    }
-
-    public List<FriendRequest> getFriendRequests() {
-        return friendRequests;
-    }
-
-    public void setFriendRequests(List<FriendRequest> friendRequests) {
-        this.friendRequests = friendRequests;
     }
 
     public boolean addRequest(FriendRequest request) {

@@ -10,6 +10,7 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import com.middlewar.core.serializer.ShipSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "ships")
 @JsonSerialize(using = ShipSerializer.class)
 public class Ship extends Vehicle {
@@ -48,26 +50,6 @@ public class Ship extends Vehicle {
         setEngineIds(new ArrayList<>());
         setModuleIds(new ArrayList<>());
         setWeaponIds(new ArrayList<>());
-    }
-
-    public void setStructureId(String structureId) {
-        this.structureId = structureId;
-    }
-
-    public void setCargoIds(List<String> cargoIds) {
-        this.cargoIds = cargoIds;
-    }
-
-    public void setEngineIds(List<String> engineIds) {
-        this.engineIds = engineIds;
-    }
-
-    public void setModuleIds(List<String> modulesIds) {
-        this.moduleIds = modulesIds;
-    }
-
-    public void setWeaponIds(List<String> weaponIds) {
-        this.weaponIds = weaponIds;
     }
 
     @Override

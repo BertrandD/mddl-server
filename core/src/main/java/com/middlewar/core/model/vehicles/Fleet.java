@@ -8,6 +8,7 @@ import com.middlewar.core.model.commons.Coordinates;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.FleetSerializer;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "fleets")
 @JsonSerialize(using = FleetSerializer.class)
 public class Fleet {
@@ -71,54 +73,6 @@ public class Fleet {
             ship.getModules().forEach(module -> module.handleEffect(stats));
         });
 
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Coordinates getDeparture() {
-        return departure;
-    }
-
-    public void setDeparture(Coordinates departure) {
-        this.departure = departure;
-    }
-
-    public Coordinates getArrival() {
-        return arrival;
-    }
-
-    public void setArrival(Coordinates arrival) {
-        this.arrival = arrival;
-    }
-
-    public VehicleMission getMission() {
-        return mission;
-    }
-
-    public void setMission(VehicleMission mission) {
-        this.mission = mission;
-    }
-
-    public List<Ship> getShips() {
-        return ships;
-    }
-
-    public void setShips(List<Ship> ships) {
-        this.ships = ships;
-    }
-
-    public ObjectStat getStats() {
-        return stats;
-    }
-
-    public void setStats(ObjectStat stats) {
-        this.stats = stats;
     }
 
     public long getShipCount() {

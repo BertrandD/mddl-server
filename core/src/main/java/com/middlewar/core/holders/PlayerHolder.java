@@ -1,35 +1,21 @@
 package com.middlewar.core.holders;
 
 import com.middlewar.core.model.Player;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author LEBOC Philippe
  */
+@Data
+@NoArgsConstructor
 public class PlayerHolder {
     private String id;
     private String name;
 
-    public PlayerHolder(){}
-
     public PlayerHolder(Player player) {
         setId(player.getId());
         setName(player.getName());
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    private void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    private void setName(String name) {
-        this.name = name;
     }
 
     public boolean is(Player player) {

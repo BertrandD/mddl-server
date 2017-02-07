@@ -3,6 +3,7 @@ package com.middlewar.core.model.social;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.FriendRequestSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "friend_request")
 @JsonSerialize(using = FriendRequestSerializer.class)
 public class FriendRequest {
@@ -27,45 +29,5 @@ public class FriendRequest {
         setRequested(requested);
         setMessage(message);
         setRequestDate(System.currentTimeMillis());
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public PlayerHolder getRequester() {
-        return requester;
-    }
-
-    public void setRequester(PlayerHolder requester) {
-        this.requester = requester;
-    }
-
-    public PlayerHolder getRequested() {
-        return requested;
-    }
-
-    public void setRequested(PlayerHolder requested) {
-        this.requested = requested;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public long getRequestDate() {
-        return requestDate;
-    }
-
-    public void setRequestDate(long requestDate) {
-        this.requestDate = requestDate;
     }
 }

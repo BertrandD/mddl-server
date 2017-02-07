@@ -7,6 +7,7 @@ import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "recipes")
 public class RecipeInstance {
 
@@ -44,36 +46,8 @@ public class RecipeInstance {
         setWeapons(weapons);
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Player getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
-
     public Structure getStructure() {
         return ItemData.getInstance().getStructure(structureId);
-    }
-
-    public void setStructureId(String structureId) {
-        this.structureId = structureId;
     }
 
     public ArrayList<Cargo> getCargos() {
