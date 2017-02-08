@@ -23,8 +23,8 @@ public class SpyReport extends Report{
     @JsonBackReference
     private Base baseTarget;
 
-    public SpyReport(Player owner, Base baseSrc, Base baseTarget, ReportStatus status) {
-        super(owner, status);
+    public SpyReport(Player owner, Base baseSrc, Base baseTarget, ReportStatus reportStatus) {
+        super(owner, reportStatus);
         setBaseSrc(baseSrc);
         setBaseTarget(baseTarget);
     }
