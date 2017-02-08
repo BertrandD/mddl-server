@@ -14,16 +14,16 @@ import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.report.SpyReport;
-import com.middlewar.core.model.space.AstralObject;
 import com.middlewar.core.model.space.Planet;
+import com.middlewar.core.model.space.Star;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -79,7 +79,11 @@ public class BaseController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
 
-        Planet planet = (Planet)astralObjectService.findOneByName("P65");
+        Star star = (Star)astralObjectService.findOneByName("S71");
+
+        int nbPlanets = star.getSatellites().size();
+        Random random = new Random();
+        Planet planet = (Planet)star.getSatellites().get(random.nextInt(nbPlanets));
 
         // TODO: Base creation conditions.
 
