@@ -1,13 +1,12 @@
 package com.middlewar.tests.services;
 
 import com.middlewar.api.gameserver.services.SpyReportService;
-import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.ItemContainer;
 import com.middlewar.core.model.report.SpyReport;
-import com.middlewar.core.enums.SpyReportCategory;
+import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.vehicles.Ship;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -46,12 +45,12 @@ public class SpyReportServiceTest extends MiddlewarTest{
         Assertions.assertThat(report.getBaseTarget()).isEqualTo(baseTarget);
         Assertions.assertThat(report.getEntries().size()).isEqualTo(2);
 
-        Assertions.assertThat(report.getEntries().get(SpyReportCategory.RESOURCES)).isNotNull();
-        Assertions.assertThat(report.getEntries().get(SpyReportCategory.RESOURCES).get(0).getName()).isEqualTo("resource_feo");
-        Assertions.assertThat(report.getEntries().get(SpyReportCategory.RESOURCES).get(0).getValue()).isEqualTo(100);
+        Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES)).isNotNull();
+        Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES).get(0).getName()).isEqualTo("resource_feo");
+        Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES).get(0).getValue()).isEqualTo(100);
 
-        Assertions.assertThat(report.getEntries().get(SpyReportCategory.SHIPS)).isNotNull();
-        Assertions.assertThat(report.getEntries().get(SpyReportCategory.SHIPS).get(0).getName()).isEqualTo("structure_test");
-        Assertions.assertThat(report.getEntries().get(SpyReportCategory.SHIPS).get(0).getValue()).isEqualTo(5);
+        Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS)).isNotNull();
+        Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS).get(0).getName()).isEqualTo("structure_test");
+        Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS).get(0).getValue()).isEqualTo(5L);
     }
 }

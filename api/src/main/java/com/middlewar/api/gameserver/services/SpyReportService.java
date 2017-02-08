@@ -4,8 +4,8 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.inventory.ItemContainer;
 import com.middlewar.core.model.report.SpyReport;
-import com.middlewar.core.enums.SpyReportCategory;
-import com.middlewar.core.enums.SpyReportStatus;
+import com.middlewar.core.enums.ReportCategory;
+import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class SpyReportService extends DatabaseService<SpyReport> {
 
         // TODO : add logic for spy defense
 
-        final SpyReport report = new SpyReport(owner, baseSrc, baseTarget, SpyReportStatus.SUCCESS);
+        final SpyReport report = new SpyReport(owner, baseSrc, baseTarget, ReportStatus.SUCCESS);
 
         owner.getReports().add(report);
 
@@ -36,11 +36,11 @@ public class SpyReportService extends DatabaseService<SpyReport> {
             //TODO : instead of getting structure, we should get the Recipe
             // It would be fun if (depending of the spy level of the source Base, the report would
             // have less or more details on the recipe...
-            report.addEntry(ship.getStructure().getItemId(), ship.getCount(), SpyReportCategory.SHIPS);
+            report.addEntry(ship.getStructure().getItemId(), ship.getCount(), ReportCategory.SHIPS);
         }
 
         for (ItemContainer resource : baseTarget.getResources()) {
-            report.addEntry(resource.getItem().getTemplateId(), (int)resource.getItem().getCount(), SpyReportCategory.RESOURCES);
+            report.addEntry(resource.getItem().getTemplateId(), (int)resource.getItem().getCount(), ReportCategory.RESOURCES);
         }
 
         mongoOperations.insert(report);

@@ -6,14 +6,15 @@ import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.enums.ReportType;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.serializer.SpyReportSerializer;
+import com.middlewar.core.model.space.Planet;
+import com.middlewar.core.serializer.PlanetScanReportSerializer;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * @author bertrand.
  */
-@JsonSerialize(using = SpyReportSerializer.class)
-public class SpyReport extends Report{
+@JsonSerialize(using = PlanetScanReportSerializer.class)
+public class PlanetScanReport extends Report {
 
     @DBRef
     @JsonBackReference
@@ -21,14 +22,13 @@ public class SpyReport extends Report{
 
     @DBRef
     @JsonBackReference
-    private Base baseTarget;
+    private Planet planet;
 
-    public SpyReport(Player owner, Base baseSrc, Base baseTarget, ReportStatus status) {
-        super(owner, status);
+    public PlanetScanReport(Player owner, Base baseSrc, Planet planet, ReportStatus reportStatus) {
+        super(owner, reportStatus);
         setBaseSrc(baseSrc);
-        setBaseTarget(baseTarget);
+        setPlanet(planet);
     }
-
 
     public Base getBaseSrc() {
         return baseSrc;
@@ -38,16 +38,16 @@ public class SpyReport extends Report{
         this.baseSrc = baseSrc;
     }
 
-    public Base getBaseTarget() {
-        return baseTarget;
+    public Planet getPlanet() {
+        return planet;
     }
 
-    public void setBaseTarget(Base baseTarget) {
-        this.baseTarget = baseTarget;
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
     }
 
     @Override
     public ReportType getType() {
-        return ReportType.SPY_BASE;
+        return ReportType.PLANET_SCAN;
     }
 }

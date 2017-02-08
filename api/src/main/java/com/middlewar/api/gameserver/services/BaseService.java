@@ -37,9 +37,12 @@ public class BaseService extends DatabaseService<Base> {
         player.addBase(base);
         player.setCurrentBase(base);
 
+        planet.getBases().add(base);
+
         mongoOperations.insert(base);
         mongoOperations.insert(inventory);
         mongoOperations.save(player);
+        mongoOperations.save(planet);
         return base;
     }
 

@@ -58,7 +58,7 @@ public class DefaultController implements ErrorController{
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
-    public boolean resetDatabase(@AuthenticationPrincipal Account pAccount) {
+    public JsonResponse resetDatabase(@AuthenticationPrincipal Account pAccount) {
         updateService.resetDatabase();
         pAccount.setCurrentPlayer(null);
         pAccount.getPlayers().clear();
@@ -66,12 +66,6 @@ public class DefaultController implements ErrorController{
         account.getPlayers().clear();
         account.setCurrentPlayer(null);
         accountService.update(account);
-        return true;
-    }
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @RequestMapping(value = "/init", method = RequestMethod.GET)
-    public JsonResponse initDatabase(@AuthenticationPrincipal Account pAccount) {
         AstralObject blackHole = WorldData.getInstance().getWorld();
         astralObjectService.saveUniverse(blackHole);
         return new JsonResponse(JsonResponseType.SUCCESS);

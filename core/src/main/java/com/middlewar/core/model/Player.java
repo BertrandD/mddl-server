@@ -6,6 +6,9 @@ import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.social.FriendRequest;
+import com.middlewar.core.model.space.Planet;
+import com.middlewar.core.model.space.PlanetScan;
+import com.middlewar.core.projections.BaseLight;
 import com.middlewar.core.serializer.PlayerSerializer;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -14,7 +17,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author LEBOC Philippe
@@ -53,11 +58,14 @@ public class Player {
     @DBRef
     private List<Report> reports;
 
+    private Map<String, PlanetScan> planetScans;
+
     public Player() {
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
         setFriendRequests(new ArrayList<>());
         setReports(new ArrayList<>());
+        setPlanetScans(new HashMap<>());
     }
 
     public Player(Account account, String name) {
@@ -68,6 +76,7 @@ public class Player {
         setFriends(new ArrayList<>());
         setFriendRequests(new ArrayList<>());
         setReports(new ArrayList<>());
+        setPlanetScans(new HashMap<>());
     }
 
     public String getId() {
@@ -161,5 +170,22 @@ public class Player {
 
     public void setReports(List<Report> reports) {
         this.reports = reports;
+    }
+
+    public void addPlanetScanned(Planet planet, Base base) {
+        if (!planetScans.containsKey(planet.getId())) {
+            planetScans.put(planet.getId(), new PlanetScan(planet));
+        }
+        final PlanetScan planetScan = planetScans.get(planet.getId());
+        planetScan.getBaseScanned().put(base.getId(), new BaseLight(base));
+        planetScan.setDate(System.currentTimeMillis());
+    }
+
+    public Map<String, PlanetScan> getPlanetScans() {
+        return planetScans;
+    }
+
+    public void setPlanetScans(Map<String, PlanetScan> planetScans) {
+        this.planetScans = planetScans;
     }
 }

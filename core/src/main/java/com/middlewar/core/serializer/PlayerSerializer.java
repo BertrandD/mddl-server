@@ -42,6 +42,7 @@ public class PlayerSerializer extends JsonSerializer<Player> {
             gen.writeString(base.getId());
         gen.writeEndArray();
 
+        gen.writeObjectField("planetScans", value.getPlanetScans());
         gen.writeObjectField("inventory", value.getInventory().getItems());
         gen.writeEndObject();
     }

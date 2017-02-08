@@ -9,6 +9,8 @@ public class PlayerLight {
     private String id;
     private String name;
 
+    public PlayerLight() {}
+
     public PlayerLight(Player player) {
         setId(player.getId());
         setName(player.getName());

@@ -10,6 +10,8 @@ public class AstralObjectLight {
     private String name;
     private long nbStatellites;
 
+    public AstralObjectLight() {}
+
     public AstralObjectLight(AstralObject astralObject) {
         this.id = astralObject.getId();
         this.name = astralObject.getName();

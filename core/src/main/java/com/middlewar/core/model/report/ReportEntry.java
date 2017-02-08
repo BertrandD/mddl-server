@@ -3,12 +3,12 @@ package com.middlewar.core.model.report;
 /**
  * @author bertrand.
  */
-public class SpyReportEntry {
+public class ReportEntry {
 
     private String name;
-    private double value;
+    private Object value;
 
-    public SpyReportEntry(String name, double value) {
+    public ReportEntry(String name, Object value) {
         this.name = name;
         this.value = value;
     }
@@ -21,7 +21,7 @@ public class SpyReportEntry {
         this.name = name;
     }
 
-    public double getValue() {
+    public Object getValue() {
         return value;
     }
 

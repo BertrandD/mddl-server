@@ -42,6 +42,9 @@ public class BaseServiceTest {
         Assertions.assertThat(base.getPlanet()).isEqualTo(planet);
         Assertions.assertThat(base.getOwner()).isEqualTo(player);
 
+        Assertions.assertThat(planet.getBases().size()).isEqualTo(1);
+        Assertions.assertThat(planet.getBases().get(0)).isEqualTo(base);
+
         Assertions.assertThat(player.getBases().size()).isEqualTo(1);
         Assertions.assertThat(player.getBases().get(0)).isEqualTo(base);
         Assertions.assertThat(player.getCurrentBase()).isEqualTo(base);

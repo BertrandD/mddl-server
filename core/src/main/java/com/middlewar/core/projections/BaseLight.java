@@ -10,6 +10,8 @@ public class BaseLight {
     private String name;
     private PlayerLight owner;
 
+    public BaseLight() {}
+
     public BaseLight(Base base) {
         setId(base.getId());
         setName(base.getName());
