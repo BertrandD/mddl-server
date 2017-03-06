@@ -2,7 +2,7 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="shield" nameId="building_shield_n" class="ModulableBuilding" descriptionId="building_shield_d" maxLevel="10">
         <buildTime>
-            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
+            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
         </buildTime>
         <stats>
             <stat name="BASE_MAX_SHIELD" function="1000 * $level" op="DIFF" />
@@ -16,8 +16,8 @@
         </modules>
         <requirements>
             <functions>
-                <function fromLevel="1" itemId="resource_c" value="0,2*Math.pow($level,4)"/>
-                <function fromLevel="1" itemId="resource_ato3" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="1" itemId="resource_2" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="1" itemId="resource_3" value="0,2*Math.pow($level,4)"/>
             </functions>
         </requirements>
     </building>

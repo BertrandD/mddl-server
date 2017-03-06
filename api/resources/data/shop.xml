@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsd/shop.xsd">
     <category name="BOOST">
-        <item id="boost_resource_feo_10_1week" count="1" price="100" /> <!-- Selected base boost FeO production by 10% during 1 week -->
-        <item id="boost_resource_feo_20_1week" count="1" price="170" /> <!-- Selected base boost FeO production by 20% during 1 week -->
-        <item id="boost_resource_feo_30_1week" count="1" price="250" /> <!-- Selected base boost FeO production by 30% during 1 week -->
-        <item id="boost_resource_c_10_1week" count="1" price="100" /> <!-- Selected base boost C production by 10% during 1 week -->
-        <item id="boost_resource_c_20_1week" count="1" price="170" /> <!-- Selected base boost C production by 20% during 1 week -->
-        <item id="boost_resource_c_30_1week" count="1" price="250" /> <!-- Selected base boost C production by 30% during 1 week -->
-        <item id="boost_resource_ato3_10_1week" count="1" price="100" /> <!-- Selected base boost AtO3 production by 10% during 1 week -->
-        <item id="boost_resource_ato3_20_1week" count="1" price="170" /> <!-- Selected base boost AtO3 production by 20% during 1 week -->
-        <item id="boost_resource_ato3_30_1week" count="1" price="250" /> <!-- Selected base boost AtO3 production by 30% during 1 week -->
-        <item id="boost_resource_ch4_10_1week" count="1" price="100" /> <!-- Selected base boost CH4 production by 10% during 1 week -->
-        <item id="boost_resource_ch4_20_1week" count="1" price="170" /> <!-- Selected base boost CH4 production by 20% during 1 week -->
-        <item id="boost_resource_ch4_30_1week" count="1" price="250" /> <!-- Selected base boost CH4 production by 30% during 1 week -->
-        <item id="boost_resource_h2o_10_1week" count="1" price="100" /> <!-- Selected base boost H2O production by 10% during 1 week -->
-        <item id="boost_resource_h2o_20_1week" count="1" price="170" /> <!-- Selected base boost H2O production by 20% during 1 week -->
-        <item id="boost_resource_h2o_30_1week" count="1" price="250" /> <!-- Selected base boost H2O production by 30% during 1 week -->
+        <item id="boost_resource_1_10_1week" count="1" price="100" /> <!-- Selected base boost metal production by 10% during 1 week -->
+        <item id="boost_resource_1_20_1week" count="1" price="170" /> <!-- Selected base boost metal production by 20% during 1 week -->
+        <item id="boost_resource_1_30_1week" count="1" price="250" /> <!-- Selected base boost metal production by 30% during 1 week -->
+        <item id="boost_resource_2_10_1week" count="1" price="100" /> <!-- Selected base boost Carbon production by 10% during 1 week -->
+        <item id="boost_resource_2_20_1week" count="1" price="170" /> <!-- Selected base boost Carbon production by 20% during 1 week -->
+        <item id="boost_resource_2_30_1week" count="1" price="250" /> <!-- Selected base boost Carbon production by 30% during 1 week -->
+        <item id="boost_resource_3_10_1week" count="1" price="100" /> <!-- Selected base boost Cristal production by 10% during 1 week -->
+        <item id="boost_resource_3_20_1week" count="1" price="170" /> <!-- Selected base boost Cristal production by 20% during 1 week -->
+        <item id="boost_resource_3_30_1week" count="1" price="250" /> <!-- Selected base boost Cristal production by 30% during 1 week -->
+        <item id="boost_resource_4_10_1week" count="1" price="100" /> <!-- Selected base boost Methan production by 10% during 1 week -->
+        <item id="boost_resource_4_20_1week" count="1" price="170" /> <!-- Selected base boost Methan production by 20% during 1 week -->
+        <item id="boost_resource_4_30_1week" count="1" price="250" /> <!-- Selected base boost Methan production by 30% during 1 week -->
+        <item id="boost_resource_5_10_1week" count="1" price="100" /> <!-- Selected base boost Water production by 10% during 1 week -->
+        <item id="boost_resource_5_20_1week" count="1" price="170" /> <!-- Selected base boost Water production by 20% during 1 week -->
+        <item id="boost_resource_5_30_1week" count="1" price="250" /> <!-- Selected base boost Water production by 30% during 1 week -->
     </category>
     <category name="SKIN">
         <item id="skin_base_001" count="1" price="500" />

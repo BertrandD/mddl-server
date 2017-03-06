@@ -87,16 +87,16 @@
                     <xs:enumeration value="BASE_MAX_STORAGE_VOLUME" />
                     <xs:enumeration value="BUILD_COOLDOWN_REDUCTION" />
                     <xs:enumeration value="RESOURCE_PRODUCTION_SPEED" />
-                    <xs:enumeration value="RESOURCE_FEO" />
-                    <xs:enumeration value="RESOURCE_C" />
-                    <xs:enumeration value="RESOURCE_CH4" />
-                    <xs:enumeration value="RESOURCE_ATO3" />
-                    <xs:enumeration value="RESOURCE_H2O" />
-                    <xs:enumeration value="MAX_RESOURCE_FEO" />
-                    <xs:enumeration value="MAX_RESOURCE_C" />
-                    <xs:enumeration value="MAX_RESOURCE_CH4" />
-                    <xs:enumeration value="MAX_RESOURCE_ATO3" />
-                    <xs:enumeration value="MAX_RESOURCE_H2O" />
+                    <xs:enumeration value="RESOURCE_1" />
+                    <xs:enumeration value="RESOURCE_2" />
+                    <xs:enumeration value="RESOURCE_4" />
+                    <xs:enumeration value="RESOURCE_3" />
+                    <xs:enumeration value="RESOURCE_5" />
+                    <xs:enumeration value="MAX_RESOURCE_1" />
+                    <xs:enumeration value="MAX_RESOURCE_2" />
+                    <xs:enumeration value="MAX_RESOURCE_4" />
+                    <xs:enumeration value="MAX_RESOURCE_3" />
+                    <xs:enumeration value="MAX_RESOURCE_5" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>

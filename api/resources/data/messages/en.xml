@@ -60,11 +60,11 @@
         <message id="you_dont_meet_item_requirement" text="You do not meet items requirements" />
         <message id="you_dont_meet_resource_requirement" text="You do not meet resources requirements" />
         <!-- Items names -->
-        <message id="resource_feo_n" text="FeO" />
-        <message id="resource_c_n" text="C" />
-        <message id="resource_ato3_n" text="AtO3" />
-        <message id="resource_ch4_n" text="CH4" />
-        <message id="resource_h2o_n" text="H2O" />
+        <message id="resource_1_n" text="Metal" />
+        <message id="resource_2_n" text="Carbon" />
+        <message id="resource_3_n" text="Cristal" />
+        <message id="resource_4_n" text="Methan" />
+        <message id="resource_5_n" text="Water" />
         <message id="resource_steel_n" text="Acier" />
         <message id="resource_plastic_n" text="Plastic" />
         <message id="resource_tool_n" text="Tool" />
@@ -72,11 +72,11 @@
         <message id="resource_septum_n" text="Septum" />
         <message id="structure_test_n" text="Structure Test" />
         <!-- Items descriptions -->
-        <message id="resource_feo_d" text="Oxyde de Fer description todo" />
-        <message id="resource_c_d" text="Carbon description todo" />
-        <message id="resource_ato3_d" text="Oxyde d'atemium description todo" />
-        <message id="resource_ch4_d" text="Methane description todo" />
-        <message id="resource_h2o_d" text="Water description todo" />
+        <message id="resource_1_d" text="Oxyde de Fer description todo" />
+        <message id="resource_2_d" text="Carbon description todo" />
+        <message id="resource_3_d" text="Oxyde d'atemium description todo" />
+        <message id="resource_4_d" text="Methane description todo" />
+        <message id="resource_5_d" text="Water description todo" />
         <message id="resource_steel_d" text="Steel description todo" />
         <message id="resource_plastic_d" text="Plastic description todo" />
         <message id="resource_tool_d" text="Tool description todo" />

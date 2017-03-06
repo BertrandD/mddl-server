@@ -2,11 +2,11 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="market" class="CommonBuilding" nameId="building_market_n" maxLevel="100" descriptionId="building_market_d">
         <buildTime>
-            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
+            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
         </buildTime>
         <requirements>
             <functions>
-                <function fromLevel="1" toLevel="4" itemId="resource_feo" value="0,2*Math.pow($level,4)" />
+                <function fromLevel="1" toLevel="4" itemId="resource_1" value="0,2*Math.pow($level,4)" />
                 <function fromLevel="5" itemId="resource_steel" value="0,2*Math.pow($level,4)" />
             </functions>
             <requirement level="3">

@@ -10,6 +10,7 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import com.middlewar.api.util.response.JsonResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @RestController
+@PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/item_static", produces = "application/json")
 public class ItemController {
 

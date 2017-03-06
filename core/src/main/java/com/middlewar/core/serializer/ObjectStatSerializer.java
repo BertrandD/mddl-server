@@ -20,11 +20,11 @@ public class ObjectStatSerializer extends JsonSerializer<ObjectStat> {
         for (Map.Entry<Stats, Double> entry : value.getStats().entrySet()) {
             switch(entry.getKey())
             {
-                case RESOURCE_ATO3:
-                case RESOURCE_C:
-                case RESOURCE_CH4:
-                case RESOURCE_FEO:
-                case RESOURCE_H2O:
+                case RESOURCE_3:
+                case RESOURCE_2:
+                case RESOURCE_4:
+                case RESOURCE_1:
+                case RESOURCE_5:
                     break;
                 default: gen.writeNumberField(entry.getKey().toString(), entry.getValue());
             }

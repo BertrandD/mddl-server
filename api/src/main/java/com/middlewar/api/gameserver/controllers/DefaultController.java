@@ -1,15 +1,17 @@
 package com.middlewar.api.gameserver.controllers;
 
-import com.middlewar.api.gameserver.services.AstralObjectService;
-import com.middlewar.core.data.json.WorldData;
-import com.middlewar.core.model.Account;
 import com.middlewar.api.auth.AccountService;
-import com.middlewar.core.data.xml.SystemMessageData;
-import com.middlewar.core.enums.Lang;
-import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.api.gameserver.services.AstralObjectService;
 import com.middlewar.api.gameserver.services.UpdateService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
+import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.data.json.WorldData;
+import com.middlewar.core.data.xml.BuildingData;
+import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.data.xml.SystemMessageData;
+import com.middlewar.core.enums.Lang;
+import com.middlewar.core.model.Account;
 import com.middlewar.core.model.space.AstralObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
@@ -68,6 +70,13 @@ public class DefaultController implements ErrorController{
         accountService.update(account);
         AstralObject blackHole = WorldData.getInstance().getWorld();
         astralObjectService.saveUniverse(blackHole);
+        return new JsonResponse(JsonResponseType.SUCCESS);
+    }
+
+    @RequestMapping(value = "/reload", method = RequestMethod.GET)
+    public JsonResponse reload(){
+        BuildingData.getInstance().load();
+        ItemData.getInstance().load();
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 

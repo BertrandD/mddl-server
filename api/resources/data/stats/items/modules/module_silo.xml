@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/items.xsd">
     <!-- Silo specialization -->
-    <item id="module_silo_improve_feo" nameId="module_silo_improve_feo_n" type="MODULE" descriptionId="module_silo_improve_feo_d" >
+    <item id="module_silo_improve_1" nameId="module_silo_improve_1_n" type="MODULE" descriptionId="module_silo_improve_1_d" >
         <stats>
-            <stat name="MAX_RESOURCE_FEO" op="UNLOCK" />
+            <stat name="MAX_RESOURCE_1" op="UNLOCK" />
         </stats>
     </item>
-    <item id="module_silo_improve_c" nameId="module_silo_improve_c_n" type="MODULE" descriptionId="module_silo_improve_c_d" >
+    <item id="module_silo_improve_2" nameId="module_silo_improve_2_n" type="MODULE" descriptionId="module_silo_improve_2_d" >
         <stats>
-            <stat name="MAX_RESOURCE_C" op="UNLOCK" />
+            <stat name="MAX_RESOURCE_2" op="UNLOCK" />
         </stats>
     </item>
-    <item id="module_silo_improve_ato3" nameId="module_silo_improve_ato3_n" type="MODULE" descriptionId="module_silo_improve_ato3_d" >
+    <item id="module_silo_improve_3" nameId="module_silo_improve_3_n" type="MODULE" descriptionId="module_silo_improve_3_d" >
         <stats>
-            <stat name="MAX_RESOURCE_ATO3" op="UNLOCK" />
+            <stat name="MAX_RESOURCE_3" op="UNLOCK" />
         </stats>
     </item>
-    <item id="module_silo_improve_ch4" nameId="module_silo_improve_ch4_n" type="MODULE" descriptionId="module_silo_improve_ch4_d" >
+    <item id="module_silo_improve_4" nameId="module_silo_improve_4_n" type="MODULE" descriptionId="module_silo_improve_4_d" >
         <stats>
-            <stat name="MAX_RESOURCE_CH4" op="UNLOCK" />
+            <stat name="MAX_RESOURCE_4" op="UNLOCK" />
         </stats>
     </item>
-    <item id="module_silo_improve_h2o" nameId="module_silo_improve_h2o_n" type="MODULE" descriptionId="module_silo_improve_h2o_d" >
+    <item id="module_silo_improve_5" nameId="module_silo_improve_5_n" type="MODULE" descriptionId="module_silo_improve_5_d" >
         <stats>
-            <stat name="MAX_RESOURCE_H2O" op="UNLOCK" />
+            <stat name="MAX_RESOURCE_5" op="UNLOCK" />
         </stats>
     </item>
 </list>

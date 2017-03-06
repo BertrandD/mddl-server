@@ -61,18 +61,18 @@ public class InventoryServiceTest extends MiddlewarTest{
         Planet planet = Mockito.mock(Planet.class);
         _base = new Base("Test base", _player, planet);
         ObjectStat baseStat = new ObjectStat();
-        baseStat.addStat(Stats.RESOURCE_FEO);
-        baseStat.add(Stats.RESOURCE_FEO, PRODUCTION_RESOURCE_PER_HOUR, StatOp.DIFF);
+        baseStat.addStat(Stats.RESOURCE_1);
+        baseStat.add(Stats.RESOURCE_1, PRODUCTION_RESOURCE_PER_HOUR, StatOp.DIFF);
         _base.setBaseStat(baseStat);
     }
 
     public ItemInstance generateItemInstance() {
-        return new ItemInstance("resource_feo", INITIAL_ITEM_COUNT);
+        return new ItemInstance("resource_1", INITIAL_ITEM_COUNT);
     }
 
     public ItemContainer generateItemContainer(ItemInstance itemInstance) {
         ItemContainer itemContainer = new ItemContainer(_base, itemInstance);
-        itemContainer.setStat(Stats.RESOURCE_FEO);
+        itemContainer.setStat(Stats.RESOURCE_1);
         return itemContainer;
     }
 
@@ -90,7 +90,7 @@ public class InventoryServiceTest extends MiddlewarTest{
 
         Assertions.assertThat(itemContainer.getItem().getCount()).isEqualTo(INITIAL_ITEM_COUNT + PRODUCTION_RESOURCE_PER_HOUR);
 
-        _base.getBaseStat().add(Stats.RESOURCE_FEO, Double.POSITIVE_INFINITY, StatOp.DIFF);
+        _base.getBaseStat().add(Stats.RESOURCE_1, Double.POSITIVE_INFINITY, StatOp.DIFF);
         itemContainer.setLastRefresh(System.currentTimeMillis() - (60 * 60 * 1000));
 
         inventoryService.refresh(itemContainer);
@@ -117,7 +117,7 @@ public class InventoryServiceTest extends MiddlewarTest{
     @Test
     public void testConsumeItem() {
         init();
-        ItemInstance itemInstance = new ItemInstance("module_silo_improve_c", INITIAL_ITEM_COUNT);
+        ItemInstance itemInstance = new ItemInstance("module_silo_improve_2", INITIAL_ITEM_COUNT);
         BaseInventory baseInventory = new BaseInventory(_base);
         itemInstance.setInventory(baseInventory);
         baseInventory.getItems().add(itemInstance);

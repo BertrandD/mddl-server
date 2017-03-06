@@ -37,7 +37,7 @@ public class SpyReportServiceTest extends MiddlewarTest{
         final Base baseTarget = new Base();
         baseTarget.getShips().add(new Ship(baseTarget, "structure_test", 5));
 
-        baseTarget.getResources().add(new ItemContainer(baseTarget, new ItemInstance("resource_feo", 100)));
+        baseTarget.getResources().add(new ItemContainer(baseTarget, new ItemInstance("resource_1", 100)));
 
         SpyReport report =  service.create(player, baseSrc, baseTarget);
         Assertions.assertThat(report).isNotNull();
@@ -46,7 +46,7 @@ public class SpyReportServiceTest extends MiddlewarTest{
         Assertions.assertThat(report.getEntries().size()).isEqualTo(2);
 
         Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES)).isNotNull();
-        Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES).get(0).getName()).isEqualTo("resource_feo");
+        Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES).get(0).getName()).isEqualTo("resource_1");
         Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES).get(0).getValue()).isEqualTo(100);
 
         Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS)).isNotNull();
