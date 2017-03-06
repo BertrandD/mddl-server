@@ -28,6 +28,11 @@ public abstract class AstralObject {
 
     private HashMap<AstralStat, Double> stats;
 
+    // Nombre de minutes nécessaires pour faire 1 tour autour de parent
+    private double revolution;
+
+    private double orbit;
+
     @DBRef
     private List<AstralObject> satellites;
 
@@ -41,6 +46,10 @@ public abstract class AstralObject {
         this.satellites = new ArrayList<>();
         this.parent = parent;
         this.id = new ObjectId().toString();
+    }
+
+    public double getAngle() {
+        return ((2 * Math.PI) / (revolution)) * System.currentTimeMillis() / (6000)/* + theta0 */;
     }
 
     public String getId() {
@@ -81,5 +90,21 @@ public abstract class AstralObject {
 
     public void setParent(AstralObject parent) {
         this.parent = parent;
+    }
+
+    public double getRevolution() {
+        return revolution;
+    }
+
+    public void setRevolution(double revolution) {
+        this.revolution = revolution;
+    }
+
+    public double getOrbit() {
+        return orbit;
+    }
+
+    public void setOrbit(double orbit) {
+        this.orbit = orbit;
     }
 }

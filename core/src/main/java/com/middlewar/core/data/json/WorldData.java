@@ -23,7 +23,7 @@ public class WorldData {
     protected WorldData () {
         _astralObjects.clear();
         parseConfigFile(Config.DATA_ROOT_DIRECTORY + "world.json");
-        LOGGER.info("Loaded " + _astralObjects.size() + " buildings Templates.");
+        LOGGER.info("Loaded " + _astralObjects.size() + " astral objects");
     }
 
     protected void parseConfigFile (String configFile) {
@@ -57,6 +57,11 @@ public class WorldData {
             default:
                 return null;
         }
+
+        HashMap<String, Number> stats = (HashMap<String, Number>) data.get("stats");
+
+        astralObject.setOrbit(stats.get("orbit").doubleValue());
+        astralObject.setRevolution(stats.get("revolution").doubleValue());
 
         if (data.containsKey("satellites")) {
             for(HashMap<String, Object> satellite: (ArrayList<HashMap<String, Object>>)data.get("satellites")) {
