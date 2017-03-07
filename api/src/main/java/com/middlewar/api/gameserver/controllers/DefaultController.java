@@ -73,6 +73,14 @@ public class DefaultController implements ErrorController{
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
+    public JsonResponse resetWorld(@AuthenticationPrincipal Account pAccount) {
+        AstralObject blackHole = WorldData.getInstance().getWorld();
+        astralObjectService.saveUniverse(blackHole);
+        return new JsonResponse(JsonResponseType.SUCCESS);
+    }
+
     @RequestMapping(value = "/reload", method = RequestMethod.GET)
     public JsonResponse reload(){
         BuildingData.getInstance().load();
