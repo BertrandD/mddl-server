@@ -17,7 +17,9 @@ public class AstralObjectSerializer extends JsonSerializer<AstralObject> {
     public void serialize(AstralObject value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
+        gen.writeStringField("type", value.getClass().getSimpleName());
         gen.writeStringField("name", value.getName());
+        gen.writeNumberField("size", value.getSize());
         gen.writeNumberField("orbit", value.getOrbit());
         gen.writeNumberField("revolution", value.getRevolution());
         gen.writeNumberField("angle", value.getAngle());

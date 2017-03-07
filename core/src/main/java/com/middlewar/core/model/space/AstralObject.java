@@ -33,6 +33,8 @@ public abstract class AstralObject {
 
     private double orbit;
 
+    private double size;
+
     @DBRef
     private List<AstralObject> satellites;
 
@@ -106,5 +108,13 @@ public abstract class AstralObject {
 
     public void setOrbit(double orbit) {
         this.orbit = orbit;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
     }
 }

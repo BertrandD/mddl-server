@@ -62,6 +62,7 @@ public class WorldData {
 
         astralObject.setOrbit(stats.get("orbit").doubleValue());
         astralObject.setRevolution(stats.get("revolution").doubleValue());
+        astralObject.setSize(stats.get("size").doubleValue());
 
         if (data.containsKey("satellites")) {
             for(HashMap<String, Object> satellite: (ArrayList<HashMap<String, Object>>)data.get("satellites")) {
