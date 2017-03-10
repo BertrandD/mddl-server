@@ -106,7 +106,6 @@ public class BuildingInstanceController {
 
         collector.forEach(inventoryService::consumeItem);
 
-        base.addBuilding(building, base.getBuildingPositions().size()+1); // temp position disable
         baseService.update(base);
 
         buildingTaskManager.ScheduleUpgrade(building);
@@ -162,7 +161,7 @@ public class BuildingInstanceController {
         final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(buildingInstId)).findFirst().orElse(null);
         if(building == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
 
-        final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId)).findFirst().orElse(null);
+        final ItemInstance module = base.getBaseInventory().getItemsToMap().get(moduleId);
         if(module == null) return new JsonResponse(JsonResponseType.ERROR, "You haven't module in your inventory !"); // TODO System message
 
         //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new JsonResponse(JsonResponseType.ERROR, "Module already attached !"); // TODO System message

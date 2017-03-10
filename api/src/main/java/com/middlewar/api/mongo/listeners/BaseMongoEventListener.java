@@ -32,7 +32,7 @@ public class BaseMongoEventListener extends AbstractMongoEventListener<Base> {
         // TODO: Don't touch me please. I will be removed later
         logger.error("Initalizing stats for base : "+event.getSource().getName());
         event.getSource().initializeStats();
-        inventoryService.refresh(event.getSource());
+        //inventoryService.refresh(event.getSource());
         super.onAfterConvert(event);
     }
 }

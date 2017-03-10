@@ -5,6 +5,7 @@ import com.middlewar.core.enums.StatOp;
 
 /**
  * @author LEBOC Philippe
+ * TODO: REFACTOR !
  */
 public class StatHolder {
 

@@ -50,7 +50,7 @@ public class PrivateMessageController {
             return new JsonResponse(JsonResponseType.ERROR, "Invalid request");
 
         if(!pm.isRead()) {
-            pm.setIsRead(true);
+            pm.setRead(true);
             pm.setReadDate(System.currentTimeMillis());
         }
 

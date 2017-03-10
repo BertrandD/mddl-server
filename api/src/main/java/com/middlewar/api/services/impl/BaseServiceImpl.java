@@ -58,7 +58,7 @@ public class BaseServiceImpl implements BaseService {
         final List<Base> bases = baseDao.findAll();
         for (Base base : bases) {
             base.initializeStats();
-            inventoryService.refresh(base);
+            //inventoryService.refresh(base.getResources()); TODO: HANDLE ME !
         }
         return bases;
     }

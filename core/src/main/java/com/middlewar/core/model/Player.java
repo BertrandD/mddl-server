@@ -81,6 +81,10 @@ public class Player {
         setPlanetScans(new HashMap<>());
     }
 
+    public void addBase(Base base) {
+        getBases().add(base);
+    }
+
     public boolean addFriend(PlayerHolder friend) {
         return !getFriends().contains(friend) && getFriends().add(friend);
     }

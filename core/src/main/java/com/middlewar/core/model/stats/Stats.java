@@ -12,6 +12,7 @@ public enum Stats {
     ENERGY(0),
 
     // Production
+    INVENTORY_MAX_RESOURCE(0),
     RESOURCE_1(0),
     RESOURCE_2(0),
     RESOURCE_4(0),

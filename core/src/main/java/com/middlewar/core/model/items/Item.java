@@ -15,8 +15,7 @@ public abstract class Item extends GameItem
     private long buildTime;
     private Requirement requirement;
 
-    public Item(StatsSet set, Requirement requirement)
-    {
+    public Item(StatsSet set, Requirement requirement) {
         super(set);
         setRank(set.getEnum("rank", Rank.class, Rank.NONE));
         setBuildTime(set.getLong("buildTime", 0L));

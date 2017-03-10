@@ -10,7 +10,7 @@ import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.core.model.inventory.ResourceInventory;
+import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Item;
 import com.middlewar.api.services.impl.InventoryService;
@@ -98,7 +98,7 @@ public class ValidatorService {
 
             if(template.getType().equals(ItemType.RESOURCE))
             {
-                final ResourceInventory rInventory = base.getResources().stream().filter(k -> k.getItem().getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
+                final Resource rInventory = base.getResources().stream().filter(k -> k.getItem().getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
                 if(rInventory == null || rInventory.getItem().getCount() < holder.getCount())
                     meetRequirements = false;
                 else
@@ -106,7 +106,7 @@ public class ValidatorService {
             }
             else
             {
-                final ItemInstance iInst = bInventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
+                final ItemInstance iInst = bInventory.getItemsToMap().get(holder.getId());
                 if(iInst == null || iInst.getCount() < holder.getCount())
                     meetRequirements = false;
                 else

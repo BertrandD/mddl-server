@@ -5,41 +5,45 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.core.serializer.BaseInventorySerializer;
+import com.middlewar.core.serializer.ResourceSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author LEBOC Philippe
+ *
+ * This class manage only one resource item
  */
 @Data
-@Document(collection = "base_inventory")
-@JsonSerialize(using = BaseInventorySerializer.class)
-public final class BaseInventory extends Inventory {
+@Document(collection = "resources")
+@JsonSerialize(using = ResourceSerializer.class)
+public final class Resource {
 
-    @DBRef(lazy = true)
+    @Id
+    private String id;
+
+    @DBRef
     @JsonBackReference
     private Base base;
 
-    public BaseInventory() {
-        super();
-    }
+    @DBRef
+    private ItemInstance item;
 
-    public BaseInventory(Base base){
-        super();
+    private long lastRefresh;
+
+    private Stats stat;
+
+    public Resource(Base base, ItemInstance item) {
         setId(new ObjectId().toString());
         setBase(base);
+        setItem(item);
+        setLastRefresh(System.currentTimeMillis());
     }
 
-    @Override
-    public long getAvailableCapacity(){
-        return getBase().getBaseStat().getStats().get(Stats.BASE_MAX_STORAGE_VOLUME).longValue();
-    }
-
-    @Override
-    public ItemInstance getItem(String id) {
-        return getItemsToMap().containsKey(id) ? getItemsToMap().get(id) : null;
+    public long getAvailableCapacity() {
+        return (long)getBase().getBaseStat().getValue(stat, 0);
     }
 }

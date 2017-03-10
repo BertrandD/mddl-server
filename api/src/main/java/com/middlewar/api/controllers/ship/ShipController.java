@@ -60,14 +60,14 @@ public class ShipController {
         final BaseInventory inventory = base.getBaseInventory();
         final List<ItemInstance> collector = new ArrayList<>();
 
-        final ItemInstance structuresInst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(structure)).findFirst().orElse(null);
+        final ItemInstance structuresInst = inventory.getItemsToMap().get(structure);
         if(structuresInst == null || structuresInst.getCount() < count) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND); // todo: make a new sysmsg
 
         boolean faillure = false;
         for (int i = 0; i < ids.size() && !faillure; i++){
             final GameItem template = ItemData.getInstance().getTemplate(ids.get(i));
             if(template == null) faillure = true; else {
-                final ItemInstance inst = inventory.getItems().stream().filter(k -> k.getTemplateId().equals(template.getItemId())).findFirst().orElse(null);
+                final ItemInstance inst = inventory.getItemsToMap().get(template.getItemId());
                 if(inst != null && inst.getCount() >= count) collector.add(inst); else faillure = true;
             }
         }

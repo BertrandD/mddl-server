@@ -1,7 +1,11 @@
 package com.middlewar.core.model.inventory;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.serializer.PlayerInventorySerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,7 +13,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @Document(collection = "player_inventory")
+@JsonSerialize(using = PlayerInventorySerializer.class)
 public final class PlayerInventory extends Inventory {
 
     @DBRef
@@ -26,11 +32,13 @@ public final class PlayerInventory extends Inventory {
         setPlayer(player);
     }
 
-    public Player getPlayer() {
-        return player;
+    @Override
+    public ItemInstance getItem(String id) {
+        return getItemsToMap().containsKey(id) ? getItemsToMap().get(id) : null;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    @Override
+    public long getAvailableCapacity() {
+        return -1; // Unlimited
     }
 }

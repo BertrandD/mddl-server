@@ -8,7 +8,7 @@ import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.core.model.inventory.ResourceInventory;
+import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.ObjectStat;
@@ -40,7 +40,6 @@ public final class Base
     private String id;
     private String name;
 
-    @DBRef
     @Indexed
     @JsonManagedReference
     private Player owner;
@@ -48,24 +47,24 @@ public final class Base
     @Transient
     private ObjectStat baseStat;
 
-    @DBRef
+    @DBRef(lazy = true)
     @JsonManagedReference
     private List<Ship> ships;
 
-    @DBRef
+    @DBRef(lazy = true)
     private List<Fleet> fleets;
 
-    @DBRef
+    @DBRef(lazy = true)
     @JsonManagedReference
     private List<BuildingInstance> buildings;
 
-    @DBRef
+    @DBRef(lazy = true)
     @JsonManagedReference
     private BaseInventory baseInventory;
 
     @DBRef
     @JsonManagedReference
-    private ResourceInventory resources;
+    private List<Resource> resources;
 
     @DBRef
     @JsonBackReference
@@ -74,10 +73,11 @@ public final class Base
     public Base() {
         setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
-        setShip(new ArrayList<>());
+        setShips(new ArrayList<>());
         setResources(new ArrayList<>());
         setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
+        setResources(new ArrayList<>());
     }
 
     public Base(String name, Player owner, Planet planet) {
@@ -144,5 +144,8 @@ public final class Base
     public void addBuilding(BuildingInstance building) {
         this.buildings.add(building);
         this.buildingPositions.put(position, building.getId());
+    }
+    public void addResource(Resource resource) {
+        resources.add(resource);
     }
 }

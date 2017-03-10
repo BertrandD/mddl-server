@@ -1,5 +1,6 @@
 package com.middlewar.api.auth;
 
+import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
 import com.middlewar.api.util.slack.Slack;
@@ -55,6 +56,7 @@ public class AccountService implements UserDetailsService {
 
         Account account = new Account(username, passwordEncoder.encode(password), roles, null, Lang.EN, null, null, UUID.randomUUID().toString());
         account = accountRepository.save(account);
+
 
         if(account == null) return null;
         Slack.sendInfo("New account : "+username);

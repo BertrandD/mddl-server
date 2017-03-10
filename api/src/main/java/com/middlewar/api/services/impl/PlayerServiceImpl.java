@@ -1,6 +1,7 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.auth.AccountService;
+import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.core.model.Account;
 import com.middlewar.api.dao.PlayerDao;
 import com.middlewar.core.model.Player;
@@ -22,6 +23,9 @@ public class PlayerServiceImpl implements PlayerService {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private PlayerInventoryService playerInventoryService;
+
     @Override
     public Player create(Account account, String name) {
 
@@ -39,6 +43,8 @@ public class PlayerServiceImpl implements PlayerService {
         // update current AuthenticationPrincipal
         account.addPlayer(player.getId());
         account.setCurrentPlayer(player.getId());
+
+        playerInventoryService.create(player);
 
         return player;
     }

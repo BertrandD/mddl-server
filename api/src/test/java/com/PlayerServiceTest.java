@@ -3,6 +3,7 @@ package com;
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
@@ -31,9 +32,8 @@ public class PlayerServiceTest {
     @Autowired
     private PlayerService playerService;
 
-    // TODO: Enable check on PlayerInventory when refactor will be completely done
-    //@Autowired
-    //private PlayerInventoryService playerInventoryService;
+    @Autowired
+    private PlayerInventoryService playerInventoryService;
 
     @Autowired
     private BaseService baseService;
@@ -50,7 +50,7 @@ public class PlayerServiceTest {
     public void destroy() {
         accountService.deleteAll();
         playerService.deleteAll();
-        //playerInventoryService.deleteAll();
+        playerInventoryService.deleteAll();
         baseService.deleteAll();
     }
 
@@ -70,7 +70,7 @@ public class PlayerServiceTest {
         Assertions.assertThat(player.getId()).isEqualTo(this.account.getCurrentPlayer());
         Assertions.assertThat(player.getBases()).isNotNull().isEmpty();
         Assertions.assertThat(player.getCurrentBase()).isNull();
-        //Assertions.assertThat(player.getInventory()).isNotNull();
-        //Assertions.assertThat(player.getInventory().getItems()).isEmpty();
+        Assertions.assertThat(player.getInventory()).isNotNull();
+        Assertions.assertThat(player.getInventory().getItemsToMap()).isEmpty();
     }
 }
