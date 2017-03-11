@@ -7,9 +7,9 @@
         <stats>
             <stat name="MAX_RESOURCE_1" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
             <stat name="MAX_RESOURCE_2" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
-            <stat name="MAX_RESOURCE_4" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
-            <stat name="MAX_RESOURCE_3" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
-            <stat name="MAX_RESOURCE_5" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
+            <stat name="MAX_RESOURCE_4" requiredBuildingLevel="3" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
+            <stat name="MAX_RESOURCE_3" requiredBuildingLevel="3" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
+            <stat name="MAX_RESOURCE_5" requiredBuildingLevel="5" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
         </stats>
         <modules max="1">
             <module id="module_silo_improve_1" />

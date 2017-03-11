@@ -9,6 +9,7 @@ import lombok.Data;
  * @author LEBOC Philippe
  */
 @Data
+// TODO: Delete me
 public class FuncHolder {
 
     private String itemId;

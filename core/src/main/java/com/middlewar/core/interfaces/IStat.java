@@ -9,5 +9,4 @@ import java.util.List;
  */
 public interface IStat {
     List<StatHolder> getStats();
-    void setStats(List<StatHolder> stats);
 }

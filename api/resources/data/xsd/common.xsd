@@ -76,6 +76,7 @@
         <xs:attribute name="max" type="xs:positiveInteger" use="required" />
     </xs:complexType>
 
+    <!-- TODO: StatHolder need to be refactored to correspond to BuildingStat + StatHolder for others systems -->
     <!-- StatHolder -->
     <xs:complexType name="element_stat">
         <xs:attribute name="name" use="required">
@@ -100,8 +101,9 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="function" type="xs:string" /> <!-- TODO -->
-        <xs:attribute name="value" type="xs:double" /> <!-- TODO -->
+        <xs:attribute name="function" type="xs:string" />
+        <xs:attribute name="requiredBuildingLevel" type="xs:positiveInteger" />
+        <xs:attribute name="value" type="xs:double" />
         <xs:attribute name="op" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:string">

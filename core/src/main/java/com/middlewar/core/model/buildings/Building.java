@@ -8,11 +8,11 @@ import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.interfaces.IStat;
 import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.commons.StatsSet;
+import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.serializer.BuildingSerializer;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,7 +31,7 @@ public abstract class Building implements IStat {
     private int maxBuild;
     private long[] buildTimes;
     private long[] useEnergy;
-    private List<StatHolder> stats;
+    private BuildingStats stats;
     private HashMap<Integer, Requirement> requirements;
     private Lang lang = Lang.EN;
 
@@ -44,7 +44,6 @@ public abstract class Building implements IStat {
         setMaxBuild(set.getInt("maxBuild", 1));
 
         setRequirements(new HashMap<>());
-        setStats(new ArrayList<>());
     }
 
     public String getName(){
@@ -72,12 +71,7 @@ public abstract class Building implements IStat {
 
     @Override
     public List<StatHolder> getStats() {
-        return stats;
-    }
-
-    @Override
-    public void setStats(List<StatHolder> stats) {
-        this.stats = stats;
+        return stats.getStats(maxLevel);
     }
 
     @Override

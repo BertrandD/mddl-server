@@ -16,6 +16,7 @@ import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.utils.Evaluator;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import org.w3c.dom.Node;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,7 +79,8 @@ public class BuildingData implements IXmlReader {
                         final List<Module> modules = new ArrayList<>();
                         final long[] buildTimes = new long[set.getInt("maxLevel", 1)];
                         final long[] energies = new long[set.getInt("maxLevel", 1)];
-                        final List<StatHolder> stats = new ArrayList<>();
+                        //final List<StatHolder> stats = new ArrayList<>();
+                        final BuildingStats stats = new BuildingStats();
 
                         for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
                         {
@@ -168,6 +171,7 @@ public class BuildingData implements IXmlReader {
                                         final Stats baseStat = parseEnum(attrs, Stats.class, "name");
                                         final String function = parseString(attrs, "function", null);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
+                                        final int reqBuildingLevel = parseInteger(attrs, "requiredBuildingLevel", 0);
                                         final StatHolder holder = new StatHolder(baseStat, op);
 
                                         final double[] values = new double[set.getInt("maxLevel")];
@@ -179,7 +183,13 @@ public class BuildingData implements IXmlReader {
                                             holder.setValues(values);
                                         }
 
-                                        stats.add(holder);
+                                        if(reqBuildingLevel != 0) {
+                                            if(stats.getStatsByLevel().containsKey(reqBuildingLevel))
+                                                stats.getStatsByLevel().get(reqBuildingLevel).add(holder);
+                                            else
+                                                stats.getStatsByLevel().put(reqBuildingLevel, Arrays.asList(holder));
+                                        }
+                                        else stats.getGlobalStats().add(holder);
                                     }
                                 }
                             }
@@ -271,7 +281,7 @@ public class BuildingData implements IXmlReader {
                                 building.setUseEnergy(energies);
                                 building.setBuildTimes(buildTimes);
                                 building.setRequirements(requirements);
-                                if(!stats.isEmpty()) building.setStats(stats);
+                                building.setStats(stats);
                                 if(!modules.isEmpty()) ((ModulableBuilding) building).setModules(modules);
                                 _buildings.put(set.getString("id"), building);
                             }
