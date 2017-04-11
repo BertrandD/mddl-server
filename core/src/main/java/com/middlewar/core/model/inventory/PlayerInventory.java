@@ -33,8 +33,12 @@ public final class PlayerInventory extends Inventory {
     }
 
     @Override
-    public ItemInstance getItem(String id) {
-        return getItemsToMap().containsKey(id) ? getItemsToMap().get(id) : null;
+    public ItemInstance getItem(String templateId) {
+        return getItems()
+                .stream()
+                .filter(item -> item.getTemplateId().equals(templateId))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

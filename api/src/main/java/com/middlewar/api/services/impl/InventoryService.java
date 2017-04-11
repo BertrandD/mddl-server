@@ -78,8 +78,10 @@ public class InventoryService implements IInventoryService {
 
         final GameItem template = resource.getItem().getTemplate();
 
-        if(resource.getAvailableCapacity() < template.getVolume() * amount) {
-            amount = resource.getAvailableCapacity() / template.getVolume();
+        // Capacity of -1 == INFINITY
+        final long capacity = resource.getAvailableCapacity();
+        if(capacity != -1 && capacity < template.getVolume() * amount) {
+            amount = capacity / template.getVolume();
         }
 
         if(amount <= 0) return false;
@@ -188,6 +190,7 @@ public class InventoryService implements IInventoryService {
     }
 
     public void update(FleetInventory inventory) {
+        // TODO:
         //fleetInventoryService.update(inventory);
     }
 }

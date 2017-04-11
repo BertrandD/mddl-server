@@ -106,4 +106,8 @@ public class TimeUtil
 			throw new IllegalStateException("Incorrect time format given: " + datePattern + " val: " + datePattern.substring(0, index));
 		}
 	}
+
+	public static long getCurrentTime() {
+		return System.currentTimeMillis();
+	}
 }

@@ -12,6 +12,7 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
@@ -22,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 /**
  * @author Darbon Bertrand, LEBOC Philippe
@@ -113,6 +116,9 @@ public class InventoryServiceTest {
     @Test
     public void shouldConsumeItemAndDecreaseCountFromInventory() {
         final long amount = 100;
+
+        final PlayerInventory inv = _player.getInventory();
+        final List<ItemInstance> items = inv.getItems();
 
         final ItemInstance item = inventoryService.addItem(_player.getInventory(), "resource_feo", amount);
 

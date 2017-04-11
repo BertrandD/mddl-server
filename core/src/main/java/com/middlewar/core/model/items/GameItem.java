@@ -116,7 +116,6 @@ public abstract class GameItem implements IStat {
         return stats;
     }
 
-    @Override
     public void setStats(List<StatHolder> stats) {
         this.stats = stats;
     }

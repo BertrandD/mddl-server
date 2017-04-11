@@ -34,7 +34,7 @@ public class ObjectStat {
     }
 
     public double getValue(Stats stat, double defaultValue) {
-        return !getStats().containsKey(stat) ? defaultValue : getStats().get(stat);
+        return getStats().getOrDefault(stat, defaultValue);
     }
 
     public void add(final Stats stat, final double val, final StatOp op) {

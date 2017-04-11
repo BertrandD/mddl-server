@@ -37,7 +37,7 @@ public class PlayerInventoryServiceImpl implements PlayerInventoryService {
 
     @Override
     public List<PlayerInventory> findAll() {
-        return null;
+        return playerInventoryDao.findAll();
     }
 
     @Override
@@ -47,11 +47,11 @@ public class PlayerInventoryServiceImpl implements PlayerInventoryService {
 
     @Override
     public void remove(PlayerInventory object) {
-
+        playerInventoryDao.delete(object);
     }
 
     @Override
     public void deleteAll() {
-
+        playerInventoryDao.deleteAll();
     }
 }

@@ -40,6 +40,6 @@ public final class BaseInventory extends Inventory {
 
     @Override
     public ItemInstance getItem(String id) {
-        return getItemsToMap().containsKey(id) ? getItemsToMap().get(id) : null;
+        return getItemsToMap().getOrDefault(id, null);
     }
 }
