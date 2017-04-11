@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
+	<xs:element name="list">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+                        <xs:sequence>
+                            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                <xs:element name="stats" type="element_stats" maxOccurs="1" />
+                                <xs:element name="requirements" type="element_requirement" minOccurs="0" maxOccurs="1" />
+                                <xs:element name="properties" minOccurs="0" maxOccurs="1">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+                                                <xs:complexType>
+                                                    <xs:attribute name="name" use="required">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="damage" />
+                                                                <xs:enumeration value="unlock_stat" />
+                                                                <xs:enumeration value="shield_defense" />
+                                                                <xs:enumeration value="affected" />
+                                                                <xs:enumeration value="multiplicator" />
+                                                                <xs:enumeration value="power" />
+                                                                <xs:enumeration value="capacity" />
+                                                                <xs:enumeration value="slot_cargo" />
+                                                                <xs:enumeration value="slot_engine" />
+                                                                <xs:enumeration value="slot_module" />
+                                                                <xs:enumeration value="slot_technology" />
+                                                                <xs:enumeration value="slot_weapon" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:attribute>
+                                                    <xs:attribute name="value" type="xs:string" use="required" />
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:choice>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:string" use="required" />
+                        <xs:attribute name="nameId" type="xs:string" use="required" />
+                        <xs:attribute name="type" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="descriptionId" type="xs:string" use="required" />
+                        <xs:attribute name="rank" type="attribute_rank" use="optional" />
+                        <xs:attribute name="buildTime" type="xs:long" use="optional" />
+                        <xs:attribute name="weight" type="xs:long" use="optional" />
+                        <xs:attribute name="volume" type="xs:long" use="optional" />
+                        <xs:attribute name="rarity" type="xs:integer" use="optional" />
+                    </xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

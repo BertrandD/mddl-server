@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
+    <building id="pump" nameId="building_pump_n" class="ModulableBuilding" descriptionId="building_pump_d" maxLevel="100">
+        <buildTime>
+            <set fromLevel="1" function="Math.pow($level,2.7)*1000*60" />
+        </buildTime>
+        <stats>
+            <stat name="RESOURCE_CH4" function="100+(35*$level)" op="DIFF" />
+            <stat name="RESOURCE_H2O" function="100+(100*$level)" op="DIFF" />
+        </stats>
+        <modules max="2">
+            <module id="module_optimizer_h2o" />
+            <module id="module_optimizer_ch4" />
+        </modules>
+        <requirements>
+            <functions>
+                <function fromLevel="2" itemId="resource_c" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="3" toLevel="8" itemId="resource_feo" value="0,2*Math.pow($level,4)"/>
+                <function fromLevel="4" itemId="resource_ato3" value="0,2*Math.pow($level,4)"/>
+            </functions>
+            <requirement level="5">
+                <building id="power_factory" level="2" />
+                <item id="resource_h2o" count="250" />
+            </requirement>
+        </requirements>
+    </building>
+</list>
