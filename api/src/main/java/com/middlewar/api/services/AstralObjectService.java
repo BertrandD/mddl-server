@@ -1,4 +1,4 @@
-package com.middlewar.api.gameserver.services;
+package com.middlewar.api.services;
 
 import com.middlewar.core.model.space.AstralObject;
 import org.bson.types.ObjectId;

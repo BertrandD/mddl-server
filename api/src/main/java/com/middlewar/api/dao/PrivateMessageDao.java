@@ -1,6 +1,6 @@
-package com.gameserver.dao;
+package com.middlewar.api.dao;
 
-import com.gameserver.model.social.PrivateMessage;
+import com.middlewar.core.model.social.PrivateMessage;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

@@ -1,8 +1,8 @@
-package com.middlewar.api.gameserver.controllers.buildings;
+package com.middlewar.api.controllers.buildings;
 
-import com.middlewar.api.gameserver.services.InventoryService;
-import com.middlewar.api.gameserver.services.PlayerService;
-import com.middlewar.api.gameserver.services.ValidatorService;
+import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;

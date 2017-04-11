@@ -1,6 +1,7 @@
-package com.middlewar.api.gameserver.controllers;
+package com.middlewar.api.controllers;
 
-import com.middlewar.api.gameserver.services.*;
+import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.api.services.SpyReportService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;

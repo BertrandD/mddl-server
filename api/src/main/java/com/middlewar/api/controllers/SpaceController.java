@@ -1,9 +1,9 @@
-package com.middlewar.api.gameserver.controllers;
+package com.middlewar.api.controllers;
 
-import com.middlewar.api.gameserver.services.AstralObjectService;
-import com.middlewar.api.gameserver.services.BaseService;
-import com.middlewar.api.gameserver.services.PlanetScanReportService;
-import com.middlewar.api.gameserver.services.PlayerService;
+import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.PlanetScanReportService;
+import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;

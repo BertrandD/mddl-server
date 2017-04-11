@@ -1,24 +1,17 @@
 package com.middlewar.tests.services;
 
-import com.middlewar.api.gameserver.services.PlanetScanReportService;
-import com.middlewar.api.gameserver.services.SpyReportService;
+import com.middlewar.api.services.PlanetScanReportService;
 import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.inventory.ItemContainer;
 import com.middlewar.core.model.report.PlanetScanReport;
-import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.model.space.PlanetScan;
-import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.core.projections.BaseLight;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 

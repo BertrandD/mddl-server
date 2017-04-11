@@ -1,6 +1,6 @@
 package com.middlewar.tests.services;
 
-import com.middlewar.api.gameserver.services.SpyReportService;
+import com.middlewar.api.services.SpyReportService;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
