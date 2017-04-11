@@ -5,6 +5,8 @@ import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.enums.ReportType;
 import com.middlewar.core.model.Player;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -16,6 +18,8 @@ import java.util.List;
 /**
  * @author bertrand.
  */
+@Data
+@NoArgsConstructor
 public abstract class Report implements Comparable<Report> {
 
     @Id
@@ -47,46 +51,6 @@ public abstract class Report implements Comparable<Report> {
             entries.put(category, new ArrayList<>());
         }
         entries.get(category).add(reportEntry);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public long getDate() {
-        return date;
-    }
-
-    public void setDate(long date) {
-        this.date = date;
-    }
-
-    public Player getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
-
-    public HashMap<ReportCategory, List<ReportEntry>> getEntries() {
-        return entries;
-    }
-
-    public void setEntries(HashMap<ReportCategory, List<ReportEntry>> entries) {
-        this.entries = entries;
-    }
-
-    public ReportStatus getReportStatus() {
-        return reportStatus;
-    }
-
-    public void setReportStatus(ReportStatus reportStatus) {
-        this.reportStatus = reportStatus;
     }
 
     @Override

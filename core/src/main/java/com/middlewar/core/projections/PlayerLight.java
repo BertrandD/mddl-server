@@ -1,34 +1,21 @@
 package com.middlewar.core.projections;
 
 import com.middlewar.core.model.Player;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author bertrand.
+ * TODO: delete me
  */
+@Data
+@NoArgsConstructor
 public class PlayerLight {
     private String id;
     private String name;
 
-    public PlayerLight() {}
-
     public PlayerLight(Player player) {
         setId(player.getId());
         setName(player.getName());
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

@@ -3,6 +3,7 @@ package com.middlewar.core.model.space;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.serializer.AstralObjectSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * @author bertrand.
  */
+@Data
 @JsonSerialize(using = AstralObjectSerializer.class)
 @Document(collection = "universe")
 public abstract class AstralObject {
@@ -52,69 +54,5 @@ public abstract class AstralObject {
 
     public double getAngle() {
         return ((2 * Math.PI) / (revolution)) * System.currentTimeMillis() / (6000)/* + theta0 */;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public HashMap<AstralStat, Double> getStats() {
-        return stats;
-    }
-
-    public void setStats(HashMap<AstralStat, Double> stats) {
-        this.stats = stats;
-    }
-
-    public List<AstralObject> getSatellites() {
-        return satellites;
-    }
-
-    public void setSatellites(List<AstralObject> satellites) {
-        this.satellites = satellites;
-    }
-
-    public AstralObject getParent() {
-        return parent;
-    }
-
-    public void setParent(AstralObject parent) {
-        this.parent = parent;
-    }
-
-    public double getRevolution() {
-        return revolution;
-    }
-
-    public void setRevolution(double revolution) {
-        this.revolution = revolution;
-    }
-
-    public double getOrbit() {
-        return orbit;
-    }
-
-    public void setOrbit(double orbit) {
-        this.orbit = orbit;
-    }
-
-    public double getSize() {
-        return size;
-    }
-
-    public void setSize(double size) {
-        this.size = size;
     }
 }

@@ -7,12 +7,16 @@ import com.middlewar.core.enums.ReportType;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.serializer.SpyReportSerializer;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * @author bertrand.
  */
 @JsonSerialize(using = SpyReportSerializer.class)
+@Data
+@NoArgsConstructor
 public class SpyReport extends Report{
 
     @DBRef
@@ -27,23 +31,6 @@ public class SpyReport extends Report{
         super(owner, reportStatus);
         setBaseSrc(baseSrc);
         setBaseTarget(baseTarget);
-    }
-
-
-    public Base getBaseSrc() {
-        return baseSrc;
-    }
-
-    public void setBaseSrc(Base baseSrc) {
-        this.baseSrc = baseSrc;
-    }
-
-    public Base getBaseTarget() {
-        return baseTarget;
-    }
-
-    public void setBaseTarget(Base baseTarget) {
-        this.baseTarget = baseTarget;
     }
 
     @Override
