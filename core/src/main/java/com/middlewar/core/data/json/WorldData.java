@@ -6,7 +6,11 @@ import com.middlewar.core.model.space.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,21 +24,22 @@ public class WorldData {
     private final List<AstralObject> _astralObjects = new ArrayList<>();
     private AstralObject _blackHole;
 
-    protected WorldData () {
+    protected WorldData() {
         _astralObjects.clear();
         parseConfigFile(Config.DATA_ROOT_DIRECTORY + "world.json");
         LOGGER.info("Loaded " + _astralObjects.size() + " astral objects");
     }
 
-    protected void parseConfigFile (String configFile) {
-        final ConfigParser parser = new ConfigParser(configFile);
+    private void parseConfigFile(String configFile) {
+        LOGGER.info("Loading World data file : " + configFile);
 
-        parser.getData();
+        final ConfigParser parser = new ConfigParser(configFile);
 
         _blackHole = computeData(parser.getData(), null);
     }
 
-    protected AstralObject computeData(HashMap<String, Object> data, AstralObject parent) {
+    @SuppressWarnings("unchecked")
+    private AstralObject computeData(HashMap<String, Object> data, AstralObject parent) {
         AstralObject astralObject;
         String name = (String)data.get("name");
         switch ((String)data.get("type")) {
@@ -69,6 +74,7 @@ public class WorldData {
                 astralObject.getSatellites().add(computeData(satellite, astralObject));
             }
         }
+
         return astralObject;
     }
 
@@ -80,8 +86,7 @@ public class WorldData {
         return SingletonHolder._instance;
     }
 
-    private static class SingletonHolder
-    {
+    private static class SingletonHolder {
         protected static final WorldData _instance = new WorldData();
     }
 
@@ -89,14 +94,16 @@ public class WorldData {
 
         private HashMap<String, Object> _configData;
 
+        @SuppressWarnings("unchecked")
         ConfigParser(String fileName) {
             try {
-            File f = new File(fileName);
-            InputStream file = f.exists() ? new FileInputStream(f) : getClass().getResourceAsStream(fileName);
-            ObjectMapper mapper = new ObjectMapper();
+                File f = new File(fileName);
+                InputStream file = f.exists() ? new FileInputStream(f) : getClass().getResourceAsStream(fileName);
+                ObjectMapper mapper = new ObjectMapper();
 
                 _configData = mapper.readValue(file, HashMap.class);
             } catch (IOException e) {
+                LOGGER.error("World data cannot be loaded. Parse error on file : " + fileName);
                 e.printStackTrace();
             }
         }
@@ -105,6 +112,4 @@ public class WorldData {
             return _configData;
         }
     }
-
-
 }

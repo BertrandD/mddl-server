@@ -93,15 +93,6 @@ public class Player {
         return !getFriendRequests().contains(request) && getFriendRequests().add(request);
     }
 
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof Player){
-            final Player player = (Player) o;
-            if(player.getId().equalsIgnoreCase(this.getId())) return true;
-        }
-        return false;
-    }
-
     public List<Report> getReports() {
         return reports;
     }
@@ -125,5 +116,14 @@ public class Player {
 
     public void setPlanetScans(Map<String, PlanetScan> planetScans) {
         this.planetScans = planetScans;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Player){
+            final Player player = (Player) o;
+            if(player.getId().equalsIgnoreCase(this.getId())) return true;
+        }
+        return false;
     }
 }

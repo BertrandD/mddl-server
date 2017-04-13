@@ -78,7 +78,7 @@ public class StatsSet implements IParserAdvUtils
         }
         if (val instanceof Boolean)
         {
-            return ((Boolean) val).booleanValue();
+            return (Boolean) val;
         }
         try
         {
@@ -106,7 +106,7 @@ public class StatsSet implements IParserAdvUtils
         }
         if (val instanceof Boolean)
         {
-            return ((Boolean) val).booleanValue();
+            return (Boolean) val;
         }
         try
         {

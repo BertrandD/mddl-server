@@ -25,6 +25,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,7 +118,11 @@ public final class Base
         stats.addStat(Stats.RESOURCE_5);
 
         // Applying module that's unlock stats.
-        final List<BuildingInstance> silos = getBuildings().stream().filter(r -> r.getBuildingId().equalsIgnoreCase("silo")).collect(Collectors.toList());
+        final List<BuildingInstance> silos = getBuildings()
+                .stream()
+                .filter(r -> r.getBuildingId().equalsIgnoreCase("silo"))
+                .collect(Collectors.toList());
+
         if(silos != null && !silos.isEmpty()) {
             silos.forEach(silo -> silo.getModules().forEach(module -> module.handleEffect(stats))); // Warning: CAN'T WORK IF WE ADD OTHERS STATS THAN MAX_RESOURCE_XX UNLOCK
         }
@@ -143,7 +148,6 @@ public final class Base
 
     public void addBuilding(BuildingInstance building) {
         this.buildings.add(building);
-        this.buildingPositions.put(position, building.getId());
     }
     public void addResource(Resource resource) {
         resources.add(resource);

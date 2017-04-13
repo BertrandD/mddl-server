@@ -57,10 +57,15 @@ public class BuildingStats {
         return stats;
     }
 
+    /**
+     * @param stats The list of stats
+     * @param statToFind The stats to find in "stats" param
+     * @return The stat corresponding to the searched stat in the "stats" list
+     */
     private StatHolder retrieveStat(List<StatHolder> stats, Stats statToFind) {
         return stats
                 .stream()
-                .filter(globalStat -> globalStat.getStat().ordinal() == statToFind.ordinal())
+                .filter(stat -> stat.getStat().ordinal() == statToFind.ordinal())
                 .findFirst()
                 .orElse(null);
     }

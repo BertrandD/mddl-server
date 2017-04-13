@@ -25,8 +25,8 @@ import java.util.List;
 @Data
 @Document(collection = "buildings")
 @JsonSerialize(using = BuildingInstanceSerializer.class)
-public class BuildingInstance
-{
+public class BuildingInstance {
+
     @Id
     private String id;
 
@@ -76,10 +76,6 @@ public class BuildingInstance
             if(m != null) all.add(m);
         }
         return all;
-    }
-
-    public void setModules(List<String> modules) {
-        this.modules = modules;
     }
 
     public void addModule(String module) {

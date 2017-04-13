@@ -19,8 +19,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "items")
 @JsonSerialize(using = ItemInstanceSerializer.class)
-public class ItemInstance
-{
+public class ItemInstance {
+
     @Id
     private String id;
     private String templateId;

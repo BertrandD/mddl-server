@@ -1,7 +1,6 @@
 package com.middlewar.core.model.buildings;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.holders.StatHolder;
@@ -46,14 +45,6 @@ public abstract class Building implements IStat {
         setRequirements(new HashMap<>());
     }
 
-    public String getName(){
-        return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
-    }
-
-    public String getDescription(){
-        return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
-    }
-
     public long getUseEnergyAtLevel(int level) {
         if(level > 0 && level <= getMaxLevel())
             return getUseEnergy()[level-1];
@@ -71,7 +62,8 @@ public abstract class Building implements IStat {
 
     @Override
     public List<StatHolder> getStats() {
-        return stats.getStats(maxLevel);
+        // Retrieve all stats for each level + global stats (with no level)
+        return stats.getStats(getMaxLevel());
     }
 
     @Override

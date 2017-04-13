@@ -2,13 +2,16 @@ package com.middlewar.core.model.commons;
 
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.ItemHolder;
+import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
+@Data
 public class Requirement {
 
     private int level;
@@ -17,8 +20,8 @@ public class Requirement {
 
     /**
      * Used to parse ItemData
-     * @param items
-     * @param buildings
+     * @param items list of ItemHolder of the requirement
+     * @param buildings list of BuildingHolder of the requirement
      */
     public Requirement(List<ItemHolder> items, List<BuildingHolder> buildings) {
         setLevel(-1);
@@ -28,9 +31,9 @@ public class Requirement {
 
     /**
      * Used to parse BuildingData
-     * @param level
-     * @param items
-     * @param buildings
+     * @param level The level of the requirement
+     * @param items list of ItemHolder of the requirement
+     * @param buildings list of BuildingHolder of the requirement
      */
     public Requirement(int level, List<ItemHolder> items, List<BuildingHolder> buildings) {
         setLevel(level);
@@ -40,45 +43,26 @@ public class Requirement {
 
     /**
      * Used to parse BuildingData (completion with functions)
-     * @param level
-     * @param item
+     * @param level The level of the requirement
+     * @param item The item to add to the requirement
      */
     public Requirement(int level, ItemHolder item) {
         setLevel(level);
-        setItems(new ArrayList<>());
+        setItems(Arrays.asList(item));
         setBuildings(new ArrayList<>());
-        addItem(item);
-    }
-
-    public List<ItemHolder> getItems() {
-        return items;
-    }
-
-    private void setItems(List<ItemHolder> items) {
-        this.items = items;
     }
 
     public void addItem(ItemHolder item) {
-        final ItemHolder alreadyExistingItem = items.stream().filter(k->k.getId().equals(item.getId())).findFirst().orElse(null);
+        final ItemHolder alreadyExistingItem =
+                getItems()
+                .stream()
+                .filter(holder -> holder.getId().equals(item.getId()))
+                .findFirst()
+                .orElse(null);
+
         if(alreadyExistingItem != null)
             alreadyExistingItem.setCount(alreadyExistingItem.getCount()+item.getCount());
         else
-            items.add(item);
-    }
-
-    public List<BuildingHolder> getBuildings() {
-        return buildings;
-    }
-
-    private void setBuildings(List<BuildingHolder> buildings) {
-        this.buildings = buildings;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    private void setLevel(int level) {
-        this.level = level;
+            getItems().add(item);
     }
 }
