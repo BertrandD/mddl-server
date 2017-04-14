@@ -28,7 +28,7 @@ public abstract class GameItem implements IStat {
     private Lang lang;
     private List<StatHolder> stats;
 
-    public GameItem(StatsSet set){
+    public GameItem(StatsSet set) {
         setItemId(set.getString("id"));
         setNameId(set.getString("nameId"));
         setType(set.getEnum("type", ItemType.class, ItemType.NONE));

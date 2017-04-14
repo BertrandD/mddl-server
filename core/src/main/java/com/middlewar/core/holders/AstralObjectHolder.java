@@ -1,4 +1,4 @@
-package com.middlewar.core.projections;
+package com.middlewar.core.holders;
 
 import com.middlewar.core.model.space.AstralObject;
 import lombok.Data;
@@ -6,16 +6,15 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author bertrand.
- * TODO: rename and move to holder
  */
 @Data
 @NoArgsConstructor
-public class AstralObjectLight {
+public class AstralObjectHolder {
     private String id;
     private String name;
     private long nbStatellites;
     
-    public AstralObjectLight(AstralObject astralObject) {
+    public AstralObjectHolder(AstralObject astralObject) {
         this.id = astralObject.getId();
         this.name = astralObject.getName();
         this.nbStatellites = astralObject.getSatellites().size();

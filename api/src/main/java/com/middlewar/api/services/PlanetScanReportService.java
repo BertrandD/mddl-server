@@ -6,7 +6,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.PlanetScanReport;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.projections.BaseLight;
+import com.middlewar.core.holders.BaseHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,7 +34,7 @@ public class PlanetScanReportService extends DatabaseService<PlanetScanReport> {
         owner.getReports().add(report);
 
         for (Base base : planet.getBases()) {
-            report.addEntry(base.getName(), new BaseLight(base), ReportCategory.BASES);
+            report.addEntry(base.getName(), new BaseHolder(base), ReportCategory.BASES);
             owner.addPlanetScanned(planet, base);
         }
 

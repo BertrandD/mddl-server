@@ -1,4 +1,4 @@
-package com.middlewar.core.model.space;
+package com.middlewar.core.enums;
 
 /**
  * @author bertrand.

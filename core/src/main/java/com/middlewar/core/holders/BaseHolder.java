@@ -1,4 +1,4 @@
-package com.middlewar.core.projections;
+package com.middlewar.core.holders;
 
 import com.middlewar.core.model.Base;
 import lombok.Data;
@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class BaseLight {
+public class BaseHolder {
     private String id;
     private String name;
-    private PlayerLight owner;
+    private PlayerHolder owner;
 
-    public BaseLight(Base base) {
+    public BaseHolder(Base base) {
         setId(base.getId());
         setName(base.getName());
-        setOwner(new PlayerLight(base.getOwner()));
+        setOwner(new PlayerHolder(base.getOwner()));
     }
 }

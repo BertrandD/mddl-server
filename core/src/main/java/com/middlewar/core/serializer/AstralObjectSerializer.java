@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.middlewar.core.model.space.AstralObject;
-import com.middlewar.core.projections.AstralObjectLight;
+import com.middlewar.core.holders.AstralObjectHolder;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class AstralObjectSerializer extends JsonSerializer<AstralObject> {
         gen.writeNumberField("orbit", value.getOrbit());
         gen.writeNumberField("revolution", value.getRevolution());
         gen.writeNumberField("angle", value.getAngle());
-        gen.writeObjectField("parent", new AstralObjectLight(value.getParent()));
+        gen.writeObjectField("parent", new AstralObjectHolder(value.getParent()));
 
         gen.writeArrayFieldStart("satellites");
         for (AstralObject satellite: value.getSatellites()) {

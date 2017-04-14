@@ -2,6 +2,7 @@ package com.middlewar.core.model.space;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.enums.AstralStat;
 import com.middlewar.core.serializer.AstralObjectSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;

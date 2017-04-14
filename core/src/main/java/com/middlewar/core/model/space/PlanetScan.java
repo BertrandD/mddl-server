@@ -1,7 +1,7 @@
 package com.middlewar.core.model.space;
 
-import com.middlewar.core.projections.AstralObjectLight;
-import com.middlewar.core.projections.BaseLight;
+import com.middlewar.core.holders.AstralObjectHolder;
+import com.middlewar.core.holders.BaseHolder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,12 +16,12 @@ import java.util.Map;
 public class PlanetScan {
 
     private long date;
-    private AstralObjectLight planet;
-    private Map<String, BaseLight> baseScanned;
+    private AstralObjectHolder planet;
+    private Map<String, BaseHolder> baseScanned;
 
     public PlanetScan(Planet planet) {
         this.date = System.currentTimeMillis();
-        this.planet = new AstralObjectLight(planet);
+        this.planet = new AstralObjectHolder(planet);
         this.baseScanned = new HashMap<>();
     }
 }

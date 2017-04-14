@@ -7,54 +7,26 @@ import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Weapon;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * @author LEBOC Philippe
  */
+@Data
 public abstract class Vehicle implements IShip {
 
     @Id
     private String id;
+
     private long count;
 
     @DBRef
     @JsonBackReference
     private Base base;
+
     private VehicleState state;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public long getCount() {
-        return count;
-    }
-
-    public void setCount(long count) {
-        this.count = count;
-    }
-
-    public Base getBase() {
-        return base;
-    }
-
-    public void setBase(Base base) {
-        this.base = base;
-    }
-
-    public VehicleState getState() {
-        return state;
-    }
-
-    public void setState(VehicleState state) {
-        this.state = state;
-    }
 
     @Override
     public double getDamage() {

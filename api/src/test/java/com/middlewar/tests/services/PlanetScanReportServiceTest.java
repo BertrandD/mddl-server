@@ -6,7 +6,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.PlanetScanReport;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.projections.BaseLight;
+import com.middlewar.core.holders.BaseHolder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class PlanetScanReportServiceTest extends MiddlewarTest{
 
         Assertions.assertThat(report.getEntries().get(ReportCategory.BASES)).isNotNull();
         Assertions.assertThat(report.getEntries().get(ReportCategory.BASES).get(0).getName()).isEqualTo(baseSrc.getName());
-        Assertions.assertThat(report.getEntries().get(ReportCategory.BASES).get(0).getValue()).isInstanceOf(BaseLight.class);
+        Assertions.assertThat(report.getEntries().get(ReportCategory.BASES).get(0).getValue()).isInstanceOf(BaseHolder.class);
 
         Assertions.assertThat(player.getPlanetScans()).isNotNull();
         Assertions.assertThat(player.getPlanetScans().get(planet.getId())).isNotNull();

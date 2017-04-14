@@ -8,7 +8,7 @@ import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
-import com.middlewar.core.projections.BaseLight;
+import com.middlewar.core.holders.BaseHolder;
 import com.middlewar.core.serializer.PlayerSerializer;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -106,7 +106,7 @@ public class Player {
             planetScans.put(planet.getId(), new PlanetScan(planet));
         }
         final PlanetScan planetScan = planetScans.get(planet.getId());
-        planetScan.getBaseScanned().put(base.getId(), new BaseLight(base));
+        planetScan.getBaseScanned().put(base.getId(), new BaseHolder(base));
         planetScan.setDate(System.currentTimeMillis());
     }
 
