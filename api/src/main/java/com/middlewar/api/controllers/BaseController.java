@@ -1,7 +1,7 @@
 package com.middlewar.api.controllers;
 
-import com.middlewar.api.services.AstralObjectService;
-import com.middlewar.api.services.SpyReportService;
+import com.middlewar.api.services.impl.AstralObjectServiceImpl;
+import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -20,8 +20,6 @@ import com.middlewar.core.model.space.Star;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.util.response.JsonResponse;
-import com.middlewar.api.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -54,10 +52,10 @@ public class BaseController {
     private BuildingTaskService buildingTaskService;
 
     @Autowired
-    private SpyReportService spyReportService;
+    private SpyReportServiceImpl spyReportServiceImpl;
 
     @Autowired
-    private AstralObjectService astralObjectService;
+    private AstralObjectServiceImpl astralObjectServiceImpl;
 
 
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
@@ -89,7 +87,7 @@ public class BaseController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
 
-        Star star = (Star)astralObjectService.findOneByName("S71");
+        Star star = (Star) astralObjectServiceImpl.findOneByName("S71");
 
         int nbPlanets = star.getSatellites().size();
         Random random = new Random();
@@ -146,7 +144,7 @@ public class BaseController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        final SpyReport report = spyReportService.create(player, player.getCurrentBase(), baseTarget);
+        final SpyReport report = spyReportServiceImpl.create(player, player.getCurrentBase(), baseTarget);
         if(report == null) return new JsonResponse(JsonResponseType.ERROR, "An error occurred. We can't create the spy report");
 
         return new JsonResponse(report);

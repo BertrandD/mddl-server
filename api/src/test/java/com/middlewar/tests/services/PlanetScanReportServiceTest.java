@@ -1,6 +1,6 @@
 package com.middlewar.tests.services;
 
-import com.middlewar.api.services.PlanetScanReportService;
+import com.middlewar.api.services.impl.PlanetScanReportServiceImpl;
 import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class PlanetScanReportServiceTest extends MiddlewarTest{
 
     @InjectMocks
-    private PlanetScanReportService service;
+    private PlanetScanReportServiceImpl service;
 
     @Mock
     private MongoOperations mongo;

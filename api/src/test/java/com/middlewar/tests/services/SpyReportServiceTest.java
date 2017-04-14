@@ -1,6 +1,6 @@
 package com.middlewar.tests.services;
 
-import com.middlewar.api.services.SpyReportService;
+import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SpyReportServiceTest extends MiddlewarTest{
 
     @InjectMocks
-    private SpyReportService service;
+    private SpyReportServiceImpl service;
 
     @Mock
     private MongoOperations mongo;

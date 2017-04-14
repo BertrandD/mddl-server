@@ -1,8 +1,8 @@
 package com.middlewar.api.controllers;
 
-import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.api.services.impl.AstralObjectServiceImpl;
 import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.PlanetScanReportService;
+import com.middlewar.api.services.impl.PlanetScanReportServiceImpl;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
@@ -36,10 +36,10 @@ public class SpaceController {
     private PlayerService playerService;
 
     @Autowired
-    private AstralObjectService astralObjectService;
+    private AstralObjectServiceImpl astralObjectServiceImpl;
 
     @Autowired
-    private PlanetScanReportService planetScanReportService;
+    private PlanetScanReportServiceImpl planetScanReportServiceImpl;
 
     @RequestMapping(value = "/system", method = RequestMethod.GET)
     public JsonResponse findMySystem(@AuthenticationPrincipal Account pAccount){
@@ -47,7 +47,7 @@ public class SpaceController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
 
-        Star star = (Star) astralObjectService.findOne(player.getCurrentBase().getPlanet().getParent().getId());
+        Star star = (Star) astralObjectServiceImpl.findOne(player.getCurrentBase().getPlanet().getParent().getId());
 
         return new JsonResponse(star);
     }
@@ -56,7 +56,7 @@ public class SpaceController {
     public JsonResponse findSystem(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
         if(pAccount.getCurrentPlayer() == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
 
-        Star star = (Star) astralObjectService.findOne(id);
+        Star star = (Star) astralObjectServiceImpl.findOne(id);
 
         return new JsonResponse(star);
     }
@@ -68,13 +68,13 @@ public class SpaceController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        AstralObject planet = astralObjectService.findOne(id);
+        AstralObject planet = astralObjectServiceImpl.findOne(id);
 
         if (!(planet instanceof Planet)) {
             return new JsonResponse(JsonResponseType.ERROR, "Not a planet");
         }
 
-        PlanetScanReport report = planetScanReportService.create(player, player.getCurrentBase(), planet);
+        PlanetScanReport report = planetScanReportServiceImpl.create(player, player.getCurrentBase(), planet);
         JsonResponse response = new JsonResponse(report);
         response.addMeta("player", player);
         return response;

@@ -1,7 +1,7 @@
 package com.middlewar.api.controllers;
 
 import com.middlewar.api.auth.AccountService;
-import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.api.services.impl.AstralObjectServiceImpl;
 import com.middlewar.api.services.UpdateService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
@@ -13,13 +13,6 @@ import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.space.AstralObject;
-import com.middlewar.core.model.Account;
-import com.middlewar.api.auth.AccountService;
-import com.middlewar.core.data.xml.SystemMessageData;
-import com.middlewar.core.enums.Lang;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.api.util.response.JsonResponse;
-import com.middlewar.api.util.response.JsonResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -57,7 +50,7 @@ public class DefaultController implements ErrorController{
     private UpdateService updateService;
 
     @Autowired
-    private AstralObjectService astralObjectService;
+    private AstralObjectServiceImpl astralObjectServiceImpl;
 
     @RequestMapping(value = "/")
     public JsonResponse index()
@@ -76,7 +69,7 @@ public class DefaultController implements ErrorController{
         account.setCurrentPlayer(null);
         accountService.update(account);
         AstralObject blackHole = WorldData.getInstance().getWorld();
-        astralObjectService.saveUniverse(blackHole);
+        astralObjectServiceImpl.saveUniverse(blackHole);
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 
@@ -84,7 +77,7 @@ public class DefaultController implements ErrorController{
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
     public JsonResponse resetWorld(@AuthenticationPrincipal Account pAccount) {
         AstralObject blackHole = WorldData.getInstance().getWorld();
-        astralObjectService.saveUniverse(blackHole);
+        astralObjectServiceImpl.saveUniverse(blackHole);
         return new JsonResponse(JsonResponseType.SUCCESS);
     }
 

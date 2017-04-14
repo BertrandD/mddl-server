@@ -7,6 +7,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.api.services.BaseService;
+import com.middlewar.core.model.space.Planet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,9 @@ public class BaseServiceImpl implements BaseService {
     @Autowired
     private InventoryService inventoryService;
 
-    public Base create(String name, Player player) {
+    public Base create(String name, Player player, Planet planet) {
 
-        final Base base = new Base(name, player);
+        final Base base = new Base(name, player, planet);
         final BaseInventory inventory = new BaseInventory(base);
 
         base.setBaseInventory(inventory);
