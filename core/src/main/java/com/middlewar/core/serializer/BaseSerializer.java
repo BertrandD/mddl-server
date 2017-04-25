@@ -36,6 +36,9 @@ public class BaseSerializer extends JsonSerializer<Base> {
         gen.writeEndObject();
         gen.writeObjectField("baseStat", value.getBaseStat());
         gen.writeObjectField("buildings", value.getBuildings());
+        // TODO would be nice to set it with a non empty value
+        gen.writeArrayFieldStart("availableBuildings");
+        gen.writeEndArray();
         gen.writeObjectField("inventory", value.getBaseInventory());
         gen.writeObjectField("ships", value.getShips());
         gen.writeObjectField("planet", value.getPlanet());
