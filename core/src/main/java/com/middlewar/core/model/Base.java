@@ -117,6 +117,12 @@ public final class Base
         stats.addStat(Stats.RESOURCE_4);
         stats.addStat(Stats.RESOURCE_5);
 
+        stats.addStat(Stats.MAX_RESOURCE_1);
+        stats.addStat(Stats.MAX_RESOURCE_2);
+        stats.addStat(Stats.MAX_RESOURCE_3);
+        stats.addStat(Stats.MAX_RESOURCE_4);
+        stats.addStat(Stats.MAX_RESOURCE_5);
+
         // Applying module that's unlock stats.
         final List<BuildingInstance> silos = getBuildings()
                 .stream()
