@@ -2,11 +2,8 @@ package com.middlewar.tests.services;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
-import com.middlewar.api.dao.ResourceDao;
 import com.middlewar.api.services.*;
-import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.config.Config;
-import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.enums.ReportCategory;
@@ -32,7 +29,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @Rollback
 @SpringBootTest(classes = Application.class)
-public class PlanetScanReportServiceTest extends MiddlewarTest{
+public class PlanetScanReportServiceTest {
 
     @Autowired
     private PlayerInventoryService playerInventoryService;

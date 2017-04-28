@@ -1,4 +1,4 @@
-package com;
+package com.middlewar.tests.services;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;

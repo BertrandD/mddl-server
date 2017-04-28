@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ItemServiceTest extends MiddlewarTest {
+public class ItemServiceTest {
 
     @Test
     public void testCreate() {

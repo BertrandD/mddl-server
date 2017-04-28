@@ -11,7 +11,6 @@ import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.model.space.Planet;
