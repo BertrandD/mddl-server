@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
-    <item id="structure_test" type="STRUCTURE" nameId="structure_test_n" descriptionId="structure_test_d" rank="A" buildTime="60" volume="72">
-        <requirements>
-            <item id="resource_feo" count="1" />
-        </requirements>
-    </item>
-</list>
