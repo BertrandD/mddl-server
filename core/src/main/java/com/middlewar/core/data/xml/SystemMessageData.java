@@ -8,6 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -27,13 +28,13 @@ public class SystemMessageData implements IXmlReader {
     public synchronized void load() {
         _english.clear();
         _french.clear();
-        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "messages", false);
+        parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "messages"), false);
         LOGGER.info(" Loaded " + _english.size() + " English System Messages.");
         LOGGER.info(" Loaded " + _french.size() + " French System Messages.");
     }
 
     @Override
-    public void parseDocument(Document doc) {
+    public void parseDocument(Document doc, File f) {
         for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling()) {
             if ("list".equalsIgnoreCase(a.getNodeName())) {
                 for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling()) {

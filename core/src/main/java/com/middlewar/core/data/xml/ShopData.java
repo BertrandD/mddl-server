@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ShopData implements IXmlReader {
     @Override
     public synchronized void load() {
         shop.clear();
-        parseDatapackFile(Config.DATA_ROOT_DIRECTORY + "shop.xml");
+        parseFile(new File(Config.DATA_ROOT_DIRECTORY + "shop.xml"));
         logger.info("Loaded " + shop.size() + " shop categories");
         long shopItemCount = 0;
         for (List<ShopItem> list : shop.values()) {
@@ -39,7 +40,7 @@ public class ShopData implements IXmlReader {
     }
 
     @Override
-    public void parseDocument(Document doc) {
+    public void parseDocument(Document doc, File f) {
         for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
         {
             if ("list".equalsIgnoreCase(a.getNodeName()))

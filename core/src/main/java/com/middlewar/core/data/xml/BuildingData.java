@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -49,12 +50,12 @@ public class BuildingData implements IXmlReader {
     @Override
     public synchronized void load() {
         _buildings.clear();
-        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/buildings", true);
+        parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "stats/buildings"), true);
         LOGGER.info("Loaded " + _buildings.size() + " buildings Templates.");
     }
 
     @Override
-    public void parseDocument(Document doc) {
+    public void parseDocument(Document doc, File f) {
         for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
         {
             if ("list".equalsIgnoreCase(a.getNodeName()))
@@ -186,8 +187,11 @@ public class BuildingData implements IXmlReader {
                                         if(reqBuildingLevel != 0) {
                                             if(stats.getStatsByLevel().containsKey(reqBuildingLevel))
                                                 stats.getStatsByLevel().get(reqBuildingLevel).add(holder);
-                                            else
-                                                stats.getStatsByLevel().put(reqBuildingLevel, Arrays.asList(holder));
+                                            else {
+                                                final List<StatHolder> holders = new ArrayList<>();
+                                                holders.add(holder);
+                                                stats.getStatsByLevel().put(reqBuildingLevel, holders);
+                                            }
                                         }
                                         else stats.getGlobalStats().add(holder);
                                     }
@@ -256,10 +260,10 @@ public class BuildingData implements IXmlReader {
                                                 final PropertyListHolder propertyList = new PropertyListHolder(listName);
                                                 groupHolder.add(propertyList);
 
-                                                for(Node f = e.getFirstChild(); f != null; f = f.getNextSibling())
+                                                for(Node g = e.getFirstChild(); g != null; g = g.getNextSibling())
                                                 {
-                                                    attrs = f.getAttributes();
-                                                    if("set".equalsIgnoreCase(f.getNodeName()))
+                                                    attrs = g.getAttributes();
+                                                    if("set".equalsIgnoreCase(g.getNodeName()))
                                                     {
                                                         final String value = parseString(attrs, "value");
                                                         final String name = parseString(attrs, "name");

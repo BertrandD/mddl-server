@@ -48,8 +48,10 @@ public class Requirement {
      */
     public Requirement(int level, ItemHolder item) {
         setLevel(level);
-        setItems(Arrays.asList(item));
+        setItems(new ArrayList<>());
         setBuildings(new ArrayList<>());
+
+        addItem(item);
     }
 
     public void addItem(ItemHolder item) {

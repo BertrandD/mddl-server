@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +59,9 @@ public class ItemData implements IXmlReader {
         _weapons.clear();
         _resources.clear();
         _commons.clear();
-        parseDatapackDirectory(Config.DATA_ROOT_DIRECTORY + "stats/items", true);
+
+        parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "stats/items"), true);
+
         LOGGER.info("Loaded " + _structures.size() + " structures templates.");
         LOGGER.info("Loaded " + _cargos.size() + " cargos templates.");
         LOGGER.info("Loaded " + _engines.size() + " engines templates.");
@@ -70,7 +73,7 @@ public class ItemData implements IXmlReader {
     }
 
     @Override
-    public void parseDocument(Document doc)
+    public void parseDocument(Document doc, File f)
     {
         for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
         {
@@ -154,6 +157,8 @@ public class ItemData implements IXmlReader {
             }
         }
     }
+
+
 
     private void makeItem(StatsSet set, Requirement requirement, List<StatHolder> stats)
     {
