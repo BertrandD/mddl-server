@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.PrivateMessageSerializer;
+import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -32,7 +33,7 @@ public class PrivateMessage {
         setId(new ObjectId().toString());
         setAuthor(author);
         setReceiver(receiver);
-        setDate(System.currentTimeMillis());
+        setDate(TimeUtil.getCurrentTime());
         setMessage(message);
         setRead(false);
         setReadDate(0);

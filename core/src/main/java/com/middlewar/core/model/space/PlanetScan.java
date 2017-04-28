@@ -2,6 +2,7 @@ package com.middlewar.core.model.space;
 
 import com.middlewar.core.holders.AstralObjectHolder;
 import com.middlewar.core.holders.BaseHolder;
+import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +21,7 @@ public class PlanetScan {
     private Map<String, BaseHolder> baseScanned;
 
     public PlanetScan(Planet planet) {
-        this.date = System.currentTimeMillis();
+        this.date = TimeUtil.getCurrentTime();
         this.planet = new AstralObjectHolder(planet);
         this.baseScanned = new HashMap<>();
     }

@@ -3,6 +3,7 @@ package com.middlewar.core.model.social;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.FriendRequestSerializer;
+import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -28,6 +29,6 @@ public class FriendRequest {
         setRequester(requester);
         setRequested(requested);
         setMessage(message);
-        setRequestDate(System.currentTimeMillis());
+        setRequestDate(TimeUtil.getCurrentTime());
     }
 }

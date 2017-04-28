@@ -11,6 +11,7 @@ import com.middlewar.core.model.inventory.*;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.api.services.ResourceService;
 import com.middlewar.api.services.ItemService;
+import com.middlewar.core.utils.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +136,7 @@ public class InventoryService implements IInventoryService {
 
     public synchronized void refresh(final Resource resource) {
         final Base base = resource.getBase();
-        final long now = System.currentTimeMillis();
+        final long now = TimeUtil.getCurrentTime();
         final long last = resource.getLastRefresh();
         final double prodPerHour = base.getBaseStat().getValue(resource.getStat());
         final ItemInstance item = resource.getItem();
@@ -159,7 +160,7 @@ public class InventoryService implements IInventoryService {
 
         item.addCount(add);
 
-        resource.setLastRefresh(System.currentTimeMillis());
+        resource.setLastRefresh(now);
         resourceService.update(resource);
     }
 

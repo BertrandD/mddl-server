@@ -10,6 +10,7 @@ import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.api.services.BuildingService;
 import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.core.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +79,7 @@ public class BuildingTaskManager {
 
     public void ScheduleUpgrade(BuildingInstance building) {
         final BuildingTask newTask;
-        final long now = System.currentTimeMillis();
+        final long now = TimeUtil.getCurrentTime();
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
 
         long buildTime = (long)(building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION, Config.BUILDTIME_MODIFIER));
@@ -119,7 +120,7 @@ public class BuildingTaskManager {
                 building.setStartedAt(-1);
             }else{
                 final BuildingTask bTask = buildingTaskService.findFirstByBuildingOrderByEndsAtAsc(building.getId());
-                bTask.getBuilding().setStartedAt(System.currentTimeMillis());
+                bTask.getBuilding().setStartedAt(TimeUtil.getCurrentTime());
                 buildingService.update(bTask.getBuilding());
             }
 

@@ -10,6 +10,7 @@ import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.holders.BaseHolder;
 import com.middlewar.core.serializer.PlayerSerializer;
+import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -107,7 +108,7 @@ public class Player {
         }
         final PlanetScan planetScan = planetScans.get(planet.getId());
         planetScan.getBaseScanned().put(base.getId(), new BaseHolder(base));
-        planetScan.setDate(System.currentTimeMillis());
+        planetScan.setDate(TimeUtil.getCurrentTime());
     }
 
     public Map<String, PlanetScan> getPlanetScans() {

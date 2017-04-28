@@ -9,6 +9,7 @@ import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.impl.PrivateMessageServiceImpl;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
+import com.middlewar.core.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -51,7 +52,7 @@ public class PrivateMessageController {
 
         if(!pm.isRead()) {
             pm.setRead(true);
-            pm.setReadDate(System.currentTimeMillis());
+            pm.setReadDate(TimeUtil.getCurrentTime());
         }
 
         return new JsonResponse(pm);

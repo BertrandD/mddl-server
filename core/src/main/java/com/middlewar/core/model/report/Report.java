@@ -5,6 +5,7 @@ import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.enums.ReportType;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -39,7 +40,7 @@ public abstract class Report implements Comparable<Report> {
 
     public Report(Player owner, ReportStatus reportStatus) {
         setId(new ObjectId().toString());
-        setDate(System.currentTimeMillis());
+        setDate(TimeUtil.getCurrentTime());
         setOwner(owner);
         setEntries(new HashMap<>());
         setReportStatus(reportStatus);
