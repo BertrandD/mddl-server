@@ -3,6 +3,8 @@ package com.middlewar.api.services.impl;
 import com.middlewar.api.dao.BaseDao;
 import com.middlewar.api.dao.BaseInventoryDao;
 import com.middlewar.api.dao.PlayerDao;
+import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.api.services.BaseInventoryService;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.inventory.BaseInventory;
@@ -23,29 +25,33 @@ public class BaseServiceImpl implements BaseService {
     private BaseDao baseDao;
 
     @Autowired
-    private BaseInventoryDao baseInventoryDao;
+    private BaseInventoryService baseInventoryService;
 
     @Autowired
     private PlayerDao playerDao;
 
     @Autowired
-    private InventoryService inventoryService;
+    private AstralObjectService astralObjectService;
 
     public Base create(String name, Player player, Planet planet) {
 
-        final Base base = new Base(name, player, planet);
-        final BaseInventory inventory = new BaseInventory(base);
+        Base base = new Base(name, player, planet);
 
-        base.setBaseInventory(inventory);
         player.addBase(base);
         player.setCurrentBase(base);
 
         // Create new objects
-        baseDao.insert(base);
-        baseInventoryDao.insert(inventory);
+        base = baseDao.insert(base);
+        final BaseInventory inventory = baseInventoryService.create(base);
 
-        // Update existing objects
+        base.setBaseInventory(inventory);
+        baseDao.save(base);
+
+        planet.addBase(base);
+        astralObjectService.update(planet);
+
         playerDao.save(player);
+
         return base;
     }
 

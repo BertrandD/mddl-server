@@ -74,7 +74,7 @@ public class SpaceController {
             return new JsonResponse(JsonResponseType.ERROR, "Not a planet");
         }
 
-        PlanetScanReport report = planetScanReportServiceImpl.create(player, player.getCurrentBase(), planet);
+        PlanetScanReport report = planetScanReportServiceImpl.create(player, player.getCurrentBase(), (Planet) planet);
         JsonResponse response = new JsonResponse(report);
         response.addMeta("player", player);
         return response;

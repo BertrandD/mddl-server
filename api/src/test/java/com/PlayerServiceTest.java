@@ -55,7 +55,7 @@ public class PlayerServiceTest {
     }
 
     @Test
-    public void shouldReturnNewPlayer() {
+    public void shouldReturnNewCreatedPlayer() {
         // Given
         final String name = "Rambo";
 

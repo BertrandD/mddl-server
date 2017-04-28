@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.AstralStat;
 import com.middlewar.core.serializer.AstralObjectSerializer;
+import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author bertrand.
+ * @author bertrand Darbond
  */
 @Data
 @JsonSerialize(using = AstralObjectSerializer.class)
@@ -38,7 +39,7 @@ public abstract class AstralObject {
 
     private double size;
 
-    @DBRef
+    @DBRef(lazy = true)
     private List<AstralObject> satellites;
 
     @DBRef
@@ -46,14 +47,14 @@ public abstract class AstralObject {
     private AstralObject parent;
 
     public AstralObject(String name, AstralObject parent) {
+        this.id = new ObjectId().toString();
         this.name = name;
         this.stats = new HashMap<>();
         this.satellites = new ArrayList<>();
         this.parent = parent;
-        this.id = new ObjectId().toString();
     }
 
     public double getAngle() {
-        return ((2 * Math.PI) / (revolution)) * System.currentTimeMillis() / (6000)/* + theta0 */;
+        return ((2 * Math.PI) / (revolution)) * TimeUtil.getCurrentTime() / (6000)/* + theta0 */;
     }
 }

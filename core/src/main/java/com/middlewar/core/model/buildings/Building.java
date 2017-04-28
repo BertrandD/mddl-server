@@ -1,6 +1,7 @@
 package com.middlewar.core.model.buildings;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.holders.StatHolder;
@@ -59,6 +60,15 @@ public abstract class Building implements IStat {
     public void handleEffect(final ObjectStat stats, int level) {
         this.getStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
     }
+
+    public String getName(){
+        return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
+    }
+
+    public String getDescription(){
+        return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
+    }
+
 
     @Override
     public List<StatHolder> getStats() {

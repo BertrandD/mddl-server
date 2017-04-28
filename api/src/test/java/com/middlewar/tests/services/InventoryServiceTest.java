@@ -1,4 +1,4 @@
-package com;
+package com.middlewar.tests.services;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
@@ -8,12 +8,14 @@ import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.data.xml.SystemMessageData;
+import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
+import com.middlewar.core.model.space.Planet;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
@@ -29,7 +31,6 @@ import java.util.List;
 /**
  * @author Darbon Bertrand, LEBOC Philippe
  */
-
 @RunWith(SpringRunner.class)
 @Rollback
 @SpringBootTest(classes = Application.class)
@@ -40,6 +41,9 @@ public class InventoryServiceTest {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private AstralObjectService astralObjectService;
 
     @Autowired
     private AccountService accountService;
@@ -58,7 +62,9 @@ public class InventoryServiceTest {
 
     private Account _account;
     private Player _player;
+    private Planet _planet;
     private Base _base;
+    private static final String _itemTemplate = "resource_1";
 
     @Before
     public void init() {
@@ -68,9 +74,11 @@ public class InventoryServiceTest {
         SystemMessageData.getInstance();
         ItemData.getInstance();
 
-        _account = accountService.create("InventoryService", "no-password");
-        _player = playerService.create(_account, "ISIT-Player");
-        _base = baseService.create("BaseTest", _player);
+        _account = accountService.create("AccountTest", "no-password");
+        _player = playerService.create(_account, "PlayerTest");
+        _planet = (Planet) astralObjectService.create("Alpha Planet", null, AstralObjectType.PLANET);
+        _base = baseService.create("BaseTest", _player, _planet);
+
     }
 
     @After
@@ -87,7 +95,7 @@ public class InventoryServiceTest {
     public void shouldAddNewItemToInventory() {
         final long amount = 100;
 
-        final ItemInstance item = inventoryService.addItem(_player.getInventory(), "resource_feo", amount);
+        final ItemInstance item = inventoryService.addItem(_player.getInventory(), _itemTemplate, amount);
 
         Assertions.assertThat(item).isNotNull();
         Assertions.assertThat(item.getId()).isNotNull();
@@ -106,8 +114,8 @@ public class InventoryServiceTest {
         final long wrongAmount = 0;
         final long anotherWrongAmount = -2;
 
-        final ItemInstance item1 = inventoryService.addItem(_player.getInventory(), "resource_feo", wrongAmount);
-        final ItemInstance item2 = inventoryService.addItem(_player.getInventory(), "resource_feo", anotherWrongAmount);
+        final ItemInstance item1 = inventoryService.addItem(_player.getInventory(), _itemTemplate, wrongAmount);
+        final ItemInstance item2 = inventoryService.addItem(_player.getInventory(), _itemTemplate, anotherWrongAmount);
 
         Assertions.assertThat(item1).isNull();
         Assertions.assertThat(item2).isNull();
@@ -120,7 +128,7 @@ public class InventoryServiceTest {
         final PlayerInventory inv = _player.getInventory();
         final List<ItemInstance> items = inv.getItems();
 
-        final ItemInstance item = inventoryService.addItem(_player.getInventory(), "resource_feo", amount);
+        final ItemInstance item = inventoryService.addItem(_player.getInventory(), _itemTemplate, amount);
 
         Assertions.assertThat(item).isNotNull();
 
@@ -136,7 +144,7 @@ public class InventoryServiceTest {
     public void shouldAddAndConsumeResource() {
         final long amount = 100;
 
-        Resource resource = inventoryService.createNewResource(_base, "resource_feo");
+        Resource resource = inventoryService.createNewResource(_base, _itemTemplate);
         Assertions.assertThat(resource).isNotNull();
 
         boolean result = inventoryService.addResource(resource, amount);

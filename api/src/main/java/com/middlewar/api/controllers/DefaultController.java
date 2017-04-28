@@ -2,7 +2,6 @@ package com.middlewar.api.controllers;
 
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.services.impl.AstralObjectServiceImpl;
-import com.middlewar.api.services.UpdateService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -47,9 +46,6 @@ public class DefaultController implements ErrorController{
     private AccountService accountService;
 
     @Autowired
-    private UpdateService updateService;
-
-    @Autowired
     private AstralObjectServiceImpl astralObjectServiceImpl;
 
     @RequestMapping(value = "/")
@@ -61,7 +57,7 @@ public class DefaultController implements ErrorController{
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public JsonResponse resetDatabase(@AuthenticationPrincipal Account pAccount) {
-        updateService.resetDatabase();
+        //updateService.resetDatabase(); // TODO: CLEANUP ME
         pAccount.setCurrentPlayer(null);
         pAccount.getPlayers().clear();
         Account account = accountService.findOne(pAccount.getId());

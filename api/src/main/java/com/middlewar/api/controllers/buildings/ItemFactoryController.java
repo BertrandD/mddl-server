@@ -1,8 +1,8 @@
 package com.middlewar.api.controllers.buildings;
 
-import com.middlewar.api.services.InventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.ValidatorService;
+import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -11,11 +11,9 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.buildings.ItemFactory;
-import com.middlewar.core.model.buildings.ModuleFactory;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.items.Item;
-import com.middlewar.core.model.items.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
