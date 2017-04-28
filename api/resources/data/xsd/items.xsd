@@ -15,24 +15,7 @@
                                         <xs:sequence>
                                             <xs:element name="set" minOccurs="1" maxOccurs="unbounded">
                                                 <xs:complexType>
-                                                    <xs:attribute name="name" use="required">
-                                                        <xs:simpleType>
-                                                            <xs:restriction base="xs:string">
-                                                                <xs:enumeration value="damage" />
-                                                                <xs:enumeration value="unlock_stat" />
-                                                                <xs:enumeration value="shield_defense" />
-                                                                <xs:enumeration value="affected" />
-                                                                <xs:enumeration value="multiplicator" />
-                                                                <xs:enumeration value="power" />
-                                                                <xs:enumeration value="capacity" />
-                                                                <xs:enumeration value="slot_cargo" />
-                                                                <xs:enumeration value="slot_engine" />
-                                                                <xs:enumeration value="slot_module" />
-                                                                <xs:enumeration value="slot_technology" />
-                                                                <xs:enumeration value="slot_weapon" />
-                                                            </xs:restriction>
-                                                        </xs:simpleType>
-                                                    </xs:attribute>
+                                                    <xs:attribute name="name" type="nameType" use="required" />
                                                     <xs:attribute name="value" type="xs:string" use="required" />
                                                 </xs:complexType>
                                             </xs:element>
@@ -55,4 +38,21 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
+    <xs:simpleType name="nameType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="damage" />
+            <xs:enumeration value="unlock_stat" />
+            <xs:enumeration value="shield_defense" />
+            <xs:enumeration value="affected" />
+            <xs:enumeration value="multiplicator" />
+            <xs:enumeration value="power" />
+            <xs:enumeration value="capacity" />
+            <xs:enumeration value="slot_cargo" />
+            <xs:enumeration value="slot_engine" />
+            <xs:enumeration value="slot_module" />
+            <xs:enumeration value="slot_technology" />
+            <xs:enumeration value="slot_weapon" />
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
