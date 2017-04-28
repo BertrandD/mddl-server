@@ -11,15 +11,14 @@ public enum Stats {
     NONE(0),
     ENERGY(0),
 
-    // Production
-    INVENTORY_MAX_RESOURCE(0),
+    // Current amount of every Resource
     RESOURCE_1(0),
     RESOURCE_2(0),
     RESOURCE_4(0),
     RESOURCE_5(0),
     RESOURCE_3(0),
 
-    // Resource storage
+    // Max Resource storage affected by buildings
     MAX_RESOURCE_1(Config.BASE_INITIAL_MAX_RESOURCE_STORAGE),
     MAX_RESOURCE_2(Config.BASE_INITIAL_MAX_RESOURCE_STORAGE),
     MAX_RESOURCE_4(Config.BASE_INITIAL_MAX_RESOURCE_STORAGE),
@@ -31,6 +30,8 @@ public enum Stats {
     BASE_SHIELD(0),
     BASE_MAX_HEALTH(Config.BASE_INITIAL_MAX_HEALTH),
     BASE_MAX_SHIELD(Config.BASE_INITIAL_MAX_SHIELD),
+
+    // GameItem storage (!= Resource)
     BASE_MAX_STORAGE_VOLUME(1000),
 
     // Fleet
