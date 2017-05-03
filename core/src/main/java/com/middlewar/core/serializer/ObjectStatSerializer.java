@@ -1,7 +1,6 @@
 package com.middlewar.core.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.middlewar.core.model.stats.Stats;
@@ -15,7 +14,7 @@ import java.util.Map;
  */
 public class ObjectStatSerializer extends JsonSerializer<ObjectStat> {
     @Override
-    public void serialize(ObjectStat value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+    public void serialize(ObjectStat value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
         for (Map.Entry<Stats, Double> entry : value.getStats().entrySet()) {
             switch(entry.getKey())

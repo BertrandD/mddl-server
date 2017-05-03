@@ -1,11 +1,11 @@
 package com.middlewar.core.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.middlewar.core.interfaces.IOConsumer;
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.stats.Stats;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class BaseSerializer extends JsonSerializer<Base> {
     @Override
-    public void serialize(Base value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+    public void serialize(Base value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
         gen.writeStringField("name", value.getName());
@@ -25,13 +25,13 @@ public class BaseSerializer extends JsonSerializer<Base> {
         gen.writeEndObject();
 
         gen.writeObjectFieldStart("resources");
-        IOConsumer.forEach(value.getResources().stream(), itemContainer -> {
-            gen.writeObjectFieldStart(itemContainer.getId());
-            gen.writeStringField("templateId", itemContainer.getItem().getTemplateId());
-            gen.writeNumberField("count", itemContainer.getItem().getCount());
-            gen.writeNumberField("maxVolume", -1);
-            gen.writeNumberField("production", -1);
-            gen.writeNumberField("lastRefresh", itemContainer.getLastRefresh());
+        IOConsumer.forEach(value.getResources().stream(), resource -> {
+            gen.writeObjectFieldStart(resource.getId());
+            gen.writeStringField("templateId", resource.getItem().getTemplateId());
+            gen.writeNumberField("count", resource.getItem().getCount());
+            gen.writeNumberField("maxVolume", value.getBaseStat().getValue(Stats.valueOf("MAX_"+resource.getItem().getTemplateId().toUpperCase()))); // TODO: WARNING
+            gen.writeNumberField("production", resource.getStat().getValue());
+            gen.writeNumberField("lastRefresh", resource.getLastRefresh());
             gen.writeEndObject();
         });
         gen.writeEndObject();

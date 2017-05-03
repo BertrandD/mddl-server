@@ -1,7 +1,6 @@
 package com.middlewar.core.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.middlewar.core.holders.StatHolder;
@@ -19,7 +18,7 @@ import java.io.IOException;
  */
 public class GameItemSerializer extends JsonSerializer<GameItem> {
     @Override
-    public void serialize(GameItem value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+    public void serialize(GameItem value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
 
         gen.writeStringField("itemId", value.getItemId());

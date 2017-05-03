@@ -1,7 +1,6 @@
 package com.middlewar.core.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.middlewar.core.model.social.PrivateMessage;
@@ -13,7 +12,7 @@ import java.io.IOException;
  */
 public class PrivateMessageSerializer extends JsonSerializer<PrivateMessage> {
     @Override
-    public void serialize(PrivateMessage value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+    public void serialize(PrivateMessage value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
         gen.writeStringField("message", value.getMessage());

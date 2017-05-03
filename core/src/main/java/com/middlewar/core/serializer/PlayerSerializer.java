@@ -1,7 +1,6 @@
 package com.middlewar.core.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.middlewar.core.interfaces.IOConsumer;
@@ -14,7 +13,7 @@ import java.io.IOException;
  */
 public class PlayerSerializer extends JsonSerializer<Player> {
     @Override
-    public void serialize(Player value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+    public void serialize(Player value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
@@ -35,7 +34,7 @@ public class PlayerSerializer extends JsonSerializer<Player> {
         IOConsumer.forEach(value.getBases().stream(), base -> gen.writeString(base.getId()));
         gen.writeEndArray();
 
-        //gen.writeObjectField("inventory", value.getInventory().getItems()); // TODO: re-implement me
+        gen.writeObjectField("inventory", value.getInventory().getItems());
         gen.writeObjectField("planetScans", value.getPlanetScans());
         gen.writeObjectField("inventory", value.getInventory().getItems());
         gen.writeEndObject();

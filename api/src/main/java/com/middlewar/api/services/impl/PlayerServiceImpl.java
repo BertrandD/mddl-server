@@ -50,7 +50,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> findBy(Account account) {
+    public List<Player> findByAccount(Account account) {
        return dao.findByAccountId(account.getId());
     }
 
