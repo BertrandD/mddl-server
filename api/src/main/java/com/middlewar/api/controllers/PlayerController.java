@@ -36,7 +36,7 @@ public class PlayerController {
 
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
     public JsonResponse players(@AuthenticationPrincipal Account pAccount){
-        return new JsonResponse(playerService.findBy(pAccount));
+        return new JsonResponse(playerService.findByAccount(pAccount));
     }
 
     @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN", response = JsonResponse.class)

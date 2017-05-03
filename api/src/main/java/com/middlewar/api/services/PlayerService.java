@@ -21,7 +21,7 @@ public interface PlayerService extends DefaultService<Player> {
      * @param account the given account
      * @return all player from the given account
      */
-    List<Player> findBy(Account account);
+    List<Player> findByAccount(Account account);
 
     /**
      * @param name the name of the player to retrieve from the database
