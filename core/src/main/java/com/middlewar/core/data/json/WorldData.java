@@ -3,6 +3,7 @@ package com.middlewar.core.data.json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.space.*;
+import com.middlewar.core.utils.Rnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +20,21 @@ import java.util.List;
  * @author bertrand.
  */
 public class WorldData {
+
     private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
 
     private final List<AstralObject> _astralObjects = new ArrayList<>();
+
     private AstralObject _blackHole;
 
     protected WorldData() {
         _astralObjects.clear();
         parseConfigFile(Config.DATA_ROOT_DIRECTORY + "world.json");
         LOGGER.info("Loaded " + _astralObjects.size() + " astral objects");
+        if(_astralObjects.size() == 0) {
+            LOGGER.error("Universe not loaded ! The API will crash !");
+            // TODO: shutdown the server.
+        }
     }
 
     private void parseConfigFile(String configFile) {
@@ -80,6 +87,34 @@ public class WorldData {
 
     public AstralObject getWorld() {
         return _blackHole;
+    }
+
+    public Star getRandomStar() {
+        final int starCnt = getWorld().getSatellites().size();
+        return (Star) getWorld().getSatellites().get(Rnd.get(0, starCnt - 1));
+    }
+
+    public Planet getRandomPlanet() {
+        Star star = null;
+        int planetCnt = 0;
+        int retryCount = 0;
+        final int MAX_RETRY = 10;
+
+        while(planetCnt == 0 && retryCount < MAX_RETRY) {
+            star = getRandomStar();
+            planetCnt = star.getSatellites().size();
+
+            if(planetCnt == 0) LOGGER.warn("Star " + star.getId() + " has 0 satellites (planets) !");
+            retryCount++;
+        }
+
+        if(planetCnt == 0 && retryCount == MAX_RETRY) {
+            LOGGER.error("Cannot find any Planet object ! The server will crash !");
+            // TODO: shutdown the server.
+            return null;
+        }
+
+        return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt));
     }
 
     public static WorldData getInstance() {

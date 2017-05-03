@@ -8,4 +8,5 @@ import com.middlewar.core.model.space.AstralObject;
  */
 public interface AstralObjectService extends DefaultService<AstralObject> {
     AstralObject create(String name, AstralObject parent, AstralObjectType type);
+    AstralObject findOneByName(String name);
 }

@@ -1,11 +1,13 @@
 package com.middlewar.api.controllers;
 
-import com.middlewar.api.services.impl.AstralObjectServiceImpl;
+import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.BuildingData;
+import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.BuildingInstanceHolder;
 import com.middlewar.core.model.Account;
@@ -16,7 +18,6 @@ import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.model.space.Star;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.services.PlayerService;
@@ -31,7 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +55,7 @@ public class BaseController {
     private SpyReportServiceImpl spyReportServiceImpl;
 
     @Autowired
-    private AstralObjectServiceImpl astralObjectServiceImpl;
+    private AstralObjectService astralObjectService;
 
 
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
@@ -87,11 +87,14 @@ public class BaseController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
 
-        Star star = (Star) astralObjectServiceImpl.findOneByName("S71");
+        // Pick a random planet from universe
+        final Planet jsonPlanet = WorldData.getInstance().getRandomPlanet();
 
-        int nbPlanets = star.getSatellites().size();
-        Random random = new Random();
-        Planet planet = (Planet)star.getSatellites().get(random.nextInt(nbPlanets));
+        // Check if the selected Planet is already in database. If not, store it ! :)
+        Planet planet = (Planet) astralObjectService.findOneByName(jsonPlanet.getName());
+        if(planet == null) {
+            planet = (Planet) astralObjectService.create(jsonPlanet.getName(), jsonPlanet.getParent(), AstralObjectType.PLANET);
+        }
 
         // TODO: Base creation conditions.
 

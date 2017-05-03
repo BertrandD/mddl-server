@@ -1,6 +1,7 @@
 package com.middlewar.api;
 
 import com.middlewar.core.config.Config;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.data.xml.ShopData;
@@ -24,7 +25,10 @@ public class Application extends AsyncConfigurerSupport {
         // Config
         Config.load();
 
-        // Parse
+        // Parsing JSON
+        WorldData.getInstance();
+
+        // Parsing XML
         SystemMessageData.getInstance();
         ItemData.getInstance();
         BuildingData.getInstance();
