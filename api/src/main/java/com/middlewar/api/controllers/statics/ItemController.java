@@ -1,5 +1,6 @@
 package com.middlewar.api.controllers.statics;
 
+import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.items.Cargo;
@@ -9,7 +10,6 @@ import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
-import com.middlewar.api.util.response.JsonResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +29,7 @@ import java.util.List;
 public class ItemController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
+    public Response findAll(@AuthenticationPrincipal Account pAccount){
         final HashMap<String, List<? extends GameItem>> all = new HashMap<>();
 
         ItemData itemData = ItemData.getInstance();
@@ -42,7 +42,7 @@ public class ItemController {
         all.put("STRUCTURE", itemData.getStructures(pAccount.getLang()));
         all.put("WEAPON", itemData.getWeapons(pAccount.getLang()));
 
-        return new JsonResponse(all);
+        return new Response(all);
     }
 
     @RequestMapping(value = "/common", method = RequestMethod.GET)

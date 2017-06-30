@@ -1,5 +1,6 @@
 package com.middlewar.api.services;
 
+import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.enums.Lang;
@@ -14,7 +15,6 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Item;
 import com.middlewar.api.services.impl.InventoryService;
-import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,34 +37,34 @@ public class ValidatorService {
      * @param building the current building to be building / upgraded
      * @param collector the collector that collecting items to be consumed
      * @param lang
-     * @return null if everythings is OK, JsonResponse with proper error message otherwise
+     * @return null if everythings is OK, Response with proper error message otherwise
      */
-    public JsonResponse validateBuildingRequirements(Base base, BuildingInstance building, HashMap<ItemInstance, Long> collector, Lang lang) {
+    public Response validateBuildingRequirements(Base base, BuildingInstance building, HashMap<ItemInstance, Long> collector, Lang lang) {
         final Requirement requirements = building.getTemplate().getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return null;
 
         inventoryService.refresh(base);
 
         if(!validateBuildings(base, requirements)) {
-            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
+            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
         }
 
         if(!validateItems(base, requirements, collector)){
-            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
+            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
         }
 
         return null;
     }
 
-    public JsonResponse validateItemRequirements(Base base, Item item, HashMap<ItemInstance, Long> collector, Lang lang) {
+    public Response validateItemRequirements(Base base, Item item, HashMap<ItemInstance, Long> collector, Lang lang) {
         inventoryService.refresh(base);
 
         if(!validateBuildings(base, item.getRequirement())) {
-            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
+            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
         }
 
         if(!validateItems(base, item.getRequirement(), collector)){
-            return new JsonResponse(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
+            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
         }
 
         return null;

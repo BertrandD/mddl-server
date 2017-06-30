@@ -3,7 +3,7 @@ package com.middlewar.api.controllers.buildings;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.services.impl.InventoryService;
-import com.middlewar.api.util.response.JsonResponse;
+import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.data.xml.ItemData;
@@ -45,15 +45,15 @@ public class ItemFactoryController {
     private ValidatorService validator;
 
     @RequestMapping(value = "/{factory}/create/{id}", method = RequestMethod.POST)
-    public JsonResponse createItem(@AuthenticationPrincipal Account pAccount,
-                                   @PathVariable(value = "factory") String factoryType,
-                                   @PathVariable(value = "id") String itemId) {
+    public Response createItem(@AuthenticationPrincipal Account pAccount,
+                               @PathVariable(value = "factory") String factoryType,
+                               @PathVariable(value = "id") String itemId) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
+        if(player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
 
         final Base base = player.getCurrentBase();
-        if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
+        if(base == null) return new Response(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
 
         base.initializeStats();
 
@@ -70,24 +70,24 @@ public class ItemFactoryController {
                 buildingType = STRUCTURE_FACTORY;
                 break;
         }
-        if(item == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
+        if(item == null) return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
         final String finalBuildingType = buildingType;
         final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getBuildingId().equals(finalBuildingType)).findFirst().orElse(null);
-        if(factory == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
+        if(factory == null) return new Response(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
 
         final ItemFactory factoryTemplate = (ItemFactory)factory.getTemplate();
-        if(!factoryTemplate.hasItem(factory.getCurrentLevel(), item.getItemId())) return new JsonResponse(JsonResponseType.ERROR, "Module not unlocked !");
+        if(!factoryTemplate.hasItem(factory.getCurrentLevel(), item.getItemId())) return new Response(JsonResponseType.ERROR, "Module not unlocked !");
 
         final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final JsonResponse faillure = validator.validateItemRequirements(base, item, collector, pAccount.getLang());
+        final Response faillure = validator.validateItemRequirements(base, item, collector, pAccount.getLang());
         if(faillure != null) return faillure;
 
         collector.forEach(inventoryService::consumeItem);
 
         final ItemInstance itemInstance = inventoryService.addItem(base.getBaseInventory(), item.getItemId(), 1);
-        if(itemInstance == null) return new JsonResponse(JsonResponseType.ERROR, "Item cannot be created.");
+        if(itemInstance == null) return new Response(JsonResponseType.ERROR, "Item cannot be created.");
 
-        return new JsonResponse(base);
+        return new Response(base);
     }
 }

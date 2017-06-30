@@ -1,10 +1,10 @@
 package com.middlewar.api.controllers.statics;
 
+import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.api.util.response.JsonResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,15 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuildingController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
-        return new JsonResponse(BuildingData.getInstance().getBuildings(pAccount.getLang()));
+    public Response findAll(@AuthenticationPrincipal Account pAccount){
+        return new Response(BuildingData.getInstance().getBuildings(pAccount.getLang()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public JsonResponse findBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
+    public Response findBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id){
         final Building b = BuildingData.getInstance().getBuilding(id);
-        if(b == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.STATIC_BUILDING_DOESNT_EXIST);
+        if(b == null) return new Response(pAccount.getLang(), SystemMessageId.STATIC_BUILDING_DOESNT_EXIST);
         b.setLang(pAccount.getLang());
-        return new JsonResponse(b);
+        return new Response(b);
     }
 }

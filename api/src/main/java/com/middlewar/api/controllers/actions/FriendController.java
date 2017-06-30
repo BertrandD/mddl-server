@@ -1,5 +1,6 @@
 package com.middlewar.api.controllers.actions;
 
+import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.social.FriendRequest;
@@ -7,7 +8,6 @@ import com.middlewar.core.model.Player;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.FriendRequestService;
-import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,30 +39,30 @@ public class FriendController {
     private FriendRequestService friendRequestService;
 
     @RequestMapping(value = "/request", method = RequestMethod.GET)
-    public JsonResponse showFriendRequest(@AuthenticationPrincipal Account pAccount) {
+    public Response showFriendRequest(@AuthenticationPrincipal Account pAccount) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final List<FriendRequest> requests = friendRequestService.findPlayerRequest(player.getId());
-        return new JsonResponse(requests);
+        return new Response(requests);
     }
 
     @RequestMapping(value = "/request", method = RequestMethod.POST)
-    public JsonResponse sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") String friendId, @RequestParam(value = "message") String message) {
+    public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") String friendId, @RequestParam(value = "message") String message) {
         Assert.hasLength(friendId, "Invalid parameter friendId.");
         Assert.hasLength(message, "Empty message.");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        if(player.getId().equals(friendId)) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.YOU_CANNOT_REQUEST_YOURSELF);
+        if(player.getId().equals(friendId)) return new Response(JsonResponseType.ERROR, SystemMessageId.YOU_CANNOT_REQUEST_YOURSELF);
 
         final Player friend = playerService.findOne(friendId);
-        if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if(friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         // TODO SysMsg
-        if(player.getFriends().contains(new PlayerHolder(friend))) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
+        if(player.getFriends().contains(new PlayerHolder(friend))) return new Response(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
 
         int counter = 0;
         boolean allreadySent = false;
@@ -73,28 +73,28 @@ public class FriendController {
             counter++;
         }
 
-        if(allreadySent) return new JsonResponse(JsonResponseType.ERROR, "You have already sent a friend request to " + friend.getName());
+        if(allreadySent) return new Response(JsonResponseType.ERROR, "You have already sent a friend request to " + friend.getName());
 
         final FriendRequest request = friendRequestService.create(player, friend, message);
-        if(request == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
+        if(request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
 
-        return new JsonResponse(player); // TODO: send only the new friendrequest instead of Player !
+        return new Response(player); // TODO: send only the new friendrequest instead of Player !
     }
 
     @RequestMapping(value = "/accept/{requestId}", method = RequestMethod.GET)
-    public JsonResponse acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
+    public Response acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
         Assert.hasLength(requestId, "Invalid parameter requestId");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
-        if(request == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
+        if(request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
 
         final Player friend = playerService.findOne(request.getRequester().getId());
-        if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if(friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        if(!player.addFriend(new PlayerHolder(friend))) return new JsonResponse(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
+        if(!player.addFriend(new PlayerHolder(friend))) return new Response(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
 
         friend.addFriend(new PlayerHolder(player));
 
@@ -105,21 +105,21 @@ public class FriendController {
         playerService.update(player);
         friendRequestService.remove(request);
 
-        return new JsonResponse(player);
+        return new Response(player);
     }
 
     @RequestMapping(value = "/refuse/{requestId}", method = RequestMethod.GET)
-    public JsonResponse refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
+    public Response refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
         Assert.hasLength(requestId, "Invalid parameter requestId");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final FriendRequest request = player.getFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
-        if(request == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
+        if(request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
 
         final Player friend = playerService.findOne(request.getRequester().getId());
-        if(friend == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if(friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         friend.getFriendRequests().remove(request);
         player.getFriendRequests().remove(request);
@@ -128,6 +128,6 @@ public class FriendController {
         playerService.update(friend);
         playerService.update(player);
 
-        return new JsonResponse(player); // TODO: SysMsg
+        return new Response(player); // TODO: SysMsg
     }
 }

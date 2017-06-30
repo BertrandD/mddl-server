@@ -29,6 +29,7 @@ public final class SystemMessageId {
     // base
     public static final String BASE_NOT_FOUND = "base_not_found";
     public static final String BASE_CANNOT_CREATE = "base_cannot_create";
+    public static final String BASE_NOT_OWNED = "base_not_owned";
     public static final String BASE_POSITION_ALREADY_TAKEN = "base_position_already_taken";
 
     // static building
@@ -52,5 +53,11 @@ public final class SystemMessageId {
     public static final String YOU_DONT_MEET_BUILDING_REQUIREMENT = "you_dont_meet_building_requirement";
     public static final String YOU_DONT_MEET_ITEM_REQUIREMENT = "you_dont_meet_item_requirement";
     public static final String YOU_DONT_MEET_RESOURCE_REQUIREMENT = "you_dont_meet_resource_requirement";
+
+    // spy report
+    public static final String CANNOT_CREATE_SPY_REPORT = "cannot_create_spy_report";
+
+    // internal
+    public static final String INTERNAL_ERROR = "internal_error";
 
 }

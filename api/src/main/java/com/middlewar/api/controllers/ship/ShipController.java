@@ -1,5 +1,6 @@
 package com.middlewar.api.controllers.ship;
 
+import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
@@ -11,7 +12,6 @@ import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.impl.ShipService;
-import com.middlewar.api.util.response.JsonResponse;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,25 +43,25 @@ public class ShipController {
     private ShipService shipService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public JsonResponse create(@AuthenticationPrincipal Account pAccount,
-                               @RequestParam(value = "count") long count,
-                               @RequestParam(value = "structureId") String structure,
-                               @RequestParam(value = "attachments") List<String> ids) {
+    public Response create(@AuthenticationPrincipal Account pAccount,
+                           @RequestParam(value = "count") long count,
+                           @RequestParam(value = "structureId") String structure,
+                           @RequestParam(value = "attachments") List<String> ids) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new JsonResponse(SystemMessageId.PLAYER_NOT_FOUND);
+        if(player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
 
         final Base base = player.getCurrentBase();
-        if(base == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
+        if(base == null) return new Response(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
         base.initializeStats();
 
-        if(ItemData.getInstance().getStructure(structure) == null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
+        if(ItemData.getInstance().getStructure(structure) == null) return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
         final BaseInventory inventory = base.getBaseInventory();
         final List<ItemInstance> collector = new ArrayList<>();
 
         final ItemInstance structuresInst = inventory.getItemsToMap().get(structure);
-        if(structuresInst == null || structuresInst.getCount() < count) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND); // todo: make a new sysmsg
+        if(structuresInst == null || structuresInst.getCount() < count) return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND); // todo: make a new sysmsg
 
         boolean faillure = false;
         for (int i = 0; i < ids.size() && !faillure; i++){
@@ -72,14 +72,14 @@ public class ShipController {
             }
         }
 
-        if(faillure) return new JsonResponse(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
+        if(faillure) return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
         for (ItemInstance inst : collector)
             inventoryService.consumeItem(inst, 1);
 
         final Ship ship = shipService.create(base, structure, count, ids);
-        if(ship == null) return new JsonResponse(JsonResponseType.ERROR, "Cannot create Ship");
-        return new JsonResponse(ship);
+        if(ship == null) return new Response(JsonResponseType.ERROR, "Cannot create Ship");
+        return new Response(ship);
     }
 
 }

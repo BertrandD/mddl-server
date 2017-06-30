@@ -2,7 +2,7 @@ package com.middlewar.api.controllers;
 
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.services.impl.AstralObjectServiceImpl;
-import com.middlewar.api.util.response.JsonResponse;
+import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.data.json.WorldData;
@@ -49,14 +49,14 @@ public class DefaultController implements ErrorController{
     private AstralObjectServiceImpl astralObjectServiceImpl;
 
     @RequestMapping(value = "/")
-    public JsonResponse index()
+    public Response index()
     {
-        return new JsonResponse(JsonResponseType.SUCCESS);
+        return new Response(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
-    public JsonResponse resetDatabase(@AuthenticationPrincipal Account pAccount) {
+    public Response resetDatabase(@AuthenticationPrincipal Account pAccount) {
         //updateService.resetDatabase(); // TODO: CLEANUP ME
         pAccount.setCurrentPlayer(null);
         pAccount.getPlayers().clear();
@@ -66,78 +66,78 @@ public class DefaultController implements ErrorController{
         accountService.update(account);
         AstralObject blackHole = WorldData.getInstance().getWorld();
         astralObjectServiceImpl.saveUniverse(blackHole);
-        return new JsonResponse(JsonResponseType.SUCCESS);
+        return new Response(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
-    public JsonResponse resetWorld(@AuthenticationPrincipal Account pAccount) {
+    public Response resetWorld(@AuthenticationPrincipal Account pAccount) {
         AstralObject blackHole = WorldData.getInstance().getWorld();
         astralObjectServiceImpl.saveUniverse(blackHole);
-        return new JsonResponse(JsonResponseType.SUCCESS);
+        return new Response(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/reload", method = RequestMethod.GET)
-    public JsonResponse reload(){
+    public Response reload(){
         BuildingData.getInstance().load();
         ItemData.getInstance().load();
-        return new JsonResponse(JsonResponseType.SUCCESS);
+        return new Response(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public JsonResponse login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
+    public Response login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
         final SystemMessageData SystemMessage = SystemMessageData.getInstance();
         final Account account = accountService.findByUsername(username);
         final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if(account == null) {
             response.setStatus(401);
-            return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.USERNAME_NOT_FOUND));
+            return new Response(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.USERNAME_NOT_FOUND));
         }
 
         if(!passwordEncoder.matches(password, account.getPassword())) {
             response.setStatus(401);
-            return new JsonResponse(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.INCORRECT_CREDENTIALS));
+            return new Response(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.INCORRECT_CREDENTIALS));
         }
 
-        return new JsonResponse(account);
+        return new Response(account);
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
-    public JsonResponse logout(@AuthenticationPrincipal Account account) {
+    public Response logout(@AuthenticationPrincipal Account account) {
         account.setToken(UUID.randomUUID().toString());
         accountService.update(account);
-        return new JsonResponse(JsonResponseType.SUCCESS);
+        return new Response(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public JsonResponse register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+    public Response register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
         final Account account = accountService.findByUsername(username);
-        if(account != null) return new JsonResponse(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(Lang.EN, SystemMessageId.ACCOUNT_ALREADY_EXIST));
-        return new JsonResponse(accountService.create(username, password));
+        if(account != null) return new Response(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(Lang.EN, SystemMessageId.ACCOUNT_ALREADY_EXIST));
+        return new Response(accountService.create(username, password));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/me", method = RequestMethod.GET)
-    public JsonResponse aboutMe(@AuthenticationPrincipal Account account) {
+    public Response aboutMe(@AuthenticationPrincipal Account account) {
         final Account reqAccount = accountService.findOne(account.getId());
-        return new JsonResponse(reqAccount);
+        return new Response(reqAccount);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/lang", method = RequestMethod.POST)
-    public JsonResponse changeLanguage(@AuthenticationPrincipal Account account, @RequestParam(value = "lang") String lang) {
+    public Response changeLanguage(@AuthenticationPrincipal Account account, @RequestParam(value = "lang") String lang) {
         final Lang newLang = Lang.valueOf(lang.toUpperCase()); // TODO: Exception
         final Account currentAccount = accountService.findOne(account.getId());
         account.setLang(newLang);
         currentAccount.setLang(newLang);
         accountService.update(currentAccount);
-        return new JsonResponse(JsonResponseType.SUCCESS);
+        return new Response(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = ERROR_PATH)
-    public JsonResponse error(HttpServletRequest request) {
+    public Response error(HttpServletRequest request) {
         final RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        return new JsonResponse(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
+        return new Response(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
     }
 
     @Override

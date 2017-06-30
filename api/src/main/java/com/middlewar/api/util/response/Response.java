@@ -8,38 +8,38 @@ import java.util.HashMap;
 /**
  * @author Bertrand
  */
-public class JsonResponse {
+public class Response {
 
     private String status;
     private Object payload;
     private final HashMap<String, Object> meta = new HashMap<>();
 
-    public JsonResponse(){}
+    public Response(){}
 
-    public JsonResponse(JsonResponseType status){
+    public Response(JsonResponseType status){
         setStatus(status.getName());
         setPayload(null);
     }
 
-    public JsonResponse(Lang lang, String messageId){
+    public Response(Lang lang, String messageId){
         setStatus(JsonResponseType.ERROR.getName());
         setPayload(null);
         getMeta().put("message", SystemMessageData.getInstance().getMessage(lang, messageId));
     }
 
-    public JsonResponse(JsonResponseType type, Lang lang, String messageId){
+    public Response(JsonResponseType type, Lang lang, String messageId){
         setStatus(type.getName());
         setPayload(null);
         getMeta().put("message", SystemMessageData.getInstance().getMessage(lang, messageId));
     }
 
-    public JsonResponse(JsonResponseType status, String message) {
+    public Response(JsonResponseType status, String message) {
         setStatus(status.getName());
         setPayload(null);
         getMeta().put("message", message);
     }
 
-    public JsonResponse(JsonResponseType status, MetaHolder... metas) {
+    public Response(JsonResponseType status, MetaHolder... metas) {
         setStatus(status.getName());
         setPayload(null);
         for(MetaHolder holder : metas){
@@ -47,7 +47,7 @@ public class JsonResponse {
         }
     }
 
-    public JsonResponse(Object payload) {
+    public Response(Object payload) {
         setStatus(JsonResponseType.SUCCESS.getName());
         setPayload(payload);
     }

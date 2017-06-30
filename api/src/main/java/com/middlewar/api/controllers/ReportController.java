@@ -2,7 +2,7 @@ package com.middlewar.api.controllers;
 
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.util.response.JsonResponse;
+import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
@@ -33,11 +33,11 @@ public class ReportController {
     private AccountService accountService;
 
     @RequestMapping(value = "/reports", method = RequestMethod.GET)
-    public JsonResponse findAll(@AuthenticationPrincipal Account pAccount){
-        if(pAccount.getCurrentPlayer() == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
+    public Response findAll(@AuthenticationPrincipal Account pAccount){
+        if(pAccount.getCurrentPlayer() == null) return new Response(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new JsonResponse(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
+        if(player == null) return new Response(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
         player.getReports().sort(Collections.reverseOrder());
-        return new JsonResponse(player.getReports());
+        return new Response(player.getReports());
     }
 }
