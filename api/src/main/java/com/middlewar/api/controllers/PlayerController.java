@@ -1,26 +1,17 @@
 package com.middlewar.api.controllers;
 
 import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
-import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
-import com.middlewar.core.config.Config;
-import com.middlewar.core.model.Player;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.api.services.PlayerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author LEBOC Philippe
@@ -33,14 +24,18 @@ public class PlayerController {
 
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
+
+    private final PlayerManager playerManager;
+
+    private final ControllerManagerWrapper controllerManagerWrapper;
 
     @Autowired
-    private PlayerManager playerManager;
-
-    @Autowired
-    private ControllerManagerWrapper controllerManagerWrapper;
+    public PlayerController(PlayerService playerService, PlayerManager playerManager, ControllerManagerWrapper controllerManagerWrapper) {
+        this.playerService = playerService;
+        this.playerManager = playerManager;
+        this.controllerManagerWrapper = controllerManagerWrapper;
+    }
 
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
     public Response players(@AuthenticationPrincipal Account pAccount){
@@ -56,36 +51,12 @@ public class PlayerController {
 
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
     public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
-        final Player player = playerService.findOne(id);
-        if(player == null) return new Response(account.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
-        return new Response(player);
+        return controllerManagerWrapper.wrap(() -> playerManager.getPlayerOfAccount(account, id));
     }
 
     @RequestMapping(value = "/player", method = RequestMethod.POST)
     public Response create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
-        Assert.notNull(name, SystemMessageId.INVALID_PARAMETERS);
+        return controllerManagerWrapper.wrap(() -> playerManager.createForAccount(account, name));
 
-        if(account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
-            return new Response(JsonResponseType.ERROR, SystemMessageId.MAXIMUM_PLAYER_CREATION_REACHED);
-
-        if(playerService.findByName(name) != null) return new Response(account.getLang(), SystemMessageId.USERNAME_ALREADY_EXIST);
-
-        // Check if name is forbidden (Like 'fuck', 'admin', ...)
-        if (Config.FORBIDDEN_NAMES.length > 1) {
-            for (String st : Config.FORBIDDEN_NAMES) {
-                if (name.toLowerCase().contains(st.toLowerCase())) {
-                    logger.info("Player creation failed for account [ " + account.getUsername() + " ] : Forbidden name.");
-                    return new Response(account.getLang(), SystemMessageId.FORBIDDEN_NAME);
-                }
-            }
-        }
-
-        // Create player
-        final Player player = playerService.create(account, name);
-        if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_CREATION_FAILED);
-
-        logger.info("Player creation success : "+ player.getName() +".");
-
-        return new Response(player);
     }
 }
