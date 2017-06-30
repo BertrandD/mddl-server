@@ -78,7 +78,7 @@ public class BaseManagerTest {
         _playerOwner.addBase(_base2);
         when(baseService.findOne("yoloo")).thenReturn(_base);
         when(baseService.findOne("yoloo2")).thenReturn(_base2);
-        when(playerManager.getPlayerForAccount(_account)).thenReturn(_playerOwner);
+        when(playerManager.getCurrentPlayerForAccount(_account)).thenReturn(_playerOwner);
     }
 
     @Test
@@ -102,18 +102,18 @@ public class BaseManagerTest {
 
     @Test(expected = BaseNotOwnedException.class)
     public void shouldCheckOwner() throws BaseNotFoundException, BaseNotOwnedException {
-        baseManager.getBase(_playerNotOwner, "yoloo");
+        baseManager.getBase("yoloo", _playerNotOwner);
     }
 
     @Test
     public void shouldReturnCurrentBase() throws BaseNotFoundException, BaseNotOwnedException {
         _playerOwner.setCurrentBase(_base);
-        Base base = baseManager.getBase(_playerOwner);
+        Base base = baseManager.getCurrentBaseOfPlayer(_playerOwner);
         Assertions.assertThat(base).isNotNull();
         Assertions.assertThat(base).isEqualTo(_base);
 
         _playerOwner.setCurrentBase(_base2);
-        base = baseManager.getBase(_playerOwner);
+        base = baseManager.getCurrentBaseOfPlayer(_playerOwner);
         Assertions.assertThat(base).isNotNull();
         Assertions.assertThat(base).isEqualTo(_base2);
     }

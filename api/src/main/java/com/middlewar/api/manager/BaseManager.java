@@ -5,10 +5,7 @@ import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.BuildingData;
-import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.BuildingInstanceHolder;
 import com.middlewar.core.model.Account;
@@ -30,23 +27,33 @@ import java.util.stream.Collectors;
  */
 @Service
 public class BaseManager {
-    @Autowired
-    private PlayerManager playerManager;
+    private final PlayerManager playerManager;
+
+    private final BaseService baseService;
+
+    private final PlayerService playerService;
+
+    private final BuildingTaskService buildingTaskService;
+
+    private final PlanetManager planetManager;
 
     @Autowired
-    private BaseService baseService;
+    public BaseManager(PlayerManager playerManager, BaseService baseService, PlayerService playerService, BuildingTaskService buildingTaskService, PlanetManager planetManager) {
+        this.playerManager = playerManager;
+        this.baseService = baseService;
+        this.playerService = playerService;
+        this.buildingTaskService = buildingTaskService;
+        this.planetManager = planetManager;
+    }
 
-    @Autowired
-    private PlayerService playerService;
-
-    @Autowired
-    private BuildingTaskService buildingTaskService;
-
-    @Autowired
-    private PlanetManager planetManager;
-
+    /**
+     * @param pAccount the account of the player we want the base
+     * @return all Base of the currentPlayer of the account
+     * @throws NoPlayerConnectedException if there is no current player in the account
+     * @throws PlayerNotFoundException if the current player is not found
+     */
     public List<Base> findAllBaseOfCurrentPlayer(Account pAccount) throws NoPlayerConnectedException, PlayerNotFoundException {
-        final Player player = playerManager.getPlayerForAccount(pAccount);
+        final Player player = playerManager.getCurrentPlayerForAccount(pAccount);
         final List<Base> bases = player.getBases();
         bases.forEach(Base::initializeStats);
         return bases;
@@ -64,13 +71,13 @@ public class BaseManager {
     }
 
     /**
-     * @param player owner of the base
      * @param id base id
-     * @return the base with the givent id and check if the base is owned by the player
+     * @param player owner of the base
+     * @return the base with the given id and check if the base is owned by the player
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public Base getBase(Player player, String id) throws BaseNotFoundException, BaseNotOwnedException {
+    public Base getBase(String id, Player player) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getBase(id);
         if (!base.getOwner().getId().equals(player.getId())) {
             throw new BaseNotOwnedException();
@@ -79,18 +86,27 @@ public class BaseManager {
     }
 
     /**
-     * @param player the player we want to get the base
+     * @param player the player we want to get the current base
      * @return the current base of the player
      * @throws BaseNotFoundException if the base does not exists
      * @throws BaseNotOwnedException if the base does not exists
      */
-    public Base getBase(Player player) throws BaseNotFoundException, BaseNotOwnedException {
-        return getBase(player, player.getCurrentBase().getId());
+    public Base getCurrentBaseOfPlayer(Player player) throws BaseNotFoundException, BaseNotOwnedException {
+        return getBase(player.getCurrentBase().getId(), player);
     }
 
-    public Response findOneOfCurrentPlayer(Account account, String id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
-        Player player = playerManager.getPlayerForAccount(account);
-        final Base base = getBase(player, id);
+    /**
+     * @param account the account of the player we want the base
+     * @param id The id of the Base we want the details
+     * @return the Base of the current player with the building queue
+     * @throws NoPlayerConnectedException if there is no current player in the account
+     * @throws PlayerNotFoundException if the current player is not found
+     * @throws BaseNotFoundException if the base boes not exists
+     * @throws BaseNotOwnedException if the base is not owned by the given player
+     */
+    public Response getBaseWithBuildingQueueOfCurrentPlayer(Account account, String id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
+        final Player player = playerManager.getCurrentPlayerForAccount(account);
+        final Base base = getBase(id, player);
         base.getOwner().setCurrentBase(base);
         playerService.update(base.getOwner());
         final Response response = new Response(base);
@@ -98,8 +114,17 @@ public class BaseManager {
         return response;
     }
 
+    /**
+     * Create a base for the given account with the given name
+     * @param account the account holding the owner of the new Base as currentPlayer
+     * @param name the name of the new Base
+     * @return the newly created Base
+     * @throws NoPlayerConnectedException if there is no current player in the account
+     * @throws PlayerNotFoundException if the current player is not found
+     * @throws BaseCreationException if the Base creation failed
+     */
     public Base createForAccount(Account account, String name) throws NoPlayerConnectedException, PlayerNotFoundException, BaseCreationException {
-        final Player player = playerManager.getPlayerForAccount(account);
+        final Player player = playerManager.getCurrentPlayerForAccount(account);
 
         final Planet planet = planetManager.pickRandom();
 
@@ -110,10 +135,19 @@ public class BaseManager {
         return base;
     }
 
+    /**
+     *
+     * @param account the account of the player we want the base
+     * @return the list of all buildings that can be built in the current base of the current player
+     * @throws NoPlayerConnectedException if there is no current player in the account
+     * @throws PlayerNotFoundException if the current player is not found
+     * @throws BaseNotFoundException if the base boes not exists
+     * @throws BaseNotOwnedException if the base is not owned by the given player
+     */
     public  List<BuildingHolder> getBuildableBuildingsOfCurrentBase(Account account) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
-        final Player player = playerManager.getPlayerForAccount(account);
+        final Player player = playerManager.getCurrentPlayerForAccount(account);
 
-        final Base base = getBase(player);
+        final Base base = getCurrentBaseOfPlayer(player);
 
         final List<BuildingHolder> nextBuildings = new ArrayList<>();
 

@@ -18,7 +18,7 @@ public class BaseInventoryServiceTest {
         final BaseInventory baseInventory = baseInventoryService.create(base);
 
         Assertions.assertThat(baseInventory).isNotNull();
-        Assertions.assertThat(baseInventory.getBase()).isEqualTo(base);*/
+        Assertions.assertThat(baseInventory.getCurrentBaseOfPlayer()).isEqualTo(base);*/
 
     }
 }

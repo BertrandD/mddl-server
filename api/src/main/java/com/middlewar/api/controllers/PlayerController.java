@@ -1,5 +1,7 @@
 package com.middlewar.api.controllers;
 
+import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
@@ -34,9 +36,15 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
+    @Autowired
+    private PlayerManager playerManager;
+
+    @Autowired
+    private ControllerManagerWrapper controllerManagerWrapper;
+
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
     public Response players(@AuthenticationPrincipal Account pAccount){
-        return new Response(playerService.findByAccount(pAccount));
+        return controllerManagerWrapper.wrap(() -> playerManager.getAllPlayersForAccount(pAccount));
     }
 
     @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN", response = Response.class)

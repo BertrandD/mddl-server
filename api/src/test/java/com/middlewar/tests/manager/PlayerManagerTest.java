@@ -1,17 +1,12 @@
 package com.middlewar.tests.manager;
 
 import com.middlewar.api.Application;
-import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
-import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.model.Account;
-import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -19,8 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -61,7 +54,7 @@ public class PlayerManagerTest {
     @Test
     public void shouldReturnPlayer() throws BaseNotFoundException, NoPlayerConnectedException, PlayerNotFoundException {
         _account.setCurrentPlayer(_player.getId());
-        final Player player = playerManager.getPlayerForAccount(_account);
+        final Player player = playerManager.getCurrentPlayerForAccount(_account);
         Assertions.assertThat(player).isNotNull();
         Assertions.assertThat(player).isEqualTo(_player);
     }
@@ -69,12 +62,12 @@ public class PlayerManagerTest {
     @Test(expected = NoPlayerConnectedException.class)
     public void shouldThrowExceptionIfNoPlayerSelected() throws NoPlayerConnectedException, PlayerNotFoundException {
         _account.setCurrentPlayer(null);
-        final Player player = playerManager.getPlayerForAccount(_account);
+        final Player player = playerManager.getCurrentPlayerForAccount(_account);
     }
 
     @Test(expected = PlayerNotFoundException.class)
     public void shouldThrowExceptionIfNoPlayerNotFound() throws NoPlayerConnectedException, PlayerNotFoundException {
         when(playerService.findOne("yoloo")).thenReturn(null);
-        final Player player = playerManager.getPlayerForAccount(_account);
+        final Player player = playerManager.getCurrentPlayerForAccount(_account);
     }
 }

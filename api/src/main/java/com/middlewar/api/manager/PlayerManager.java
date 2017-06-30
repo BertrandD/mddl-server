@@ -8,6 +8,8 @@ import com.middlewar.core.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Bertrand
  */
@@ -22,7 +24,7 @@ public class PlayerManager {
      * @throws NoPlayerConnectedException if the account is guest
      * @throws PlayerNotFoundException if the player of the account is not found
      */
-    public Player getPlayerForAccount(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
+    public Player getCurrentPlayerForAccount(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
         if (account.getCurrentPlayer() == null) {
             throw new NoPlayerConnectedException();
         } else {
@@ -32,5 +34,9 @@ public class PlayerManager {
             }
             return player;
         }
+    }
+
+    public List<Player> getAllPlayersForAccount(Account account) {
+        return playerService.findByAccount(account);
     }
 }
