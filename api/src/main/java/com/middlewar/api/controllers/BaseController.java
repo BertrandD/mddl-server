@@ -1,7 +1,7 @@
 package com.middlewar.api.controllers;
 
 import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.manager.SpyReportManager;
+import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
@@ -20,14 +20,14 @@ public class BaseController {
 
     private final BaseManager baseManager;
 
-    private final SpyReportManager spyReportManager;
+    private final ReportManager reportManager;
 
     private final ControllerManagerWrapper controllerManagerWrapper;
 
     @Autowired
-    public BaseController(BaseManager baseManager, SpyReportManager spyReportManager, ControllerManagerWrapper controllerManagerWrapper) {
+    public BaseController(BaseManager baseManager, ReportManager reportManager, ControllerManagerWrapper controllerManagerWrapper) {
         this.baseManager = baseManager;
-        this.spyReportManager = spyReportManager;
+        this.reportManager = reportManager;
         this.controllerManagerWrapper = controllerManagerWrapper;
     }
 
@@ -53,7 +53,7 @@ public class BaseController {
 
     @RequestMapping(value = "/base/spy/{id}", method = RequestMethod.GET)
     public Response spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
-        return controllerManagerWrapper.wrap(() -> spyReportManager.spy(pAccount, id));
+        return controllerManagerWrapper.wrap(() -> reportManager.spy(pAccount, id));
 
     }
 }
