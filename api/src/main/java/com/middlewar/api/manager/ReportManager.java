@@ -21,18 +21,14 @@ import java.util.List;
 @Service
 public class ReportManager {
 
-    private final BaseManager baseManager;
-
-    private final PlayerManager playerManager;
-
-    private final SpyReportServiceImpl spyReportServiceImpl;
+    @Autowired
+    private BaseManager baseManager;
 
     @Autowired
-    public ReportManager(BaseManager baseManager, PlayerManager playerManager, SpyReportServiceImpl spyReportServiceImpl) {
-        this.baseManager = baseManager;
-        this.playerManager = playerManager;
-        this.spyReportServiceImpl = spyReportServiceImpl;
-    }
+    private PlayerManager playerManager;
+
+    @Autowired
+    private SpyReportServiceImpl spyReportServiceImpl;
 
     public List<Report> getAllReportsOfCurrentPlayer(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
         final Player player = playerManager.getCurrentPlayerForAccount(account);

@@ -20,12 +20,8 @@ import java.util.List;
 public class PlayerManager {
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    private final PlayerService playerService;
-
     @Autowired
-    public PlayerManager(PlayerService playerService) {
-        this.playerService = playerService;
-    }
+    private PlayerService playerService;
 
     /**
      * @param account Connected account

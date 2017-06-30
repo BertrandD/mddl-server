@@ -27,24 +27,20 @@ import java.util.stream.Collectors;
  */
 @Service
 public class BaseManager {
-    private final PlayerManager playerManager;
-
-    private final BaseService baseService;
-
-    private final PlayerService playerService;
-
-    private final BuildingTaskService buildingTaskService;
-
-    private final PlanetManager planetManager;
+    @Autowired
+    private PlayerManager playerManager;
 
     @Autowired
-    public BaseManager(PlayerManager playerManager, BaseService baseService, PlayerService playerService, BuildingTaskService buildingTaskService, PlanetManager planetManager) {
-        this.playerManager = playerManager;
-        this.baseService = baseService;
-        this.playerService = playerService;
-        this.buildingTaskService = buildingTaskService;
-        this.planetManager = planetManager;
-    }
+    private BaseService baseService;
+
+    @Autowired
+    private PlayerService playerService;
+
+    @Autowired
+    private BuildingTaskService buildingTaskService;
+
+    @Autowired
+    private PlanetManager planetManager;
 
     /**
      * @param pAccount the account of the player we want the base
