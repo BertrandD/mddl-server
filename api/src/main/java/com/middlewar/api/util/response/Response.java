@@ -8,10 +8,10 @@ import java.util.HashMap;
 /**
  * @author Bertrand
  */
-public class Response {
+public class Response<T> {
 
     private String status;
-    private Object payload;
+    private T payload;
     private final HashMap<String, Object> meta = new HashMap<>();
 
     public Response(){}
@@ -47,7 +47,7 @@ public class Response {
         }
     }
 
-    public Response(Object payload) {
+    public Response(T payload) {
         setStatus(JsonResponseType.SUCCESS.getName());
         setPayload(payload);
     }
@@ -60,11 +60,11 @@ public class Response {
         this.status = status;
     }
 
-    public Object getPayload() {
+    public T getPayload() {
         return payload;
     }
 
-    public void setPayload(Object payload) {
+    public void setPayload(T payload) {
         this.payload = payload;
     }
 

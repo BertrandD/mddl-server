@@ -100,12 +100,12 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public Response getBaseWithBuildingQueueOfCurrentPlayer(Account account, String id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
+    public Response<Base> getBaseWithBuildingQueueOfCurrentPlayer(Account account, String id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
         final Player player = playerManager.getCurrentPlayerForAccount(account);
         final Base base = getBase(id, player);
         base.getOwner().setCurrentBase(base);
         playerService.update(base.getOwner());
-        final Response response = new Response(base);
+        final Response<Base> response = new Response<>(base);
         response.addMeta("queue", buildingTaskService.findByBaseOrderByEndsAtAsc(base));
         return response;
     }
