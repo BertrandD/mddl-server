@@ -4,6 +4,7 @@ package com.middlewar.api.util.response;
  * @author LEBOC Philippe
  */
 public enum JsonResponseType {
+    UNAUTHORIZED("unauthorized"),
     ERROR("error"),
     SUCCESS("ok");
 

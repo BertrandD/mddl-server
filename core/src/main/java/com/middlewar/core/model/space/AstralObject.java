@@ -57,4 +57,11 @@ public abstract class AstralObject {
     public double getAngle() {
         return ((2 * Math.PI) / (revolution)) * TimeUtil.getCurrentTime() / (6000)/* + theta0 */;
     }
+
+    public String toString() {
+        if (parent == null) {
+            return name;
+        }
+        return parent.toString() + " - " + name;
+    }
 }

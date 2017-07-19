@@ -75,4 +75,8 @@ public class Response<T> {
     public void addMeta(String key, Object value){
         getMeta().put(key, value);
     }
+
+    public void setStatus(JsonResponseType status) {
+        setStatus(status.getName());
+    }
 }

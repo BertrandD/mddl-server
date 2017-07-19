@@ -1,6 +1,7 @@
 package com.middlewar.api.util.response;
 
 import com.middlewar.api.exceptions.ApiException;
+import com.middlewar.api.exceptions.UnauthorizedException;
 import com.middlewar.core.model.Account;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,11 @@ public class ControllerManagerWrapper {
             }
             return new Response(o);
         } catch (ApiException e) {
-            return new Response(JsonResponseType.ERROR, pAccount.getLang(), e.getMessage());
+            Response response = new Response(JsonResponseType.ERROR, pAccount.getLang(), e.getMessage());
+            if (e instanceof UnauthorizedException) {
+                response.setStatus(JsonResponseType.UNAUTHORIZED);
+            }
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
             return new Response(JsonResponseType.ERROR, pAccount.getLang(), SystemMessageId.INTERNAL_ERROR);

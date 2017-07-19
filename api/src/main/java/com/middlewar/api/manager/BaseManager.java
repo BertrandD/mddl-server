@@ -87,7 +87,10 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base does not exists
      * @throws BaseNotOwnedException if the base does not exists
      */
-    public Base getCurrentBaseOfPlayer(Player player) throws BaseNotFoundException, BaseNotOwnedException {
+    public Base getCurrentBaseOfPlayer(Player player) throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+        if (player.getCurrentBase() == null) {
+            throw new PlayerHasNoBaseException();
+        }
         return getBase(player.getCurrentBase().getId(), player);
     }
 
@@ -140,7 +143,7 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public  List<BuildingHolder> getBuildableBuildingsOfCurrentBase(Account account) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
+    public  List<BuildingHolder> getBuildableBuildingsOfCurrentBase(Account account) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
         final Player player = playerManager.getCurrentPlayerForAccount(account);
 
         final Base base = getCurrentBaseOfPlayer(player);

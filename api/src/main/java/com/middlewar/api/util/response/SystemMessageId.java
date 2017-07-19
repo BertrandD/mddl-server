@@ -26,6 +26,7 @@ public final class SystemMessageId {
     public static final String PLAYER_NOT_OWNED = "player_not_owned";
     public static final String MAXIMUM_PLAYER_CREATION_REACHED = "maximum_player_creation_reached";
     public static final String PLAYER_CREATION_FAILED = "player_creation_failed";
+    public static final String PLAYER_HAS_NO_BASE = "player_has_no_base";
 
     // base
     public static final String BASE_NOT_FOUND = "base_not_found";

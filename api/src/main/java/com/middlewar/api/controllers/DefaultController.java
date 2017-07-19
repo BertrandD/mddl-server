@@ -1,7 +1,9 @@
 package com.middlewar.api.controllers;
 
 import com.middlewar.api.auth.AccountService;
+import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.services.impl.AstralObjectServiceImpl;
+import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -46,7 +48,13 @@ public class DefaultController implements ErrorController{
     private AccountService accountService;
 
     @Autowired
+    private AccountManager accountManager;
+
+    @Autowired
     private AstralObjectServiceImpl astralObjectServiceImpl;
+
+    @Autowired
+    private ControllerManagerWrapper controllerManagerWrapper;
 
     @RequestMapping(value = "/")
     public Response index()
@@ -86,20 +94,7 @@ public class DefaultController implements ErrorController{
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
-        final SystemMessageData SystemMessage = SystemMessageData.getInstance();
-        final Account account = accountService.findByUsername(username);
-        final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(account == null) {
-            response.setStatus(401);
-            return new Response(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.USERNAME_NOT_FOUND));
-        }
-
-        if(!passwordEncoder.matches(password, account.getPassword())) {
-            response.setStatus(401);
-            return new Response(JsonResponseType.ERROR, SystemMessage.getMessage(Lang.EN, SystemMessageId.INCORRECT_CREDENTIALS));
-        }
-
-        return new Response(account);
+        return controllerManagerWrapper.wrap(() -> accountManager.login(username, password));
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
@@ -111,9 +106,7 @@ public class DefaultController implements ErrorController{
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Response register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        final Account account = accountService.findByUsername(username);
-        if(account != null) return new Response(JsonResponseType.ERROR, SystemMessageData.getInstance().getMessage(Lang.EN, SystemMessageId.ACCOUNT_ALREADY_EXIST));
-        return new Response(accountService.create(username, password));
+        return controllerManagerWrapper.wrap(() -> accountManager.register(username, password));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

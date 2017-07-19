@@ -2,10 +2,7 @@ package com.middlewar.tests.manager;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
-import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.api.exceptions.*;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.BaseService;
@@ -106,7 +103,7 @@ public class BaseManagerTest {
     }
 
     @Test
-    public void shouldReturnCurrentBase() throws BaseNotFoundException, BaseNotOwnedException {
+    public void shouldReturnCurrentBase() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
         _playerOwner.setCurrentBase(_base);
         Base base = baseManager.getCurrentBaseOfPlayer(_playerOwner);
         Assertions.assertThat(base).isNotNull();
