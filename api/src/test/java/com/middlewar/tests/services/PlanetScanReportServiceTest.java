@@ -14,6 +14,7 @@ import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.model.report.BaseReportEntry;
 import com.middlewar.core.model.report.PlanetScanReport;
 import com.middlewar.core.model.space.Planet;
 import org.assertj.core.api.Assertions;
@@ -91,7 +92,7 @@ public class PlanetScanReportServiceTest {
 
         Assertions.assertThat(report.getEntries().get(ReportCategory.BASES)).isNotNull();
         Assertions.assertThat(report.getEntries().get(ReportCategory.BASES).get(0).getName()).isEqualTo(_base.getName());
-//        Assertions.assertThat(report.getEntries().get(ReportCategory.BASES).get(0).getValue()).isInstanceOf(BaseHolder.class); // TODO : uncomment me !
+        Assertions.assertThat(report.getEntries().get(ReportCategory.BASES).get(0)).isInstanceOf(BaseReportEntry.class);
 
         Assertions.assertThat(_player.getPlanetScans()).isNotNull();
         Assertions.assertThat(_player.getPlanetScans().get(_planet.getId())).isNotNull();
