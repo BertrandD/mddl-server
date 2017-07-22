@@ -8,10 +8,10 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +19,14 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "recipes")
+@Entity
 public class RecipeInstance {
 
     @Id
     private String id;
     private String name;
 
-    @DBRef
+    @ManyToOne
     private Player owner;
     private String structureId;
     private List<String> cargos;

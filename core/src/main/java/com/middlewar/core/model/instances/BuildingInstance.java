@@ -10,12 +10,12 @@ import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +23,15 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "buildings")
+@Entity
 @JsonSerialize(using = BuildingInstanceSerializer.class)
 public class BuildingInstance {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Base base;
     private String buildingId;
@@ -47,7 +48,6 @@ public class BuildingInstance {
     }
 
     public BuildingInstance(Base base, String templateId) {
-        setId(new ObjectId().toString());
         setBase(base);
         setBuildingId(templateId);
         setCurrentLevel(0);

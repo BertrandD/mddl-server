@@ -1,9 +1,9 @@
 package com.middlewar.core.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.middlewar.core.config.Config;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.instances.BuildingInstance;
@@ -17,15 +17,17 @@ import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.core.serializer.BaseSerializer;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,40 +36,41 @@ import java.util.stream.Collectors;
  */
 @Data
 @JsonSerialize(using = BaseSerializer.class)
-@Document(collection = "bases")
+@Entity
 public final class Base
 {
     @Id
+    @GeneratedValue
     private String id;
     private String name;
 
-    @Indexed
+    @ManyToOne
     @JsonManagedReference
     private Player owner;
 
     @Transient
     private ObjectStat baseStat;
 
-    @DBRef(lazy = true)
+    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Ship> ships;
 
-    @DBRef(lazy = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fleet> fleets;
 
-    @DBRef(lazy = true)
+    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<BuildingInstance> buildings;
 
-    @DBRef(lazy = true)
+    @OneToOne(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private BaseInventory baseInventory;
 
-    @DBRef
+    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Resource> resources;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Planet planet;
 
@@ -82,7 +85,6 @@ public final class Base
     }
 
     public Base(String name, Player owner, Planet planet) {
-        setId(new ObjectId().toString());
         setName(name);
         setOwner(owner);
         setBuildings(new ArrayList<>());

@@ -11,9 +11,8 @@ import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import com.middlewar.core.serializer.ShipSerializer;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "ships")
+@Entity
 @JsonSerialize(using = ShipSerializer.class)
 public class Ship extends Vehicle {
 
@@ -41,7 +40,6 @@ public class Ship extends Vehicle {
 
     public Ship(Base base, String structureId, long count) {
         super();
-        setId(new ObjectId().toString());
         setBase(base);
         setStructureId(structureId);
         setCount(count);

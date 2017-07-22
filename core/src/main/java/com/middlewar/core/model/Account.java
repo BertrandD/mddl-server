@@ -3,10 +3,14 @@ package com.middlewar.core.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.serializer.AccountSerializer;
-import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +24,11 @@ public class Account extends User
     @Id
     private String id;
     private Lang lang;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<String> players;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private String currentPlayer;
     private String token;
 

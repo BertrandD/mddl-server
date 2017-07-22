@@ -5,19 +5,21 @@ import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.FriendRequestSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "friend_request")
+@Entity
 @JsonSerialize(using = FriendRequestSerializer.class)
 public class FriendRequest {
 
     @Id
+    @GeneratedValue
     private String id;
     private PlayerHolder requester;
     private PlayerHolder requested;
@@ -25,7 +27,6 @@ public class FriendRequest {
     private long requestDate;
 
     public FriendRequest(PlayerHolder requester, PlayerHolder requested, String message) {
-        setId(new ObjectId().toString());
         setRequester(requester);
         setRequested(requested);
         setMessage(message);

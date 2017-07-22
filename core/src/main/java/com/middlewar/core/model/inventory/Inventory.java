@@ -3,9 +3,11 @@ package com.middlewar.core.model.inventory;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.middlewar.core.interfaces.IInventory;
 import com.middlewar.core.model.instances.ItemInstance;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import javax.persistence.CascadeType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +19,10 @@ import java.util.Map;
 public abstract class Inventory implements IInventory {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @DBRef
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ItemInstance> items;
 

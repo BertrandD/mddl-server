@@ -9,10 +9,12 @@ import com.middlewar.core.serializer.ResourceSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.ToString;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * @author LEBOC Philippe
@@ -24,18 +26,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @ToString
-@Document(collection = "resources")
+@Entity
 @JsonSerialize(using = ResourceSerializer.class)
 public final class Resource {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Base base;
 
-    @DBRef
+    @OneToOne
     private ItemInstance item;
 
     private long lastRefresh;
@@ -43,7 +46,6 @@ public final class Resource {
     private Stats stat;
 
     public Resource(Base base, ItemInstance item) {
-        setId(new ObjectId().toString());
         setBase(base);
         setItem(item);
         setLastRefresh(TimeUtil.getCurrentTime());

@@ -9,7 +9,8 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.serializer.SpyReportSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import javax.persistence.ManyToOne;
 
 /**
  * @author bertrand.
@@ -19,11 +20,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @NoArgsConstructor
 public class SpyReport extends Report{
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Base baseSrc;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Base baseTarget;
 

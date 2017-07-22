@@ -2,6 +2,8 @@ package com.middlewar.core.model.commons;
 
 import lombok.Data;
 
+import javax.persistence.Embeddable;
+
 /**
  * @author LEBOC Philippe
  * Coordinates are writed by Galaxy, Solar System, Astral object number in solar system.
@@ -10,6 +12,7 @@ import lombok.Data;
  * (Exemple: 01:65:621:6)
  */
 @Data
+@Embeddable
 public class Coordinates {
 
     private int galaxy;

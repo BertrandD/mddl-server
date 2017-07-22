@@ -6,12 +6,14 @@ import com.middlewar.core.serializer.ObjectStatSerializer;
 import lombok.Data;
 import org.apache.log4j.Logger;
 
+import javax.persistence.Embeddable;
 import java.util.HashMap;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
+@Embeddable
 @JsonSerialize(using = ObjectStatSerializer.class)
 public class ObjectStat {
 

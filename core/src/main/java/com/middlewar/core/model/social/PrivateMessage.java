@@ -6,19 +6,21 @@ import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.PrivateMessageSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "private_messages")
+@Entity
 @JsonSerialize(using = PrivateMessageSerializer.class)
 public class PrivateMessage {
 
     @Id
+    @GeneratedValue
     private String id;
     private PlayerHolder author;
     private PlayerHolder receiver;
@@ -30,7 +32,6 @@ public class PrivateMessage {
     private long readDate;
 
     public PrivateMessage(PlayerHolder author, PlayerHolder receiver, String message) {
-        setId(new ObjectId().toString());
         setAuthor(author);
         setReceiver(receiver);
         setDate(TimeUtil.getCurrentTime());

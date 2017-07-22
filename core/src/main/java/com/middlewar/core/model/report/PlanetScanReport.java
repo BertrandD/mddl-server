@@ -8,7 +8,8 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.serializer.PlanetScanReportSerializer;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import javax.persistence.ManyToOne;
 
 /**
  * @author bertrand.
@@ -16,11 +17,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @JsonSerialize(using = PlanetScanReportSerializer.class)
 public class PlanetScanReport extends Report {
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Base baseSrc;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Planet planet;
 

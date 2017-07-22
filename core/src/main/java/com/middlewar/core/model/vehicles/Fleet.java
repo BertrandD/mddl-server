@@ -9,11 +9,12 @@ import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.FleetSerializer;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "fleets")
+@Entity
 @JsonSerialize(using = FleetSerializer.class)
 public class Fleet {
 
@@ -34,7 +35,7 @@ public class Fleet {
     @Transient
     private ObjectStat stats;
 
-    @DBRef
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Ship> ships;
 

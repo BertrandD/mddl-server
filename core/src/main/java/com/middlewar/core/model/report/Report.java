@@ -8,10 +8,10 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +24,12 @@ import java.util.List;
 public abstract class Report implements Comparable<Report> {
 
     @Id
+    @GeneratedValue
     private String id;
 
     private long date;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Player owner;
 
@@ -39,7 +40,6 @@ public abstract class Report implements Comparable<Report> {
     public abstract ReportType getType();
 
     public Report(Player owner, ReportStatus reportStatus) {
-        setId(new ObjectId().toString());
         setDate(TimeUtil.getCurrentTime());
         setOwner(owner);
         setEntries(new HashMap<>());

@@ -2,22 +2,25 @@ package com.middlewar.core.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.holders.BaseHolder;
 import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
-import com.middlewar.core.holders.BaseHolder;
 import com.middlewar.core.serializer.PlayerSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,38 +30,38 @@ import java.util.Map;
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "players")
+@Entity
 @JsonSerialize(using = PlayerSerializer.class)
 public class Player {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @Indexed(unique = true)
+    @Id
     private String name;
 
-    @DBRef
-    @Indexed
+    @ManyToOne
     private Account account;
 
-    @DBRef
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Base> bases;
 
-    @DBRef
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference
     private Base currentBase;
 
-    @DBRef
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference
-    private PlayerInventory inventory;
+    protected PlayerInventory inventory;
 
     private List<PlayerHolder> friends;
 
-    @DBRef
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FriendRequest> friendRequests;
 
-    @DBRef
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
 
     private Map<String, PlanetScan> planetScans;
@@ -72,7 +75,6 @@ public class Player {
     }
 
     public Player(Account account, String name) {
-        setId(new ObjectId().toString());
         setName(name);
         setAccount(account);
         setBases(new ArrayList<>());

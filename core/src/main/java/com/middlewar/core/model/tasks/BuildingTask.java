@@ -6,34 +6,36 @@ import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.serializer.BuildingTaskSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
 @NoArgsConstructor
-@Document(collection = "building_tasks")
+@Entity
 @JsonSerialize(using = BuildingTaskSerializer.class)
 public class BuildingTask {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @DBRef
+    @ManyToOne
     private Base base;
 
-    @DBRef
+    @OneToOne
     private BuildingInstance building;
 
     private long endsAt;
     private int level;
 
     public BuildingTask(Base base, BuildingInstance building, long endsAt, int level) {
-        setId(new ObjectId().toString());
         setBase(base);
         setBuilding(building);
         setEndsAt(endsAt);

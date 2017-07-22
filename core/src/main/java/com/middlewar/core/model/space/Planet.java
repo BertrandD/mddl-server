@@ -3,8 +3,9 @@ package com.middlewar.core.model.space;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.middlewar.core.model.Base;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Data
 public class Planet extends AstralObject {
 
-    @DBRef
+    @OneToMany(mappedBy = "planet", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Base> bases;
 
