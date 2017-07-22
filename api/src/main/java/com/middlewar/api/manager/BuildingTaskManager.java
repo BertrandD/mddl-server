@@ -1,5 +1,8 @@
 package com.middlewar.api.manager;
 
+import com.middlewar.api.services.BuildingService;
+import com.middlewar.api.services.BuildingTaskService;
+import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.model.Base;
@@ -7,9 +10,6 @@ import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.model.tasks.BuildingTask;
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.BuildingTaskService;
-import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

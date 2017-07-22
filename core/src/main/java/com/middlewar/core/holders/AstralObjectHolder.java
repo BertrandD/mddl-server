@@ -2,10 +2,7 @@ package com.middlewar.core.holders;
 
 import com.middlewar.core.model.space.AstralObject;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**

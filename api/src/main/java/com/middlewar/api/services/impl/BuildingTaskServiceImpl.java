@@ -1,10 +1,10 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.BuildingTaskDao;
+import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.tasks.BuildingTask;
-import com.middlewar.api.services.BuildingTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -5,7 +5,6 @@ import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.services.FriendRequestService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
-import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;

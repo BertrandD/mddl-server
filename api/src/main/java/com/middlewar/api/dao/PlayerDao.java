@@ -2,7 +2,6 @@ package com.middlewar.api.dao;
 
 import com.middlewar.core.model.Player;
 
-
 import java.util.List;
 
 /**

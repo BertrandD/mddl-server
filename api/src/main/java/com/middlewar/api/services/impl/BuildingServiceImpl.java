@@ -1,11 +1,11 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.BuildingDao;
+import com.middlewar.api.services.BuildingService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.instances.BuildingInstance;
-import com.middlewar.api.services.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

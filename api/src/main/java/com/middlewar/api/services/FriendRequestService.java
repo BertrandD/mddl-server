@@ -1,6 +1,5 @@
 package com.middlewar.api.services;
 
-import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
 

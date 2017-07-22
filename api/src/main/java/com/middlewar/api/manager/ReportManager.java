@@ -1,10 +1,11 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.exceptions.*;
+import com.middlewar.api.exceptions.BaseNotFoundException;
+import com.middlewar.api.exceptions.BaseNotOwnedException;
+import com.middlewar.api.exceptions.NoPlayerConnectedException;
+import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.api.exceptions.SpyReportCreationException;
 import com.middlewar.api.services.impl.SpyReportServiceImpl;
-import com.middlewar.api.util.response.Response;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.Report;

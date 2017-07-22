@@ -96,6 +96,7 @@ public class Base
     }
 
     /**
+     * TODO : We don't use MongoDB anymore so what ?
      * Base Stats Initializer
      * Use it when you want to serialize Base or use some stats
      *      Warning: @PostContruct does not work fine with Spring & MongoDB.

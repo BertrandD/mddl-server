@@ -5,7 +5,6 @@ import com.middlewar.api.services.impl.PrivateMessageServiceImpl;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.PrivateMessage;
