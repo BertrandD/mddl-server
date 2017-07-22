@@ -1,12 +1,12 @@
 package com.middlewar.api.auth;
 
+import com.middlewar.api.dao.DefaultRepository;
 import com.middlewar.core.model.Account;
-import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
  * @author LEBOC Philippe
  */
-public interface AccountRepository extends MongoRepository<Account, String> {
+public interface AccountRepository extends DefaultRepository<Account, String> {
     Account findByUsername(String username);
     Account findByToken(String token);
 }

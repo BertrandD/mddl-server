@@ -29,7 +29,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     public BuildingInstance findBy(Base base, String id) {
-        return buildingDao.findOneByIdAndBaseId(id, base);
+        return buildingDao.findOneByIdAndBaseId(id, base.getId());
     }
 
     public List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId) {
