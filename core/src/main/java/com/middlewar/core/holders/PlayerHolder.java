@@ -4,10 +4,13 @@ import com.middlewar.core.model.Player;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Embeddable;
+
 /**
  * @author LEBOC Philippe
  */
 @Data
+@Embeddable
 @NoArgsConstructor
 public class PlayerHolder {
     private String id;
