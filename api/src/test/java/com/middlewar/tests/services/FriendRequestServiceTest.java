@@ -65,7 +65,7 @@ public class FriendRequestServiceTest {
         Assertions.assertThat(request.getRequester().getId()).isEqualTo(_requester.getId());
         Assertions.assertThat(request.getRequested().getId()).isEqualTo(_requested.getId());
 
-        final FriendRequest request2 = friendRequestService.create(new PlayerHolder(_requester), new PlayerHolder(_requested), message);
+        final FriendRequest request2 = friendRequestService.create(_requester, _requested, message);
 
         Assertions.assertThat(request2).isNotNull();
         Assertions.assertThat(request2.getRequester().getId()).isEqualTo(_requester.getId());

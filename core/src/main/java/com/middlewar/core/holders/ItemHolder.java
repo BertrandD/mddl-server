@@ -9,7 +9,6 @@ import javax.persistence.Id;
  * @author LEBOC Philippe
  */
 @Data
-@Entity
 public class ItemHolder {
 
     @Id

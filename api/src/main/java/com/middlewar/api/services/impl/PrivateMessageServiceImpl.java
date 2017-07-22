@@ -2,6 +2,7 @@ package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.PrivateMessageDao;
 import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.PrivateMessage;
 import com.middlewar.api.services.PrivateMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
     private PrivateMessageDao privateMessageDao;
 
     @Override
-    public PrivateMessage create(PlayerHolder author, PlayerHolder receiver, String message) {
+    public PrivateMessage create(Player author, Player receiver, String message) {
         return privateMessageDao.save(new PrivateMessage(author, receiver, message));
     }
 

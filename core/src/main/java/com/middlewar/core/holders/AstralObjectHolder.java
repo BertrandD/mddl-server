@@ -12,8 +12,6 @@ import javax.persistence.Id;
  * @author bertrand.
  */
 @Data
-@NoArgsConstructor
-@Entity
 public class AstralObjectHolder {
     @Id
     private String id;

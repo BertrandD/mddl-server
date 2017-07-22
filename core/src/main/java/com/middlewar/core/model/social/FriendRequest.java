@@ -1,7 +1,7 @@
 package com.middlewar.core.model.social;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.serializer.FriendRequestSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
@@ -26,13 +26,13 @@ public class FriendRequest {
     @GeneratedValue
     private String id;
     @ManyToOne(cascade = CascadeType.ALL)
-    private PlayerHolder requester;
+    private Player requester;
     @ManyToOne(cascade = CascadeType.ALL)
-    private PlayerHolder requested;
+    private Player requested;
     private String message;
     private long requestDate;
 
-    public FriendRequest(PlayerHolder requester, PlayerHolder requested, String message) {
+    public FriendRequest(Player requester, Player requested, String message) {
         setRequester(requester);
         setRequested(requested);
         setMessage(message);

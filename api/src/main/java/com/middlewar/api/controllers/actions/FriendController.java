@@ -94,9 +94,9 @@ public class FriendController {
         final Player friend = playerService.findOne(request.getRequester().getId());
         if(friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        if(!player.addFriend(new PlayerHolder(friend))) return new Response(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
+        if(!player.addFriend(friend)) return new Response(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
 
-        friend.addFriend(new PlayerHolder(player));
+        friend.addFriend(player);
 
         friend.getFriendRequests().remove(request);
         player.getFriendRequests().remove(request);

@@ -2,8 +2,6 @@ package com.middlewar.core.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.holders.BaseHolder;
-import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.social.FriendRequest;
@@ -19,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -56,10 +55,10 @@ public class Player {
     @JsonBackReference
     protected PlayerInventory inventory;
 
-    @ElementCollection
-    private List<PlayerHolder> friends;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Player> friends;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<FriendRequest> friendRequests;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -90,7 +89,7 @@ public class Player {
         getBases().add(base);
     }
 
-    public boolean addFriend(PlayerHolder friend) {
+    public boolean addFriend(Player friend) {
         return !getFriends().contains(friend) && getFriends().add(friend);
     }
 
@@ -111,7 +110,7 @@ public class Player {
             planetScans.put(planet.getId(), new PlanetScan(planet));
         }
         final PlanetScan planetScan = planetScans.get(planet.getId());
-        planetScan.getBaseScanned().put(base.getId(), new BaseHolder(base));
+        planetScan.getBaseScanned().put(base.getId(), base);
         planetScan.setDate(TimeUtil.getCurrentTime());
     }
 
@@ -121,6 +120,10 @@ public class Player {
 
     public void setPlanetScans(Map<String, PlanetScan> planetScans) {
         this.planetScans = planetScans;
+    }
+
+    public boolean is(Player player) {
+        return player.getId().equalsIgnoreCase(this.getId());
     }
 
     @Override

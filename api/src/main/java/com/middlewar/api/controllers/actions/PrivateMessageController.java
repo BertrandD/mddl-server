@@ -72,7 +72,7 @@ public class PrivateMessageController {
         // TODO: Convert tag likes [Base:462323846], [Player:Shadow38], [Planet:4658545], ...
         // TODO: Check forbidden words (hating, ad, etc...)
 
-        final PrivateMessage pm = service.create(new PlayerHolder(player), new PlayerHolder(receiver), message);
+        final PrivateMessage pm = service.create(player, receiver, message);
         if(pm == null) return new Response(JsonResponseType.ERROR, "An error occurred. We can't send your private message.");
 
         return new Response(pm);

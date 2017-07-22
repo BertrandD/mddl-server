@@ -14,8 +14,6 @@ import javax.persistence.ManyToOne;
  * TODO: rename and move to holder
  */
 @Data
-@NoArgsConstructor
-@Entity
 public class BaseHolder {
     @Id
     private String id;

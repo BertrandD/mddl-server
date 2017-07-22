@@ -2,7 +2,7 @@ package com.middlewar.core.model.social;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.serializer.PrivateMessageSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
@@ -26,9 +26,9 @@ public class PrivateMessage {
     @GeneratedValue
     private String id;
     @ManyToOne
-    private PlayerHolder author;
+    private Player author;
     @ManyToOne
-    private PlayerHolder receiver;
+    private Player receiver;
     private long date;
     private String message;
     private boolean isRead;
@@ -36,7 +36,7 @@ public class PrivateMessage {
     @JsonIgnore
     private long readDate;
 
-    public PrivateMessage(PlayerHolder author, PlayerHolder receiver, String message) {
+    public PrivateMessage(Player author, Player receiver, String message) {
         setAuthor(author);
         setReceiver(receiver);
         setDate(TimeUtil.getCurrentTime());

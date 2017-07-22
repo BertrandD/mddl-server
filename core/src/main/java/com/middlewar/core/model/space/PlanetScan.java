@@ -1,7 +1,6 @@
 package com.middlewar.core.model.space;
 
-import com.middlewar.core.holders.AstralObjectHolder;
-import com.middlewar.core.holders.BaseHolder;
+import com.middlewar.core.model.Base;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,13 +27,13 @@ public class PlanetScan {
     private String id;
     private long date;
     @ManyToOne
-    private AstralObjectHolder planet;
+    private Planet planet;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Map<String, BaseHolder> baseScanned;
+    private Map<String, Base> baseScanned;
 
     public PlanetScan(Planet planet) {
         this.date = TimeUtil.getCurrentTime();
-        this.planet = new AstralObjectHolder(planet);
+        this.planet = planet;
         this.baseScanned = new HashMap<>();
     }
 }

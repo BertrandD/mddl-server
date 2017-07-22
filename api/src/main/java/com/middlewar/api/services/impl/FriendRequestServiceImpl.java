@@ -26,7 +26,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     @Override
     public FriendRequest create(Player requester, Player requested, String message) {
 
-        final FriendRequest request = friendRequestDao.save(new FriendRequest(new PlayerHolder(requester), new PlayerHolder(requested), message));
+        final FriendRequest request = friendRequestDao.save(new FriendRequest(requester, requested, message));
         if(request != null) {
             requested.addRequest(request); // to be able to abort request
             requester.addRequest(request); // to be able to accept/refuse request
@@ -40,25 +40,6 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     @Override
     public List<FriendRequest> findPlayerRequest(String playerId) {
         return friendRequestDao.findByRequestedId(playerId);
-    }
-
-    @Override
-    public FriendRequest create(PlayerHolder requester, PlayerHolder requested, String message) {
-
-        final FriendRequest request = friendRequestDao.save(new FriendRequest(requester, requested, message));
-        if(request != null) {
-            final Player playerRequester = playerService.findOne(requester.getId());
-            final Player playerRequested = playerService.findOne(requested.getId());
-
-            if(playerRequester == null || playerRequested == null) return null;
-
-            playerRequested.addRequest(request); // to be able to abort request
-            playerRequester.addRequest(request); // to be able to accept/refuse request
-            playerService.update(playerRequested);
-            playerService.update(playerRequester);
-        }
-
-        return request;
     }
 
     @Override

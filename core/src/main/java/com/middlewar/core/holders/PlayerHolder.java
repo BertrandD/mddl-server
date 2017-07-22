@@ -12,8 +12,6 @@ import javax.persistence.Id;
  * @author LEBOC Philippe
  */
 @Data
-@Entity
-@NoArgsConstructor
 public class PlayerHolder {
     @Id
     private String id;
