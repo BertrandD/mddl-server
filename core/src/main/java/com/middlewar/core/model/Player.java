@@ -57,8 +57,11 @@ public class Player {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Player> friends;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<FriendRequest> friendRequests;
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    private List<FriendRequest> emittedFriendRequests;
+
+    @OneToMany(mappedBy = "requested", cascade = CascadeType.ALL)
+    private List<FriendRequest> receivedFriendRequests;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
@@ -69,7 +72,8 @@ public class Player {
     public Player() {
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
-        setFriendRequests(new ArrayList<>());
+        setEmittedFriendRequests(new ArrayList<>());
+        setReceivedFriendRequests(new ArrayList<>());
         setReports(new ArrayList<>());
         setPlanetScans(new HashMap<>());
     }
@@ -79,7 +83,8 @@ public class Player {
         setAccount(account);
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
-        setFriendRequests(new ArrayList<>());
+        setEmittedFriendRequests(new ArrayList<>());
+        setReceivedFriendRequests(new ArrayList<>());
         setReports(new ArrayList<>());
         setPlanetScans(new HashMap<>());
     }
@@ -93,7 +98,10 @@ public class Player {
     }
 
     public boolean addRequest(FriendRequest request) {
-        return !getFriendRequests().contains(request) && getFriendRequests().add(request);
+        if (request.getRequester().is(this)) {
+            return !getEmittedFriendRequests().contains(request) && getEmittedFriendRequests().add(request);
+        } else
+            return request.getRequested().is(this) && !getEmittedFriendRequests().contains(request) && getEmittedFriendRequests().add(request);
     }
 
     public List<Report> getReports() {

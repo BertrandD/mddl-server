@@ -25,9 +25,9 @@ public class FriendRequest {
     @Id
     @GeneratedValue
     private String id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Player requester;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Player requested;
     private String message;
     private long requestDate;
