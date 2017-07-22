@@ -60,7 +60,9 @@ public class BaseManagerTest {
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException {
         MockitoAnnotations.initMocks(this);
         _playerOwner = new Player(null, "owner");
+        _playerOwner.setId("owner");
         _playerNotOwner = new Player(null, "toto");
+        _playerNotOwner.setId("toto");
         List<Player> players = new ArrayList<>();
         players.add(_playerOwner);
         _account = new Account("tt", "", new ArrayList<>(), "tt", null, players, _playerOwner.getId(), "");
