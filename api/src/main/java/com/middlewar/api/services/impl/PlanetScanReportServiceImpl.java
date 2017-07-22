@@ -7,9 +7,9 @@ import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.model.report.BaseReportEntry;
 import com.middlewar.core.model.report.PlanetScanReport;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.holders.BaseHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class PlanetScanReportServiceImpl implements PlanetScanReportService {
         owner.getReports().add(report);
 
         for (Base base : planet.getBases()) {
-            report.addEntry(base.getName(), new BaseHolder(base), ReportCategory.BASES);
+            report.addEntry(new BaseReportEntry(base), ReportCategory.BASES);
             owner.addPlanetScanned(planet, base);
         }
 

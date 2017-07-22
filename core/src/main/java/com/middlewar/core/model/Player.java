@@ -12,7 +12,6 @@ import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -64,7 +63,7 @@ public class Player {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
 
-    @ElementCollection
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Map<String, PlanetScan> planetScans;
 
     public Player() {
