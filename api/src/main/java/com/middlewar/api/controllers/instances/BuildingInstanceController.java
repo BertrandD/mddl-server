@@ -1,8 +1,11 @@
 package com.middlewar.api.controllers.instances;
 
+import com.middlewar.api.manager.BaseManager;
+import com.middlewar.api.manager.BuildingManager;
+import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
-import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.api.manager.BuildingTaskManager;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
@@ -37,148 +40,38 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/building", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class BuildingInstanceController {
 
     @Autowired
-    private BuildingService buildingService;
+    private ControllerManagerWrapper controllerManagerWrapper;
 
     @Autowired
-    private BuildingTaskService buildingTaskService;
+    private PlayerManager playerManager;
 
     @Autowired
-    private BuildingTaskManager buildingTaskManager;
+    private BaseManager baseManager;
 
     @Autowired
-    private PlayerService playerService;
+    private BuildingManager buildingManager;
 
-    @Autowired
-    private BaseService baseService;
-
-    @Autowired
-    private InventoryService inventoryService;
-
-    @Autowired
-    private ValidatorService validator;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public Response findAll(@AuthenticationPrincipal Account pAccount) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new Response(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
-        final Base base = player.getCurrentBase();
-        if(base == null) return new Response(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
-        return new Response(base.getBuildings());
+    @RequestMapping(value = "/me/base/{baseId}/building/{id}", method = RequestMethod.GET)
+    public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") String baseId, @PathVariable("id") String id) {
+        return controllerManagerWrapper.wrap(() -> buildingManager.getBuilding(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response getMyBuildingInformation(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new Response(pAccount.getLang(), SystemMessageId.PLAYER_NOT_FOUND);
-        final BuildingInstance building = buildingService.findBy(player.getCurrentBase(), id);
-        if(building == null) return new Response(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
-        building.setLang(pAccount.getLang());
-        return new Response(building);
+    @RequestMapping(value = "/me/base/{baseId}/building", method = RequestMethod.POST)
+    public Response create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") String baseId, @RequestParam(value = "building") String templateId) {
+        return controllerManagerWrapper.wrap(() -> buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Response create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "building") String templateId) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
-
-        final Base base = player.getCurrentBase();
-        if(base == null) return new Response(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
-        base.initializeStats();
-
-        final Building template = BuildingData.getInstance().getBuilding(templateId);
-        if(template == null) return new Response(JsonResponseType.ERROR, "Building " + templateId + " does not exist.");
-
-        final List<BuildingInstance> existingBuildings = buildingService.findByBaseAndBuildingId(base, templateId);
-        if(existingBuildings != null && existingBuildings.size() >= template.getMaxBuild()) return new Response(pAccount.getLang(), SystemMessageId.BUILDING_ALREADY_EXIST); // TODO: SysMsg MAX REACHED !
-
-        final BuildingInstance tempBuilding = new BuildingInstance(base, templateId);
-
-        final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final Response validate = validator.validateBuildingRequirements(base, tempBuilding, collector, pAccount.getLang());
-        if(validate != null) return validate;
-
-        final BuildingInstance building = buildingService.create(base, templateId);
-        if(building == null) return new Response(pAccount.getLang(), SystemMessageId.BUILDING_CANNOT_CREATE);
-
-        collector.forEach(inventoryService::consumeItem);
-
-        baseService.update(base);
-
-        buildingTaskManager.ScheduleUpgrade(building);
-
-        Response response = new Response(building);
-        response.addMeta("base", base);
-        return response;
+    @RequestMapping(value = "/me/base/{baseId}/building/{id}/upgrade", method = RequestMethod.PUT)
+    public Response upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") String baseId, @PathVariable("id") String id) {
+        return controllerManagerWrapper.wrap(() -> buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.PUT)
-    public Response upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        final Base base = player.getCurrentBase();
-
-        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
-        if(building == null){
-            return new Response(pAccount.getLang(), SystemMessageId.BUILDING_NOT_FOUND);
-        }
-
-        final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
-        final Building template = building.getTemplate();
-        if(building.getCurrentLevel() >= template.getMaxLevel() ||
-            (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())){
-            return new Response(pAccount.getLang(), SystemMessageId.BUILDING_MAX_LEVEL_REACHED);
-        }
-
-        final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final Response validate = validator.validateBuildingRequirements(base, building, collector, pAccount.getLang());
-        if(validate != null) return validate;
-
-        collector.forEach(inventoryService::consumeItem);
-
-        base.initializeStats();
-
-        buildingTaskManager.ScheduleUpgrade(building);
-        final List<BuildingTask> tasks = buildingTaskService.findByBuildingOrderByEndsAtAsc(building.getId());
-
-        Response response = new Response(building);
-        response.addMeta("queue", tasks);
-        response.addMeta("base", base);
-        return response;
-    }
-
-    @RequestMapping(value = "/{id}/attach/module/{module}")
-    public Response attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String buildingInstId, @PathVariable("module") String moduleId) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
-
-        final Base base = player.getCurrentBase();
-        if(base == null) return new Response(JsonResponseType.ERROR, SystemMessageId.BASE_NOT_FOUND);
-        base.initializeStats();
-
-        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(buildingInstId)).findFirst().orElse(null);
-        if(building == null) return new Response(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
-
-        final ItemInstance module = base.getBaseInventory().getItemsToMap().get(moduleId);
-        if(module == null) return new Response(JsonResponseType.ERROR, "You haven't module in your inventory !"); // TODO System message
-
-        //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new Response(JsonResponseType.ERROR, "Module already attached !"); // TODO System message
-
-        if(building.getModules().size() >= ((ModulableBuilding)building.getTemplate()).getMaxModules())
-            return new Response(JsonResponseType.ERROR, "Maximum modules reached !"); // TODO System Message
-
-        // TODO: MAKE A TEST !!!!
-        if(!((ModulableBuilding) building.getTemplate()).getModules().contains((Module)module.getTemplate()))
-            return new Response(JsonResponseType.ERROR, "The Module isn't allowed to be attached here !");
-
-        if(!inventoryService.consumeItem(module, 1))
-            return new Response(JsonResponseType.ERROR, "Incorrect items count.");
-
-        building.addModule(module.getTemplateId());
-        buildingService.update(building);
-
-        return new Response(base);
+    @RequestMapping(value = "/me/base/{baseId}/building/{id}/attach/module/{module}")
+    public Response attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") String baseId, @PathVariable("id") String buildingInstId, @PathVariable("module") String moduleId) {
+        return controllerManagerWrapper.wrap(() -> buildingManager.attachModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), buildingInstId, moduleId));
     }
 }

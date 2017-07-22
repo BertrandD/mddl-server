@@ -40,6 +40,7 @@ public final class SystemMessageId {
     // building
     public static final String BUILDING_CANNOT_CREATE = "building_cannot_create";
     public static final String BUILDING_NOT_FOUND = "building_not_found";
+    public static final String BUILDING_TEMPLATE_NOT_FOUND = "building_template_not_found";
     public static final String BUILDING_ALREADY_EXIST = "building_already_exist";
     public static final String BUILDING_MAX_LEVEL_REACHED = "building_max_level_reached";
 
@@ -62,4 +63,8 @@ public final class SystemMessageId {
     // internal
     public static final String INTERNAL_ERROR = "internal_error";
 
+    public static final String MODULE_NOT_IN_INVENTORY = "module_not_in_inventory";
+    public static final String MAXIMUM_MODULE_REACHED = "maximum_module_reached";
+    public static final String MODULE_NOT_ALLOWED_HERE = "module_not_allowed_here";
+    public static final String NOT_ENOUGH_MODULES = "not_enough_modules";
 }

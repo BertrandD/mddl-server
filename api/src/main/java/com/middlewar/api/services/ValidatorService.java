@@ -1,9 +1,9 @@
 package com.middlewar.api.services;
 
-import com.middlewar.api.util.response.Response;
+import com.middlewar.api.exceptions.BuildingRequirementMissingException;
+import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
-import com.middlewar.core.enums.Lang;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.ItemHolder;
 import com.middlewar.core.model.Base;
@@ -15,8 +15,6 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Item;
 import com.middlewar.api.services.impl.InventoryService;
-import com.middlewar.api.util.response.JsonResponseType;
-import com.middlewar.api.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,38 +34,33 @@ public class ValidatorService {
      * @param base the current base
      * @param building the current building to be building / upgraded
      * @param collector the collector that collecting items to be consumed
-     * @param lang
      * @return null if everythings is OK, Response with proper error message otherwise
      */
-    public Response validateBuildingRequirements(Base base, BuildingInstance building, HashMap<ItemInstance, Long> collector, Lang lang) {
+    public void validateBuildingRequirements(Base base, BuildingInstance building, HashMap<ItemInstance, Long> collector) throws BuildingRequirementMissingException, ItemRequirementMissingException {
         final Requirement requirements = building.getTemplate().getRequirements().get(building.getCurrentLevel()+1);
-        if(requirements == null) return null;
+        if(requirements == null) return;
 
         inventoryService.refresh(base);
 
         if(!validateBuildings(base, requirements)) {
-            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
+            throw new BuildingRequirementMissingException();
         }
 
         if(!validateItems(base, requirements, collector)){
-            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
+            throw new ItemRequirementMissingException();
         }
-
-        return null;
     }
 
-    public Response validateItemRequirements(Base base, Item item, HashMap<ItemInstance, Long> collector, Lang lang) {
+    public void validateItemRequirements(Base base, Item item, HashMap<ItemInstance, Long> collector) throws BuildingRequirementMissingException, ItemRequirementMissingException {
         inventoryService.refresh(base);
 
         if(!validateBuildings(base, item.getRequirement())) {
-            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_BUILDING_REQUIREMENT);
+            throw new BuildingRequirementMissingException();
         }
 
         if(!validateItems(base, item.getRequirement(), collector)){
-            return new Response(JsonResponseType.ERROR, lang, SystemMessageId.YOU_DONT_MEET_ITEM_REQUIREMENT);
+            throw new ItemRequirementMissingException();
         }
-
-        return null;
     }
 
     public boolean validateBuildings(Base base, Requirement requirements) {
