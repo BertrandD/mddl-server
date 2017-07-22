@@ -18,7 +18,7 @@ import javax.persistence.OneToOne;
 @Data
 @Entity
 @JsonSerialize(using = BaseInventorySerializer.class)
-public final class BaseInventory extends Inventory {
+public class BaseInventory extends Inventory {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JsonBackReference

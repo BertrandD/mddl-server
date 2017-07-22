@@ -8,6 +8,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.serializer.PlanetScanReportSerializer;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
  * @author bertrand.
  */
 @Entity
+@NoArgsConstructor
 @JsonSerialize(using = PlanetScanReportSerializer.class)
 public class PlanetScanReport extends Report {
 

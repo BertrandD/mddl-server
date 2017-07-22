@@ -8,6 +8,7 @@ import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.serializer.ItemInstanceSerializer;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
  * @author LEBOC Philippe
  */
 @Data
+@NoArgsConstructor
 @Entity
 @JsonSerialize(using = ItemInstanceSerializer.class)
 public class ItemInstance {
@@ -32,8 +34,6 @@ public class ItemInstance {
     @ManyToOne
     @JsonManagedReference
     private Inventory inventory;
-
-    public ItemInstance(){}
 
     public ItemInstance(String itemId, double count)
     {

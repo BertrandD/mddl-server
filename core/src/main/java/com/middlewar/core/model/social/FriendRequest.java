@@ -5,7 +5,9 @@ import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.FriendRequestSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,15 +18,16 @@ import javax.persistence.ManyToOne;
  */
 @Data
 @Entity
+@NoArgsConstructor
 @JsonSerialize(using = FriendRequestSerializer.class)
 public class FriendRequest {
 
     @Id
     @GeneratedValue
     private String id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private PlayerHolder requester;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private PlayerHolder requested;
     private String message;
     private long requestDate;

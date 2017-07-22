@@ -6,6 +6,7 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.serializer.PlayerInventorySerializer;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -15,16 +16,13 @@ import javax.persistence.OneToOne;
  */
 @Data
 @Entity
+@NoArgsConstructor
 @JsonSerialize(using = PlayerInventorySerializer.class)
-public final class PlayerInventory extends Inventory {
+public class PlayerInventory extends Inventory {
 
     @OneToOne
     @JsonBackReference
     private Player player;
-
-    public PlayerInventory() {
-        super();
-    }
 
     public PlayerInventory(Player player) {
         super();

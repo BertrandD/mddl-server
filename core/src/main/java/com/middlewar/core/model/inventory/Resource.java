@@ -8,9 +8,13 @@ import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.ResourceSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -27,8 +31,9 @@ import javax.persistence.OneToOne;
 @Data
 @ToString
 @Entity
+@NoArgsConstructor
 @JsonSerialize(using = ResourceSerializer.class)
-public final class Resource {
+public class Resource {
 
     @Id
     @GeneratedValue
@@ -38,11 +43,12 @@ public final class Resource {
     @JsonBackReference
     private Base base;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ItemInstance item;
 
     private long lastRefresh;
 
+    @Enumerated(EnumType.STRING)
     private Stats stat;
 
     public Resource(Base base, ItemInstance item) {

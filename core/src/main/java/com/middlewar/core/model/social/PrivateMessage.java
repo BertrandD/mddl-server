@@ -6,8 +6,8 @@ import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.serializer.PrivateMessageSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
  * @author LEBOC Philippe
  */
 @Data
+@NoArgsConstructor
 @Entity
 @JsonSerialize(using = PrivateMessageSerializer.class)
 public class PrivateMessage {

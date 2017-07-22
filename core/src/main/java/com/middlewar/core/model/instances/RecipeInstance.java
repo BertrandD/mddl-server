@@ -8,6 +8,7 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @Data
 @Entity
+@NoArgsConstructor
 public class RecipeInstance {
 
     @Id
@@ -38,8 +40,6 @@ public class RecipeInstance {
     private List<String> modules;
     @ElementCollection
     private List<String> weapons;
-
-    public RecipeInstance(){}
 
     public RecipeInstance(String name, Player owner, String structureId, List<String> cargos, List<String> engines, List<String> modules, List<String> technologies, List<String> weapons){
         setName(name);
