@@ -1,8 +1,13 @@
 package com.middlewar.api.controllers.buildings;
 
+import com.middlewar.api.manager.BaseManager;
+import com.middlewar.api.manager.BuildingManager;
+import com.middlewar.api.manager.FactoryManager;
+import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -29,65 +34,32 @@ import java.util.HashMap;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/factory", produces = "application/json")
+@RequestMapping(value = "", produces = "application/json")
 public class ItemFactoryController {
 
-    private static final String MODULE_FACTORY = "module_factory";
-    private static final String STRUCTURE_FACTORY = "structure_factory";
+    @Autowired
+    private PlayerManager playerManager;
 
     @Autowired
-    private PlayerService playerService;
+    private BaseManager baseManager;
 
     @Autowired
-    private InventoryService inventoryService;
+    private FactoryManager factoryManager;
 
     @Autowired
-    private ValidatorService validator;
+    private ControllerManagerWrapper controllerManagerWrapper;
 
-    @RequestMapping(value = "/{factory}/create/{id}", method = RequestMethod.POST)
-    public Response createItem(@AuthenticationPrincipal Account pAccount,
-                               @PathVariable(value = "factory") String factoryType,
-                               @PathVariable(value = "id") String itemId) {
+    @RequestMapping(value = "/me/base/{baseId}/factory/module/create/{id}", method = RequestMethod.POST)
+    public Response createModule(@AuthenticationPrincipal Account pAccount,
+                                 @PathVariable(value = "baseId") String baseId,
+                                 @PathVariable(value = "id") String itemId) {
+        return controllerManagerWrapper.wrap(() -> factoryManager.createModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), itemId));
+    }
 
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
-
-        final Base base = player.getCurrentBase();
-        if(base == null) return new Response(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
-
-        base.initializeStats();
-
-        // TODO : I'm sure we can improve this...
-        Item item = null;
-        String buildingType = "";
-        switch (factoryType) {
-            case "module":
-                item = ItemData.getInstance().getModule(itemId);
-                buildingType = MODULE_FACTORY;
-                break;
-            case "structure":
-                item = ItemData.getInstance().getStructure(itemId);
-                buildingType = STRUCTURE_FACTORY;
-                break;
-        }
-        if(item == null) return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
-
-        final String finalBuildingType = buildingType;
-        final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getBuildingId().equals(finalBuildingType)).findFirst().orElse(null);
-        if(factory == null) return new Response(JsonResponseType.ERROR, SystemMessageId.BUILDING_NOT_FOUND);
-
-        final ItemFactory factoryTemplate = (ItemFactory)factory.getTemplate();
-        if(!factoryTemplate.hasItem(factory.getCurrentLevel(), item.getItemId())) return new Response(JsonResponseType.ERROR, "Module not unlocked !");
-
-        final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        final Response faillure = validator.validateItemRequirements(base, item, collector, pAccount.getLang());
-        if(faillure != null) return faillure;
-
-        collector.forEach(inventoryService::consumeItem);
-
-        final ItemInstance itemInstance = inventoryService.addItem(base.getBaseInventory(), item.getItemId(), 1);
-        if(itemInstance == null) return new Response(JsonResponseType.ERROR, "Item cannot be created.");
-
-        return new Response(base);
+    @RequestMapping(value = "/me/base/{baseId}/factory/structure/create/{id}", method = RequestMethod.POST)
+    public Response createStructure(@AuthenticationPrincipal Account pAccount,
+                                 @PathVariable(value = "baseId") String baseId,
+                                 @PathVariable(value = "id") String itemId) {
+        return controllerManagerWrapper.wrap(() -> factoryManager.createStructure(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), itemId));
     }
 }

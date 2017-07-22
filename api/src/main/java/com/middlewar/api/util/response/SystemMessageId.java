@@ -48,6 +48,7 @@ public final class SystemMessageId {
     public static final String ITEM_NOT_FOUND = "item_not_found";
     public static final String ITEM_NOT_FOUND_IN_INVENTORY = "item_not_found_in_inventory";
     public static final String ITEM_CANNOT_CREATE = "item_cannot_create";
+    public static final String ITEM_NOT_UNLOCKED = "item_not_unlocked";
 
     // inventory
     public static final String INVENTORY_NOT_FOUND = "inventory_not_found";
