@@ -36,12 +36,12 @@ public class PlayerServiceImpl implements PlayerService {
         final Player player = dao.save(new Player(account, name));
 
         // Update database account
-        playerAccount.addPlayer(player.getId());
+        playerAccount.addPlayer(player);
         playerAccount.setCurrentPlayer(player.getId());
         accountService.update(playerAccount);
 
         // update current AuthenticationPrincipal
-        account.addPlayer(player.getId());
+        account.addPlayer(player);
         account.setCurrentPlayer(player.getId());
 
         playerInventoryService.create(player);

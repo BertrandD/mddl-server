@@ -45,8 +45,8 @@ public class PlayerManagerTest {
         _player = new Player();
         _player.setId("yoloo");
         _player.setName("yoloo");
-        List<String> players = new ArrayList<>();
-        players.add(_player.getId());
+        List<Player> players = new ArrayList<>();
+        players.add(_player);
         _account = new Account("tt", "", new ArrayList<>(), "tt", null, players, _player.getId(), "");
         when(playerService.findOne("yoloo")).thenReturn(_player);
     }
@@ -98,6 +98,7 @@ public class PlayerManagerTest {
     @Test
     public void shouldReturnCreatedPlayer() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
         final Player player2 = new Player(_account, "toto");
+        player2.setId("tt");
         when( playerService.create(_account, "toto")).thenReturn(player2);
         final Player player1 = playerManager.createForAccount(_account, "toto");
         Assertions.assertThat(player1).isNotNull();

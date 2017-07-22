@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Player;
 
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ public class AccountSerializer extends JsonSerializer<Account> {
         gen.writeObjectField("authorities", value.getAuthorities());
         if(value.getCurrentPlayer() != null) gen.writeStringField("currentPlayer", value.getCurrentPlayer());
         gen.writeArrayFieldStart("players");
-        for(String p : value.getPlayers()) gen.writeString(p);
+        for(Player p : value.getPlayers()) gen.writeString(p.getId());
         gen.writeEndArray();
         gen.writeEndObject();
     }

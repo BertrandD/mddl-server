@@ -61,8 +61,8 @@ public class BaseManagerTest {
         MockitoAnnotations.initMocks(this);
         _playerOwner = new Player(null, "owner");
         _playerNotOwner = new Player(null, "toto");
-        List<String> players = new ArrayList<>();
-        players.add(_playerOwner.getId());
+        List<Player> players = new ArrayList<>();
+        players.add(_playerOwner);
         _account = new Account("tt", "", new ArrayList<>(), "tt", null, players, _playerOwner.getId(), "");
         _base = new Base("yoloo", _playerOwner, null);
         _base.setId("yoloo");

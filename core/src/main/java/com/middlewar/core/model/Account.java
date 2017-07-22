@@ -9,11 +9,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,8 +41,8 @@ public class Account implements UserDetails
     private String id;
     private Lang lang;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> players;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Player> players;
     private String currentPlayer;
     private String token;
     private String password;
@@ -52,7 +54,7 @@ public class Account implements UserDetails
     private boolean credentialsNonExpired;
     private boolean enabled;
 
-    public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, String id, Lang lang, List<String> players, String currentPlayer, String token)
+    public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, String id, Lang lang, List<Player> players, String currentPlayer, String token)
     {
         setId(id);
         setUsername(username);
@@ -64,7 +66,7 @@ public class Account implements UserDetails
         setToken(token);
     }
 
-    public void addPlayer(String player){
+    public void addPlayer(Player player){
         getPlayers().add(player);
     }
 
