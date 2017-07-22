@@ -1,10 +1,10 @@
 package com.middlewar.api.controllers.statics;
 
 import com.middlewar.api.util.response.Response;
-import com.middlewar.core.model.Account;
-import com.middlewar.core.data.xml.BuildingData;
-import com.middlewar.core.model.buildings.Building;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.data.xml.BuildingData;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.model.buildings.Building;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;

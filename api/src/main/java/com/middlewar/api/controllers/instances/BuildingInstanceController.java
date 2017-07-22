@@ -6,23 +6,6 @@ import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
-import com.middlewar.api.manager.BuildingTaskManager;
-import com.middlewar.core.model.Base;
-import com.middlewar.core.model.Player;
-import com.middlewar.core.model.buildings.Building;
-import com.middlewar.core.model.buildings.ModulableBuilding;
-import com.middlewar.core.model.instances.BuildingInstance;
-import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.items.Module;
-import com.middlewar.core.model.tasks.BuildingTask;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.BuildingTaskService;
-import com.middlewar.api.services.impl.InventoryService;
-import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.util.response.JsonResponseType;
-import com.middlewar.api.util.response.SystemMessageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author LEBOC Philippe
