@@ -89,7 +89,7 @@ public class AI {
             base = baseManager.getCurrentBaseOfPlayer(player);
         } catch (PlayerHasNoBaseException e) {
             System.out.println("Player " + player.getName() + " has no base. Let's create it !");
-            base = baseManager.createForAccount(account, AI_BASE_NAME);
+            base = baseManager.create(player, AI_BASE_NAME);
         }
         return base;
     }
