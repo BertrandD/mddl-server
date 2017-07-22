@@ -117,7 +117,7 @@ public class WorldData {
             return null;
         }
 
-        return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt));
+        return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt-1));
     }
 
     public static WorldData getInstance() {

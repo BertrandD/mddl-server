@@ -4,12 +4,18 @@ import com.middlewar.core.model.space.AstralObject;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * @author bertrand.
  */
 @Data
 @NoArgsConstructor
+@Entity
 public class AstralObjectHolder {
+    @Id
     private String id;
     private String name;
     private long nbStatellites;

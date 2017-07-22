@@ -2,6 +2,7 @@ package com.middlewar.core.interfaces;
 
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.inventory.Resource;
 
 /**
@@ -22,7 +23,7 @@ public interface IInventoryService {
      * @param amount
      * @return
      */
-    ItemInstance addItem(final IInventory inventory, final String templateId, final long amount);
+    ItemInstance addItem(final Inventory inventory, final String templateId, final long amount);
 
     /**
      * @param resource

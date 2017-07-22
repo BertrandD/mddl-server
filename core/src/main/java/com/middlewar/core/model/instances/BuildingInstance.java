@@ -12,6 +12,7 @@ import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
 import org.springframework.data.annotation.Transient;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,6 +39,8 @@ public class BuildingInstance {
     private int currentLevel;
     private long endsAt;
     private long startedAt;
+
+    @ElementCollection
     private List<String> modules;
 
     @Transient

@@ -6,12 +6,17 @@ import com.middlewar.core.enums.AstralStat;
 import com.middlewar.core.serializer.AstralObjectSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,14 +27,15 @@ import java.util.List;
  */
 @Data
 @JsonSerialize(using = AstralObjectSerializer.class)
+@NoArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AstralObject {
 
     @Id
     @GeneratedValue
     private String id;
 
-    @Id
     private String name;
 
     private HashMap<AstralStat, Double> stats;
@@ -44,7 +50,7 @@ public abstract class AstralObject {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AstralObject> satellites;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private AstralObject parent;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
-import com.middlewar.core.interfaces.IInventory;
+import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.serializer.ItemInstanceSerializer;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class ItemInstance {
 
     @ManyToOne
     @JsonManagedReference
-    private IInventory inventory;
+    private Inventory inventory;
 
     public ItemInstance(){}
 
@@ -42,7 +42,7 @@ public class ItemInstance {
         setCount(count);
     }
 
-    public ItemInstance(IInventory inventory, String itemId, double count)
+    public ItemInstance(Inventory inventory, String itemId, double count)
     {
         setTemplateId(itemId);
         setType(getTemplate().getType());

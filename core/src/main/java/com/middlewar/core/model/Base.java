@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Data
 @JsonSerialize(using = BaseSerializer.class)
 @Entity
-public final class Base
+public class Base
 {
     @Id
     @GeneratedValue

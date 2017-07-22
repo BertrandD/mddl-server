@@ -21,7 +21,7 @@ public class FleetServiceImpl implements FleetService {
 
     @Override
     public Fleet create(Coordinates departure, Coordinates arrival, VehicleMission mission) {
-        return fleetDao.insert(new Fleet(arrival, departure, mission));
+        return fleetDao.save(new Fleet(arrival, departure, mission));
     }
 
     @Override

@@ -21,7 +21,7 @@ public class BaseInventoryServiceImpl implements BaseInventoryService{
 
     @Override
     public BaseInventory create(Base base) {
-        return baseInventoryDao.insert(new BaseInventory(base));
+        return baseInventoryDao.save(new BaseInventory(base));
     }
 
     @Override

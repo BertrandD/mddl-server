@@ -20,7 +20,7 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
 
     @Override
     public PrivateMessage create(PlayerHolder author, PlayerHolder receiver, String message) {
-        return privateMessageDao.insert(new PrivateMessage(author, receiver, message));
+        return privateMessageDao.save(new PrivateMessage(author, receiver, message));
     }
 
     @Override

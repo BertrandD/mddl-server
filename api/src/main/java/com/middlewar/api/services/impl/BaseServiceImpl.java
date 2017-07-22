@@ -41,7 +41,7 @@ public class BaseServiceImpl implements BaseService {
         player.setCurrentBase(base);
 
         // Create new objects
-        base = baseDao.insert(base);
+        base = baseDao.save(base);
         final BaseInventory inventory = baseInventoryService.create(base);
 
         base.setBaseInventory(inventory);

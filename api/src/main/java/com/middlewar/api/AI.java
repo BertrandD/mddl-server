@@ -34,7 +34,7 @@ public class AI {
     final String AI_BASE_NAME = "Home";
     final String AI_PASSWD = "test";
 
-    @PostConstruct
+//    @PostConstruct
     public void init(){
         System.out.println("Yolooo");
         try {

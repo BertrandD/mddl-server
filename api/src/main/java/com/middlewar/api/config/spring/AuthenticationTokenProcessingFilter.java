@@ -59,8 +59,6 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             } else {
                 logger.info("Invalid token !");
             }
-        } else {
-            logger.info("Token is null");
         }
         // continue thru the filter chain
         chain.doFilter(request, response);

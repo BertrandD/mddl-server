@@ -5,14 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@Embeddable
+@Entity
 @NoArgsConstructor
 public class PlayerHolder {
+    @Id
     private String id;
     private String name;
 

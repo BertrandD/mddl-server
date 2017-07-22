@@ -25,7 +25,7 @@ public class BuildingServiceImpl implements BuildingService {
         final Building template = BuildingData.getInstance().getBuilding(buildingId);
         if(template == null) return null;
 
-        return buildingDao.insert(new BuildingInstance(base, buildingId));
+        return buildingDao.save(new BuildingInstance(base, buildingId));
     }
 
     public BuildingInstance findBy(Base base, String id) {

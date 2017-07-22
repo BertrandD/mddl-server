@@ -12,11 +12,13 @@ import lombok.Data;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
+@MappedSuperclass
 public abstract class Vehicle implements IShip {
 
     @Id

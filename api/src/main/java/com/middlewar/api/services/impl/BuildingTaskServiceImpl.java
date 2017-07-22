@@ -21,7 +21,7 @@ public class BuildingTaskServiceImpl implements BuildingTaskService {
 
     @Override
     public BuildingTask create(BuildingInstance inst, long timestamp, int level) {
-        return buildingTaskDao.insert(new BuildingTask(inst.getBase(), inst, timestamp, level));
+        return buildingTaskDao.save(new BuildingTask(inst.getBase(), inst, timestamp, level));
     }
 
     public BuildingTask findFirstByOrderByEndsAtAsc() {

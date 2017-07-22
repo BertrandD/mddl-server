@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// is accessible from the login page without authentication
 		web
 			.ignoring()
-			.antMatchers("/v2/api-docs", "**/configuration/ui/**", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**")
+			.antMatchers("/v2/api-docs", "**/configuration/ui/**", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/console/*")
 			.antMatchers("/static/**");
 	}
 

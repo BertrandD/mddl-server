@@ -7,6 +7,7 @@ import lombok.Data;
 import org.apache.log4j.Logger;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import java.util.HashMap;
 
 /**
@@ -17,6 +18,7 @@ import java.util.HashMap;
 @JsonSerialize(using = ObjectStatSerializer.class)
 public class ObjectStat {
 
+    @Transient
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
     private HashMap<Stats, Double> stats;

@@ -48,7 +48,7 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public synchronized ItemInstance addItem(final IInventory inventory, final String templateId, final long amount) {
+    public synchronized ItemInstance addItem(final Inventory inventory, final String templateId, final long amount) {
 
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
         if(template == null) return null;

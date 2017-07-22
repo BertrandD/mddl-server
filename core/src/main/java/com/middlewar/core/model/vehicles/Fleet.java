@@ -14,6 +14,7 @@ import org.springframework.data.annotation.Transient;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,9 @@ public class Fleet {
 
     @Id
     private String id;
+    @ManyToOne
     private Coordinates departure;
+    @ManyToOne
     private Coordinates arrival;
     private VehicleMission mission;
 

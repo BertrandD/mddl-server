@@ -33,7 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
         final Account playerAccount = accountService.findOne(account.getId());
         if(playerAccount == null) return null;
 
-        final Player player = dao.insert(new Player(account, name));
+        final Player player = dao.save(new Player(account, name));
 
         // Update database account
         playerAccount.addPlayer(player.getId());

@@ -10,6 +10,7 @@ import com.middlewar.core.serializer.SpyReportSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 /**
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 @JsonSerialize(using = SpyReportSerializer.class)
 @Data
 @NoArgsConstructor
+@Entity
 public class SpyReport extends Report{
 
     @ManyToOne

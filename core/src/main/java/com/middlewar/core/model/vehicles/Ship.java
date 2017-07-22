@@ -12,6 +12,7 @@ import com.middlewar.core.model.items.Weapon;
 import com.middlewar.core.serializer.ShipSerializer;
 import lombok.Data;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,13 @@ import java.util.List;
 public class Ship extends Vehicle {
 
     private String structureId;
+    @ElementCollection
     private List<String> cargoIds;
+    @ElementCollection
     private List<String> engineIds;
+    @ElementCollection
     private List<String> moduleIds;
+    @ElementCollection
     private List<String> weaponIds;
 
     public Ship() {

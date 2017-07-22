@@ -42,7 +42,7 @@ public class PlanetScanReportServiceImpl implements PlanetScanReportService {
             owner.addPlanetScanned(planet, base);
         }
 
-        planetScanReportDao.insert(report);
+        planetScanReportDao.save(report);
         playerDao.save(owner);
         return report;
     }

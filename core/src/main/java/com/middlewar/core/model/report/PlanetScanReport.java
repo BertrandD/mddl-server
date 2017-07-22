@@ -9,11 +9,13 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.serializer.PlanetScanReportSerializer;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 /**
  * @author bertrand.
  */
+@Entity
 @JsonSerialize(using = PlanetScanReportSerializer.class)
 public class PlanetScanReport extends Report {
 

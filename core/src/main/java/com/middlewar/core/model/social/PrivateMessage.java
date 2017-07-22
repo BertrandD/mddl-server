@@ -7,9 +7,11 @@ import com.middlewar.core.serializer.PrivateMessageSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * @author LEBOC Philippe
@@ -22,7 +24,9 @@ public class PrivateMessage {
     @Id
     @GeneratedValue
     private String id;
+    @ManyToOne
     private PlayerHolder author;
+    @ManyToOne
     private PlayerHolder receiver;
     private long date;
     private String message;

@@ -47,7 +47,7 @@ public class SpyReportServiceImpl implements SpyReportService {
             report.addEntry(resource.getItem().getTemplateId(), (int)resource.getItem().getCount(), ReportCategory.RESOURCES);
         }
 
-        spyReportDao.insert(report);
+        spyReportDao.save(report);
         playerDao.save(owner);
         return report;
     }

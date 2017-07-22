@@ -3,118 +3,99 @@ package com.middlewar.core.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.serializer.AccountSerializer;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Assert;
 
-import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author LEBOC Philippe
  */
+@Entity
+@Data
+@NoArgsConstructor
 @JsonSerialize(using = AccountSerializer.class)
-public class Account extends User
+public class Account implements UserDetails
 {
     @Id
+    @GeneratedValue
     private String id;
     private Lang lang;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> players;
-
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private String currentPlayer;
     private String token;
+    private String password;
+    private String username;
+    @ElementCollection
+    private Set<GrantedAuthority> authorities;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
 
-    public Account(String username, String password, Collection<GrantedAuthority> authorities, String id, Lang lang, List<String> players, String currentPlayer, String token)
+    public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, String id, Lang lang, List<String> players, String currentPlayer, String token)
     {
-        super(username, password, authorities);
         setId(id);
+        setUsername(username);
+        setPassword(password);
         setLang(lang);
+        setAuthorities(Collections.unmodifiableSet(sortAuthorities(authorities)));
         setPlayers(players == null ? new ArrayList<>() : players);
         setCurrentPlayer(currentPlayer);
         setToken(token);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Lang getLang() {
-        return lang;
-    }
-
-    public void setLang(Lang lang) {
-        this.lang = lang;
-    }
-
-    public List<String> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<String> players) {
-        this.players = players;
     }
 
     public void addPlayer(String player){
         getPlayers().add(player);
     }
 
-    public String getCurrentPlayer() {
-        return currentPlayer;
+    private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
+        SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet(new AuthorityComparator());
+        Iterator var2 = authorities.iterator();
+
+        while(var2.hasNext()) {
+            GrantedAuthority grantedAuthority = (GrantedAuthority)var2.next();
+            Assert.notNull(grantedAuthority, "GrantedAuthority list cannot contain any null elements");
+            sortedAuthorities.add(grantedAuthority);
+        }
+
+        return sortedAuthorities;
     }
 
-    public void setCurrentPlayer(String currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
+    private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
+        private static final long serialVersionUID = 420L;
 
-    public String getToken() {
-        return token;
-    }
+        private AuthorityComparator() {
+        }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Collection<GrantedAuthority> getAuthorities() {
-        return super.getAuthorities();
-    }
-
-    public String getPassword() {
-        return super.getPassword();
-    }
-
-    public String getUsername() {
-        return super.getUsername();
-    }
-
-    public boolean isEnabled() {
-        return super.isEnabled();
-    }
-
-    public boolean isAccountNonExpired() {
-        return super.isAccountNonExpired();
-    }
-
-    public boolean isAccountNonLocked() {
-        return super.isAccountNonLocked();
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return super.isCredentialsNonExpired();
-    }
-
-    public void eraseCredentials() {
-        super.eraseCredentials();
+        public int compare(GrantedAuthority g1, GrantedAuthority g2) {
+            if (g2.getAuthority() == null) {
+                return -1;
+            } else {
+                return g1.getAuthority() == null ? 1 : g1.getAuthority().compareTo(g2.getAuthority());
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import lombok.Data;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -29,9 +30,13 @@ public class RecipeInstance {
     @ManyToOne
     private Player owner;
     private String structureId;
+    @ElementCollection
     private List<String> cargos;
+    @ElementCollection
     private List<String> engines;
+    @ElementCollection
     private List<String> modules;
+    @ElementCollection
     private List<String> weapons;
 
     public RecipeInstance(){}

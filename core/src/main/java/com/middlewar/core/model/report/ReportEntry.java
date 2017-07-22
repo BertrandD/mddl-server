@@ -2,6 +2,7 @@ package com.middlewar.core.model.report;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Transient;
 
 /**
  * @author bertrand.
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ReportEntry {
 
     private String name;
+    @Transient
     private Object value;
 
     public ReportEntry(String name, Object value) {
