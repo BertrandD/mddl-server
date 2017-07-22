@@ -1,5 +1,6 @@
 package com.middlewar.api.controllers;
 
+import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
@@ -23,14 +24,17 @@ public class ReportController {
 
     private final ControllerManagerWrapper controllerManagerWrapper;
 
+    private final PlayerManager playerManager;
+
     @Autowired
-    public ReportController(ReportManager reportManager, ControllerManagerWrapper controllerManagerWrapper) {
+    public ReportController(ReportManager reportManager, ControllerManagerWrapper controllerManagerWrapper, PlayerManager playerManager) {
         this.reportManager = reportManager;
         this.controllerManagerWrapper = controllerManagerWrapper;
+        this.playerManager = playerManager;
     }
 
     @RequestMapping(value = "/reports", method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount){
-        return controllerManagerWrapper.wrap(() -> reportManager.getAllReportsOfCurrentPlayer(pAccount));
+        return controllerManagerWrapper.wrap(() -> reportManager.getAllReportsOfCurrentPlayer(playerManager.getCurrentPlayerForAccount(pAccount)));
     }
 }

@@ -25,24 +25,28 @@ public class ReportManager {
     private BaseManager baseManager;
 
     @Autowired
-    private PlayerManager playerManager;
-
-    @Autowired
     private SpyReportServiceImpl spyReportServiceImpl;
 
-    public List<Report> getAllReportsOfCurrentPlayer(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
-        final Player player = playerManager.getCurrentPlayerForAccount(account);
+    public List<Report> getAllReportsOfCurrentPlayer(Player player) throws NoPlayerConnectedException, PlayerNotFoundException {
         player.getReports().sort(Collections.reverseOrder());
         return player.getReports();
 
     }
 
-    public SpyReport spy(Account account, String baseId) throws BaseNotFoundException, NoPlayerConnectedException, PlayerNotFoundException, SpyReportCreationException {
-        final Base baseTarget = baseManager.getBase(baseId);
+    /**
+     * @param player owner of the spy report
+     * @param baseId source of the spy mission
+     * @param target target of the spy mission
+     * @return the spy report
+     * @throws BaseNotFoundException if one of the given base id is not found
+     * @throws BaseNotOwnedException if the source base is now owned by the given player
+     * @throws SpyReportCreationException if something went wrong
+     */
+    public SpyReport spy(Player player, String baseId, String target) throws BaseNotFoundException, BaseNotOwnedException, SpyReportCreationException {
+        final Base base = baseManager.getOwnedBase(baseId, player);
+        final Base baseTarget = baseManager.getBase(target);
 
-        final Player player = playerManager.getCurrentPlayerForAccount(account);
-
-        final SpyReport report = spyReportServiceImpl.create(player, player.getCurrentBase(), baseTarget);
+        final SpyReport report = spyReportServiceImpl.create(player, base, baseTarget);
         if(report == null) throw new SpyReportCreationException();
 
         return report;

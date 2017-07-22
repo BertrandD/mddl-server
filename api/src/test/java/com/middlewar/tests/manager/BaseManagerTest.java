@@ -80,7 +80,7 @@ public class BaseManagerTest {
 
     @Test
     public void shouldReturnAllBases() throws BaseNotFoundException, NoPlayerConnectedException, PlayerNotFoundException {
-        final List<Base> bases = baseManager.findAllBaseOfCurrentPlayer(_account);
+        final List<Base> bases = baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(_account));
         Assertions.assertThat(bases).isNotNull();
         Assertions.assertThat(bases.size()).isEqualTo(2);
     }
@@ -99,7 +99,7 @@ public class BaseManagerTest {
 
     @Test(expected = BaseNotOwnedException.class)
     public void shouldCheckOwner() throws BaseNotFoundException, BaseNotOwnedException {
-        baseManager.getBase("yoloo", _playerNotOwner);
+        baseManager.getOwnedBase("yoloo", _playerNotOwner);
     }
 
     @Test

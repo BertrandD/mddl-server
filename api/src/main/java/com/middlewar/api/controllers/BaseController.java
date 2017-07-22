@@ -1,6 +1,7 @@
 package com.middlewar.api.controllers;
 
 import com.middlewar.api.manager.BaseManager;
+import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
@@ -20,40 +21,43 @@ public class BaseController {
 
     private final BaseManager baseManager;
 
+    private final PlayerManager playerManager;
+
     private final ReportManager reportManager;
 
     private final ControllerManagerWrapper controllerManagerWrapper;
 
     @Autowired
-    public BaseController(BaseManager baseManager, ReportManager reportManager, ControllerManagerWrapper controllerManagerWrapper) {
+    public BaseController(BaseManager baseManager, PlayerManager playerManager, ReportManager reportManager, ControllerManagerWrapper controllerManagerWrapper) {
         this.baseManager = baseManager;
+        this.playerManager = playerManager;
         this.reportManager = reportManager;
         this.controllerManagerWrapper = controllerManagerWrapper;
     }
 
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount){
-        return controllerManagerWrapper.wrap(() -> baseManager.findAllBaseOfCurrentPlayer(pAccount));
+        return controllerManagerWrapper.wrap(() -> baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)));
     }
 
     @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
     public Response findOne(@AuthenticationPrincipal Account account, @PathVariable("id") String id) {
-        return controllerManagerWrapper.wrap(() -> baseManager.getBaseWithBuildingQueueOfCurrentPlayer(account, id));
+        return controllerManagerWrapper.wrap(() -> baseManager.getBaseWithBuildingQueue(playerManager.getCurrentPlayerForAccount(account), id));
     }
 
-    @RequestMapping(value = "/base", method = RequestMethod.POST)
+    @RequestMapping(value = "/me/base", method = RequestMethod.POST)
     public Response create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
-        return controllerManagerWrapper.wrap(() -> baseManager.createForAccount(pAccount, name));
+        return controllerManagerWrapper.wrap(() -> baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name));
     }
 
-    @RequestMapping(value = "/base/buildables", method = RequestMethod.GET)
-    public Response calc(@AuthenticationPrincipal Account pAccount) {
-        return controllerManagerWrapper.wrap(() -> baseManager.getBuildableBuildingsOfCurrentBase(pAccount));
+    @RequestMapping(value = "/me/base/{id}/buildables", method = RequestMethod.GET)
+    public Response calc(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
+        return controllerManagerWrapper.wrap(() -> baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id));
     }
 
-    @RequestMapping(value = "/base/spy/{id}", method = RequestMethod.GET)
-    public Response spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
-        return controllerManagerWrapper.wrap(() -> reportManager.spy(pAccount, id));
+    @RequestMapping(value = "/me/base/{id}/spy/{target}", method = RequestMethod.GET)
+    public Response spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id, @PathVariable("id") String target) {
+        return controllerManagerWrapper.wrap(() -> reportManager.spy(playerManager.getCurrentPlayerForAccount(pAccount), id, target));
 
     }
 }
