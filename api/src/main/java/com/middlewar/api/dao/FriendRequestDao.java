@@ -7,6 +7,6 @@ import java.util.List;
 /**
  * @author Leboc Philippe.
  */
-public interface FriendRequestDao extends DefaultRepository<FriendRequest, String> {
-    List<FriendRequest> findByRequestedId(String id);
+public interface FriendRequestDao extends DefaultRepository<FriendRequest, Long> {
+    List<FriendRequest> findByRequestedId(long id);
 }

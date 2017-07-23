@@ -15,7 +15,7 @@ public class FriendRequestSerializer extends JsonSerializer<FriendRequest> {
     @Override
     public void serialize(FriendRequest value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
-        gen.writeStringField("id", value.getId());
+        gen.writeNumberField("id", value.getId());
         gen.writeObjectField("requester", value.getRequester());
         gen.writeObjectField("requested", value.getRequested());
         gen.writeStringField("message", value.getMessage());

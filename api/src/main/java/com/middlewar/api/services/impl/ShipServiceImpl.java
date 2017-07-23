@@ -41,7 +41,7 @@ public class ShipServiceImpl implements ShipService {
     }
 
     @Override
-    public Ship findOne(String id) {
+    public Ship findOne(long id) {
         return shipDao.findOne(id);
     }
 

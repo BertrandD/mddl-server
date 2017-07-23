@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Data
 public class AstralObjectHolder {
     @Id
-    private String id;
+    private long id;
     private String name;
     private long nbStatellites;
     

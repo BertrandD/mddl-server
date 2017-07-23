@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface DefaultService<T> {
 
-    T findOne(String id);
+    T findOne(long id);
 
     List<T> findAll();
 

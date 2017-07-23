@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class BuildingInstanceHolder extends BuildingHolder {
 
-    private String instanceId;
+    private long instanceId;
 
-    public BuildingInstanceHolder(String id, String templateId, int level) {
+    public BuildingInstanceHolder(long id, String templateId, int level) {
         super(templateId, level);
         setInstanceId(id);
     }

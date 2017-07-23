@@ -14,7 +14,7 @@ public class PrivateMessageSerializer extends JsonSerializer<PrivateMessage> {
     @Override
     public void serialize(PrivateMessage value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
-        gen.writeStringField("id", value.getId());
+        gen.writeNumberField("id", value.getId());
         gen.writeStringField("message", value.getMessage());
         gen.writeNumberField("date", value.getDate());
         gen.writeBooleanField("isRead", value.isRead());

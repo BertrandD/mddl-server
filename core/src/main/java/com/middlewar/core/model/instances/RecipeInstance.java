@@ -26,7 +26,7 @@ import java.util.List;
 public class RecipeInstance {
 
     @Id
-    private String id;
+    private long id;
     private String name;
 
     @ManyToOne

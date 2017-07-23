@@ -16,5 +16,5 @@ public interface BuildingTaskService extends DefaultService<BuildingTask> {
     List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id);
     List<BuildingTask> findByBaseOrderByEndsAtAsc(Base base);
     BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id);
-    BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id);
+    BuildingTask findFirstByBuildingOrderByEndsAtDesc(long id);
 }

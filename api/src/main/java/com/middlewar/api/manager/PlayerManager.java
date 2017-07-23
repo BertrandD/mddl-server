@@ -36,7 +36,7 @@ public class PlayerManager {
      * @throws PlayerNotFoundException if the player of the account is not found
      */
     public Player getCurrentPlayerForAccount(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
-        if (account.getCurrentPlayer() == null) {
+        if (account.getCurrentPlayer() == 0) {
             throw new NoPlayerConnectedException();
         } else {
             final Player player = playerService.findOne(account.getCurrentPlayer());
@@ -54,8 +54,8 @@ public class PlayerManager {
      * @return the player
      * @throws PlayerNotOwnedException if the player is not one of the account's players
      */
-    public Player getPlayerOfAccount(Account account, String id) throws PlayerNotOwnedException {
-        Player player = account.getPlayers().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
+    public Player getPlayerOfAccount(Account account, long id) throws PlayerNotOwnedException {
+        Player player = account.getPlayers().stream().filter(k->k.getId()==(id)).findFirst().orElse(null);
         if (player == null) {
             throw new PlayerNotOwnedException();
         }

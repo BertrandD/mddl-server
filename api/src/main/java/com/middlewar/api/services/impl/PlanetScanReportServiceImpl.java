@@ -48,7 +48,7 @@ public class PlanetScanReportServiceImpl implements PlanetScanReportService {
     }
 
     @Override
-    public PlanetScanReport findOne(String id) {
+    public PlanetScanReport findOne(long id) {
         return planetScanReportDao.findOne(id);
     }
 

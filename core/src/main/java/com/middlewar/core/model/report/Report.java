@@ -33,7 +33,7 @@ public abstract class Report implements Comparable<Report> {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     private long date;
 

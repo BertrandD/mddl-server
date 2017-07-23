@@ -6,5 +6,5 @@ import com.middlewar.core.model.social.PrivateMessage;
 /**
  * @author Leboc Philippe.
  */
-public interface PrivateMessageDao extends DefaultRepository<PrivateMessage, String> {
+public interface PrivateMessageDao extends DefaultRepository<PrivateMessage, Long> {
 }

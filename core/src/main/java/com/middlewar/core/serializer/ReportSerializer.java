@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ReportSerializer<T extends Report> extends JsonSerializer<T> {
     @Override
     public void serialize(T report, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
-        gen.writeStringField("id", report.getId());
+        gen.writeNumberField("id", report.getId());
         gen.writeStringField("type", report.getType().toString());
         gen.writeNumberField("date", report.getDate());
         gen.writeObjectField("reportStatus", report.getReportStatus());

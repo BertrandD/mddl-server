@@ -6,5 +6,5 @@ import com.middlewar.core.model.report.SpyReport;
 /**
  * @author Leboc Philippe.
  */
-public interface SpyReportDao extends DefaultRepository<SpyReport, String> {
+public interface SpyReportDao extends DefaultRepository<SpyReport, Long> {
 }

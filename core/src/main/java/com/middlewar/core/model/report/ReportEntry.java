@@ -20,7 +20,7 @@ public abstract class ReportEntry {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
     private String name;
 
     public ReportEntry(String name) {

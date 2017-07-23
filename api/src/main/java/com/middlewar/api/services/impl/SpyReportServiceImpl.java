@@ -55,7 +55,7 @@ public class SpyReportServiceImpl implements SpyReportService {
     }
 
     @Override
-    public SpyReport findOne(String id) {
+    public SpyReport findOne(long id) {
         return spyReportDao.findOne(id);
     }
 

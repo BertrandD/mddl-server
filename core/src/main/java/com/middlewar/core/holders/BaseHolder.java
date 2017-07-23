@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 @Data
 public class BaseHolder {
     @Id
-    private String id;
+    private long id;
     private String name;
     @ManyToOne
     private PlayerHolder owner;

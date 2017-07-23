@@ -26,7 +26,7 @@ public class ItemInstance {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
     private String templateId;
     private double count;
     private ItemType type;
@@ -96,7 +96,7 @@ public class ItemInstance {
     public boolean equals(Object o){
         if(o instanceof ItemInstance){
             final ItemInstance item = (ItemInstance) o;
-            if(item.getId().equalsIgnoreCase(this.getId())) return true;
+            if(item.getId() == this.getId()) return true;
         }
         return false;
     }

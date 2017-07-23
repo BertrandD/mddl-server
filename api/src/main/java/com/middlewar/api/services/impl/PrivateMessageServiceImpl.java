@@ -24,7 +24,7 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
     }
 
     @Override
-    public PrivateMessage findOne(String id) {
+    public PrivateMessage findOne(long id) {
         return privateMessageDao.findOne(id);
     }
 

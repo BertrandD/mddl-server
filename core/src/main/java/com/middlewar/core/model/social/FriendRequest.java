@@ -23,7 +23,7 @@ public class FriendRequest {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
     @ManyToOne
     private Player requester;
     @ManyToOne

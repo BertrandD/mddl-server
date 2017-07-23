@@ -17,11 +17,11 @@ import javax.persistence.Id;
 public class BaseReportProjection {
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
-    private String baseId;
+    private long baseId;
     private String baseName;
-    private String baseOwnerId;
+    private long baseOwnerId;
     private String baseOwnerName;
 
     // TODO : add more info for report

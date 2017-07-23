@@ -5,5 +5,5 @@ import com.middlewar.core.model.instances.ItemInstance;
 /**
  * @author Leboc Philippe.
  */
-public interface ItemDao extends DefaultRepository<ItemInstance, String> {
+public interface ItemDao extends DefaultRepository<ItemInstance, Long> {
 }

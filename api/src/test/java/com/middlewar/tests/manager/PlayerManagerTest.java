@@ -80,13 +80,13 @@ public class PlayerManagerTest {
 
     @Test(expected = NoPlayerConnectedException.class)
     public void shouldThrowExceptionIfNoPlayerSelected() throws NoPlayerConnectedException, PlayerNotFoundException {
-        _account.setCurrentPlayer(null);
+        _account.setCurrentPlayer(0);
         final Player player = playerManager.getCurrentPlayerForAccount(_account);
     }
 
     @Test(expected = PlayerNotFoundException.class)
     public void shouldThrowExceptionIfNoPlayerNotFound() throws NoPlayerConnectedException, PlayerNotFoundException {
-        _account.setCurrentPlayer("totot");
+        _account.setCurrentPlayer(1123546);
         final Player player = playerManager.getCurrentPlayerForAccount(_account);
     }
 

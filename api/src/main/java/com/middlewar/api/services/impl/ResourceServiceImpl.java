@@ -42,7 +42,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Resource findOne(String id) {
+    public Resource findOne(long id) {
         return resourceDao.findOne(id);
     }
 

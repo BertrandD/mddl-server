@@ -61,6 +61,6 @@ public class Application extends AsyncConfigurerSupport implements CommandLineRu
 
     @Override
     public void run(String... strings) throws Exception {
-//        ai.init();
+        ai.init();
    }
 }

@@ -25,7 +25,7 @@ public abstract class Inventory implements IInventory {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -48,11 +48,11 @@ public abstract class Inventory implements IInventory {
     public abstract long getAvailableCapacity();
 
     @Override
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

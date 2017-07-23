@@ -24,7 +24,7 @@ public class PrivateMessage {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
     @ManyToOne
     private Player author;
     @ManyToOne
@@ -49,7 +49,7 @@ public class PrivateMessage {
     public boolean equals(Object o){
         if(o instanceof PrivateMessage){
             final PrivateMessage pm = (PrivateMessage) o;
-            if(pm.getId().equalsIgnoreCase(this.getId())) return true;
+            if(pm.getId()== this.getId()) return true;
         }
         return false;
     }

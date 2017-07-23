@@ -30,7 +30,7 @@ public class BuildingInstance {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @ManyToOne
     @JsonBackReference
@@ -89,7 +89,7 @@ public class BuildingInstance {
     public boolean equals(Object o) {
         if (o instanceof BuildingInstance) {
             final BuildingInstance building = (BuildingInstance)o;
-            return (this.id.equalsIgnoreCase(building.id));
+            return (this.id == building.id);
         }
         return false;
     }

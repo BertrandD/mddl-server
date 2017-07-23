@@ -56,7 +56,7 @@ public class AstralObjectServiceImpl implements AstralObjectService {
     }
 
     @Override
-    public AstralObject findOne(String id) {
+    public AstralObject findOne(long id) {
         return astralObjectDao.findOne(id);
     }
 

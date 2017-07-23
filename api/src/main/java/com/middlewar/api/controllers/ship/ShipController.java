@@ -44,7 +44,7 @@ public class ShipController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Response create(@AuthenticationPrincipal Account pAccount,
-                           @RequestParam(value = "count") long count,
+                           @RequestParam(value = "count") Long count,
                            @RequestParam(value = "structureId") String structure,
                            @RequestParam(value = "attachments") List<String> ids) {
 

@@ -19,7 +19,7 @@ public class ReportEntryList {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReportEntry> entries;

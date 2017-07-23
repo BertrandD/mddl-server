@@ -37,7 +37,7 @@ public class Resource {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @ManyToOne
     @JsonBackReference

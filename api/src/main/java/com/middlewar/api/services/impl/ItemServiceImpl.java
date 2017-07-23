@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemInstance findOne(String id) {
+    public ItemInstance findOne(long id) {
         return itemDao.findOne(id);
     }
 

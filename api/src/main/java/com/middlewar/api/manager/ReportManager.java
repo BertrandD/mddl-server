@@ -43,7 +43,7 @@ public class ReportManager {
      * @throws BaseNotOwnedException if the source base is now owned by the given player
      * @throws SpyReportCreationException if something went wrong
      */
-    public SpyReport spy(Player player, String baseId, String target) throws BaseNotFoundException, BaseNotOwnedException, SpyReportCreationException {
+    public SpyReport spy(Player player, long baseId, long target) throws BaseNotFoundException, BaseNotOwnedException, SpyReportCreationException {
         final Base base = baseManager.getOwnedBase(baseId, player);
         final Base baseTarget = baseManager.getBase(target);
 

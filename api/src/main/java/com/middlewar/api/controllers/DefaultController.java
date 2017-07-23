@@ -62,11 +62,11 @@ public class DefaultController implements ErrorController{
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public Response resetDatabase(@AuthenticationPrincipal Account pAccount) {
         //updateService.resetDatabase(); // TODO: CLEANUP ME
-        pAccount.setCurrentPlayer(null);
+        pAccount.setCurrentPlayer(0);
         pAccount.getPlayers().clear();
         Account account = accountService.findOne(pAccount.getId());
         account.getPlayers().clear();
-        account.setCurrentPlayer(null);
+        account.setCurrentPlayer(0);
         accountService.update(account);
         AstralObject blackHole = WorldData.getInstance().getWorld();
         astralObjectServiceImpl.saveUniverse(blackHole);

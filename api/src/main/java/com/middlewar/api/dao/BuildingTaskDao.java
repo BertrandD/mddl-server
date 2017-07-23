@@ -8,11 +8,11 @@ import java.util.List;
 /**
  * @author Leboc Philippe.
  */
-public interface BuildingTaskDao extends DefaultRepository<BuildingTask, String> {
+public interface BuildingTaskDao extends DefaultRepository<BuildingTask, Long> {
     BuildingTask findFirstByOrderByEndsAtAsc();
     List<BuildingTask> findByBuilding(String id);
     List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id);
     List<BuildingTask> findByBaseOrderByEndsAtAsc(Base base);
     BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id);
-    BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id);
+    BuildingTask findFirstByBuildingOrderByEndsAtDesc(long id);
 }

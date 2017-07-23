@@ -32,7 +32,7 @@ public abstract class AstralObject {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     private String name;
 

@@ -23,7 +23,7 @@ public abstract class Vehicle implements IShip {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     private long count;
 

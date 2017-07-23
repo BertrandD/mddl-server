@@ -16,11 +16,11 @@ public class PlayerSerializer extends JsonSerializer<Player> {
     public void serialize(Player value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
         gen.writeStartObject();
-        gen.writeStringField("id", value.getId());
+        gen.writeNumberField("id", value.getId());
         gen.writeStringField("name", value.getName());
         gen.writeStringField("lang", value.getAccount().getLang().name());
 
-        if(value.getCurrentBase() != null) gen.writeStringField("currentBase", value.getCurrentBase().getId());
+        if(value.getCurrentBase() != null) gen.writeNumberField("currentBase", value.getCurrentBase().getId());
 
         gen.writeArrayFieldStart("friends");
         IOConsumer.forEach(value.getFriends().stream(), gen::writeObject);
@@ -35,7 +35,7 @@ public class PlayerSerializer extends JsonSerializer<Player> {
         gen.writeEndArray();
 
         gen.writeArrayFieldStart("bases");
-        IOConsumer.forEach(value.getBases().stream(), base -> gen.writeString(base.getId()));
+        IOConsumer.forEach(value.getBases().stream(), base -> gen.writeNumber(base.getId()));
         gen.writeEndArray();
 
         gen.writeObjectField("inventory", value.getInventory().getItems());

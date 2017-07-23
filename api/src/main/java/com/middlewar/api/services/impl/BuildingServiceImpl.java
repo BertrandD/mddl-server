@@ -37,7 +37,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public BuildingInstance findOne(String id) {
+    public BuildingInstance findOne(long id) {
         return buildingDao.findOne(id);
     }
 

@@ -37,12 +37,12 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public List<FriendRequest> findPlayerRequest(String playerId) {
+    public List<FriendRequest> findPlayerRequest(long playerId) {
         return friendRequestDao.findByRequestedId(playerId);
     }
 
     @Override
-    public FriendRequest findOne(String id) {
+    public FriendRequest findOne(long id) {
         return friendRequestDao.findOne(id);
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Leboc Philippe.
  */
-public interface PlayerDao extends DefaultRepository<Player, String> {
-    List<Player> findByAccountId(String accountId);
+public interface PlayerDao extends DefaultRepository<Player, Long> {
+    List<Player> findByAccountId(long accountId);
     Player findByName(String name);
 }

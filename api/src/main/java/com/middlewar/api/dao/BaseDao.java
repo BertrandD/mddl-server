@@ -5,5 +5,5 @@ import com.middlewar.core.model.Base;
 /**
  * @author Leboc Philippe.
  */
-public interface BaseDao extends DefaultRepository<Base, String> {
+public interface BaseDao extends DefaultRepository<Base, Long> {
 }

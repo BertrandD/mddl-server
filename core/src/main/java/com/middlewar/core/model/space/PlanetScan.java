@@ -24,12 +24,12 @@ public class PlanetScan {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
     private long date;
     @ManyToOne
     private Planet planet;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Map<String, Base> baseScanned;
+    private Map<Long, Base> baseScanned;
 
     public PlanetScan(Planet planet) {
         this.date = TimeUtil.getCurrentTime();

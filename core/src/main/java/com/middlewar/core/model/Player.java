@@ -12,6 +12,7 @@ import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,8 +36,9 @@ public class Player {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
+    @Column(unique = true)
     private String name;
 
     @ManyToOne
@@ -67,7 +69,7 @@ public class Player {
     private List<Report> reports;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Map<String, PlanetScan> planetScans;
+    private Map<Long, PlanetScan> planetScans;
 
     public Player() {
         setBases(new ArrayList<>());
@@ -121,23 +123,23 @@ public class Player {
         planetScan.setDate(TimeUtil.getCurrentTime());
     }
 
-    public Map<String, PlanetScan> getPlanetScans() {
+    public Map<Long, PlanetScan> getPlanetScans() {
         return planetScans;
     }
 
-    public void setPlanetScans(Map<String, PlanetScan> planetScans) {
+    public void setPlanetScans(Map<Long, PlanetScan> planetScans) {
         this.planetScans = planetScans;
     }
 
     public boolean is(Player player) {
-        return player.getId().equalsIgnoreCase(this.getId());
+        return player.getId() == this.getId();
     }
 
     @Override
     public boolean equals(Object o){
         if(o instanceof Player){
             final Player player = (Player) o;
-            if(player.getId().equalsIgnoreCase(this.getId())) return true;
+            if(player.getId() == this.getId()) return true;
         }
         return false;
     }

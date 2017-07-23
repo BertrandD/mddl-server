@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface FriendRequestService extends DefaultService<FriendRequest> {
     FriendRequest create(Player requester, Player requested, String message);
-    List<FriendRequest> findPlayerRequest(String playerId);
+    List<FriendRequest> findPlayerRequest(long playerId);
 }

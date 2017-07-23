@@ -12,7 +12,7 @@ public interface IInventory {
     /**
      * @return
      */
-    String getId();
+    long getId();
 
 
     /**

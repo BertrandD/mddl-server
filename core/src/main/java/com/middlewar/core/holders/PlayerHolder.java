@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Data
 public class PlayerHolder {
     @Id
-    private String id;
+    private long id;
     private String name;
 
     public PlayerHolder(Player player) {
@@ -20,14 +20,14 @@ public class PlayerHolder {
     }
 
     public boolean is(Player player) {
-        return player.getId().equalsIgnoreCase(this.getId());
+        return player.getId() == this.getId();
     }
 
     @Override
     public boolean equals(Object o){
         if(o instanceof PlayerHolder){
             final PlayerHolder player = (PlayerHolder) o;
-            if(player.getId().equalsIgnoreCase(this.getId())) return true;
+            if(player.getId() == this.getId()) return true;
         }
         return false;
     }

@@ -28,7 +28,7 @@ import java.util.List;
 public class Fleet {
 
     @Id
-    private String id;
+    private long id;
     @ManyToOne
     private Coordinates departure;
     @ManyToOne

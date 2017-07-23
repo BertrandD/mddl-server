@@ -60,7 +60,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player findOne(String id) {
+    public Player findOne(long id) {
         return dao.findOne(id);
     }
 

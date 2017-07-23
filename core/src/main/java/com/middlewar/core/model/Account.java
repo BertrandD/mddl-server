@@ -38,12 +38,12 @@ public class Account implements UserDetails
 {
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
     private Lang lang;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Player> players;
-    private String currentPlayer;
+    private long currentPlayer;
     private String token;
     private String password;
     private String username;
@@ -54,9 +54,8 @@ public class Account implements UserDetails
     private boolean credentialsNonExpired;
     private boolean enabled;
 
-    public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, String id, Lang lang, List<Player> players, String currentPlayer, String token)
+    public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, Lang lang, String token)
     {
-        setId(id);
         setUsername(username);
         setPassword(password);
         setLang(lang);

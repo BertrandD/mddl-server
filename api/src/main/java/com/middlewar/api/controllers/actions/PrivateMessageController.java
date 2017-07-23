@@ -41,12 +41,12 @@ public class PrivateMessageController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") String pmId) {
+    public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") Long pmId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final PrivateMessage pm = service.findOne(pmId);
-        if(!pm.getAuthor().getId().equals(player.getId()) && !pm.getReceiver().getId().equals(player.getId()))
+        if(pm.getAuthor().getId()!=(player.getId()) && pm.getReceiver().getId()!=(player.getId()))
             return new Response(JsonResponseType.ERROR, "Invalid request");
 
         if(!pm.isRead()) {
@@ -58,7 +58,7 @@ public class PrivateMessageController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") String receiverId, @RequestParam("message") String message) {
+    public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") Long receiverId, @RequestParam("message") String message) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 

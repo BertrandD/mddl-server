@@ -45,7 +45,7 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
-    public Response findOne(@AuthenticationPrincipal Account account, @PathVariable("id") String id) {
+    public Response findOne(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
         return controllerManagerWrapper.wrap(() -> baseManager.getBaseWithBuildingQueue(playerManager.getCurrentPlayerForAccount(account), id));
     }
 
@@ -55,12 +55,12 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/me/base/{id}/buildables", method = RequestMethod.GET)
-    public Response calc(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
+    public Response calc(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) {
         return controllerManagerWrapper.wrap(() -> baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id));
     }
 
     @RequestMapping(value = "/me/base/{id}/spy/{target}", method = RequestMethod.GET)
-    public Response spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id, @PathVariable("id") String target) {
+    public Response spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id, @PathVariable("id") Long target) {
         return controllerManagerWrapper.wrap(() -> reportManager.spy(playerManager.getCurrentPlayerForAccount(pAccount), id, target));
 
     }

@@ -25,7 +25,7 @@ public class FleetServiceImpl implements FleetService {
     }
 
     @Override
-    public Fleet findOne(String id) {
+    public Fleet findOne(long id) {
         return fleetDao.findOne(id);
     }
 

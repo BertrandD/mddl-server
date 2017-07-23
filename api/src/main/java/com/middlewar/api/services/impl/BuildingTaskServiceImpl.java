@@ -43,12 +43,12 @@ public class BuildingTaskServiceImpl implements BuildingTaskService {
         return buildingTaskDao.findFirstByBuildingOrderByEndsAtAsc(id);
     }
 
-    public BuildingTask findFirstByBuildingOrderByEndsAtDesc(String id) {
+    public BuildingTask findFirstByBuildingOrderByEndsAtDesc(long id) {
         return buildingTaskDao.findFirstByBuildingOrderByEndsAtDesc(id);
     }
 
     @Override
-    public BuildingTask findOne(String id) {
+    public BuildingTask findOne(long id) {
         return buildingTaskDao.findOne(id);
     }
 

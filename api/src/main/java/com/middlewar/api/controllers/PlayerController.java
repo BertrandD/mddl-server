@@ -54,7 +54,7 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
-    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") String id){
+    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id){
         return controllerManagerWrapper.wrap(() -> playerManager.getPlayerOfAccount(account, id));
     }
 

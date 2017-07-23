@@ -55,7 +55,7 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public Base findOne(String id) {
+    public Base findOne(long id) {
         return baseDao.findOne(id);
     }
 

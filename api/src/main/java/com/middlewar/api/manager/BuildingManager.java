@@ -92,8 +92,8 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance getBuildingOfBase(Base base, String id) throws BuildingNotFoundException {
-        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
+    public BuildingInstance getBuildingOfBase(Base base, long id) throws BuildingNotFoundException {
+        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId()==(id)).findFirst().orElse(null);
         if(building == null){
             throw new BuildingNotFoundException();
         }
@@ -101,7 +101,7 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance upgrade(Base base, String id) throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public BuildingInstance upgrade(Base base, long id) throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
         final BuildingInstance building = getBuildingOfBase(base, id);
 
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
@@ -122,7 +122,7 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance attachModule(Base base, String buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException {
+    public BuildingInstance attachModule(Base base, long buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException {
         base.initializeStats();
 
         final BuildingInstance building = getBuildingOfBase(base, buildingInstId);

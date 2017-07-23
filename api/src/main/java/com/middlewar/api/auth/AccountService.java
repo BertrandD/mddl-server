@@ -36,7 +36,7 @@ public class AccountService implements UserDetailsService {
         }
     }
 
-    public Account findOne(String id){
+    public Account findOne(Long id){
         return accountDao.findOne(id);
     }
 
@@ -53,7 +53,7 @@ public class AccountService implements UserDetailsService {
         final List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        Account account = new Account(username, passwordEncoder.encode(password), roles, null, Lang.EN, null, null, UUID.randomUUID().toString());
+        Account account = new Account(username, passwordEncoder.encode(password), roles, Lang.EN, UUID.randomUUID().toString());
         account = accountDao.save(account);
 
         if(account == null) return null;

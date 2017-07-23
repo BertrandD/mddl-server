@@ -25,7 +25,7 @@ public class BaseInventoryServiceImpl implements BaseInventoryService{
     }
 
     @Override
-    public BaseInventory findOne(String id) {
+    public BaseInventory findOne(long id) {
         return baseInventoryDao.findOne(id);
     }
 

@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * @author Leboc Philippe.
  */
-public interface BuildingDao extends DefaultRepository<BuildingInstance, String> {
+public interface BuildingDao extends DefaultRepository<BuildingInstance, Long> {
 
-    BuildingInstance findOneByIdAndBaseId(String id, String base);
+    BuildingInstance findOneByIdAndBaseId(String id, long base);
 
     List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId);
 }

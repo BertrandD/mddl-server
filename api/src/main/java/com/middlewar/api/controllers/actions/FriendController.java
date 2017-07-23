@@ -49,14 +49,14 @@ public class FriendController {
     }
 
     @RequestMapping(value = "/request", method = RequestMethod.POST)
-    public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") String friendId, @RequestParam(value = "message") String message) {
-        Assert.hasLength(friendId, "Invalid parameter friendId.");
+    public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") Long friendId, @RequestParam(value = "message") String message) {
+//        Assert.hasLength(friendId, "Invalid parameter friendId.");
         Assert.hasLength(message, "Empty message.");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        if(player.getId().equals(friendId)) return new Response(JsonResponseType.ERROR, SystemMessageId.YOU_CANNOT_REQUEST_YOURSELF);
+        if(player.getId()==(friendId)) return new Response(JsonResponseType.ERROR, SystemMessageId.YOU_CANNOT_REQUEST_YOURSELF);
 
         final Player friend = playerService.findOne(friendId);
         if(friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
@@ -82,13 +82,13 @@ public class FriendController {
     }
 
     @RequestMapping(value = "/accept/{requestId}", method = RequestMethod.GET)
-    public Response acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
-        Assert.hasLength(requestId, "Invalid parameter requestId");
+    public Response acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") Long requestId) {
+//        Assert.hasLength(requestId, "Invalid parameter requestId");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        final FriendRequest request = player.getReceivedFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
+        final FriendRequest request = player.getReceivedFriendRequests().stream().filter(k -> k.getId()==(requestId)).findFirst().orElse(null);
         if(request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
 
         final Player friend = playerService.findOne(request.getRequester().getId());
@@ -109,13 +109,13 @@ public class FriendController {
     }
 
     @RequestMapping(value = "/refuse/{requestId}", method = RequestMethod.GET)
-    public Response refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") String requestId) {
-        Assert.hasLength(requestId, "Invalid parameter requestId");
+    public Response refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") Long requestId) {
+//        Assert.hasLength(requestId, "Invalid parameter requestId");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        final FriendRequest request = player.getReceivedFriendRequests().stream().filter(k -> k.getId().equals(requestId)).findFirst().orElse(null);
+        final FriendRequest request = player.getReceivedFriendRequests().stream().filter(k -> k.getId()==(requestId)).findFirst().orElse(null);
         if(request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
 
         final Player friend = playerService.findOne(request.getRequester().getId());

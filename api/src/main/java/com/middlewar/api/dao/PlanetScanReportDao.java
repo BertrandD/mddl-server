@@ -6,5 +6,5 @@ import com.middlewar.core.model.report.PlanetScanReport;
 /**
  * @author Leboc Philippe.
  */
-public interface PlanetScanReportDao extends DefaultRepository<PlanetScanReport, String> {
+public interface PlanetScanReportDao extends DefaultRepository<PlanetScanReport, Long> {
 }

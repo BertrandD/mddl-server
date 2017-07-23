@@ -38,7 +38,7 @@ public class TestController {
     }
 
     @RequestMapping(value = "/create/item", method = RequestMethod.POST)
-    public Response createItem(@AuthenticationPrincipal Account pAccount, @RequestParam(name = "itemId") String itemId, @RequestParam(name = "count") long count) {
+    public Response createItem(@AuthenticationPrincipal Account pAccount, @RequestParam(name = "itemId") String itemId, @RequestParam(name = "count") Long count) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 

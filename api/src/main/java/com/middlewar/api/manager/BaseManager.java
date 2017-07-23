@@ -62,7 +62,7 @@ public class BaseManager {
      * @return the Base with the given id
      * @throws BaseNotFoundException if the base does not exists
      */
-    public Base getBase(String id) throws BaseNotFoundException {
+    public Base getBase(long id) throws BaseNotFoundException {
         final Base base = baseService.findOne(id);
         if(base == null) throw new BaseNotFoundException();
         return base;
@@ -75,9 +75,9 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public Base getOwnedBase(String id, Player player) throws BaseNotFoundException, BaseNotOwnedException {
+    public Base getOwnedBase(long id, Player player) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getBase(id);
-        if (!base.getOwner().getId().equals(player.getId())) {
+        if (base.getOwner().getId() != player.getId()) {
             throw new BaseNotOwnedException();
         }
         return base;
@@ -105,7 +105,7 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public Response<Base> getBaseWithBuildingQueue(Player player, String id) throws BaseNotFoundException, BaseNotOwnedException {
+    public Response<Base> getBaseWithBuildingQueue(Player player, long id) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getOwnedBase(id, player);
         final Response<Base> response = new Response<>(base);
         response.addMeta("queue", getBaseBuildingQueue(base));
@@ -148,7 +148,7 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public  List<BuildingHolder> getBuildableBuildingsOfBase(Player player, String baseId) throws BaseNotFoundException, BaseNotOwnedException {
+    public  List<BuildingHolder> getBuildableBuildingsOfBase(Player player, long baseId) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getOwnedBase(baseId, player);
 
         final List<BuildingHolder> nextBuildings = new ArrayList<>();

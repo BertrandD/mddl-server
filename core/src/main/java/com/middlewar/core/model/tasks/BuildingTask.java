@@ -24,7 +24,7 @@ public class BuildingTask {
 
     @Id
     @GeneratedValue
-    private String id;
+    private long id;
 
     @ManyToOne
     private Base base;
@@ -46,7 +46,7 @@ public class BuildingTask {
     public boolean equals(Object o) {
         if (o instanceof BuildingTask) {
             final BuildingTask task = (BuildingTask)o;
-            return (this.id.equals(task.id));
+            return (this.id == task.id);
         }
         return false;
     }

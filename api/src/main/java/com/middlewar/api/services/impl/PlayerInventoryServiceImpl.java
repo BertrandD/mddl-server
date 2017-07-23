@@ -31,7 +31,7 @@ public class PlayerInventoryServiceImpl implements PlayerInventoryService {
     }
 
     @Override
-    public PlayerInventory findOne(String id) {
+    public PlayerInventory findOne(long id) {
         return null;
     }
 

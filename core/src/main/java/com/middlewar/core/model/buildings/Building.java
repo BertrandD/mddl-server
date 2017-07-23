@@ -80,7 +80,7 @@ public abstract class Building implements IStat {
     public boolean equals(Object o){
         if(o instanceof Building){
             final Building building = (Building) o;
-            if(building.getId().equalsIgnoreCase(this.getId())) return true;
+            if(building.getId() == this.getId()) return true;
         }
         return false;
     }

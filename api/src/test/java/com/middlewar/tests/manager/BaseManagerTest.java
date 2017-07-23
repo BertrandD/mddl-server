@@ -108,7 +108,7 @@ public class BaseManagerTest {
 
     @Test(expected = BaseNotFoundException.class)
     public void shouldThrowExceptionIfBaseNotFound() throws BaseNotFoundException {
-        baseManager.getBase("yoloo2017");
+        baseManager.getBase(456321);
     }
 
     @Test(expected = BaseNotOwnedException.class)

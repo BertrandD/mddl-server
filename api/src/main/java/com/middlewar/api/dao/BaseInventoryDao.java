@@ -5,5 +5,5 @@ import com.middlewar.core.model.inventory.BaseInventory;
 /**
  * @author Leboc Philippe.
  */
-public interface BaseInventoryDao extends DefaultRepository<BaseInventory, String> {
+public interface BaseInventoryDao extends DefaultRepository<BaseInventory, Long> {
 }
