@@ -2,16 +2,14 @@ package com.middlewar.api.controllers;
 
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.manager.AccountManager;
-import com.middlewar.api.services.impl.AstralObjectServiceImpl;
+import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
-import com.middlewar.core.model.space.AstralObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -47,7 +45,7 @@ public class DefaultController implements ErrorController{
     private AccountManager accountManager;
 
     @Autowired
-    private AstralObjectServiceImpl astralObjectServiceImpl;
+    private AstralObjectService astralObjectService;
 
     @Autowired
     private ControllerManagerWrapper controllerManagerWrapper;
@@ -68,14 +66,14 @@ public class DefaultController implements ErrorController{
         account.getPlayers().clear();
         account.setCurrentPlayer(0);
         accountService.update(account);
-        astralObjectServiceImpl.saveUniverse();
+        astralObjectService.saveUniverse();
         return new Response(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
     public Response resetWorld(@AuthenticationPrincipal Account pAccount) {
-        astralObjectServiceImpl.saveUniverse();
+        astralObjectService.saveUniverse();
         return new Response(JsonResponseType.SUCCESS);
     }
 

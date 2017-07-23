@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,8 +18,8 @@ import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -41,7 +40,7 @@ public class Account implements UserDetails
     private long id;
     private Lang lang;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "account", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Player> players;
     private long currentPlayer;
     private String token;
@@ -59,7 +58,7 @@ public class Account implements UserDetails
         setUsername(username);
         setPassword(password);
         setLang(lang);
-        setAuthorities(Collections.unmodifiableSet(sortAuthorities(authorities)));
+        setAuthorities(new HashSet<>(authorities));
         setPlayers(players == null ? new ArrayList<>() : players);
         setCurrentPlayer(currentPlayer);
         setToken(token);

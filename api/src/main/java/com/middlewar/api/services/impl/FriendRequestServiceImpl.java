@@ -29,8 +29,8 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         if(request != null) {
             requested.addRequest(request); // to be able to abort request
             requester.addRequest(request); // to be able to accept/refuse request
-            playerService.update(requested);
-            playerService.update(requester);
+//            playerService.update(requested);
+//            playerService.update(requester);
         }
 
         return request;

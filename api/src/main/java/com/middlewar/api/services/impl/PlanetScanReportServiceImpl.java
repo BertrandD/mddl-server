@@ -35,7 +35,7 @@ public class PlanetScanReportServiceImpl implements PlanetScanReportService {
 
         final PlanetScanReport report = new PlanetScanReport(owner, baseSrc, planet, ReportStatus.SUCCESS);
 
-        owner.getReports().add(report);
+        owner.getCurrentBase().getReports().add(report);
 
         for (Base base : planet.getBases()) {
             report.addEntry(new BaseReportEntry(base), ReportCategory.BASES);

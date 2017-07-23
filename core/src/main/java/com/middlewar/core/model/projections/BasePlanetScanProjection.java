@@ -12,9 +12,9 @@ import javax.persistence.Entity;
 @Data
 @Entity
 @NoArgsConstructor
-public class BaseReportProjection extends BaseProjection {
+public class BasePlanetScanProjection extends BaseProjection {
 
-    public BaseReportProjection(Base base) {
+    public BasePlanetScanProjection(Base base) {
         super(base);
     }
 }

@@ -47,7 +47,7 @@ public class BaseServiceImpl implements BaseService {
         baseDao.save(base);
 
         planet.addBase(base);
-        astralObjectService.update(planet);
+//        astralObjectService.update(planet);
 
         playerDao.save(player);
 

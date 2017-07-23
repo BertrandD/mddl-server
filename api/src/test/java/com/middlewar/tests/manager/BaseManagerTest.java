@@ -11,35 +11,29 @@ import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
-import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.manager.BaseManager;
+import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
-import com.middlewar.core.enums.AstralObjectType;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
-
-import static org.mockito.Mockito.when;
 
 /**
  * @author Bertrand
@@ -47,6 +41,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @Rollback
 @SpringBootTest(classes = Application.class)
+@Transactional
 public class BaseManagerTest {
 
     @Autowired
@@ -62,7 +57,7 @@ public class BaseManagerTest {
     private AccountService accountService;
 
     @Autowired
-    private PlayerService playerService;
+    private PlanetManager planetManager;
 
     @Autowired
     private AstralObjectService astralObjectService;
@@ -76,22 +71,15 @@ public class BaseManagerTest {
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
         Config.load();
+        WorldData.getInstance().reload();
+        astralObjectService.saveUniverse();
         MockitoAnnotations.initMocks(this);
         _account = accountService.create("toto", "");
         _playerOwner = playerManager.createForAccount(_account, "owner");
         _playerNotOwner = playerManager.createForAccount(_account, "notOwner");
-        Planet planet = (Planet) astralObjectService.create("P1", null, AstralObjectType.PLANET);
+        Planet planet = planetManager.pickRandom();
         _base = baseService.create("base1", _playerOwner, planet);
         _base2 = baseService.create("base2", _playerOwner, planet);
-    }
-
-
-    @After
-    public void destroy() {
-        accountService.deleteAll();
-        baseService.deleteAll();
-        playerService.deleteAll();
-        astralObjectService.deleteAll();
     }
 
     @Test

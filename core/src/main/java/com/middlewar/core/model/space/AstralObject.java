@@ -9,16 +9,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author bertrand Darbond
@@ -37,7 +41,9 @@ public abstract class AstralObject {
     @Column(unique = true)
     private String name;
 
-    private HashMap<AstralStat, Double> stats;
+    @ElementCollection
+    @MapKeyEnumerated(EnumType.STRING)
+    private Map<AstralStat, Double> stats;
 
     // Nombre de minutes nécessaires pour faire 1 tour autour de parent
     private double revolution;
@@ -49,7 +55,7 @@ public abstract class AstralObject {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AstralObject> satellites;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private AstralObject parent;
 
     public AstralObject(String name, AstralObject parent) {

@@ -1,5 +1,6 @@
 package com.middlewar.api;
 
+import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.exceptions.AccountAlreadyExistsException;
 import com.middlewar.api.exceptions.ApiException;
 import com.middlewar.api.exceptions.IncorrectCredentialsException;
@@ -9,6 +10,12 @@ import com.middlewar.api.exceptions.UsernameNotFoundException;
 import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.FriendRequestService;
+import com.middlewar.api.services.PlanetScanReportService;
+import com.middlewar.api.services.PlayerService;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
@@ -30,7 +37,26 @@ public class AI {
     private PlayerManager playerManager;
 
     @Autowired
+    private PlayerService playerService;
+
+    @Autowired
+    private AccountService accountService;
+
+
+    @Autowired
+    private BaseService baseService;
+
+    @Autowired
     private BaseManager baseManager;
+
+    @Autowired
+    private FriendRequestService friendRequestService;
+
+    @Autowired
+    private AstralObjectService astralObjectService;
+
+    @Autowired
+    private PlanetScanReportService planetScanReportService;
 
     final String AI_NAME = "shellbash";
     final String AI_BASE_NAME = "Home";
@@ -38,6 +64,8 @@ public class AI {
 
 //    @PostConstruct
     public void init(){
+        Config.load();
+        astralObjectService.saveUniverse();
         System.out.println("Yolooo");
         try {
             Account account = logOrRegister();
@@ -50,6 +78,21 @@ public class AI {
             System.out.println("AI "+account.getUsername()+" logged in successfully !");
             System.out.println("The player is "+player.getName());
             System.out.println("The base is "+base.getName());
+
+            Player player1 = playerManager.createForAccount(account, "qldskj");
+            baseManager.create(player1, "f");
+            baseManager.create(player1, "f2");
+
+//            Planet planet = WorldData.getInstance().getRandomPlanet();
+//            PlanetScanReport report = planetScanReportService.create(player, base, planet);
+
+            System.out.println("Cleaning...");
+//            planetScanReportService.remove(report);
+            baseService.deleteAll();
+            astralObjectService.deleteAll();
+            accountService.deleteAll();
+//            playerService.remove(player);
+            System.out.println("Cleaning... OK");
 
         } catch (ApiException e) {
             e.printStackTrace();

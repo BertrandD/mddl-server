@@ -3,7 +3,6 @@ package com.middlewar.tests.manager;
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
 import com.middlewar.api.exceptions.ForbiddenNameException;
 import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
@@ -17,27 +16,23 @@ import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
-
-import static org.mockito.Mockito.when;
 
 /**
  * @author Bertrand
  */
 @RunWith(SpringRunner.class)
 @Rollback
+@Transactional
 @SpringBootTest(classes = Application.class)
 public class PlayerManagerTest {
 
@@ -62,12 +57,6 @@ public class PlayerManagerTest {
         _account2 = accountService.create("tt2", "tt");
         _player = playerService.create(_account, "yoloo");
         _player2 = playerService.create(_account2, "yoloo2");
-    }
-
-    @After
-    public void destroy() {
-        playerService.deleteAll();
-        accountService.deleteAll();
     }
 
     @Test

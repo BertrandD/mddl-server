@@ -3,16 +3,16 @@ package com.middlewar.tests.services;
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.dao.ResourceDao;
+import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.ItemService;
 import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.config.Config;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.data.xml.SystemMessageData;
-import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
@@ -21,7 +21,6 @@ import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.space.Planet;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -38,6 +38,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @Rollback
 @SpringBootTest(classes = Application.class)
+@Transactional
 public class InventoryServiceTest {
 
     @Autowired
@@ -59,7 +60,7 @@ public class InventoryServiceTest {
     private InventoryService inventoryService;
 
     @Autowired
-    private ItemService itemService;
+    private PlanetManager planetManager;
 
     @Autowired
     private ResourceDao resourceDao;
@@ -73,6 +74,8 @@ public class InventoryServiceTest {
     @Before
     public void init() {
         Config.load();
+        WorldData.getInstance().reload();
+        astralObjectService.saveUniverse();
 
         // Parse
         SystemMessageData.getInstance();
@@ -80,19 +83,9 @@ public class InventoryServiceTest {
 
         _account = accountService.create("AccountTest", "no-password");
         _player = playerService.create(_account, "PlayerTest");
-        _planet = (Planet) astralObjectService.create("Alpha Planet", null, AstralObjectType.PLANET);
-        _base = baseService.create("BaseTest", _player, _planet);
+        _planet = planetManager.pickRandom();
+        _base = baseService.create("BaseTest1", _player, _planet);
 
-    }
-
-    @After
-    public void destroy() {
-        resourceDao.deleteAll();
-        itemService.deleteAll();
-        baseService.deleteAll();
-        playerInventoryService.deleteAll();
-        playerService.deleteAll();
-        accountService.deleteAll();
     }
 
     @Test

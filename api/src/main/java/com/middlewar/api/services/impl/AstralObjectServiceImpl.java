@@ -75,6 +75,7 @@ public class AstralObjectServiceImpl implements AstralObjectService {
 
     @Override
     public void deleteAll() {
-        astralObjectDao.deleteAll();
+        astralObjectDao.delete(WorldData.getInstance().getWorld());
+        WorldData.getInstance().reload();
     }
 }

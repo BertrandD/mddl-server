@@ -2,28 +2,26 @@ package com.middlewar.tests.services;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
 
 /**
  * @author Leboc Philippe.
  */
 @RunWith(SpringRunner.class)
-@Rollback
 @SpringBootTest(classes = Application.class)
+@Transactional
 public class PlayerServiceTest {
 
     @Autowired
@@ -32,26 +30,12 @@ public class PlayerServiceTest {
     @Autowired
     private PlayerService playerService;
 
-    @Autowired
-    private PlayerInventoryService playerInventoryService;
-
-    @Autowired
-    private BaseService baseService;
-
     private Account account;
 
     @Before
     public void init() {
         Config.load();
         account = accountService.create("PlayerTest", "password");
-    }
-
-    @After
-    public void destroy() {
-        accountService.deleteAll();
-        playerService.deleteAll();
-        playerInventoryService.deleteAll();
-        baseService.deleteAll();
     }
 
     @Test

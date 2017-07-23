@@ -22,14 +22,10 @@ import javax.persistence.ManyToOne;
 public class SpyReport extends Report{
 
     @ManyToOne
-    private Base baseSrc;
-
-    @ManyToOne
     private Base baseTarget;
 
     public SpyReport(Player owner, Base baseSrc, Base baseTarget, ReportStatus reportStatus) {
-        super(owner, reportStatus);
-        setBaseSrc(baseSrc);
+        super(owner, baseSrc, reportStatus);
         setBaseTarget(baseTarget);
     }
 

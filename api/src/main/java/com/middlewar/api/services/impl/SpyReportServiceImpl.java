@@ -36,7 +36,7 @@ public class SpyReportServiceImpl implements SpyReportService {
 
         final SpyReport report = new SpyReport(owner, baseSrc, baseTarget, ReportStatus.SUCCESS);
 
-        owner.getReports().add(report);
+        owner.getCurrentBase().getReports().add(report);
 
         for (Ship ship : baseTarget.getShips()) {
             // TODO : instead of getting structure, we should get the Recipe

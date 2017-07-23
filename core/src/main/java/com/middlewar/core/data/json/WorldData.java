@@ -31,6 +31,10 @@ public class WorldData {
     private AstralObject _blackHole;
 
     protected WorldData() {
+        reload();
+    }
+
+    public void reload() {
         _astralObjects.clear();
         parseConfigFile(Config.DATA_ROOT_DIRECTORY + "world.json");
         LOGGER.info("Loaded " + _astralObjects.size() + " astral objects");

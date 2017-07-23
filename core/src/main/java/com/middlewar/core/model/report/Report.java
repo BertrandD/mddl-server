@@ -3,6 +3,7 @@ package com.middlewar.core.model.report;
 import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.enums.ReportType;
+import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -34,12 +36,12 @@ public abstract class Report implements Comparable<Report> {
     @GeneratedValue
     private long id;
 
+    @ManyToOne
+    private Base baseSrc;
+
     private long date;
 
-    @ManyToOne
-    private Player owner;
-
-    @MapKeyEnumerated
+    @MapKeyEnumerated(EnumType.STRING)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Map<ReportCategory, ReportEntryList> entries;
 
@@ -48,9 +50,9 @@ public abstract class Report implements Comparable<Report> {
 
     public abstract ReportType getType();
 
-    public Report(Player owner, ReportStatus reportStatus) {
+    public Report(Player owner, Base baseSrc, ReportStatus reportStatus) {
         setDate(TimeUtil.getCurrentTime());
-        setOwner(owner);
+        setBaseSrc(baseSrc);
         setEntries(new HashMap<>());
         setReportStatus(reportStatus);
     }

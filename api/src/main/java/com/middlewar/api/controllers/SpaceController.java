@@ -1,8 +1,8 @@
 package com.middlewar.api.controllers;
 
+import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.services.impl.AstralObjectServiceImpl;
 import com.middlewar.api.services.impl.PlanetScanReportServiceImpl;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
@@ -36,7 +36,7 @@ public class SpaceController {
     private PlayerService playerService;
 
     @Autowired
-    private AstralObjectServiceImpl astralObjectServiceImpl;
+    private AstralObjectService astralObjectService;
 
     @Autowired
     private PlanetScanReportServiceImpl planetScanReportServiceImpl;
@@ -47,7 +47,7 @@ public class SpaceController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
 
-        Star star = (Star) astralObjectServiceImpl.findOne(player.getCurrentBase().getPlanet().getParent().getId());
+        Star star = (Star) astralObjectService.findOne(player.getCurrentBase().getPlanet().getParent().getId());
 
         return new Response(star);
     }
@@ -56,7 +56,7 @@ public class SpaceController {
     public Response findSystem(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id){
         if(pAccount.getCurrentPlayer() == 0) return new Response(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
 
-        Star star = (Star) astralObjectServiceImpl.findOne(id);
+        Star star = (Star) astralObjectService.findOne(id);
 
         return new Response(star);
     }
@@ -68,7 +68,7 @@ public class SpaceController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        AstralObject planet = astralObjectServiceImpl.findOne(id);
+        AstralObject planet = astralObjectService.findOne(id);
 
         if (!(planet instanceof Planet)) {
             return new Response(JsonResponseType.ERROR, "Not a planet");

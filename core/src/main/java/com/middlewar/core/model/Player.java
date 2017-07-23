@@ -2,7 +2,7 @@ package com.middlewar.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.inventory.PlayerInventory;
-import com.middlewar.core.model.report.Report;
+import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
@@ -43,28 +43,25 @@ public class Player {
     @ManyToOne
     private Account account;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Base> bases;
 
-    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Base currentBase;
 
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     protected PlayerInventory inventory;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
     private List<Player> friends;
 
-    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FriendRequest> emittedFriendRequests;
 
-    @OneToMany(mappedBy = "requested", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "requested", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FriendRequest> receivedFriendRequests;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Map<Long, PlanetScan> planetScans;
 
     public Player() {
@@ -72,7 +69,6 @@ public class Player {
         setFriends(new ArrayList<>());
         setEmittedFriendRequests(new ArrayList<>());
         setReceivedFriendRequests(new ArrayList<>());
-        setReports(new ArrayList<>());
         setPlanetScans(new HashMap<>());
     }
 
@@ -83,7 +79,6 @@ public class Player {
         setFriends(new ArrayList<>());
         setEmittedFriendRequests(new ArrayList<>());
         setReceivedFriendRequests(new ArrayList<>());
-        setReports(new ArrayList<>());
         setPlanetScans(new HashMap<>());
     }
 
@@ -102,20 +97,12 @@ public class Player {
             return request.getRequested().is(this) && !getEmittedFriendRequests().contains(request) && getEmittedFriendRequests().add(request);
     }
 
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
-
     public void addPlanetScanned(Planet planet, Base base) {
         if (!planetScans.containsKey(planet.getId())) {
             planetScans.put(planet.getId(), new PlanetScan(planet));
         }
         final PlanetScan planetScan = planetScans.get(planet.getId());
-        planetScan.getBaseScanned().put(base.getId(), base);
+        planetScan.getBaseScanned().put(base.getId(), new BasePlanetScanProjection(base));
         planetScan.setDate(TimeUtil.getCurrentTime());
     }
 

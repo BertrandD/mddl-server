@@ -2,17 +2,17 @@ package com.middlewar.tests.services;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
+import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.ItemService;
-import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.ResourceService;
 import com.middlewar.api.services.SpyReportService;
 import com.middlewar.core.config.Config;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.data.xml.SystemMessageData;
-import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -22,7 +22,6 @@ import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.vehicles.Ship;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,12 +30,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
+
 /**
  * @author Leboc Philippe.
  */
 @RunWith(SpringRunner.class)
 @Rollback
 @SpringBootTest(classes = Application.class)
+@Transactional
 public class SpyReportServiceTest {
 
     @Autowired
@@ -49,7 +51,7 @@ public class SpyReportServiceTest {
     private BaseService baseService;
 
     @Autowired
-    private PlayerInventoryService playerInventoryService;
+    private PlanetManager planetManager;
 
     @Autowired
     private ItemService itemService;
@@ -75,6 +77,8 @@ public class SpyReportServiceTest {
     @Before
     public void init() {
         Config.load();
+        WorldData.getInstance().reload();
+        astralObjectService.saveUniverse();
 
         // Parse
         SystemMessageData.getInstance();
@@ -86,20 +90,9 @@ public class SpyReportServiceTest {
         _player = playerService.create(_account, "PlayerTest");
         _player2nd = playerService.create(_account2nd, "PlayerTest2nd");
 
-        final Planet planet = (Planet) astralObjectService.create("PlanetTest", null, AstralObjectType.PLANET);
+        final Planet planet = planetManager.pickRandom();
         _baseSrc = baseService.create("BaseTestSrc", _player, planet);
         _baseTarget = baseService.create("BaseTestTarget", _player2nd, planet);
-    }
-
-    @After
-    public void destroy() {
-        spyReportService.deleteAll();
-        resourceService.deleteAll();
-        itemService.deleteAll();
-        baseService.deleteAll();
-        playerInventoryService.deleteAll();
-        playerService.deleteAll();
-        accountService.deleteAll();
     }
 
     @Test

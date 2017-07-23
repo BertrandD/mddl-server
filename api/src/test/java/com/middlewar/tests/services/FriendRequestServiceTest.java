@@ -9,7 +9,6 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,12 +17,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
+
 /**
  * @author Leboc Philippe.
  */
 @RunWith(SpringRunner.class)
 @Rollback
 @SpringBootTest(classes = Application.class)
+@Transactional
 public class FriendRequestServiceTest {
 
     @Autowired
@@ -46,13 +48,6 @@ public class FriendRequestServiceTest {
         _requester = playerService.create(account, "PlayerTest");
         _requested1 = playerService.create(account, "PlayerTest1");
         _requested2 = playerService.create(account, "PlayerTest2");
-    }
-
-    @After
-    public void destroy() {
-        accountService.deleteAll();
-        playerService.deleteAll();
-        friendRequestService.deleteAll();
     }
 
     @Test

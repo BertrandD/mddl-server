@@ -1,6 +1,6 @@
 package com.middlewar.core.model.space;
 
-import com.middlewar.core.model.Base;
+import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,11 +25,14 @@ public class PlanetScan {
     @Id
     @GeneratedValue
     private long id;
+
     private long date;
+
     @ManyToOne
     private Planet planet;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Map<Long, Base> baseScanned;
+    private Map<Long, BasePlanetScanProjection> baseScanned;
 
     public PlanetScan(Planet planet) {
         this.date = TimeUtil.getCurrentTime();

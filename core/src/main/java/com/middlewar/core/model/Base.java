@@ -8,6 +8,7 @@ import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
@@ -25,6 +26,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,6 +65,9 @@ public class Base
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Resource> resources;
 
+    @OneToMany(mappedBy = "baseSrc", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Report> reports;
+
     @ManyToOne
     private Planet planet;
 
@@ -74,6 +79,7 @@ public class Base
         setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
         setResources(new ArrayList<>());
+        setReports(new ArrayList<>());
     }
 
     public Base(String name, Player owner, Planet planet) {
@@ -84,7 +90,15 @@ public class Base
         setResources(new ArrayList<>());
         setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
+        setReports(new ArrayList<>());
         setPlanet(planet);
+    }
+
+    @PreRemove
+    private void cleanCurrentBase() {
+        if (this.getOwner().getCurrentBase().getId()==this.getId()) {
+            this.getOwner().setCurrentBase(null);
+        }
     }
 
     /**

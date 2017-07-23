@@ -7,6 +7,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.serializer.PlanetScanReportSerializer;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -16,36 +17,17 @@ import javax.persistence.ManyToOne;
  * @author bertrand.
  */
 @Entity
+@Data
 @NoArgsConstructor
 @JsonSerialize(using = PlanetScanReportSerializer.class)
 public class PlanetScanReport extends Report {
 
     @ManyToOne
-    private Base baseSrc;
-
-    @ManyToOne
     private Planet planet;
 
     public PlanetScanReport(Player owner, Base baseSrc, Planet planet, ReportStatus reportStatus) {
-        super(owner, reportStatus);
-        setBaseSrc(baseSrc);
+        super(owner, baseSrc, reportStatus);
         setPlanet(planet);
-    }
-
-    public Base getBaseSrc() {
-        return baseSrc;
-    }
-
-    public void setBaseSrc(Base baseSrc) {
-        this.baseSrc = baseSrc;
-    }
-
-    public Planet getPlanet() {
-        return planet;
-    }
-
-    public void setPlanet(Planet planet) {
-        this.planet = planet;
     }
 
     @Override

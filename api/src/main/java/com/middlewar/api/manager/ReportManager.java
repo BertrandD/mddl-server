@@ -29,8 +29,8 @@ public class ReportManager {
     private SpyReportServiceImpl spyReportServiceImpl;
 
     public List<Report> getAllReportsOfCurrentPlayer(Player player) throws NoPlayerConnectedException, PlayerNotFoundException {
-        player.getReports().sort(Collections.reverseOrder());
-        return player.getReports();
+        player.getCurrentBase().getReports().sort(Collections.reverseOrder());
+        return player.getCurrentBase().getReports();
 
     }
 

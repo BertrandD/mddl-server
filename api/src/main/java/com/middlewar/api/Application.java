@@ -1,14 +1,11 @@
 package com.middlewar.api;
 
-import com.middlewar.api.services.impl.AstralObjectServiceImpl;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.data.xml.ShopData;
 import com.middlewar.core.data.xml.SystemMessageData;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,13 +22,7 @@ import java.util.concurrent.Executor;
 @EnableJpaRepositories("com.middlewar.api.dao")
 @EntityScan({"com.middlewar.core.model", "com.middlewar.core.holders"})
 @ComponentScan("com")
-public class Application extends AsyncConfigurerSupport implements CommandLineRunner{
-
-    @Autowired
-    private AI ai;
-
-    @Autowired
-    private AstralObjectServiceImpl astralObjectServiceImpl;
+public class Application extends AsyncConfigurerSupport {
 
     public static void main(String[] args)
     {
@@ -62,10 +53,4 @@ public class Application extends AsyncConfigurerSupport implements CommandLineRu
         executor.initialize();
         return executor;
     }
-
-    @Override
-    public void run(String... strings) throws Exception {
-        astralObjectServiceImpl.saveUniverse();
-        ai.init();
-   }
 }

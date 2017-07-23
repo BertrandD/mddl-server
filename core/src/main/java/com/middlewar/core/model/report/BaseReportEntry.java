@@ -17,7 +17,7 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 public class BaseReportEntry extends ReportEntry {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private BaseReportProjection base;
 
     public BaseReportEntry(Base base) {
