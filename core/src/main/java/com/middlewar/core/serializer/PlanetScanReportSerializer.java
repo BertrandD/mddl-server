@@ -2,9 +2,9 @@ package com.middlewar.core.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.middlewar.core.model.report.PlanetScanReport;
 import com.middlewar.core.holders.AstralObjectHolder;
 import com.middlewar.core.holders.BaseHolder;
+import com.middlewar.core.model.report.PlanetScanReport;
 
 import java.io.IOException;
 

@@ -1,5 +1,6 @@
 package com.middlewar.api.auth;
 
+import com.middlewar.api.dao.AccountDao;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ import java.util.UUID;
 public class AccountService implements UserDetailsService {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountDao accountDao;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final Account account = accountRepository.findByUsername(username);
+        final Account account = accountDao.findByUsername(username);
         if(account == null){
             throw new UsernameNotFoundException(username);
         }else{
@@ -36,15 +37,15 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account findOne(String id){
-        return accountRepository.findOne(id);
+        return accountDao.findOne(id);
     }
 
     public Account findByUsername(String username){
-        return accountRepository.findByUsername(username);
+        return accountDao.findByUsername(username);
     }
 
     public List<Account> findAll(){
-        return accountRepository.findAll();
+        return accountDao.findAll();
     }
 
     public Account create(String username, String password) {
@@ -53,7 +54,7 @@ public class AccountService implements UserDetailsService {
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         Account account = new Account(username, passwordEncoder.encode(password), roles, null, Lang.EN, null, null, UUID.randomUUID().toString());
-        account = accountRepository.save(account);
+        account = accountDao.save(account);
 
         if(account == null) return null;
         // Slack.sendInfo("New account : "+username); // TODO: Add AccountServiceTestImpl
@@ -65,14 +66,14 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account getUserFromToken(String token) {
-        return accountRepository.findByToken(token);
+        return accountDao.findByToken(token);
     }
 
     public void update(Account account) {
-        accountRepository.save(account);
+        accountDao.save(account);
     }
 
     public void deleteAll() {
-        accountRepository.deleteAll();
+        accountDao.deleteAll();
     }
 }

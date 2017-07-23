@@ -8,11 +8,17 @@ import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.ResourceSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * @author LEBOC Philippe
@@ -24,26 +30,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @ToString
-@Document(collection = "resources")
+@Entity
+@NoArgsConstructor
 @JsonSerialize(using = ResourceSerializer.class)
-public final class Resource {
+public class Resource {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Base base;
 
-    @DBRef
+    @OneToOne(cascade = CascadeType.ALL)
     private ItemInstance item;
 
     private long lastRefresh;
 
+    @Enumerated(EnumType.STRING)
     private Stats stat;
 
     public Resource(Base base, ItemInstance item) {
-        setId(new ObjectId().toString());
         setBase(base);
         setItem(item);
         setLastRefresh(TimeUtil.getCurrentTime());

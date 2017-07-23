@@ -5,8 +5,8 @@ import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.vehicles.Fleet;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import javax.persistence.OneToOne;
 
 /**
  * @author LEBOC Philippe
@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @Data
 public final class FleetInventory extends Inventory {
 
-    @DBRef
+    @OneToOne
     @JsonBackReference
     private Fleet fleet;
 
@@ -24,7 +24,6 @@ public final class FleetInventory extends Inventory {
 
     public FleetInventory(Fleet fleet) {
         super();
-        setId(new ObjectId().toString());
         setFleet(fleet);
     }
 

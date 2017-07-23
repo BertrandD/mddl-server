@@ -2,7 +2,11 @@ package com.middlewar.tests.manager;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
-import com.middlewar.api.exceptions.*;
+import com.middlewar.api.exceptions.BaseNotFoundException;
+import com.middlewar.api.exceptions.BaseNotOwnedException;
+import com.middlewar.api.exceptions.NoPlayerConnectedException;
+import com.middlewar.api.exceptions.PlayerHasNoBaseException;
+import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.BaseService;
@@ -10,6 +14,7 @@ import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.assertj.core.api.Assertions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +64,11 @@ public class BaseManagerTest {
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException {
         MockitoAnnotations.initMocks(this);
         _playerOwner = new Player(null, "owner");
+        _playerOwner.setId("owner");
         _playerNotOwner = new Player(null, "toto");
-        List<String> players = new ArrayList<>();
-        players.add(_playerOwner.getId());
+        _playerNotOwner.setId("toto");
+        List<Player> players = new ArrayList<>();
+        players.add(_playerOwner);
         _account = new Account("tt", "", new ArrayList<>(), "tt", null, players, _playerOwner.getId(), "");
         _base = new Base("yoloo", _playerOwner, null);
         _base.setId("yoloo");

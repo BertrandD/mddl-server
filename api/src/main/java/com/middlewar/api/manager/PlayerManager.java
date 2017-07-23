@@ -1,6 +1,12 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.exceptions.*;
+import com.middlewar.api.exceptions.ForbiddenNameException;
+import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
+import com.middlewar.api.exceptions.NoPlayerConnectedException;
+import com.middlewar.api.exceptions.PlayerCreationFailedException;
+import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.api.exceptions.PlayerNotOwnedException;
+import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.config.Config;

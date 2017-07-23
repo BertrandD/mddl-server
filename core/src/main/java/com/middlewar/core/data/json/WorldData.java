@@ -2,11 +2,14 @@ package com.middlewar.core.data.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.middlewar.core.config.Config;
-import com.middlewar.core.model.space.*;
+import com.middlewar.core.model.space.AstralObject;
+import com.middlewar.core.model.space.BlackHole;
+import com.middlewar.core.model.space.Moon;
+import com.middlewar.core.model.space.Planet;
+import com.middlewar.core.model.space.Star;
 import com.middlewar.core.utils.Rnd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -114,7 +117,7 @@ public class WorldData {
             return null;
         }
 
-        return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt));
+        return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt-1));
     }
 
     public static WorldData getInstance() {

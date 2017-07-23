@@ -1,9 +1,9 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.BaseInventoryDao;
+import com.middlewar.api.services.BaseInventoryService;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.api.services.BaseInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class BaseInventoryServiceImpl implements BaseInventoryService{
 
     @Override
     public BaseInventory create(Base base) {
-        return baseInventoryDao.insert(new BaseInventory(base));
+        return baseInventoryDao.save(new BaseInventory(base));
     }
 
     @Override

@@ -35,7 +35,7 @@ public class ShipServiceImpl implements ShipService {
             ship.setWeaponIds(ids.stream().filter(k -> k.startsWith("weapon_")).collect(Collectors.toList()));
         }
 
-        shipDao.insert(ship);
+        shipDao.save(ship);
         baseDao.save(base);
         return ship;
     }

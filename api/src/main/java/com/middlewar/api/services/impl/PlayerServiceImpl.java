@@ -1,11 +1,11 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.auth.AccountService;
-import com.middlewar.api.services.PlayerInventoryService;
-import com.middlewar.core.model.Account;
 import com.middlewar.api.dao.PlayerDao;
-import com.middlewar.core.model.Player;
+import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
+import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +33,15 @@ public class PlayerServiceImpl implements PlayerService {
         final Account playerAccount = accountService.findOne(account.getId());
         if(playerAccount == null) return null;
 
-        final Player player = dao.insert(new Player(account, name));
+        final Player player = dao.save(new Player(account, name));
 
         // Update database account
-        playerAccount.addPlayer(player.getId());
+        playerAccount.addPlayer(player);
         playerAccount.setCurrentPlayer(player.getId());
         accountService.update(playerAccount);
 
         // update current AuthenticationPrincipal
-        account.addPlayer(player.getId());
+        account.addPlayer(player);
         account.setCurrentPlayer(player.getId());
 
         playerInventoryService.create(player);

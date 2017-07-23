@@ -1,9 +1,9 @@
 package com.middlewar.api.tasks;
 
+import org.springframework.stereotype.Component;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class ScheduledTasks {

@@ -1,8 +1,8 @@
 package com.middlewar.api.controllers.ship;
 
 import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.ShipService;
 import com.middlewar.api.services.impl.InventoryService;
-import com.middlewar.api.services.impl.ShipService;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;

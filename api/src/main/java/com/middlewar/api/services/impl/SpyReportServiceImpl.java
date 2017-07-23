@@ -3,12 +3,14 @@ package com.middlewar.api.services.impl;
 import com.middlewar.api.dao.PlayerDao;
 import com.middlewar.api.dao.SpyReportDao;
 import com.middlewar.api.services.SpyReportService;
+import com.middlewar.core.enums.ReportCategory;
+import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.inventory.Resource;
+import com.middlewar.core.model.report.ResourcesReportEntry;
+import com.middlewar.core.model.report.ShipsReportEntry;
 import com.middlewar.core.model.report.SpyReport;
-import com.middlewar.core.enums.ReportCategory;
-import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,14 +42,14 @@ public class SpyReportServiceImpl implements SpyReportService {
             // TODO : instead of getting structure, we should get the Recipe
             // It would be fun if (depending of the spy level of the source Base, the report would
             // have less or more details on the recipe...
-            report.addEntry(ship.getStructure().getItemId(), ship.getCount(), ReportCategory.SHIPS);
+            report.addEntry(new ShipsReportEntry(ship.getStructure().getItemId(), ship.getCount()), ReportCategory.SHIPS);
         }
 
         for (Resource resource : baseTarget.getResources()) {
-            report.addEntry(resource.getItem().getTemplateId(), (int)resource.getItem().getCount(), ReportCategory.RESOURCES);
+            report.addEntry(new ResourcesReportEntry(resource.getItem().getTemplateId(), resource.getItem().getCount()), ReportCategory.RESOURCES);
         }
 
-        spyReportDao.insert(report);
+        spyReportDao.save(report);
         playerDao.save(owner);
         return report;
     }

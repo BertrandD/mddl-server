@@ -3,6 +3,7 @@ package com.middlewar.core.model.stats;
 import com.middlewar.core.holders.StatHolder;
 import lombok.Data;
 
+import javax.persistence.Embeddable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
  * @author Leboc Philippe.
  */
 @Data
+@Embeddable
 public class BuildingStats {
 
     private List<StatHolder> globalStats;

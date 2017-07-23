@@ -2,14 +2,15 @@ package com.middlewar.core.holders;
 
 import com.middlewar.core.model.Player;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import javax.persistence.Id;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@NoArgsConstructor
 public class PlayerHolder {
+    @Id
     private String id;
     private String name;
 

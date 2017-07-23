@@ -7,19 +7,20 @@ import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BaseInventorySerializer;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "base_inventory")
+@Entity
 @JsonSerialize(using = BaseInventorySerializer.class)
-public final class BaseInventory extends Inventory {
+public class BaseInventory extends Inventory {
 
-    @DBRef(lazy = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Base base;
 
@@ -29,7 +30,6 @@ public final class BaseInventory extends Inventory {
 
     public BaseInventory(Base base){
         super();
-        setId(new ObjectId().toString());
         setBase(base);
     }
 

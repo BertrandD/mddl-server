@@ -2,22 +2,24 @@ package com.middlewar.core.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
-import com.middlewar.core.holders.BaseHolder;
 import com.middlewar.core.serializer.PlayerSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,57 +29,62 @@ import java.util.Map;
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "players")
+@Entity
 @JsonSerialize(using = PlayerSerializer.class)
 public class Player {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @Indexed(unique = true)
     private String name;
 
-    @DBRef
-    @Indexed
+    @ManyToOne
     private Account account;
 
-    @DBRef
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Base> bases;
 
-    @DBRef
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference
     private Base currentBase;
 
-    @DBRef
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference
-    private PlayerInventory inventory;
+    protected PlayerInventory inventory;
 
-    private List<PlayerHolder> friends;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Player> friends;
 
-    @DBRef
-    private List<FriendRequest> friendRequests;
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    private List<FriendRequest> emittedFriendRequests;
 
-    @DBRef
+    @OneToMany(mappedBy = "requested", cascade = CascadeType.ALL)
+    private List<FriendRequest> receivedFriendRequests;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Map<String, PlanetScan> planetScans;
 
     public Player() {
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
-        setFriendRequests(new ArrayList<>());
+        setEmittedFriendRequests(new ArrayList<>());
+        setReceivedFriendRequests(new ArrayList<>());
         setReports(new ArrayList<>());
         setPlanetScans(new HashMap<>());
     }
 
     public Player(Account account, String name) {
-        setId(new ObjectId().toString());
         setName(name);
         setAccount(account);
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
-        setFriendRequests(new ArrayList<>());
+        setEmittedFriendRequests(new ArrayList<>());
+        setReceivedFriendRequests(new ArrayList<>());
         setReports(new ArrayList<>());
         setPlanetScans(new HashMap<>());
     }
@@ -86,12 +93,15 @@ public class Player {
         getBases().add(base);
     }
 
-    public boolean addFriend(PlayerHolder friend) {
+    public boolean addFriend(Player friend) {
         return !getFriends().contains(friend) && getFriends().add(friend);
     }
 
     public boolean addRequest(FriendRequest request) {
-        return !getFriendRequests().contains(request) && getFriendRequests().add(request);
+        if (request.getRequester().is(this)) {
+            return !getEmittedFriendRequests().contains(request) && getEmittedFriendRequests().add(request);
+        } else
+            return request.getRequested().is(this) && !getEmittedFriendRequests().contains(request) && getEmittedFriendRequests().add(request);
     }
 
     public List<Report> getReports() {
@@ -107,7 +117,7 @@ public class Player {
             planetScans.put(planet.getId(), new PlanetScan(planet));
         }
         final PlanetScan planetScan = planetScans.get(planet.getId());
-        planetScan.getBaseScanned().put(base.getId(), new BaseHolder(base));
+        planetScan.getBaseScanned().put(base.getId(), base);
         planetScan.setDate(TimeUtil.getCurrentTime());
     }
 
@@ -117,6 +127,10 @@ public class Player {
 
     public void setPlanetScans(Map<String, PlanetScan> planetScans) {
         this.planetScans = planetScans;
+    }
+
+    public boolean is(Player player) {
+        return player.getId().equalsIgnoreCase(this.getId());
     }
 
     @Override

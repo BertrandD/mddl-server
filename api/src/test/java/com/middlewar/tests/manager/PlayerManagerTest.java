@@ -1,7 +1,13 @@
 package com.middlewar.tests.manager;
 
 import com.middlewar.api.Application;
-import com.middlewar.api.exceptions.*;
+import com.middlewar.api.exceptions.BaseNotFoundException;
+import com.middlewar.api.exceptions.ForbiddenNameException;
+import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
+import com.middlewar.api.exceptions.NoPlayerConnectedException;
+import com.middlewar.api.exceptions.PlayerCreationFailedException;
+import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
@@ -45,8 +51,8 @@ public class PlayerManagerTest {
         _player = new Player();
         _player.setId("yoloo");
         _player.setName("yoloo");
-        List<String> players = new ArrayList<>();
-        players.add(_player.getId());
+        List<Player> players = new ArrayList<>();
+        players.add(_player);
         _account = new Account("tt", "", new ArrayList<>(), "tt", null, players, _player.getId(), "");
         when(playerService.findOne("yoloo")).thenReturn(_player);
     }
@@ -98,6 +104,7 @@ public class PlayerManagerTest {
     @Test
     public void shouldReturnCreatedPlayer() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
         final Player player2 = new Player(_account, "toto");
+        player2.setId("tt");
         when( playerService.create(_account, "toto")).thenReturn(player2);
         final Player player1 = playerManager.createForAccount(_account, "toto");
         Assertions.assertThat(player1).isNotNull();

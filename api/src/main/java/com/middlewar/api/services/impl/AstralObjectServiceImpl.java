@@ -38,7 +38,7 @@ public class AstralObjectServiceImpl implements AstralObjectService {
 
         // TODO: warning ABOUT parent !
         // TODO: find parent in DATABASE BEFORE OR STORE IT RECUSIVELY !!!!!
-        object = astralObjectDao.insert(object);
+        object = astralObjectDao.save(object);
 
         return object;
     }

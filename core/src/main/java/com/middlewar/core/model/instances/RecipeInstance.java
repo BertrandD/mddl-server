@@ -8,10 +8,12 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,22 +21,25 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "recipes")
+@Entity
+@NoArgsConstructor
 public class RecipeInstance {
 
     @Id
     private String id;
     private String name;
 
-    @DBRef
+    @ManyToOne
     private Player owner;
     private String structureId;
+    @ElementCollection
     private List<String> cargos;
+    @ElementCollection
     private List<String> engines;
+    @ElementCollection
     private List<String> modules;
+    @ElementCollection
     private List<String> weapons;
-
-    public RecipeInstance(){}
 
     public RecipeInstance(String name, Player owner, String structureId, List<String> cargos, List<String> engines, List<String> modules, List<String> technologies, List<String> weapons){
         setName(name);

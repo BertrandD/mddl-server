@@ -8,21 +8,26 @@ import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Weapon;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
+@MappedSuperclass
 public abstract class Vehicle implements IShip {
 
     @Id
+    @GeneratedValue
     private String id;
 
     private long count;
 
-    @DBRef
+    @ManyToOne
     @JsonBackReference
     private Base base;
 

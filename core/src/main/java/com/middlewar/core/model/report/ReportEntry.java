@@ -3,18 +3,27 @@ package com.middlewar.core.model.report;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
 /**
  * @author bertrand.
  */
 @Data
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
-public class ReportEntry {
+public abstract class ReportEntry {
 
+    @Id
+    @GeneratedValue
+    private String id;
     private String name;
-    private Object value;
 
-    public ReportEntry(String name, Object value) {
+    public ReportEntry(String name) {
         this.name = name;
-        this.value = value;
     }
 }

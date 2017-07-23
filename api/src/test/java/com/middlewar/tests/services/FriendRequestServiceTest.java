@@ -5,7 +5,6 @@ import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.services.FriendRequestService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
-import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
@@ -37,14 +36,16 @@ public class FriendRequestServiceTest {
     private FriendRequestService friendRequestService;
 
     private Player _requester;
-    private Player _requested;
+    private Player _requested1;
+    private Player _requested2;
 
     @Before
     public void init() {
         Config.load();
         final Account account = accountService.create("AccountTest", "no-password");
         _requester = playerService.create(account, "PlayerTest");
-        _requested = playerService.create(account, "PlayerTest2");
+        _requested1 = playerService.create(account, "PlayerTest1");
+        _requested2 = playerService.create(account, "PlayerTest2");
     }
 
     @After
@@ -59,17 +60,17 @@ public class FriendRequestServiceTest {
 
         final String message = "Hi ! I want to be your friend !";
 
-        final FriendRequest request = friendRequestService.create(_requester, _requested, message);
+        final FriendRequest request = friendRequestService.create(_requester, _requested1, message);
 
         Assertions.assertThat(request).isNotNull();
         Assertions.assertThat(request.getRequester().getId()).isEqualTo(_requester.getId());
-        Assertions.assertThat(request.getRequested().getId()).isEqualTo(_requested.getId());
+        Assertions.assertThat(request.getRequested().getId()).isEqualTo(_requested1.getId());
 
-        final FriendRequest request2 = friendRequestService.create(new PlayerHolder(_requester), new PlayerHolder(_requested), message);
+        final FriendRequest request2 = friendRequestService.create(_requester, _requested2, message);
 
         Assertions.assertThat(request2).isNotNull();
         Assertions.assertThat(request2.getRequester().getId()).isEqualTo(_requester.getId());
-        Assertions.assertThat(request2.getRequested().getId()).isEqualTo(_requested.getId());
+        Assertions.assertThat(request2.getRequested().getId()).isEqualTo(_requested2.getId());
     }
 
 }

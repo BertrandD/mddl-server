@@ -1,11 +1,11 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.BuildingDao;
+import com.middlewar.api.services.BuildingService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.instances.BuildingInstance;
-import com.middlewar.api.services.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +25,11 @@ public class BuildingServiceImpl implements BuildingService {
         final Building template = BuildingData.getInstance().getBuilding(buildingId);
         if(template == null) return null;
 
-        return buildingDao.insert(new BuildingInstance(base, buildingId));
+        return buildingDao.save(new BuildingInstance(base, buildingId));
     }
 
     public BuildingInstance findBy(Base base, String id) {
-        return buildingDao.findOneByIdAndBaseId(id, base);
+        return buildingDao.findOneByIdAndBaseId(id, base.getId());
     }
 
     public List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId) {

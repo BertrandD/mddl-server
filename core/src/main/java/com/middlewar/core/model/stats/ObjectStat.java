@@ -6,18 +6,28 @@ import com.middlewar.core.serializer.ObjectStatSerializer;
 import lombok.Data;
 import org.apache.log4j.Logger;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.Transient;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
+@Embeddable
 @JsonSerialize(using = ObjectStatSerializer.class)
 public class ObjectStat {
 
+    @Transient
     private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    private HashMap<Stats, Double> stats;
+    @ElementCollection
+    @MapKeyEnumerated(EnumType.STRING)
+    private Map<Stats, Double> stats;
 
     public ObjectStat() {
         setStats(new HashMap<>());

@@ -1,31 +1,37 @@
 package com.middlewar.core.model.social;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.holders.PlayerHolder;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.serializer.FriendRequestSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "friend_request")
+@Entity
+@NoArgsConstructor
 @JsonSerialize(using = FriendRequestSerializer.class)
 public class FriendRequest {
 
     @Id
+    @GeneratedValue
     private String id;
-    private PlayerHolder requester;
-    private PlayerHolder requested;
+    @ManyToOne
+    private Player requester;
+    @ManyToOne
+    private Player requested;
     private String message;
     private long requestDate;
 
-    public FriendRequest(PlayerHolder requester, PlayerHolder requested, String message) {
-        setId(new ObjectId().toString());
+    public FriendRequest(Player requester, Player requested, String message) {
         setRequester(requester);
         setRequested(requested);
         setMessage(message);

@@ -27,7 +27,11 @@ public class PlayerSerializer extends JsonSerializer<Player> {
         gen.writeEndArray();
 
         gen.writeArrayFieldStart("friendRequests");
-        IOConsumer.forEach(value.getFriendRequests().stream(), gen::writeObject);
+        IOConsumer.forEach(value.getReceivedFriendRequests().stream(), gen::writeObject);
+        gen.writeEndArray();
+
+        gen.writeArrayFieldStart("emittedFriendRequests");
+        IOConsumer.forEach(value.getEmittedFriendRequests().stream(), gen::writeObject);
         gen.writeEndArray();
 
         gen.writeArrayFieldStart("bases");

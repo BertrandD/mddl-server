@@ -6,29 +6,26 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.serializer.PlayerInventorySerializer;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "player_inventory")
+@Entity
+@NoArgsConstructor
 @JsonSerialize(using = PlayerInventorySerializer.class)
-public final class PlayerInventory extends Inventory {
+public class PlayerInventory extends Inventory {
 
-    @DBRef
+    @OneToOne
     @JsonBackReference
     private Player player;
 
-    public PlayerInventory() {
-        super();
-    }
-
     public PlayerInventory(Player player) {
         super();
-        setId(new ObjectId().toString());
         setPlayer(player);
     }
 

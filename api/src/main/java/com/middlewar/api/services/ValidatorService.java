@@ -2,6 +2,7 @@ package com.middlewar.api.services;
 
 import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
+import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.holders.BuildingHolder;
@@ -14,7 +15,6 @@ import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Item;
-import com.middlewar.api.services.impl.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

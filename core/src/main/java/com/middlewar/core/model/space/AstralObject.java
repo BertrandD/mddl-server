@@ -6,12 +6,16 @@ import com.middlewar.core.enums.AstralStat;
 import com.middlewar.core.serializer.AstralObjectSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,13 +25,15 @@ import java.util.List;
  */
 @Data
 @JsonSerialize(using = AstralObjectSerializer.class)
-@Document(collection = "universe")
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AstralObject {
 
     @Id
+    @GeneratedValue
     private String id;
 
-    @Indexed
     private String name;
 
     private HashMap<AstralStat, Double> stats;
@@ -39,15 +45,14 @@ public abstract class AstralObject {
 
     private double size;
 
-    @DBRef(lazy = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AstralObject> satellites;
 
-    @DBRef
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private AstralObject parent;
 
     public AstralObject(String name, AstralObject parent) {
-        this.id = new ObjectId().toString();
         this.name = name;
         this.stats = new HashMap<>();
         this.satellites = new ArrayList<>();

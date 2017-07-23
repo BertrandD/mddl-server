@@ -4,46 +4,46 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
-import com.middlewar.core.interfaces.IInventory;
+import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.serializer.ItemInstanceSerializer;
 import lombok.Data;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
-@Document(collection = "items")
+@NoArgsConstructor
+@Entity
 @JsonSerialize(using = ItemInstanceSerializer.class)
 public class ItemInstance {
 
     @Id
+    @GeneratedValue
     private String id;
     private String templateId;
     private double count;
     private ItemType type;
 
-    @DBRef
+    @ManyToOne
     @JsonManagedReference
-    private IInventory inventory;
-
-    public ItemInstance(){}
+    private Inventory inventory;
 
     public ItemInstance(String itemId, double count)
     {
-        setId(new ObjectId().toString());
         setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
     }
 
-    public ItemInstance(IInventory inventory, String itemId, double count)
+    public ItemInstance(Inventory inventory, String itemId, double count)
     {
-        setId(new ObjectId().toString());
         setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);

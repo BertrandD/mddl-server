@@ -1,7 +1,7 @@
 package com.middlewar.core.holders;
 
-import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.enums.StatOp;
+import com.middlewar.core.model.stats.Stats;
 
 /**
  * @author LEBOC Philippe

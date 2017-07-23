@@ -1,7 +1,7 @@
 package com.middlewar.api.config.spring;
 
-import com.middlewar.core.model.Account;
 import com.middlewar.api.auth.AccountService;
+import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,8 +59,6 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             } else {
                 logger.info("Invalid token !");
             }
-        } else {
-            logger.info("Token is null");
         }
         // continue thru the filter chain
         chain.doFilter(request, response);
