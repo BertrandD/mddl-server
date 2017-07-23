@@ -70,6 +70,7 @@ public class BaseServiceTest {
         playerInventoryService.deleteAll();
         playerService.deleteAll();
         accountService.deleteAll();
+        astralObjectService.deleteAll();
     }
 
     @Test
