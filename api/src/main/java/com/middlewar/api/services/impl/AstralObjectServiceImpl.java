@@ -2,6 +2,7 @@ package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.AstralObjectDao;
 import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.model.space.AstralObject;
 import com.middlewar.core.model.space.BlackHole;
@@ -43,12 +44,9 @@ public class AstralObjectServiceImpl implements AstralObjectService {
         return object;
     }
 
-    public void saveUniverse(AstralObject astralObject) {
-        // TODO: replace me
-        if (astralObject.getSatellites().size() > 0) {
-            astralObject.getSatellites().forEach(this::saveUniverse);
-        }
-        astralObjectDao.save(astralObject);
+    public void saveUniverse() {
+        AstralObject blackHole = WorldData.getInstance().getWorld();
+        astralObjectDao.save(blackHole);
     }
 
     public AstralObject findOneByName(String name) {

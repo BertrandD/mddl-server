@@ -17,6 +17,7 @@ import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlayerService;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.AstralObjectType;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -74,6 +75,7 @@ public class BaseManagerTest {
 
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+        Config.load();
         MockitoAnnotations.initMocks(this);
         _account = accountService.create("toto", "");
         _playerOwner = playerManager.createForAccount(_account, "owner");

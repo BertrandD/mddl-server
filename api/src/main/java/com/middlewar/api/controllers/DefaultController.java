@@ -68,16 +68,14 @@ public class DefaultController implements ErrorController{
         account.getPlayers().clear();
         account.setCurrentPlayer(0);
         accountService.update(account);
-        AstralObject blackHole = WorldData.getInstance().getWorld();
-        astralObjectServiceImpl.saveUniverse(blackHole);
+        astralObjectServiceImpl.saveUniverse();
         return new Response(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
     public Response resetWorld(@AuthenticationPrincipal Account pAccount) {
-        AstralObject blackHole = WorldData.getInstance().getWorld();
-        astralObjectServiceImpl.saveUniverse(blackHole);
+        astralObjectServiceImpl.saveUniverse();
         return new Response(JsonResponseType.SUCCESS);
     }
 

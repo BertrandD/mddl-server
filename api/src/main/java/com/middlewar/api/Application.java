@@ -1,5 +1,6 @@
 package com.middlewar.api;
 
+import com.middlewar.api.services.impl.AstralObjectServiceImpl;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.BuildingData;
@@ -28,6 +29,9 @@ public class Application extends AsyncConfigurerSupport implements CommandLineRu
 
     @Autowired
     private AI ai;
+
+    @Autowired
+    private AstralObjectServiceImpl astralObjectServiceImpl;
 
     public static void main(String[] args)
     {
@@ -61,6 +65,7 @@ public class Application extends AsyncConfigurerSupport implements CommandLineRu
 
     @Override
     public void run(String... strings) throws Exception {
+        astralObjectServiceImpl.saveUniverse();
         ai.init();
    }
 }
