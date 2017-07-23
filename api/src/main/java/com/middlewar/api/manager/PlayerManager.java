@@ -52,16 +52,11 @@ public class PlayerManager {
      * @param account the account to check if the player
      * @param id the player id we want
      * @return the player
-     * @throws PlayerNotFoundException if the player of the account is not found
      * @throws PlayerNotOwnedException if the player is not one of the account's players
      */
-    public Player getPlayerOfAccount(Account account, String id) throws PlayerNotFoundException, PlayerNotOwnedException {
-        if (!account.getPlayers().contains(id)) {
-            throw new PlayerNotOwnedException();
-        }
-        final Player player = playerService.findOne(id);
-        if(player == null) throw new PlayerNotFoundException();
-        if (!player.getAccount().getId().equals(account.getId())) {
+    public Player getPlayerOfAccount(Account account, String id) throws PlayerNotOwnedException {
+        Player player = account.getPlayers().stream().filter(k->k.getId().equals(id)).findFirst().orElse(null);
+        if (player == null) {
             throw new PlayerNotOwnedException();
         }
         return player;
