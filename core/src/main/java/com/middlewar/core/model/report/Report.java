@@ -1,6 +1,5 @@
 package com.middlewar.core.model.report;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.enums.ReportType;
@@ -38,7 +37,6 @@ public abstract class Report implements Comparable<Report> {
     private long date;
 
     @ManyToOne
-    @JsonBackReference
     private Player owner;
 
     @MapKeyEnumerated

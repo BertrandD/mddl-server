@@ -1,6 +1,5 @@
 package com.middlewar.core.model.space;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.AstralStat;
 import com.middlewar.core.serializer.AstralObjectSerializer;
@@ -49,7 +48,6 @@ public abstract class AstralObject {
     private List<AstralObject> satellites;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
     private AstralObject parent;
 
     public AstralObject(String name, AstralObject parent) {

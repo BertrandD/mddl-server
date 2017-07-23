@@ -1,6 +1,5 @@
 package com.middlewar.core.model.inventory;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.middlewar.core.interfaces.IInventory;
 import com.middlewar.core.model.instances.ItemInstance;
 
@@ -28,7 +27,6 @@ public abstract class Inventory implements IInventory {
     private long id;
 
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<ItemInstance> items;
 
     protected Inventory() {

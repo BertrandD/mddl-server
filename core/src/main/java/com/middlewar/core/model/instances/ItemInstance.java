@@ -1,6 +1,5 @@
 package com.middlewar.core.model.instances;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
@@ -32,7 +31,6 @@ public class ItemInstance {
     private ItemType type;
 
     @ManyToOne
-    @JsonManagedReference
     private Inventory inventory;
 
     public ItemInstance(String itemId, double count)

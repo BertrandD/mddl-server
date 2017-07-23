@@ -1,6 +1,5 @@
 package com.middlewar.core.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.report.Report;
@@ -45,15 +44,12 @@ public class Player {
     private Account account;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
     private List<Base> bases;
 
     @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonBackReference
     private Base currentBase;
 
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonBackReference
     protected PlayerInventory inventory;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

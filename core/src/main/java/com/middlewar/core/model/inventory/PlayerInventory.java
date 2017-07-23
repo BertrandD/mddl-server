@@ -1,6 +1,5 @@
 package com.middlewar.core.model.inventory;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -21,7 +20,6 @@ import javax.persistence.OneToOne;
 public class PlayerInventory extends Inventory {
 
     @OneToOne
-    @JsonBackReference
     private Player player;
 
     public PlayerInventory(Player player) {

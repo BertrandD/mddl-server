@@ -1,6 +1,5 @@
 package com.middlewar.core.model.inventory;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.vehicles.Fleet;
@@ -15,7 +14,6 @@ import javax.persistence.OneToOne;
 public final class FleetInventory extends Inventory {
 
     @OneToOne
-    @JsonBackReference
     private Fleet fleet;
 
     public FleetInventory() {

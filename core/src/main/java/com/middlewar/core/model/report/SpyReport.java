@@ -1,6 +1,5 @@
 package com.middlewar.core.model.report;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.enums.ReportType;
@@ -23,11 +22,9 @@ import javax.persistence.ManyToOne;
 public class SpyReport extends Report{
 
     @ManyToOne
-    @JsonBackReference
     private Base baseSrc;
 
     @ManyToOne
-    @JsonBackReference
     private Base baseTarget;
 
     public SpyReport(Player owner, Base baseSrc, Base baseTarget, ReportStatus reportStatus) {

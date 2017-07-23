@@ -1,6 +1,5 @@
 package com.middlewar.core.model.space;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.middlewar.core.model.Base;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.List;
 public class Planet extends AstralObject {
 
     @OneToMany(mappedBy = "planet", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
     private List<Base> bases;
 
     public Planet(String name, AstralObject parent) {

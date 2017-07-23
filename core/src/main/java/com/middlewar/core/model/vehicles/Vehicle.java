@@ -1,6 +1,5 @@
 package com.middlewar.core.model.vehicles;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.middlewar.core.enums.VehicleState;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.items.Cargo;
@@ -28,7 +27,6 @@ public abstract class Vehicle implements IShip {
     private long count;
 
     @ManyToOne
-    @JsonBackReference
     private Base base;
 
     private VehicleState state;

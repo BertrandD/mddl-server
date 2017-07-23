@@ -1,6 +1,5 @@
 package com.middlewar.core.model.vehicles;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.enums.VehicleMission;
@@ -39,7 +38,6 @@ public class Fleet {
     private ObjectStat stats;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Ship> ships;
 
     public Fleet() {

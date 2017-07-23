@@ -1,6 +1,5 @@
 package com.middlewar.core.model.inventory;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -40,7 +39,6 @@ public class Resource {
     private long id;
 
     @ManyToOne
-    @JsonBackReference
     private Base base;
 
     @OneToOne(cascade = CascadeType.ALL)

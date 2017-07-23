@@ -1,6 +1,5 @@
 package com.middlewar.core.model.instances;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
@@ -33,7 +32,6 @@ public class BuildingInstance {
     private long id;
 
     @ManyToOne
-    @JsonBackReference
     private Base base;
     private String buildingId;
     private int currentLevel;

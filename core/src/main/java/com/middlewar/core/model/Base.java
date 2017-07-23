@@ -1,7 +1,5 @@
 package com.middlewar.core.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.StatOp;
@@ -45,33 +43,27 @@ public class Base
     private String name;
 
     @ManyToOne
-    @JsonManagedReference
     private Player owner;
 
     @Transient
     private ObjectStat baseStat;
 
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Ship> ships;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fleet> fleets;
 
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<BuildingInstance> buildings;
 
     @OneToOne(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
     private BaseInventory baseInventory;
 
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Resource> resources;
 
     @ManyToOne
-    @JsonBackReference
     private Planet planet;
 
     public Base() {
