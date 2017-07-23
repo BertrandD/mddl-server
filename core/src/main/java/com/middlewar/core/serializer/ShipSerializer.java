@@ -19,8 +19,8 @@ public class ShipSerializer extends JsonSerializer<Ship> {
     public void serialize(Ship value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
 
-        gen.writeStringField("id", value.getId());
-        gen.writeStringField("baseId", value.getBase().getId());
+        gen.writeNumberField("id", value.getId());
+        gen.writeNumberField("baseId", value.getBase().getId());
         gen.writeNumberField("count", value.getCount());
         gen.writeStringField("state", value.getState().name());
         gen.writeObjectField("structureId", value.getStructure().getItemId());

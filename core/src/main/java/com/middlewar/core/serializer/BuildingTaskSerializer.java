@@ -15,7 +15,7 @@ public class BuildingTaskSerializer extends JsonSerializer<BuildingTask> {
     @Override
     public void serialize(BuildingTask value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
         gen.writeStartObject();
-        gen.writeStringField("id", value.getId());
+        gen.writeNumberField("id", value.getId());
         gen.writeObjectField("building", value.getBuilding());
         gen.writeNumberField("endsAt", value.getEndsAt());
         gen.writeEndObject();

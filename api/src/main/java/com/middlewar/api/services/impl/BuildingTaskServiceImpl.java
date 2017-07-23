@@ -28,7 +28,7 @@ public class BuildingTaskServiceImpl implements BuildingTaskService {
         return buildingTaskDao.findFirstByOrderByEndsAtAsc();
     }
 
-    public List<BuildingTask> findByBuilding(String id) {
+    public List<BuildingTask> findByBuilding(long id) {
         return buildingTaskDao.findByBuilding(id);
     }
     public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) {
@@ -39,7 +39,7 @@ public class BuildingTaskServiceImpl implements BuildingTaskService {
         return buildingTaskDao.findByBaseOrderByEndsAtAsc(base);
     }
 
-    public BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id) {
+    public BuildingTask findFirstByBuildingOrderByEndsAtAsc(long id) {
         return buildingTaskDao.findFirstByBuildingOrderByEndsAtAsc(id);
     }
 

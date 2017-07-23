@@ -17,9 +17,9 @@ public class BuildingInstanceSerializer extends JsonSerializer<BuildingInstance>
     @Override
     public void serialize(BuildingInstance value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
         gen.writeStartObject();
-        gen.writeStringField("id", value.getId());
+        gen.writeNumberField("id", value.getId());
         gen.writeStringField("buildingId", value.getBuildingId());
-        gen.writeStringField("baseId", value.getBase().getId());
+        gen.writeNumberField("baseId", value.getBase().getId());
         gen.writeNumberField("currentLevel", value.getCurrentLevel());
         gen.writeNumberField("startedAt", value.getStartedAt());
         gen.writeNumberField("endsAt", value.getEndsAt());

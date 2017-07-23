@@ -15,7 +15,7 @@ public class ItemInstanceSerializer extends JsonSerializer<ItemInstance> {
     @Override
     public void serialize(ItemInstance value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
-        gen.writeStringField("id", value.getId());
+        gen.writeNumberField("id", value.getId());
         gen.writeStringField("templateId", value.getTemplateId());
         gen.writeNumberField("count", (long)Math.floor(value.getCount()));
         gen.writeStringField("type", value.getType().name());

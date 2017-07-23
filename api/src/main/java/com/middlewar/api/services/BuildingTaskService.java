@@ -12,9 +12,9 @@ import java.util.List;
 public interface BuildingTaskService extends DefaultService<BuildingTask> {
     BuildingTask create(BuildingInstance inst, long timestamp, int level);
     BuildingTask findFirstByOrderByEndsAtAsc();
-    List<BuildingTask> findByBuilding(String id);
+    List<BuildingTask> findByBuilding(long id);
     List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id);
     List<BuildingTask> findByBaseOrderByEndsAtAsc(Base base);
-    BuildingTask findFirstByBuildingOrderByEndsAtAsc(String id);
+    BuildingTask findFirstByBuildingOrderByEndsAtAsc(long id);
     BuildingTask findFirstByBuildingOrderByEndsAtDesc(long id);
 }

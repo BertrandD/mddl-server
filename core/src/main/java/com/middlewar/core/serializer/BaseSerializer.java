@@ -16,17 +16,17 @@ public class BaseSerializer extends JsonSerializer<Base> {
     @Override
     public void serialize(Base value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
-        gen.writeStringField("id", value.getId());
+        gen.writeNumberField("id", value.getId());
         gen.writeStringField("name", value.getName());
 
         gen.writeObjectFieldStart("owner");
-        gen.writeStringField("id", value.getOwner().getId());
+        gen.writeNumberField("id", value.getOwner().getId());
         gen.writeStringField("name", value.getOwner().getName());
         gen.writeEndObject();
 
         gen.writeObjectFieldStart("resources");
         IOConsumer.forEach(value.getResources().stream(), resource -> {
-            gen.writeObjectFieldStart(resource.getId());
+            gen.writeNumber(resource.getId());
             gen.writeStringField("templateId", resource.getItem().getTemplateId());
             gen.writeNumberField("count", resource.getItem().getCount());
             gen.writeNumberField("maxVolume", value.getBaseStat().getValue(Stats.valueOf("MAX_"+resource.getItem().getTemplateId().toUpperCase()))); // TODO: WARNING
