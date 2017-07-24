@@ -46,7 +46,7 @@ public class SpyReportServiceImpl implements SpyReportService {
         }
 
         for (Resource resource : baseTarget.getResources()) {
-            report.addEntry(new ResourcesReportEntry(resource.getItem().getTemplateId(), resource.getItem().getCount()), ReportCategory.RESOURCES);
+            report.addEntry(new ResourcesReportEntry(resource.getItem().getTemplateId(), resource.getCount()), ReportCategory.RESOURCES);
         }
 
         spyReportDao.save(report);

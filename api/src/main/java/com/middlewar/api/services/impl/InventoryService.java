@@ -116,22 +116,23 @@ public class InventoryService implements IInventoryService {
         return true;
     }
 
-    @Override
-    public synchronized boolean consumeResource(Resource resource, final long amount) {
-
-        refresh(resource);
-
-        if(amount <= 0) return false;
-
-        final ItemInstance item = resource.getItem();
-
-        if(item.getCount() < amount) return false;
-
-        item.removeCount(amount);
-
-        resourceService.update(resource);
-        return true;
-    }
+//    24/07/2017 : code used only in tests, so commented because seems to be useless. Delete it later if it's still useless !
+//    @Override
+//    public synchronized boolean consumeResource(Resource resource, final long amount) {
+//
+//        refresh(resource);
+//
+//        if(amount <= 0) return false;
+//
+//        final ItemInstance item = resource.getItem();
+//
+//        if(item.getCount() < amount) return false;
+//
+//        item.removeCount(amount);
+//
+//        resourceService.update(resource);
+//        return true;
+//    }
 
     public synchronized void refresh(final Base base) {
         if(base == null) return;
@@ -142,7 +143,7 @@ public class InventoryService implements IInventoryService {
         final Base base = resource.getBase();
         final long now = TimeUtil.getCurrentTime();
         final long last = resource.getLastRefresh();
-        final double prodPerHour = base.getBaseStat().getValue(resource.getStat());
+        final double prodPerHour = resource.getProdPerHour();
         final ItemInstance item = resource.getItem();
         final GameItem template = item.getTemplate();
 

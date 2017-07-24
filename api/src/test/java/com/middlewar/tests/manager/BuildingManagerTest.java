@@ -123,7 +123,7 @@ public class BuildingManagerTest {
         BuildingInstance building = buildingManager.create(_base, "shield");
 
         Assertions.assertThat(building).isNotNull();
-        Assertions.assertThat(_base.getResources().get(0).getItem().getCount()).isEqualTo(400);
+        Assertions.assertThat(_base.getResources().get(0).getCount()).isEqualTo(400);
         Assertions.assertThat(_base.getBuildings().size()).isEqualTo(0);
 
         List<BuildingTask> buildQueue = baseManager.getBaseBuildingQueue(_base);

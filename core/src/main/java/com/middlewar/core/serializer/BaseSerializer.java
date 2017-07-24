@@ -28,9 +28,9 @@ public class BaseSerializer extends JsonSerializer<Base> {
         IOConsumer.forEach(value.getResources().stream(), resource -> {
             gen.writeNumber(resource.getId());
             gen.writeStringField("templateId", resource.getItem().getTemplateId());
-            gen.writeNumberField("count", resource.getItem().getCount());
+            gen.writeNumberField("count", resource.getCount());
             gen.writeNumberField("maxVolume", value.getBaseStat().getValue(Stats.valueOf("MAX_"+resource.getItem().getTemplateId().toUpperCase()))); // TODO: WARNING
-            gen.writeNumberField("production", resource.getStat().getValue());
+            gen.writeNumberField("production", resource.getProdPerHour());
             gen.writeNumberField("lastRefresh", resource.getLastRefresh());
             gen.writeEndObject();
         });

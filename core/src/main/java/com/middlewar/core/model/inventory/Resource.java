@@ -46,13 +46,24 @@ public class Resource {
 
     private long lastRefresh;
 
+    @Deprecated
     @Enumerated(EnumType.STRING)
     private Stats stat;
+
+    private double prodPerHour;
 
     public Resource(Base base, ItemInstance item) {
         setBase(base);
         setItem(item);
         setLastRefresh(TimeUtil.getCurrentTime());
+    }
+
+    /**
+     * Shortcut for getItem().getCount()
+     * @return item count
+     */
+    public double getCount() {
+        return getItem().getCount();
     }
 
     public long getAvailableCapacity() {

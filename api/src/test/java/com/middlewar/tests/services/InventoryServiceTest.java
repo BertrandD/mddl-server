@@ -32,6 +32,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Darbon Bertrand, LEBOC Philippe
@@ -139,23 +140,82 @@ public class InventoryServiceTest {
     }
 
     @Test
-    public void shouldAddAndConsumeResource() {
+    public void shouldCheckIfEnoughResource() {
         final long amount = 100;
 
-        Resource resource = inventoryService.createNewResource(_base, _itemTemplate);
-        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, 1000);
-        Assertions.assertThat(resource).isNotNull();
+        final PlayerInventory inv = _player.getInventory();
+        final List<ItemInstance> items = inv.getItems();
 
-        boolean result = inventoryService.addResource(resource, amount);
+        final ItemInstance item = inventoryService.addItem(_player.getInventory(), _itemTemplate, amount);
+
+        Assertions.assertThat(item).isNotNull();
+
+        final boolean result = inventoryService.consumeItem(item, amount+1);
+        Assertions.assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldRemoveResourceFromInventoryIfConsumeAll() {
+        final long amount = 100;
+
+        final PlayerInventory inv = _player.getInventory();
+        final List<ItemInstance> items = inv.getItems();
+
+        final ItemInstance item = inventoryService.addItem(_player.getInventory(), _itemTemplate, amount);
+
+        Assertions.assertThat(item).isNotNull();
+
+        Assertions.assertThat(inv.getItem(_itemTemplate)).isNotNull();
+        final boolean result = inventoryService.consumeItem(item, amount);
         Assertions.assertThat(result).isTrue();
+        Assertions.assertThat(inv.getItem(_itemTemplate)).isNull();
+    }
+
+    @Test
+    public void shouldAddResource() {
+        final long amount = 100;
+        Resource resource = initResource(amount, amount+1);
 
         resource = resourceDao.findOne(resource.getId());
         Assertions.assertThat(resource).isNotNull();
         Assertions.assertThat(resource.getItem()).isNotNull();
-        Assertions.assertThat(resource.getItem().getCount()).isEqualTo(amount);
+        Assertions.assertThat(resource.getCount()).isEqualTo(amount);
+    }
 
-        result = inventoryService.consumeResource(resource, amount / 2);
+    @Test
+    public void shouldAddResourceMatchingMax() {
+        final long max = 1000;
+        final long amount = max + 10000;
+        Resource resource = initResource(amount, max);
+
+        resource = resourceDao.findOne(resource.getId());
+        Assertions.assertThat(resource).isNotNull();
+        Assertions.assertThat(resource.getItem()).isNotNull();
+        Assertions.assertThat(resource.getCount()).isEqualTo(max);
+    }
+
+    @Test
+    public void shouldRefreshResource() throws InterruptedException {
+        final long max = 10000;
+        final long amount = 500;
+        Resource resource = initResource(amount, max);
+        final double prodPerSecond = 100;
+        final double prodPerHour = prodPerSecond*60*60;
+        resource.setProdPerHour(prodPerHour);
+        Assertions.assertThat(resource.getCount()).isEqualTo(amount);
+        TimeUnit.SECONDS.sleep(3);
+        inventoryService.refresh(_base);
+        Assertions.assertThat(resource.getCount()).isGreaterThanOrEqualTo(amount+280);
+        Assertions.assertThat(resource.getCount()).isLessThanOrEqualTo(amount+310);
+    }
+
+    private Resource initResource(long amount, long max) {
+        Resource resource = inventoryService.createNewResource(_base, _itemTemplate);
+        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, max);
+        Assertions.assertThat(resource).isNotNull();
+
+        boolean result = inventoryService.addResource(resource, amount);
         Assertions.assertThat(result).isTrue();
-        Assertions.assertThat(resource.getItem().getCount()).isEqualTo(amount / 2);
+        return resource;
     }
 }

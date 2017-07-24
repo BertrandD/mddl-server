@@ -92,7 +92,7 @@ public class ValidatorService {
             if(template.getType().equals(ItemType.RESOURCE))
             {
                 final Resource rInventory = base.getResources().stream().filter(k -> k.getItem().getTemplateId().equalsIgnoreCase(holder.getId())).findFirst().orElse(null);
-                if(rInventory == null || rInventory.getItem().getCount() < holder.getCount())
+                if(rInventory == null || rInventory.getCount() < holder.getCount())
                     meetRequirements = false;
                 else
                     collector.put(rInventory.getItem(), holder.getCount());
