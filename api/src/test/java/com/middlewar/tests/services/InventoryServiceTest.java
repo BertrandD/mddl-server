@@ -20,6 +20,7 @@ import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.space.Planet;
+import com.middlewar.core.model.stats.Stats;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -142,6 +143,7 @@ public class InventoryServiceTest {
         final long amount = 100;
 
         Resource resource = inventoryService.createNewResource(_base, _itemTemplate);
+        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, 1000);
         Assertions.assertThat(resource).isNotNull();
 
         boolean result = inventoryService.addResource(resource, amount);

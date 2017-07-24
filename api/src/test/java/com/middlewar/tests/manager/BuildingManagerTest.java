@@ -15,6 +15,7 @@ import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.BuildingManager;
+import com.middlewar.api.manager.BuildingTaskManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AstralObjectService;
@@ -76,6 +77,9 @@ public class BuildingManagerTest {
     @Autowired
     private InventoryService inventoryService;
 
+    @Autowired
+    private BuildingTaskManager buildingTaskManager;
+
     private Account _account;
     private Player _player;
     private Base _base;
@@ -86,6 +90,7 @@ public class BuildingManagerTest {
         WorldData.getInstance().reload();
         astralObjectService.saveUniverse();
         MockitoAnnotations.initMocks(this);
+        buildingTaskManager.restart();
         _account = accountService.create("toto", "");
         _player = playerManager.createForAccount(_account, "owner");
         Planet planet = planetManager.pickRandom();
@@ -112,7 +117,6 @@ public class BuildingManagerTest {
     @Test
     public void createShouldConsumeResourceAndCreateBuilding() throws BuildingTemplateNotFoundException, BuildingAlreadyExistsException, ItemRequirementMissingException, BuildingCreationException, BuildingRequirementMissingException {
         Resource resource1 = inventoryService.createNewResource(_base, "resource_1");
-//        _base.getBaseStat().addStat(Stats.MAX_RESOURCE_1);
         _base.getBaseStat().add(Stats.MAX_RESOURCE_1, 1000);
         inventoryService.addResource(resource1, 500);
 

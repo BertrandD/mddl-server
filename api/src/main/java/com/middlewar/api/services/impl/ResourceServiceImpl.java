@@ -32,11 +32,11 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public Resource create(Base base, String itemId) {
         final ItemInstance item = itemService.create(base.getBaseInventory(), itemId, 0);
-        final Resource resource = new Resource(base, item);
+        final Resource resource = resourceDao.save(new Resource(base, item));
 //        resource.setStat(Stats.valueOf("MAX_"+itemId.toUpperCase())); // TODO: replace with: resource.setStat(Stats.valueOf("MAX_"+itemId.toUpperCase()));
         base.addResource(resource);
         base.getBaseStat().add(Stats.valueOf("MAX_"+itemId.toUpperCase()), Stats.valueOf("MAX_"+itemId.toUpperCase()).getValue(), StatOp.UNLOCK);
-        baseDao.save(base); // it also saves the resource by cascade
+        baseDao.save(base);
 
         return resource;
     }
