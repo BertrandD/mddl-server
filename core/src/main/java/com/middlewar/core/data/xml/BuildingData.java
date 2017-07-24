@@ -73,7 +73,11 @@ public class BuildingData implements IXmlReader {
                             set.set(att.getNodeName(), att.getNodeValue());
                         }
 
-                        set.set("type", set.getString("id").toUpperCase());
+                        if (parseString(attrs, "type") != null) {
+                            set.set("type", set.getString("type").toUpperCase());
+                        } else {
+                            set.set("type", set.getString("id").toUpperCase());
+                        }
 
                         final HashMap<Integer, Requirement> requirements = new HashMap<>();
                         final List<Module> modules = new ArrayList<>();

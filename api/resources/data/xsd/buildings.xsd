@@ -87,6 +87,7 @@
                         <xs:attribute name="descriptionId" type="xs:normalizedString" use="required" />
                         <xs:attribute name="maxLevel" type="xs:positiveInteger" use="required"/>
 						<xs:attribute name="maxBuild" type="xs:positiveInteger" use="optional" />
+						<xs:attribute name="type" type="xs:normalizedString" use="optional" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
