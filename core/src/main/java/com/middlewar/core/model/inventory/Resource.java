@@ -57,6 +57,6 @@ public class Resource {
 
     public long getAvailableCapacity() {
         // Add more logic here to handle building effects on capacity
-        return (long)getBase().getBaseStat().getValue(stat, 0);
+        return (long)getBase().getBaseStat().getValue(Stats.valueOf("MAX_"+item.getTemplateId().toUpperCase()), 0);
     }
 }

@@ -47,6 +47,10 @@ public class ObjectStat {
         return getStats().getOrDefault(stat, defaultValue);
     }
 
+    public void add(final Stats stat, final double val) {
+        add(stat, val, StatOp.DIFF);
+    }
+
     public void add(final Stats stat, final double val, final StatOp op) {
 
         if(!getStats().containsKey(stat) && op != StatOp.UNLOCK) {

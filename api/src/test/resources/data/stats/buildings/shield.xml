@@ -15,6 +15,9 @@
             <module id="module_building_shield_graviton" />
         </modules>
         <requirements>
+            <functions>
+                <function fromLevel="1" itemId="resource_1" value="100"/>
+            </functions>
         </requirements>
     </building>
 </list>

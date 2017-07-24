@@ -9,6 +9,16 @@
     "satellites": [
         {
             "type": "Star",
+            "name": "S59",
+            "stats": {
+                "size": 10,
+                "orbit": 886,
+                "revolution": 22269
+            },
+            "satellites": []
+        },
+        {
+            "type": "Star",
             "name": "S71",
             "stats": {
                 "size": 10,

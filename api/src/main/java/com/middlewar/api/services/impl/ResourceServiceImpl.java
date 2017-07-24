@@ -1,8 +1,8 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.BaseDao;
-import com.middlewar.api.dao.ItemDao;
 import com.middlewar.api.dao.ResourceDao;
+import com.middlewar.api.services.ItemService;
 import com.middlewar.api.services.ResourceService;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
@@ -27,18 +27,18 @@ public class ResourceServiceImpl implements ResourceService {
     private BaseDao baseDao;
 
     @Autowired
-    private ItemDao itemDao;
+    private ItemService itemService;
 
     @Override
     public Resource create(Base base, String itemId) {
-        final ItemInstance item = new ItemInstance(itemId, 0);
+        final ItemInstance item = itemService.create(base.getBaseInventory(), itemId, 0);
         final Resource resource = new Resource(base, item);
-        resource.setStat(Stats.MAX_RESOURCE_1); // TODO: replace with: resource.setStat(Stats.valueOf("MAX_"+itemId.toUpperCase()));
+//        resource.setStat(Stats.valueOf("MAX_"+itemId.toUpperCase())); // TODO: replace with: resource.setStat(Stats.valueOf("MAX_"+itemId.toUpperCase()));
         base.addResource(resource);
-        base.getBaseStat().add(resource.getStat(), Stats.MAX_RESOURCE_1.getValue(), StatOp.UNLOCK);
-        baseDao.save(base);
+        base.getBaseStat().add(Stats.valueOf("MAX_"+itemId.toUpperCase()), Stats.valueOf("MAX_"+itemId.toUpperCase()).getValue(), StatOp.UNLOCK);
+        baseDao.save(base); // it also saves the resource by cascade
 
-        return resourceDao.save(resource);
+        return resource;
     }
 
     @Override
@@ -53,7 +53,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public void update(Resource object) {
-        itemDao.save(object.getItem());
         resourceDao.save(object);
     }
 
