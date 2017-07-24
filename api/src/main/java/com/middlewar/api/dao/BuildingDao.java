@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface BuildingDao extends DefaultRepository<BuildingInstance, Long> {
 
-    BuildingInstance findOneByIdAndBaseId(String id, long base);
+    BuildingInstance findOneByIdAndBaseId(long id, long base);
 
     List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId);
 }

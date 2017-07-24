@@ -59,7 +59,7 @@ public class BuildingManager {
     @Autowired
     private BuildingTaskService buildingTaskService;
 
-    public BuildingInstance getBuilding(Base base, String baseId) throws BuildingNotFoundException {
+    public BuildingInstance getBuilding(Base base, long baseId) throws BuildingNotFoundException {
         final BuildingInstance building = buildingService.findBy(base, baseId);
         if(building == null) throw new BuildingNotFoundException();
 

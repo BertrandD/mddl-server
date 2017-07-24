@@ -28,7 +28,7 @@ public class BuildingServiceImpl implements BuildingService {
         return buildingDao.save(new BuildingInstance(base, buildingId));
     }
 
-    public BuildingInstance findBy(Base base, String id) {
+    public BuildingInstance findBy(Base base, long id) {
         return buildingDao.findOneByIdAndBaseId(id, base.getId());
     }
 

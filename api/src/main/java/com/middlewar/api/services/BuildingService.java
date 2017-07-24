@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface BuildingService extends DefaultService<BuildingInstance> {
     BuildingInstance create(Base base, String buildingId);
-    BuildingInstance findBy(Base base, String id);
+    BuildingInstance findBy(Base base, long id);
     List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId);
 }

@@ -36,7 +36,7 @@ public class BuildingInstanceController {
     private BuildingManager buildingManager;
 
     @RequestMapping(value = "/me/base/{baseId}/building/{id}", method = RequestMethod.GET)
-    public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") String id) {
+    public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long id) {
         return controllerManagerWrapper.wrap(() -> buildingManager.getBuilding(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
