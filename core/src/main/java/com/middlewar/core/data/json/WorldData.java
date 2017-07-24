@@ -108,7 +108,8 @@ public class WorldData {
         final int MAX_RETRY = 10;
 
         while(planetCnt == 0 && retryCount < MAX_RETRY) {
-            star = getRandomStar();
+//            star = getRandomStar();
+            star = (Star) getWorld().getSatellites().get(1); // TODO : get random star, but don't let this method return null
             planetCnt = star.getSatellites().size();
 
             if(planetCnt == 0) LOGGER.warn("Star " + star.getId() + " has 0 satellites (planets) !");
