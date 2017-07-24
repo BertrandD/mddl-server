@@ -52,7 +52,7 @@ public class PlayerManagerTest {
 
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException {
-        Config.MAX_PLAYER_IN_ACCOUNT = 100;
+        Config.load();
         _account = accountService.create("tt", "tt");
         _account2 = accountService.create("tt2", "tt");
         _player = playerService.create(_account, "yoloo");

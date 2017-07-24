@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
+    <building id="mine" class="ModulableBuilding" nameId="building_mine_n" maxLevel="100" descriptionId="building_mine_d">
+        <buildTime>
+            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
+        </buildTime>
+        <energy>
+            <set fromLevel="2" function="100 + ($level * 125)" />
+        </energy>
+        <stats>
+            <stat name="RESOURCE_1" function="(18*Math.pow($level,2)+150)" op="DIFF" />
+            <stat name="RESOURCE_2" function="(18*Math.pow($level,2)+150)" op="DIFF" />
+            <stat name="RESOURCE_3" function="(18*Math.pow($level,2)+150)" op="DIFF" />
+        </stats>
+        <modules max="2">
+            <module id="module_optimizer_1" />
+            <module id="module_optimizer_2" />
+            <module id="module_optimizer_3" />
+        </modules>
+        <requirements>
+            <functions>
+                <function fromLevel="2" itemId="resource_1" value="0,2*Math.pow($level,4)"/>
+            </functions>
+            <requirement level="1">
+                <building id="silo" level="1" />
+            </requirement>
+        </requirements>
+    </building>
+</list>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/items.xsd">
+    <!-- Resources Optimizers -->
+    <item id="module_optimizer_1" nameId="module_optimizer_1_n" type="MODULE" descriptionId="module_optimizer_1_d" volume="0">
+        <stats>
+            <stat name="RESOURCE_1" op="PER" value="1.25" />
+        </stats>
+        <requirements>
+            <item id="resource_1" count="100" />
+            <item id="resource_5" count="100" />
+            <item id="resource_2" count="100" />
+        </requirements>
+    </item>
+    <item id="module_optimizer_2" nameId="module_optimizer_2_n" type="MODULE" descriptionId="module_optimizer_2_d" volume="0">
+        <stats>
+            <stat name="RESOURCE_2" op="PER" value="1.25" />
+        </stats>
+        <requirements>
+            <item id="resource_1" count="100" />
+            <item id="resource_5" count="100" />
+            <item id="resource_2" count="100" />
+        </requirements>
+    </item>
+    <item id="module_optimizer_3" nameId="module_optimizer_3_n" type="MODULE" descriptionId="module_optimizer_3_d" volume="0">
+        <stats>
+            <stat name="RESOURCE_3" op="PER" value="1.25" />
+        </stats>
+        <requirements>
+            <item id="resource_1" count="100" />
+            <item id="resource_5" count="100" />
+            <item id="resource_2" count="100" />
+        </requirements>
+    </item>
+    <item id="module_optimizer_4" nameId="module_optimizer_4_n" type="MODULE" descriptionId="module_optimizer_4_d" volume="0">
+        <stats>
+            <stat name="RESOURCE_4" op="PER" value="1.25" />
+        </stats>
+        <requirements>
+            <item id="resource_1" count="100" />
+            <item id="resource_5" count="100" />
+            <item id="resource_2" count="100" />
+        </requirements>
+    </item>
+    <item id="module_optimizer_5" nameId="module_optimizer_5_n" type="MODULE" descriptionId="module_optimizer_5_d" volume="0">
+        <stats>
+            <stat name="RESOURCE_5" op="PER" value="1.25" />
+        </stats>
+        <requirements>
+            <item id="resource_1" count="100" />
+            <item id="resource_5" count="100" />
+            <item id="resource_2" count="100" />
+        </requirements>
+    </item>
+</list>
