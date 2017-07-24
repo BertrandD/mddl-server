@@ -20,11 +20,6 @@ public class PlanetManager {
         // Pick a random planet from universe
         final Planet jsonPlanet = WorldData.getInstance().getRandomPlanet();
 
-        // Check if the selected Planet is already in database. If not, store it ! :)
-        Planet planet = (Planet) astralObjectService.findOneByName(jsonPlanet.getName());
-        if(planet == null) {
-            planet = (Planet) astralObjectService.create(jsonPlanet.getName(), jsonPlanet.getParent(), AstralObjectType.PLANET);
-        }
-        return planet;
+        return (Planet) astralObjectService.findOneByName(jsonPlanet.getName());
     }
 }

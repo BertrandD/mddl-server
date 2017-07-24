@@ -2,6 +2,7 @@ package com.middlewar.tests.manager;
 
 import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
+import com.middlewar.api.exceptions.BaseCreationException;
 import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.exceptions.BaseNotOwnedException;
 import com.middlewar.api.exceptions.ForbiddenNameException;
@@ -16,12 +17,15 @@ import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
+import com.middlewar.api.util.response.Response;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
+import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
+import com.middlewar.core.model.tasks.BuildingTask;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,5 +121,44 @@ public class BaseManagerTest {
         base = baseManager.getCurrentBaseOfPlayer(_playerOwner);
         Assertions.assertThat(base).isNotNull();
         Assertions.assertThat(base).isEqualTo(_base2);
+    }
+
+    @Test(expected = PlayerHasNoBaseException.class)
+    public void shouldCheckCurrentBase() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+        _playerOwner.setCurrentBase(null);
+        baseManager.getCurrentBaseOfPlayer(_playerOwner);
+    }
+
+    @Test
+    public void shouldReturnBaseWithBuildingQueu() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+        Response<Base> res = baseManager.getBaseWithBuildingQueue(_playerOwner, _base.getId());
+
+        Assertions.assertThat(res.getPayload()).isNotNull();
+        Assertions.assertThat(res.getPayload()).isInstanceOf(Base.class);
+        Assertions.assertThat(res.getPayload().getId()).isEqualTo(_base.getId());
+        Assertions.assertThat(res.getMeta().containsKey("queue")).isTrue();
+        Assertions.assertThat(res.getMeta().get("queue")).isInstanceOf(List.class);
+    }
+
+    @Test
+    public void shouldReturnCreatedBase() throws BaseCreationException {
+        Base base = baseManager.create(_playerOwner, "newBase");
+
+        Assertions.assertThat(base.getName()).isEqualTo("newBase");
+        Assertions.assertThat(base.getOwner()).isEqualTo(_playerOwner);
+    }
+
+    @Test(expected = BaseNotOwnedException.class)
+    public void shouldCheckOwner2() throws BaseNotFoundException, BaseNotOwnedException {
+        baseManager.getBuildableBuildingsOfBase(_playerNotOwner, _base.getId());
+
+    }
+
+    @Test
+    public void shouldReturnBuildableBuildings() throws BaseNotFoundException, BaseNotOwnedException {
+        List<BuildingHolder> buildings = baseManager.getBuildableBuildingsOfBase(_playerOwner, _base.getId());
+
+        Assertions.assertThat(buildings).isNotNull();
+        Assertions.assertThat(buildings.size()).isGreaterThan(0); // TODO : tests-specific data in order to be able to predict this
     }
 }
