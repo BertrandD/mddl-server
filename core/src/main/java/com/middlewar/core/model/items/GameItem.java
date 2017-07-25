@@ -108,11 +108,11 @@ public abstract class GameItem implements IStat {
     }
 
     public void handleEffect(final ObjectStat stats) {
-        getStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(), stat.getOp()));
+        getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(), stat.getOp()));
     }
 
     @Override
-    public List<StatHolder> getStats() {
+    public List<StatHolder> getAllStats() {
         return stats;
     }
 

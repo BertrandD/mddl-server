@@ -46,11 +46,8 @@ public class Resource {
 
     private long lastRefresh;
 
-    @Deprecated
     @Enumerated(EnumType.STRING)
     private Stats stat;
-
-    private double prodPerHour;
 
     public Resource(Base base, ItemInstance item) {
         setBase(base);
@@ -69,5 +66,9 @@ public class Resource {
     public long getAvailableCapacity() {
         // Add more logic here to handle building effects on capacity
         return (long)getBase().getBaseStat().getValue(Stats.valueOf("MAX_"+item.getTemplateId().toUpperCase()), 0);
+    }
+
+    public double getProdPerHour() {
+        return base.getResourceProduction(this);
     }
 }

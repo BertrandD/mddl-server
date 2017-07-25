@@ -8,5 +8,5 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 public interface IStat {
-    List<StatHolder> getStats();
+    List<StatHolder> getAllStats();
 }

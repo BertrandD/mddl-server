@@ -101,6 +101,16 @@ public class Base
         }
     }
 
+    public double getResourceProduction(Resource resource) {
+        double production = getBaseStat().getValue(resource.getStat());
+        for (BuildingInstance building : getBuildings()) {
+            production += building.getTemplate().getStats(resource.getStat()).getValue(building.getCurrentLevel());
+            // TODO : production modifiers /!\ (modules, etc)
+        }
+
+        return production;
+    }
+
     /**
      * TODO : We don't use MongoDB anymore so what ?
      * Base Stats Initializer

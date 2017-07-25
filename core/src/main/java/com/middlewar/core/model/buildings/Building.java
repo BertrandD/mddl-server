@@ -10,6 +10,7 @@ import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.ObjectStat;
+import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BuildingSerializer;
 import lombok.Data;
 
@@ -58,7 +59,7 @@ public abstract class Building implements IStat {
     }
 
     public void handleEffect(final ObjectStat stats, int level) {
-        this.getStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
+        this.getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
     }
 
     public String getName(){
@@ -71,9 +72,13 @@ public abstract class Building implements IStat {
 
 
     @Override
-    public List<StatHolder> getStats() {
+    public List<StatHolder> getAllStats() {
         // Retrieve all stats for each level + global stats (with no level)
         return stats.getStats(getMaxLevel());
+    }
+
+    public StatHolder getStats(Stats stats) {
+        return getAllStats().stream().filter(k->k.getStat().equals(stats)).findFirst().orElse(null);
     }
 
     @Override

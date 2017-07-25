@@ -52,10 +52,10 @@ public class BuildingSerializer extends JsonSerializer<Building> {
             gen.writeNumberField("maxModules", 0);
         }
 
-        if(!value.getStats().isEmpty())
+        if(!value.getAllStats().isEmpty())
         {
             gen.writeObjectFieldStart("stats");
-            for (StatHolder holder : value.getStats()) {
+            for (StatHolder holder : value.getAllStats()) {
                 gen.writeArrayFieldStart(holder.getStat().name());
                 for (double v : holder.getValues()) {
                     gen.writeNumber(v);
