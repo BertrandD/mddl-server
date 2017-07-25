@@ -3,6 +3,7 @@ package com.middlewar.core.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.StatOp;
+import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
@@ -18,6 +19,7 @@ import com.middlewar.core.serializer.BaseSerializer;
 import lombok.Data;
 import org.springframework.data.annotation.Transient;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -104,7 +106,15 @@ public class Base
     public double getResourceProduction(Resource resource) {
         double production = getBaseStat().getValue(resource.getStat());
         for (BuildingInstance building : getBuildings()) {
-            production += building.getTemplate().getStats(resource.getStat()).getValue(building.getCurrentLevel());
+            StatHolder statProd = building
+                    .getTemplate()
+                    .getStats(
+                            resource.getStat()
+                    );
+            if (statProd != null) {
+                production += statProd.getValue(building.getCurrentLevel());
+
+            }
             // TODO : production modifiers /!\ (modules, etc)
         }
 

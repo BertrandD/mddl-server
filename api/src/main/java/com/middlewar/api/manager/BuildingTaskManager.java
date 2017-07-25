@@ -72,6 +72,12 @@ public class BuildingTaskManager {
     }
 
     public void restart(){
+        restart(false);
+    }
+
+    public void restart(boolean mayInterruptIfRunning){
+        if (scheduledFuture != null)
+            scheduledFuture.cancel(mayInterruptIfRunning);
         scheduledFuture = null;
         currentTask = null;
         start();

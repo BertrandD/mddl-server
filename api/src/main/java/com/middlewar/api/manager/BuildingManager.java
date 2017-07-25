@@ -59,8 +59,8 @@ public class BuildingManager {
     @Autowired
     private BuildingTaskService buildingTaskService;
 
-    public BuildingInstance getBuilding(Base base, long baseId) throws BuildingNotFoundException {
-        final BuildingInstance building = buildingService.findBy(base, baseId);
+    public BuildingInstance getBuilding(Base base, long id) throws BuildingNotFoundException {
+        final BuildingInstance building = buildingService.findBy(base, id);
         if(building == null) throw new BuildingNotFoundException();
 
         return building;
@@ -92,17 +92,8 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance getBuildingOfBase(Base base, long id) throws BuildingNotFoundException {
-        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId()==(id)).findFirst().orElse(null);
-        if(building == null){
-            throw new BuildingNotFoundException();
-        }
-
-        return building;
-    }
-
     public BuildingInstance upgrade(Base base, long id) throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
-        final BuildingInstance building = getBuildingOfBase(base, id);
+        final BuildingInstance building = getBuilding(base, id);
 
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
         final Building template = building.getTemplate();
@@ -125,7 +116,7 @@ public class BuildingManager {
     public BuildingInstance attachModule(Base base, long buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException {
         base.initializeStats();
 
-        final BuildingInstance building = getBuildingOfBase(base, buildingInstId);
+        final BuildingInstance building = getBuilding(base, buildingInstId);
 
         final ItemInstance module = base.getBaseInventory().getItemsToMap().get(moduleId);
         if(module == null) throw new ModuleNotInInventoryException();

@@ -218,7 +218,6 @@ public class InventoryServiceTest {
         Resource resource = initResource(amount, max);
         final double prodPerSecond = 100;
         final double prodPerHour = prodPerSecond*60*60;
-        _base.getBaseStat().addStat(resource.getStat());
         _base.getBaseStat().add(resource.getStat(), prodPerHour);
         Assertions.assertThat(resource.getCount()).isEqualTo(amount);
         TimeUnit.SECONDS.sleep(3);
