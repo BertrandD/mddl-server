@@ -159,6 +159,6 @@ public class BaseManagerTest {
         List<BuildingHolder> buildings = baseManager.getBuildableBuildingsOfBase(_playerOwner, _base.getId());
 
         Assertions.assertThat(buildings).isNotNull();
-        Assertions.assertThat(buildings.size()).isGreaterThan(0); // TODO : tests-specific data in order to be able to predict this
+        Assertions.assertThat(buildings.size()).isGreaterThan(0);
     }
 }

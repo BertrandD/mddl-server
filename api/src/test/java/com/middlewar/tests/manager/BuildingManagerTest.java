@@ -95,7 +95,6 @@ public class BuildingManagerTest {
         _player = playerManager.createForAccount(_account, "owner");
         Planet planet = planetManager.pickRandom();
         _base = baseService.create("base1", _player, planet);
-        // TODO : tests specific data !!!
     }
 
     @Test(expected = BuildingTemplateNotFoundException.class)

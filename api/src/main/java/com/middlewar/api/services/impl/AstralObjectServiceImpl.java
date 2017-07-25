@@ -37,6 +37,7 @@ public class AstralObjectServiceImpl implements AstralObjectService {
             default: object = null;
         }
 
+        // still usefull after migrating to hibernate ? cc @mathael
         // TODO: warning ABOUT parent !
         // TODO: find parent in DATABASE BEFORE OR STORE IT RECUSIVELY !!!!!
         object = astralObjectDao.save(object);
