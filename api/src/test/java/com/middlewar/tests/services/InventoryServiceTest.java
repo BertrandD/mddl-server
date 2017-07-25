@@ -4,10 +4,7 @@ import com.middlewar.api.Application;
 import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.dao.ResourceDao;
 import com.middlewar.api.manager.PlanetManager;
-import com.middlewar.api.services.AstralObjectService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.PlayerInventoryService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.*;
 import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
@@ -16,6 +13,7 @@ import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
@@ -44,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 public class InventoryServiceTest {
 
     @Autowired
-    private PlayerInventoryService playerInventoryService;
+    private BuildingService buildingService;
 
     @Autowired
     private PlayerService playerService;
@@ -195,6 +193,25 @@ public class InventoryServiceTest {
     }
 
     @Test
+    public void shouldAddResourceMatchingMaxWithBuilding() {
+        final long max = 1000;
+        final long siloCapacity = 1000;
+        final long amount = max + siloCapacity + 100;
+
+        Resource resource = inventoryService.createNewResource(_base, _itemTemplate);
+        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, max);
+        BuildingInstance buildingInstance = buildingService.create(_base, "silo");
+        buildingInstance.setCurrentLevel(1);
+        _base.addBuilding(buildingInstance);
+        Assertions.assertThat(_base.getBuildings().contains(buildingInstance)).isTrue();
+        Assertions.assertThat(resource.getAvailableCapacity()).isEqualTo(max+siloCapacity);
+
+        boolean result = inventoryService.addResource(resource, amount);
+        Assertions.assertThat(result).isTrue();
+        Assertions.assertThat(resource.getCount()).isEqualTo(max + siloCapacity);
+    }
+
+    @Test
     public void shouldRefreshResource() throws InterruptedException {
         final long max = 10000;
         final long amount = 500;
@@ -205,7 +222,7 @@ public class InventoryServiceTest {
         _base.getBaseStat().add(resource.getStat(), prodPerHour);
         Assertions.assertThat(resource.getCount()).isEqualTo(amount);
         TimeUnit.SECONDS.sleep(3);
-        inventoryService.refresh(_base);
+        inventoryService.refreshResources(_base);
         Assertions.assertThat(resource.getCount()).isGreaterThanOrEqualTo(amount+280);
         Assertions.assertThat(resource.getCount()).isLessThanOrEqualTo(amount+310);
     }

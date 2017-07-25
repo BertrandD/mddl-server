@@ -40,7 +40,7 @@ public class ValidatorService {
         final Requirement requirements = building.getTemplate().getRequirements().get(building.getCurrentLevel()+1);
         if(requirements == null) return;
 
-        inventoryService.refresh(base);
+        inventoryService.refreshResources(base);
 
         if(!validateBuildings(base, requirements)) {
             throw new BuildingRequirementMissingException();
@@ -52,7 +52,7 @@ public class ValidatorService {
     }
 
     public void validateItemRequirements(Base base, Item item, HashMap<ItemInstance, Long> collector) throws BuildingRequirementMissingException, ItemRequirementMissingException {
-        inventoryService.refresh(base);
+        inventoryService.refreshResources(base);
 
         if(!validateBuildings(base, item.getRequirement())) {
             throw new BuildingRequirementMissingException();

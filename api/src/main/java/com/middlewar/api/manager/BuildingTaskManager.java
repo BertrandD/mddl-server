@@ -110,7 +110,7 @@ public class BuildingTaskManager {
             final BuildingInstance building = getCurrentTask().getBuilding();
 
             if(building.getTemplate().getType().equals(BuildingCategory.SILO))
-                inventoryService.refresh(building.getBase());
+                inventoryService.refreshResources(building.getBase());
 
             building.setCurrentLevel(getCurrentTask().getLevel());
             buildingTaskService.remove(getCurrentTask());

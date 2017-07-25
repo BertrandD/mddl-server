@@ -120,7 +120,7 @@ public class InventoryService implements IInventoryService {
 //    @Override
 //    public synchronized boolean consumeResource(Resource resource, final long amount) {
 //
-//        refresh(resource);
+//        refreshResources(resource);
 //
 //        if(amount <= 0) return false;
 //
@@ -134,13 +134,12 @@ public class InventoryService implements IInventoryService {
 //        return true;
 //    }
 
-    public synchronized void refresh(final Base base) {
+    public synchronized void refreshResources(final Base base) {
         if(base == null) return;
-        base.getResources().forEach(this::refresh);
+        base.getResources().forEach(this::refreshResources);
     }
 
-    public synchronized void refresh(final Resource resource) {
-        final Base base = resource.getBase();
+    public synchronized void refreshResources(final Resource resource) {
         final long now = TimeUtil.getCurrentTime();
         final long last = resource.getLastRefresh();
         final double prodPerHour = resource.getProdPerHour();
@@ -151,22 +150,13 @@ public class InventoryService implements IInventoryService {
 
         // Calculation
         // (amount per second) * (time without refreshing)
-        double profAmountPerSecond = (prodPerHour / 3600);
-        double elapsedTimeInSecond = (now - last) / 1000;
+        final double profAmountPerSecond = (prodPerHour / 3600);
+        final double elapsedTimeInSecond = (now - last) / 1000;
         long add = (long)(profAmountPerSecond * elapsedTimeInSecond);
 
-        if(add <= 0) return;
-
-        if(resource.getAvailableCapacity() < template.getVolume() * add) {
-            add = resource.getAvailableCapacity() / template.getVolume();
+        if (addResource(resource, add)) {
+            resource.setLastRefresh(now);
         }
-
-        if(add <= 0) return;
-
-        item.addCount(add);
-
-        resource.setLastRefresh(now);
-        resourceService.update(resource);
     }
 
     private long getStorableAmount(IInventory inventory, long volume) {

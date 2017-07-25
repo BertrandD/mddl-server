@@ -55,10 +55,10 @@ public interface IInventoryService {
     /**
      * @param base
      */
-    void refresh(final Base base);
+    void refreshResources(final Base base);
 
     /**
      * @param resource
      */
-    void refresh(final Resource resource);
+    void refreshResources(final Resource resource);
 }

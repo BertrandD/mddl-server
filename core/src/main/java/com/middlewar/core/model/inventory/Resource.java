@@ -2,6 +2,7 @@ package com.middlewar.core.model.inventory;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.ResourceSerializer;
@@ -46,8 +47,8 @@ public class Resource {
 
     private long lastRefresh;
 
-    @Enumerated(EnumType.STRING)
-    private Stats stat;
+//    @Enumerated(EnumType.STRING)
+//    private Stats stat;
 
     public Resource(Base base, ItemInstance item) {
         setBase(base);
@@ -63,9 +64,29 @@ public class Resource {
         return getItem().getCount();
     }
 
+    public Stats getStat() {
+        return Stats.valueOf(item.getTemplateId().toUpperCase());
+    }
+
     public long getAvailableCapacity() {
-        // Add more logic here to handle building effects on capacity
-        return (long)getBase().getBaseStat().getValue(Stats.valueOf("MAX_"+item.getTemplateId().toUpperCase()), 0);
+        // TODO : add logic to handle modules effects on capacity
+        long capacity = (long)getBase()
+                .getBaseStat()
+                .getValue(
+                        Stats.valueOf("MAX_"+getStat()),
+                        0
+                );
+        for (BuildingInstance buildingInstance: getBase().getBuildings()) {
+            capacity += buildingInstance
+                    .getTemplate()
+                    .getStats(
+                            Stats.valueOf("MAX_"+getStat())
+                    )
+                    .getValue(
+                            buildingInstance.getCurrentLevel()
+                    );
+        }
+        return capacity;
     }
 
     public double getProdPerHour() {
