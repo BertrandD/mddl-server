@@ -19,7 +19,6 @@ import com.middlewar.core.serializer.BaseSerializer;
 import lombok.Data;
 import org.springframework.data.annotation.Transient;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

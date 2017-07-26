@@ -1,9 +1,9 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.services.AccountService;
 import com.middlewar.api.exceptions.AccountAlreadyExistsException;
 import com.middlewar.api.exceptions.IncorrectCredentialsException;
 import com.middlewar.api.exceptions.UsernameNotFoundException;
+import com.middlewar.api.services.AccountService;
 import com.middlewar.core.model.Account;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

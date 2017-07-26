@@ -1,7 +1,6 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.services.AccountService;
 import com.middlewar.api.exceptions.BaseCreationException;
 import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.exceptions.BaseNotOwnedException;
@@ -15,6 +14,7 @@ import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.util.response.Response;
@@ -25,20 +25,13 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.model.tasks.BuildingTask;
-import com.middlewar.tests.ApplicationTest;
 import com.middlewar.tests.MddlTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
