@@ -1,6 +1,7 @@
 package com.middlewar.core.model.inventory;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -77,14 +78,14 @@ public class Resource {
                         0
                 );
         for (BuildingInstance buildingInstance: getBase().getBuildings()) {
-            capacity += buildingInstance
+            StatHolder capaStat = buildingInstance
                     .getTemplate()
                     .getStats(
-                            Stats.valueOf("MAX_"+getStat())
-                    )
-                    .getValue(
-                            buildingInstance.getCurrentLevel()
+                            Stats.valueOf("MAX_" + getStat())
                     );
+            if (capaStat!=null) {
+                capacity += capaStat.getValue(buildingInstance.getCurrentLevel());
+            }
         }
         return capacity;
     }
