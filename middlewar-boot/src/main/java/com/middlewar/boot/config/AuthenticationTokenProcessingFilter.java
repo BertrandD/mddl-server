@@ -1,4 +1,4 @@
-package com.middlewar.boot.config.spring;
+package com.middlewar.boot.config;
 
 import com.middlewar.api.services.AccountService;
 import com.middlewar.core.model.Account;

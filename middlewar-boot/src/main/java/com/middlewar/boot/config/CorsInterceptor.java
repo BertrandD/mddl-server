@@ -1,4 +1,4 @@
-package com.middlewar.boot.config.spring;
+package com.middlewar.boot.config;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

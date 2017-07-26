@@ -1,4 +1,4 @@
-package com.middlewar.boot.config.spring;
+package com.middlewar.boot.config;
 
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;

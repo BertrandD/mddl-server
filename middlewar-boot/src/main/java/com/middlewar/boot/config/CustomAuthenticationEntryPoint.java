@@ -1,4 +1,4 @@
-package com.middlewar.boot.config.spring;
+package com.middlewar.boot.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
