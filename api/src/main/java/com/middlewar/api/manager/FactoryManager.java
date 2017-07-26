@@ -35,44 +35,45 @@ public class FactoryManager {
 
     /**
      * @param base the base where the module factory is builded
-     * @param itemId the template id of the module we want to create
-     * @return the created module
+     * @param factoryId the id of the module factory used
+     * @param itemId the template id of the module we want to create  @return the created module
      * @throws ItemRequirementMissingException if some item requiremments are missing in inventory
      * @throws BuildingRequirementMissingException if some building requiremments are missing
      * @throws ItemNotFoundException if the given itemId does not match a game item of type module
-     * @throws BuildingNotFoundException if there is no module factory in the given base
+     * @throws BuildingNotFoundException if the given module factory doens not exists in the given base
      * @throws ItemNotUnlockedException if the module is not yet unlocked in the factory
      * @throws ItemCreationException if something went wrong
      */
-    public ItemInstance createModule(Base base, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
+    public ItemInstance createModule(Base base, Long factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
         final Item item = ItemData.getInstance().getModule(itemId);
         if(item == null) throw new ItemNotFoundException();
 
-        return createItem(base, MODULE_FACTORY, item);
+        return createItem(base, factoryId, MODULE_FACTORY, item);
     }
 
     /**
      * @param base the base where the structure factory is builded
-     * @param itemId the template id of the structure we want to create
-     * @return the created structure
+     * @param factoryId the id of the module factory used
+     * @param itemId the template id of the structure we want to create  @return the created structure
      * @throws ItemRequirementMissingException if some item requiremments are missing in inventory
      * @throws BuildingRequirementMissingException if some building requiremments are missing
      * @throws ItemNotFoundException if the given itemId does not match a game item of type structure
-     * @throws BuildingNotFoundException if there is no structure factory in the given base
+     * @throws BuildingNotFoundException if the given structure factory doens not exists in the given base
      * @throws ItemNotUnlockedException if the structure is not yet unlocked in the factory
      * @throws ItemCreationException if something went wrong
      */
-    public ItemInstance createStructure(Base base, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
+    public ItemInstance createStructure(Base base, Long factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
         final Item item = ItemData.getInstance().getStructure(itemId);
         if(item == null) throw new ItemNotFoundException();
 
-        return createItem(base, STRUCTURE_FACTORY, item);
+        return createItem(base, factoryId, STRUCTURE_FACTORY, item);
     }
 
-    private ItemInstance createItem(Base base, String factoryType, Item item) throws BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException, ItemCreationException {
+    private ItemInstance createItem(Base base, Long factoryId, String factoryType, Item item) throws BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException, ItemCreationException {
         base.initializeStats();
-        final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getBuildingId().equals(factoryType)).findFirst().orElse(null);
+        final BuildingInstance factory = base.getBuildings().stream().filter(k->k.getId()==factoryId).findFirst().orElse(null);
         if(factory == null) throw new BuildingNotFoundException();
+        if(!factory.getBuildingId().equals(factoryType)) throw new BuildingNotFoundException();
 
         final ItemFactory factoryTemplate = (ItemFactory)factory.getTemplate();
         if(!factoryTemplate.hasItem(factory.getCurrentLevel(), item.getItemId())) throw new ItemNotUnlockedException();
