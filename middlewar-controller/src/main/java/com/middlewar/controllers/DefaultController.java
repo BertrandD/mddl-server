@@ -5,6 +5,7 @@ import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.JsonResponseType;
+import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
@@ -116,6 +117,12 @@ public class DefaultController implements ErrorController {
         currentAccount.setLang(newLang);
         accountService.update(currentAccount);
         return new Response(JsonResponseType.SUCCESS);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @RequestMapping(value = "/time", method = RequestMethod.GET)
+    public Response getTime() {
+        return new Response(JsonResponseType.SUCCESS, new MetaHolder("time", System.currentTimeMillis()));
     }
 
     @RequestMapping(value = ERROR_PATH)
