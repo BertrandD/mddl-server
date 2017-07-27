@@ -6,6 +6,7 @@ import com.middlewar.api.exceptions.BuildingMaxLevelReachedException;
 import com.middlewar.api.exceptions.BuildingNotFoundException;
 import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
+import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.MaximumModulesReachedException;
 import com.middlewar.api.exceptions.ModuleNotAllowedHereException;
@@ -17,6 +18,7 @@ import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.data.xml.BuildingData;
+import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.buildings.ModulableBuilding;
@@ -114,10 +116,12 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance attachModule(Base base, long buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException {
+    public BuildingInstance attachModule(Base base, long buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException, ItemNotFoundException {
         base.initializeStats();
 
         final BuildingInstance building = getBuilding(base, buildingInstId);
+
+        if (ItemData.getInstance().getModule(moduleId) == null) throw new ItemNotFoundException();
 
         final ItemInstance module = base.getBaseInventory().getItemsToMap().get(moduleId);
         if (module == null) throw new ModuleNotInInventoryException();
@@ -131,8 +135,7 @@ public class BuildingManager {
         if (!((ModulableBuilding) building.getTemplate()).getModules().contains((Module) module.getTemplate()))
             throw new ModuleNotAllowedHereException();
 
-        if (!inventoryService.consumeItem(module, 1))
-            throw new NotEnoughModulesException();
+        inventoryService.consumeItem(module, 1);
 
         building.addModule(module.getTemplateId());
         buildingService.update(building);

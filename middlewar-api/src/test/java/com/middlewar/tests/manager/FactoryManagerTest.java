@@ -18,7 +18,6 @@ import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
 import com.middlewar.api.services.impl.InventoryService;
-import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
