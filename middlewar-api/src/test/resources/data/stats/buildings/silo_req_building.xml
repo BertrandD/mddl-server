@@ -14,9 +14,6 @@
             <requirement level="1">
                 <building id="silo" level="2"/>
             </requirement>
-            <functions>
-                <function fromLevel="1" itemId="resource_1" value="100"/>
-            </functions>
         </requirements>
     </building>
 </list>

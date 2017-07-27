@@ -14,6 +14,9 @@
             <requirement level="1">
                 <item id="structure_test" count="1"/>
             </requirement>
+            <functions>
+                <function fromLevel="1" itemId="resource_1" value="100"/>
+            </functions>
         </requirements>
     </building>
 </list>
