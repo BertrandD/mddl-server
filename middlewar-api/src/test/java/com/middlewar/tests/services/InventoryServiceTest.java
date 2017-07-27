@@ -69,13 +69,8 @@ public class InventoryServiceTest {
 
     @Before
     public void init() {
-        Config.load();
         WorldData.getInstance().reload();
         astralObjectService.saveUniverse();
-
-        // Parse
-        SystemMessageData.getInstance();
-        ItemData.getInstance();
 
         _account = accountService.create("AccountTest", "no-password");
         _player = playerService.create(_account, "PlayerTest");

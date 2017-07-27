@@ -97,9 +97,7 @@ public class BuildingManagerTest {
 
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
-        Config.load();
         WorldData.getInstance().reload();
-        BuildingData.getInstance().load();
         astralObjectService.saveUniverse();
         MockitoAnnotations.initMocks(this);
         _account = accountService.create("toto", "");

@@ -67,12 +67,8 @@ public class PlanetScanReportServiceTest {
 
     @Before
     public void init() {
-        Config.load();
         WorldData.getInstance().reload();
         astralObjectService.saveUniverse();
-
-        // Parse
-        SystemMessageData.getInstance();
 
         _account = accountService.create("AccountTest", "no-password");
         _player = playerService.create(_account, "PlayerTest");

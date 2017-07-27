@@ -77,13 +77,8 @@ public class SpyReportServiceTest {
 
     @Before
     public void init() {
-        Config.load();
         WorldData.getInstance().reload();
         astralObjectService.saveUniverse();
-
-        // Parse
-        SystemMessageData.getInstance();
-        ItemData.getInstance();
 
         _account = accountService.create("AccountTest", "no-password");
         _account2nd = accountService.create("AccountTest2nd", "no-password");

@@ -17,6 +17,7 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.tests.ApplicationTest;
 import org.assertj.core.api.Assertions;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,14 +51,20 @@ public class PlayerManagerTest {
     private Player _player2;
     private Account _account;
     private Account _account2;
+    private int MAX_PLAYER_IN_ACCOUNT;
 
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException {
-        Config.load();
+        MAX_PLAYER_IN_ACCOUNT = Config.MAX_PLAYER_IN_ACCOUNT;
         _account = accountService.create("tt", "tt");
         _account2 = accountService.create("tt2", "tt");
         _player = playerService.create(_account, "yoloo");
         _player2 = playerService.create(_account2, "yoloo2");
+    }
+
+    @After
+    public void reset() {
+        Config.MAX_PLAYER_IN_ACCOUNT = MAX_PLAYER_IN_ACCOUNT;
     }
 
     @Test
@@ -82,7 +89,7 @@ public class PlayerManagerTest {
 
     @Test(expected = MaxPlayerCreationReachedException.class)
     public void shouldCheckMaxPlayer() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
-        Config.MAX_PLAYER_IN_ACCOUNT = 0;
+        Config.MAX_PLAYER_IN_ACCOUNT = 1;
         playerManager.createForAccount(_account, "toto");
     }
 

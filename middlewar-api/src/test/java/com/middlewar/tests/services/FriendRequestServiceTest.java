@@ -44,7 +44,6 @@ public class FriendRequestServiceTest {
 
     @Before
     public void init() {
-        Config.load();
         final Account account = accountService.create("AccountTest", "no-password");
         _requester = playerService.create(account, "PlayerTest");
         _requested1 = playerService.create(account, "PlayerTest1");

@@ -81,7 +81,6 @@ public class FactoryManagerTest {
 
     @Before
     public void init() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
-        Config.load();
         WorldData.getInstance().reload();
         astralObjectService.saveUniverse();
         MockitoAnnotations.initMocks(this);

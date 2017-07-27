@@ -74,7 +74,6 @@ public class BaseManagerTest {
 
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
-        Config.load();
         WorldData.getInstance().reload();
         astralObjectService.saveUniverse();
         MockitoAnnotations.initMocks(this);
