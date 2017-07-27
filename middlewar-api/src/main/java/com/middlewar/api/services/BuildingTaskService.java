@@ -1,5 +1,6 @@
 package com.middlewar.api.services;
 
+import com.middlewar.api.dao.BuildingTaskDao;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.tasks.BuildingTask;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * @author Leboc Philippe.
  */
-public interface BuildingTaskService extends DefaultService<BuildingTask> {
+public interface BuildingTaskService extends DefaultService<BuildingTask, BuildingTaskDao> {
     BuildingTask create(BuildingInstance inst, long timestamp, int level);
 
     BuildingTask findFirstByOrderByEndsAtAsc();

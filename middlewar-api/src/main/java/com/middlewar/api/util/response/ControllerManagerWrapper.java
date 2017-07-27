@@ -20,16 +20,16 @@ public class ControllerManagerWrapper {
             if (o instanceof Response) {
                 return (Response) o;
             }
-            return new Response(o);
+            return new Response<>(o);
         } catch (ApiException e) {
-            Response response = new Response(JsonResponseType.ERROR, pAccount.getLang(), e.getMessage());
+            Response response = new Response<>(JsonResponseType.ERROR, pAccount.getLang(), e.getMessage());
             if (e instanceof UnauthorizedException) {
                 response.setStatus(JsonResponseType.UNAUTHORIZED);
             }
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            return new Response(JsonResponseType.ERROR, pAccount.getLang(), SystemMessageId.INTERNAL_ERROR);
+            return new Response<>(JsonResponseType.ERROR, pAccount.getLang(), SystemMessageId.INTERNAL_ERROR);
         }
     }
 }

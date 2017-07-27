@@ -15,10 +15,10 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Service
-public class PlayerServiceImpl implements PlayerService {
+public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> implements PlayerService {
 
     @Autowired
-    private PlayerDao dao;
+    private PlayerDao repository;
 
     @Autowired
     private AccountService accountService;
@@ -33,7 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
         final Account playerAccount = accountService.findOne(account.getId());
         if (playerAccount == null) return null;
 
-        final Player player = dao.save(new Player(account, name));
+        final Player player = repository.save(new Player(account, name));
 
         // Update database account
         playerAccount.addPlayer(player);
@@ -51,36 +51,11 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<Player> findByAccount(Account account) {
-        return dao.findByAccountId(account.getId());
+        return repository.findByAccountId(account.getId());
     }
 
     @Override
     public Player findByName(String name) {
-        return dao.findByName(name);
-    }
-
-    @Override
-    public Player findOne(long id) {
-        return dao.findOne(id);
-    }
-
-    @Override
-    public List<Player> findAll() {
-        return dao.findAll();
-    }
-
-    @Override
-    public void update(Player player) {
-        dao.save(player);
-    }
-
-    @Override
-    public void remove(Player player) {
-        dao.delete(player);
-    }
-
-    @Override
-    public void deleteAll() {
-        dao.deleteAll();
+        return repository.findByName(name);
     }
 }

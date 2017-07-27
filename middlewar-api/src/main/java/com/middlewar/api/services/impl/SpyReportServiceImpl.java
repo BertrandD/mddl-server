@@ -15,13 +15,11 @@ import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author bertrand.
  */
 @Service
-public class SpyReportServiceImpl implements SpyReportService {
+public class SpyReportServiceImpl extends DefaultServiceImpl<SpyReport, SpyReportDao> implements SpyReportService {
 
     @Autowired
     private SpyReportDao spyReportDao;
@@ -52,30 +50,5 @@ public class SpyReportServiceImpl implements SpyReportService {
         spyReportDao.save(report);
         playerDao.save(owner);
         return report;
-    }
-
-    @Override
-    public SpyReport findOne(long id) {
-        return spyReportDao.findOne(id);
-    }
-
-    @Override
-    public List<SpyReport> findAll() {
-        return spyReportDao.findAll();
-    }
-
-    @Override
-    public void update(SpyReport object) {
-        spyReportDao.save(object);
-    }
-
-    @Override
-    public void remove(SpyReport object) {
-        spyReportDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        spyReportDao.deleteAll();
     }
 }

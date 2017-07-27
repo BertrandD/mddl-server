@@ -15,7 +15,7 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Service
-public class BuildingServiceImpl implements BuildingService {
+public class BuildingServiceImpl extends DefaultServiceImpl<BuildingInstance, BuildingDao> implements BuildingService {
 
     @Autowired
     private BuildingDao buildingDao;
@@ -28,36 +28,11 @@ public class BuildingServiceImpl implements BuildingService {
         return buildingDao.save(new BuildingInstance(base, buildingId));
     }
 
-    public BuildingInstance findBy(Base base, long id) {
+    public BuildingInstance findByBaseAndId(Base base, long id) {
         return buildingDao.findOneByIdAndBaseId(id, base.getId());
     }
 
     public List<BuildingInstance> findByBaseAndBuildingId(Base base, String buildingId) {
         return buildingDao.findByBaseAndBuildingId(base, buildingId);
-    }
-
-    @Override
-    public BuildingInstance findOne(long id) {
-        return buildingDao.findOne(id);
-    }
-
-    @Override
-    public List<BuildingInstance> findAll() {
-        return buildingDao.findAll();
-    }
-
-    @Override
-    public void update(BuildingInstance object) {
-        buildingDao.save(object);
-    }
-
-    @Override
-    public void remove(BuildingInstance object) {
-        buildingDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        buildingDao.deleteAll();
     }
 }

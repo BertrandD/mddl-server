@@ -49,21 +49,21 @@ public class ShipController {
                            @RequestParam(value = "attachments") List<String> ids) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(SystemMessageId.PLAYER_NOT_FOUND);
 
         final Base base = player.getCurrentBase();
-        if (base == null) return new Response(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
+        if (base == null) return new Response<>(pAccount.getLang(), SystemMessageId.BASE_NOT_FOUND);
         base.initializeStats();
 
         if (ItemData.getInstance().getStructure(structure) == null)
-            return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
+            return new Response<>(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
         final BaseInventory inventory = base.getBaseInventory();
         final List<ItemInstance> collector = new ArrayList<>();
 
         final ItemInstance structuresInst = inventory.getItemsToMap().get(structure);
         if (structuresInst == null || structuresInst.getCount() < count)
-            return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND); // todo: make a new sysmsg
+            return new Response<>(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND); // todo: make a new sysmsg
 
         boolean faillure = false;
         for (int i = 0; i < ids.size() && !faillure; i++) {
@@ -76,14 +76,14 @@ public class ShipController {
             }
         }
 
-        if (faillure) return new Response(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
+        if (faillure) return new Response<>(JsonResponseType.ERROR, SystemMessageId.ITEM_NOT_FOUND);
 
         for (ItemInstance inst : collector)
             inventoryService.consumeItem(inst, 1);
 
         final Ship ship = shipService.create(base, structure, count, ids);
-        if (ship == null) return new Response(JsonResponseType.ERROR, "Cannot create Ship");
-        return new Response(ship);
+        if (ship == null) return new Response<>(JsonResponseType.ERROR, "Cannot create Ship");
+        return new Response<>(ship);
     }
 
 }

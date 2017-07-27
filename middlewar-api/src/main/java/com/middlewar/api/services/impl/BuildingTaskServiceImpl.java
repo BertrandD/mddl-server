@@ -14,7 +14,7 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Service
-public class BuildingTaskServiceImpl implements BuildingTaskService {
+public class BuildingTaskServiceImpl extends DefaultServiceImpl<BuildingTask, BuildingTaskDao> implements BuildingTaskService {
 
     @Autowired
     private BuildingTaskDao buildingTaskDao;
@@ -46,30 +46,5 @@ public class BuildingTaskServiceImpl implements BuildingTaskService {
 
     public BuildingTask findFirstByBuildingOrderByEndsAtDesc(long id) {
         return buildingTaskDao.findFirstByBuildingIdOrderByEndsAtDesc(id);
-    }
-
-    @Override
-    public BuildingTask findOne(long id) {
-        return buildingTaskDao.findOne(id);
-    }
-
-    @Override
-    public List<BuildingTask> findAll() {
-        return buildingTaskDao.findAll();
-    }
-
-    @Override
-    public void update(BuildingTask object) {
-        buildingTaskDao.save(object);
-    }
-
-    @Override
-    public void remove(BuildingTask object) {
-        buildingTaskDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        buildingTaskDao.deleteAll();
     }
 }

@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class InventoryService implements IInventoryService {
 
-    private final Logger logger = LoggerFactory.getLogger(InventoryService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(InventoryService.class);
 
     @Autowired
     private PlayerInventoryService playerInventoryService;
@@ -108,7 +108,7 @@ public class InventoryService implements IInventoryService {
             final Inventory inventory = (Inventory) item.getInventory();
             inventory.getItems().remove(item);
             update(inventory);
-            itemService.remove(item);
+            itemService.delete(item);
         } else {
             itemService.update(item);
         }

@@ -8,13 +8,11 @@ import com.middlewar.core.model.inventory.Inventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author LEBOC Philippe
  */
 @Service
-public class ItemServiceImpl implements ItemService {
+public class ItemServiceImpl extends DefaultServiceImpl<ItemInstance, ItemDao> implements ItemService {
 
     @Autowired
     private ItemDao itemDao;
@@ -28,30 +26,5 @@ public class ItemServiceImpl implements ItemService {
         inventory.getItems().add(inst);
         inventoryService.update(inventory);
         return inst;
-    }
-
-    @Override
-    public ItemInstance findOne(long id) {
-        return itemDao.findOne(id);
-    }
-
-    @Override
-    public List<ItemInstance> findAll() {
-        return itemDao.findAll();
-    }
-
-    @Override
-    public void update(ItemInstance object) {
-        itemDao.save(object);
-    }
-
-    @Override
-    public void remove(ItemInstance object) {
-        itemDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        itemDao.deleteAll();
     }
 }

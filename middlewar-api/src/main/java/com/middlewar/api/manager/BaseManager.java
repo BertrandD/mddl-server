@@ -8,7 +8,6 @@ import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingTaskService;
-import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
@@ -32,14 +31,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class BaseManager {
-    @Autowired
-    private PlayerManager playerManager;
 
     @Autowired
     private BaseService baseService;
-
-    @Autowired
-    private PlayerService playerService;
 
     @Autowired
     private BuildingTaskService buildingTaskService;

@@ -50,7 +50,7 @@ public class PlayerController {
     @RequestMapping(value = "/players", method = RequestMethod.GET)
     public Response showAllPlayers() {
         // TODO: used for tests. Remove when administration will be done
-        return new Response(playerService.findAll());
+        return new Response<>(playerService.findAll());
     }
 
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)

@@ -2,7 +2,6 @@ package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.BaseDao;
 import com.middlewar.api.dao.PlayerDao;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseInventoryService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.core.model.Base;
@@ -18,19 +17,16 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Service
-public class BaseServiceImpl implements BaseService {
+public class BaseServiceImpl extends DefaultServiceImpl<Base, BaseDao> implements BaseService {
 
     @Autowired
-    private BaseDao baseDao;
+    private BaseDao repository;
 
     @Autowired
     private BaseInventoryService baseInventoryService;
 
     @Autowired
     private PlayerDao playerDao;
-
-    @Autowired
-    private AstralObjectService astralObjectService;
 
     public Base create(String name, Player player, Planet planet) {
 
@@ -40,14 +36,15 @@ public class BaseServiceImpl implements BaseService {
         player.setCurrentBase(base);
 
         // Create new objects
-        base = baseDao.save(base);
+        base = repository.save(base);
         final BaseInventory inventory = baseInventoryService.create(base);
 
         base.setBaseInventory(inventory);
-        baseDao.save(base);
+        repository.save(base);
 
         planet.addBase(base);
-//        astralObjectService.update(planet);
+
+        // astralObjectService.update(planet);
 
         playerDao.save(player);
 
@@ -55,32 +52,12 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public Base findOne(long id) {
-        return baseDao.findOne(id);
-    }
-
-    @Override
     public List<Base> findAll() {
-        final List<Base> bases = baseDao.findAll();
+        final List<Base> bases = repository.findAll();
         for (Base base : bases) {
             base.initializeStats();
             //inventoryService.refreshResources(base.getResources()); TODO: HANDLE ME !
         }
         return bases;
-    }
-
-    @Override
-    public void update(Base object) {
-        baseDao.save(object);
-    }
-
-    @Override
-    public void remove(Base object) {
-        baseDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        baseDao.deleteAll();
     }
 }

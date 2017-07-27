@@ -13,13 +13,11 @@ import com.middlewar.core.model.space.Planet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author bertrand.
  */
 @Service
-public class PlanetScanReportServiceImpl implements PlanetScanReportService {
+public class PlanetScanReportServiceImpl extends DefaultServiceImpl<PlanetScanReport, PlanetScanReportDao> implements PlanetScanReportService {
 
     @Autowired
     private PlanetScanReportDao planetScanReportDao;
@@ -45,30 +43,5 @@ public class PlanetScanReportServiceImpl implements PlanetScanReportService {
         planetScanReportDao.save(report);
         playerDao.save(owner);
         return report;
-    }
-
-    @Override
-    public PlanetScanReport findOne(long id) {
-        return planetScanReportDao.findOne(id);
-    }
-
-    @Override
-    public List<PlanetScanReport> findAll() {
-        return planetScanReportDao.findAll();
-    }
-
-    @Override
-    public void update(PlanetScanReport object) {
-        planetScanReportDao.save(object);
-    }
-
-    @Override
-    public void remove(PlanetScanReport object) {
-        planetScanReportDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        planetScanReportDao.deleteAll();
     }
 }

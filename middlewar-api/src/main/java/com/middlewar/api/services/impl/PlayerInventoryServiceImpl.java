@@ -8,13 +8,11 @@ import com.middlewar.core.model.inventory.PlayerInventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author LEBOC Philippe
  */
 @Service
-public class PlayerInventoryServiceImpl implements PlayerInventoryService {
+public class PlayerInventoryServiceImpl extends DefaultServiceImpl<PlayerInventory, PlayerInventoryDao> implements PlayerInventoryService {
 
     @Autowired
     private PlayerInventoryDao playerInventoryDao;
@@ -28,30 +26,5 @@ public class PlayerInventoryServiceImpl implements PlayerInventoryService {
         if (inventory != null) player.setInventory(inventory);
         playerService.update(player);
         return inventory;
-    }
-
-    @Override
-    public PlayerInventory findOne(long id) {
-        return null;
-    }
-
-    @Override
-    public List<PlayerInventory> findAll() {
-        return playerInventoryDao.findAll();
-    }
-
-    @Override
-    public void update(PlayerInventory object) {
-
-    }
-
-    @Override
-    public void remove(PlayerInventory object) {
-        playerInventoryDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        playerInventoryDao.deleteAll();
     }
 }

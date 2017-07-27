@@ -42,10 +42,10 @@ public class FriendController {
     public Response showFriendRequest(@AuthenticationPrincipal Account pAccount) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final List<FriendRequest> requests = friendRequestService.findPlayerRequest(player.getId());
-        return new Response(requests);
+        return new Response<>(requests);
     }
 
     @RequestMapping(value = "/request", method = RequestMethod.POST)
@@ -54,17 +54,17 @@ public class FriendController {
         Assert.hasLength(message, "Empty message.");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         if (player.getId() == (friendId))
-            return new Response(JsonResponseType.ERROR, SystemMessageId.YOU_CANNOT_REQUEST_YOURSELF);
+            return new Response<>(JsonResponseType.ERROR, SystemMessageId.YOU_CANNOT_REQUEST_YOURSELF);
 
         final Player friend = playerService.findOne(friendId);
-        if (friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (friend == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         // TODO SysMsg
-        if (player.getFriends().contains(new PlayerHolder(friend)))
-            return new Response(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
+        if (player.getFriends().contains(friend))
+            return new Response<>(JsonResponseType.ERROR, friend.getName() + " is already in your friend list.");
 
         int counter = 0;
         boolean allreadySent = false;
@@ -76,12 +76,12 @@ public class FriendController {
         }
 
         if (allreadySent)
-            return new Response(JsonResponseType.ERROR, "You have already sent a friend request to " + friend.getName());
+            return new Response<>(JsonResponseType.ERROR, "You have already sent a friend request to " + friend.getName());
 
         final FriendRequest request = friendRequestService.create(player, friend, message);
-        if (request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
+        if (request == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
 
-        return new Response(player); // TODO: send only the new friendrequest instead of Player !
+        return new Response<>(player); // TODO: send only the new friendrequest instead of Player !
     }
 
     @RequestMapping(value = "/accept/{requestId}", method = RequestMethod.GET)
@@ -89,16 +89,16 @@ public class FriendController {
 //        Assert.hasLength(requestId, "Invalid parameter requestId");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final FriendRequest request = player.getReceivedFriendRequests().stream().filter(k -> k.getId() == (requestId)).findFirst().orElse(null);
-        if (request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
+        if (request == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
 
         final Player friend = playerService.findOne(request.getRequester().getId());
-        if (friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (friend == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         if (!player.addFriend(friend))
-            return new Response(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
+            return new Response<>(JsonResponseType.ERROR, friend.getName() + " is already in your friend list."); // TODO: SysMsg
 
         friend.addFriend(player);
 
@@ -107,9 +107,9 @@ public class FriendController {
 
         playerService.update(friend);
         playerService.update(player);
-        friendRequestService.remove(request);
+        friendRequestService.delete(request);
 
-        return new Response(player);
+        return new Response<>(player);
     }
 
     @RequestMapping(value = "/refuse/{requestId}", method = RequestMethod.GET)
@@ -117,21 +117,21 @@ public class FriendController {
 //        Assert.hasLength(requestId, "Invalid parameter requestId");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final FriendRequest request = player.getReceivedFriendRequests().stream().filter(k -> k.getId() == (requestId)).findFirst().orElse(null);
-        if (request == null) return new Response(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
+        if (request == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.FRIEND_REQUEST_DOESNT_EXIST);
 
         final Player friend = playerService.findOne(request.getRequester().getId());
-        if (friend == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (friend == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         friend.getEmittedFriendRequests().remove(request);
         player.getEmittedFriendRequests().remove(request);
 
-        friendRequestService.remove(request);
+        friendRequestService.delete(request);
         playerService.update(friend);
         playerService.update(player);
 
-        return new Response(player); // TODO: SysMsg
+        return new Response<>(player); // TODO: SysMsg
     }
 }

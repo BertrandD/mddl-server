@@ -112,7 +112,7 @@ public class BuildingTaskManager {
                 inventoryService.refreshResources(building.getBase());
 
             building.setCurrentLevel(getCurrentTask().getLevel());
-            buildingTaskService.remove(getCurrentTask());
+            buildingTaskService.delete(getCurrentTask());
 
             if (buildingTaskService.findByBuilding(building.getId()).isEmpty()) {
                 building.setEndsAt(-1);

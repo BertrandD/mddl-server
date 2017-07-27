@@ -31,7 +31,6 @@ public class ReportManager {
     public List<Report> getAllReportsOfCurrentPlayer(Player player) throws NoPlayerConnectedException, PlayerNotFoundException {
         player.getCurrentBase().getReports().sort(Collections.reverseOrder());
         return player.getCurrentBase().getReports();
-
     }
 
     /**

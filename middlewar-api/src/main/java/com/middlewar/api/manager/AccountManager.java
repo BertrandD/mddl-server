@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccountManager {
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+    private final Logger LOGGER = Logger.getLogger(getClass().getSimpleName());
 
     @Autowired
     private AccountService accountService;

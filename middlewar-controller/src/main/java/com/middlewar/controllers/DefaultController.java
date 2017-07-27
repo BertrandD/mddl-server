@@ -53,7 +53,7 @@ public class DefaultController implements ErrorController {
 
     @RequestMapping(value = "/")
     public Response index() {
-        return new Response(JsonResponseType.SUCCESS);
+        return new Response<>(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -67,21 +67,21 @@ public class DefaultController implements ErrorController {
         account.setCurrentPlayer(0);
         accountService.update(account);
         astralObjectService.saveUniverse();
-        return new Response(JsonResponseType.SUCCESS);
+        return new Response<>(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
     public Response resetWorld(@AuthenticationPrincipal Account pAccount) {
         astralObjectService.saveUniverse();
-        return new Response(JsonResponseType.SUCCESS);
+        return new Response<>(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/reload", method = RequestMethod.GET)
     public Response reload() {
         BuildingData.getInstance().load();
         ItemData.getInstance().load();
-        return new Response(JsonResponseType.SUCCESS);
+        return new Response<>(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -93,7 +93,7 @@ public class DefaultController implements ErrorController {
     public Response logout(@AuthenticationPrincipal Account account) {
         account.setToken(UUID.randomUUID().toString());
         accountService.update(account);
-        return new Response(JsonResponseType.SUCCESS);
+        return new Response<>(JsonResponseType.SUCCESS);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -105,7 +105,7 @@ public class DefaultController implements ErrorController {
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     public Response aboutMe(@AuthenticationPrincipal Account account) {
         final Account reqAccount = accountService.findOne(account.getId());
-        return new Response(reqAccount);
+        return new Response<>(reqAccount);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -116,19 +116,19 @@ public class DefaultController implements ErrorController {
         account.setLang(newLang);
         currentAccount.setLang(newLang);
         accountService.update(currentAccount);
-        return new Response(JsonResponseType.SUCCESS);
+        return new Response<>(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/time", method = RequestMethod.GET)
     public Response getTime() {
-        return new Response(JsonResponseType.SUCCESS, new MetaHolder("time", System.currentTimeMillis()));
+        return new Response<>(JsonResponseType.SUCCESS, new MetaHolder("time", System.currentTimeMillis()));
     }
 
     @RequestMapping(value = ERROR_PATH)
     public Response error(HttpServletRequest request) {
         final RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        return new Response(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
+        return new Response<>(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
     }
 
     @Override

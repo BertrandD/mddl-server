@@ -11,16 +11,14 @@ import com.middlewar.core.model.space.Planet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author Leboc Philippe
  */
 @Service
-public class AstralObjectServiceImpl implements AstralObjectService {
+public class AstralObjectServiceImpl extends DefaultServiceImpl<AstralObject, AstralObjectDao> implements AstralObjectService {
 
     @Autowired
-    private AstralObjectDao astralObjectDao;
+    private AstralObjectDao repository;
 
     @Override
     public AstralObject create(String name, AstralObject parent, AstralObjectType type) {
@@ -46,43 +44,25 @@ public class AstralObjectServiceImpl implements AstralObjectService {
         // still usefull after migrating to hibernate ? cc @mathael
         // TODO: warning ABOUT parent !
         // TODO: find parent in DATABASE BEFORE OR STORE IT RECUSIVELY !!!!!
-        object = astralObjectDao.save(object);
+        object = repository.save(object);
 
         return object;
     }
 
+    @Override
     public void saveUniverse() {
         AstralObject blackHole = WorldData.getInstance().getWorld();
-        astralObjectDao.save(blackHole);
+        repository.save(blackHole);
     }
 
+    @Override
     public AstralObject findOneByName(String name) {
-        return astralObjectDao.findOneByName(name);
-    }
-
-    @Override
-    public AstralObject findOne(long id) {
-        return astralObjectDao.findOne(id);
-    }
-
-    @Override
-    public List<AstralObject> findAll() {
-        return astralObjectDao.findAll();
-    }
-
-    @Override
-    public void update(AstralObject object) {
-        astralObjectDao.save(object);
-    }
-
-    @Override
-    public void remove(AstralObject object) {
-        astralObjectDao.delete(object);
+        return repository.findOneByName(name);
     }
 
     @Override
     public void deleteAll() {
-        astralObjectDao.delete(WorldData.getInstance().getWorld());
+        repository.delete(WorldData.getInstance().getWorld());
         WorldData.getInstance().reload();
     }
 }

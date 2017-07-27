@@ -60,7 +60,7 @@ public class BuildingManager {
     private BuildingTaskService buildingTaskService;
 
     public BuildingInstance getBuilding(Base base, long id) throws BuildingNotFoundException {
-        final BuildingInstance building = buildingService.findBy(base, id);
+        final BuildingInstance building = buildingService.findByBaseAndId(base, id);
         if (building == null) throw new BuildingNotFoundException();
 
         return building;

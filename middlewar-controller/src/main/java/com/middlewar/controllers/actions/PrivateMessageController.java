@@ -35,35 +35,35 @@ public class PrivateMessageController {
     @RequestMapping(method = RequestMethod.GET)
     public Response showAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
-        //service.findBy(new Sort(Sort.Direction.DESC, "date"), Criteria.where("author._id").is(new ObjectId(player.getId())).orOperator(Criteria.where("receiver._id").is(new ObjectId(player.getId()))));
-        return new Response(JsonResponseType.ERROR, "TODO: implement me");
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        //service.findByBaseAndId(new Sort(Sort.Direction.DESC, "date"), Criteria.where("author._id").is(new ObjectId(player.getId())).orOperator(Criteria.where("receiver._id").is(new ObjectId(player.getId()))));
+        return new Response<>(JsonResponseType.ERROR, "TODO: implement me");
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") Long pmId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final PrivateMessage pm = service.findOne(pmId);
         if (pm.getAuthor().getId() != (player.getId()) && pm.getReceiver().getId() != (player.getId()))
-            return new Response(JsonResponseType.ERROR, "Invalid request");
+            return new Response<>(JsonResponseType.ERROR, "Invalid request");
 
         if (!pm.isRead()) {
             pm.setRead(true);
             pm.setReadDate(TimeUtil.getCurrentTime());
         }
 
-        return new Response(pm);
+        return new Response<>(pm);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") Long receiverId, @RequestParam("message") String message) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final Player receiver = playerService.findOne(receiverId);
-        if (receiver == null) return new Response(JsonResponseType.ERROR, "Invalid receiver. Player not found");
+        if (receiver == null) return new Response<>(JsonResponseType.ERROR, "Invalid receiver. Player not found");
 
         // TODO: Check sender != receiver
 
@@ -73,8 +73,8 @@ public class PrivateMessageController {
 
         final PrivateMessage pm = service.create(player, receiver, message);
         if (pm == null)
-            return new Response(JsonResponseType.ERROR, "An error occurred. We can't send your private message.");
+            return new Response<>(JsonResponseType.ERROR, "An error occurred. We can't send your private message.");
 
-        return new Response(pm);
+        return new Response<>(pm);
     }
 }

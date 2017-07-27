@@ -43,39 +43,39 @@ public class SpaceController {
 
     @RequestMapping(value = "/system", method = RequestMethod.GET)
     public Response findMySystem(@AuthenticationPrincipal Account pAccount) {
-        if (pAccount.getCurrentPlayer() == 0) return new Response(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
+        if (pAccount.getCurrentPlayer() == 0) return new Response<>(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(SystemMessageId.PLAYER_NOT_FOUND);
 
         Star star = (Star) astralObjectService.findOne(player.getCurrentBase().getPlanet().getParent().getId());
 
-        return new Response(star);
+        return new Response<>(star);
     }
 
     @RequestMapping(value = "/system/{id}", method = RequestMethod.GET)
     public Response findSystem(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) {
-        if (pAccount.getCurrentPlayer() == 0) return new Response(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
+        if (pAccount.getCurrentPlayer() == 0) return new Response<>(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
 
         Star star = (Star) astralObjectService.findOne(id);
 
-        return new Response(star);
+        return new Response<>(star);
     }
 
     @RequestMapping(value = "/scan/{id}", method = RequestMethod.GET)
     public Response scanAstralObject(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) {
-        if (pAccount.getCurrentPlayer() == 0) return new Response(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
+        if (pAccount.getCurrentPlayer() == 0) return new Response<>(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         AstralObject planet = astralObjectService.findOne(id);
 
         if (!(planet instanceof Planet)) {
-            return new Response(JsonResponseType.ERROR, "Not a planet");
+            return new Response<>(JsonResponseType.ERROR, "Not a planet");
         }
 
         PlanetScanReport report = planetScanReportServiceImpl.create(player, player.getCurrentBase(), (Planet) planet);
-        Response response = new Response(report);
+        Response response = new Response<>(report);
         response.addMeta("player", player);
         return response;
     }

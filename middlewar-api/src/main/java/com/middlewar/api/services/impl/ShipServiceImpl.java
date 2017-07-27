@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @author LEBOC Philippe
  */
 @Service
-public class ShipServiceImpl implements ShipService {
+public class ShipServiceImpl extends DefaultServiceImpl<Ship, ShipDao> implements ShipService {
 
     @Autowired
     private ShipDao shipDao;
@@ -38,30 +38,5 @@ public class ShipServiceImpl implements ShipService {
         shipDao.save(ship);
         baseDao.save(base);
         return ship;
-    }
-
-    @Override
-    public Ship findOne(long id) {
-        return shipDao.findOne(id);
-    }
-
-    @Override
-    public List<Ship> findAll() {
-        return shipDao.findAll();
-    }
-
-    @Override
-    public void update(Ship object) {
-        shipDao.save(object);
-    }
-
-    @Override
-    public void remove(Ship object) {
-        shipDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        shipDao.deleteAll();
     }
 }

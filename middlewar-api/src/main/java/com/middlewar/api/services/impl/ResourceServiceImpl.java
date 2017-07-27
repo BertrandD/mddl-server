@@ -12,13 +12,11 @@ import com.middlewar.core.model.stats.Stats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * @author LEBOC Philippe
  */
 @Service
-public class ResourceServiceImpl implements ResourceService {
+public class ResourceServiceImpl extends DefaultServiceImpl<Resource, ResourceDao> implements ResourceService {
 
     @Autowired
     private ResourceDao resourceDao;
@@ -42,30 +40,5 @@ public class ResourceServiceImpl implements ResourceService {
         baseDao.save(base);
 
         return resource;
-    }
-
-    @Override
-    public Resource findOne(long id) {
-        return resourceDao.findOne(id);
-    }
-
-    @Override
-    public List<Resource> findAll() {
-        return resourceDao.findAll();
-    }
-
-    @Override
-    public void update(Resource object) {
-        resourceDao.save(object);
-    }
-
-    @Override
-    public void remove(Resource object) {
-        resourceDao.delete(object);
-    }
-
-    @Override
-    public void deleteAll() {
-        resourceDao.deleteAll();
     }
 }

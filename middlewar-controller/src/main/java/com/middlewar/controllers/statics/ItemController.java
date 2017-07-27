@@ -42,7 +42,7 @@ public class ItemController {
         all.put("STRUCTURE", itemData.getStructures(pAccount.getLang()));
         all.put("WEAPON", itemData.getWeapons(pAccount.getLang()));
 
-        return new Response(all);
+        return new Response<>(all);
     }
 
     @RequestMapping(value = "/common", method = RequestMethod.GET)

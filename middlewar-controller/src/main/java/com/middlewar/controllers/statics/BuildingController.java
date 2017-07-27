@@ -22,14 +22,14 @@ public class BuildingController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount) {
-        return new Response(BuildingData.getInstance().getBuildings(pAccount.getLang()));
+        return new Response<>(BuildingData.getInstance().getBuildings(pAccount.getLang()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response findBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         final Building b = BuildingData.getInstance().getBuilding(id);
-        if (b == null) return new Response(pAccount.getLang(), SystemMessageId.STATIC_BUILDING_DOESNT_EXIST);
+        if (b == null) return new Response<>(pAccount.getLang(), SystemMessageId.STATIC_BUILDING_DOESNT_EXIST);
         b.setLang(pAccount.getLang());
-        return new Response(b);
+        return new Response<>(b);
     }
 }
