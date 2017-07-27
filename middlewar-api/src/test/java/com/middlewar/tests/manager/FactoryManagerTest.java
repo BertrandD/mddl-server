@@ -1,7 +1,5 @@
 package com.middlewar.tests.manager;
 
-import com.middlewar.api.Application;
-import com.middlewar.api.auth.AccountService;
 import com.middlewar.api.exceptions.BuildingNotFoundException;
 import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.ForbiddenNameException;
@@ -15,6 +13,7 @@ import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.FactoryManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
@@ -29,6 +28,7 @@ import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.Stats;
+import com.middlewar.tests.ApplicationTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +46,8 @@ import javax.transaction.Transactional;
  */
 @RunWith(SpringRunner.class)
 @Rollback
-@SpringBootTest(classes = Application.class)
 @Transactional
+@SpringBootTest(classes = ApplicationTest.class)
 public class FactoryManagerTest {
 
     @Autowired
