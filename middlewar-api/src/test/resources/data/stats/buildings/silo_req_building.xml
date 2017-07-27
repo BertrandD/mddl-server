@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
+    <building id="silo_req_building" type="test" class="ModulableBuilding" nameId="building_silo_n" maxLevel="5" maxBuild="5" descriptionId="building_silo_d">
+        <buildTime>
+            <set fromLevel="1" function="0" />
+        </buildTime>
+        <stats>
+            <stat name="MAX_RESOURCE_1" function="1000" op="DIFF" />
+        </stats>
+        <modules max="1">
+            <module id="module_silo_improve_1" />
+        </modules>
+        <requirements>
+            <requirement level="1">
+                <building id="silo" level="2"/>
+            </requirement>
+            <functions>
+                <function fromLevel="1" itemId="resource_1" value="100"/>
+            </functions>
+        </requirements>
+    </building>
+</list>

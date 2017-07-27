@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/messages.xsd">
+    <messages lang="FR">
+        <!-- Account -->
+        <message id="username_not_found" text="Nom d'utilisateur inconnu" />
+        <message id="username_already_exist" text="Nom d'utilisateur déjà utilisé" />
+        <message id="account_already_exist" text="Ce compte existe déjà" />
+        <message id="incorrect_credentials" text="Mot de passe incorrect" />
+        <!-- FriendRequest -->
+        <message id="friendrequest_doesnt_exist" text="La requête n'existe pas" />
+        <message id="friendrequest_faile_to_send_friend_request" text="La requête d'ami n'a pas abouti" />
+        <message id="friendrequest_you_cannot_request_yourself" text="Vous ne pouvez pas vous demandez vous-même en ami" />
+        <!-- Commons -->
+        <message id="forbidden_name" text="Ce nom est interdit" />
+        <!-- Player -->
+        <message id="player_not_found" text="Ce joueur n'existe pas" />
+        <message id="choose_player" text="Sélectionnez un personnage" />
+        <message id="maximum_player_creation_reached" text="Limite de création de personnages atteinte" />
+        <message id="player_creation_failed" text="La création du joueur à échoué" />
+        <!-- Base -->
+        <message id="base_not_found" text="Cette base n'existe pas" />
+        <message id="base_position_already_taken" text="Cette position est déjà prise" />
+        <!-- Static buildings -->
+        <message id="static_building_doesnt_exist" text="Le batiment demandé n'existe pas !" />
+        <!-- Buildings -->
+        <message id="building_cannot_create" text="Erreur lors de la creation du batiment" />
+        <message id="building_not_found" text="Le batiment n'existe pas" />
+        <message id="building_already_exist" text="Le batiment existe déjà" />
+        <message id="building_max_level_reached" text="Niveau maximum atteint pour ce batiment." />
+        <!-- Buildings names -->
+        <message id="building_mine_n" text="Mine" />
+        <message id="building_storage_n" text="Hangar" />
+        <message id="building_shield_n" text="Bouclier" />
+        <message id="building_pump_n" text="Pompe" />
+        <message id="building_power_factory_n" text="Centrale énergétique" />
+        <message id="building_embassy_n" text="Ambassade" />
+        <message id="building_operation_center_n" text="Centre opérationnel" />
+        <message id="building_robot_factory_n" text="Usine de robots" />
+        <message id="building_market_n" text="Marché" />
+        <message id="building_module_factory_n" text="Usine de modules" />
+        <message id="building_structure_factory_n" text="Usine de structures" />
+        <message id="building_spatial_elevator_n" text="Station de lancement" />
+        <message id="building_silo_n" text="Silo" />
+        <!-- Buildings descriptions -->
+        <message id="building_mine_d" text="La mine permet l'extraction de ressources précieuses contenue dans les entrailles de la planète." />
+        <message id="building_storage_d" text="Le hangar augmente la capacité de stockage de votre base. Augmentez son niveau pour obtenir le niveau de stockage désiré." />
+        <message id="building_shield_d" text="Le bouclier est un batiment defensif vous protégeant des attaques et raids venant d'éventuels ennemis." />
+        <message id="building_pump_d" text="La pompe est un batiment essentiel pour extraire les ressources liquides." />
+        <message id="building_power_factory_d" text="La centrale énergétique génère l'energie consommées par les batiments pour exploité la maximum de leur capacités." />
+        <message id="building_embassy_d" text="L'ambassade est destinée à la gestion des relations extérieurs." />
+        <message id="building_operation_center_d" text="Le centre opérationnel permet la gestion des flottes entrantes et sortante de la base" />
+        <message id="building_robot_factory_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_market_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_module_factory_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_structure_factory_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_structure_factory_d" text="Fr: description is not done, its in todo list" />
+        <message id="building_spatial_elevator_d" text="Description is not done, its in todo list" />
+        <message id="building_silo_d" text="Fr: description is not done, its in todo list" />
+        <!-- Items -->
+        <message id="item_not_found" text="Item not found" />
+        <message id="item_not_found_in_inventory" text="Item not found in inventory" />
+        <message id="item_cannot_create" text="Item cannot be created" />
+        <!-- Inventories -->
+        <message id="inventory_not_found" text="Inventory not found" />
+        <!-- Requirements -->
+        <message id="you_dont_meet_building_requirement" text="Vous n'avez pas tous les bâtiments nécessaires" />
+        <message id="you_dont_meet_item_requirement" text="Vous n'avez pas tous les objets nécessaires" />
+        <message id="you_dont_meet_resource_requirement" text="Vous n'avez pas toutes les ressources nécessaires" />
+        <!-- Items names -->
+        <message id="resource_1_n" text="Métal" />
+        <message id="resource_2_n" text="Carbone" />
+        <message id="resource_3_n" text="Cristal" />
+        <message id="resource_4_n" text="Méthane" />
+        <message id="resource_5_n" text="Eau" />
+        <message id="resource_steel_n" text="Acier" />
+        <message id="resource_plastic_n" text="Plastique" />
+        <message id="resource_tool_n" text="Outil" />
+        <message id="resource_nanoliquid_n" text="Nanoliquide" />
+        <message id="resource_septum_n" text="Septum" />
+        <message id="structure_test_n" text="Structure Test" />
+        <!-- Items descriptions -->
+        <message id="resource_1_d" text="Oxyde de Fer" />
+        <message id="resource_2_d" text="Carbone" />
+        <message id="resource_3_d" text="Oxyde d'atemium" />
+        <message id="resource_4_d" text="Méthane" />
+        <message id="resource_5_d" text="Eau" />
+        <message id="resource_steel_d" text="L'acier est une resource primaire destinée à la création de batiment et des composants nécessaires aux vaisseaux" />
+        <message id="resource_plastic_d" text="Plastique" />
+        <message id="resource_tool_d" text="Outil" />
+        <message id="resource_nanoliquid_d" text="Nanoliquide" />
+        <message id="resource_septum_d" text="Septum" />
+        <message id="structure_test_d" text="Structure créée pour effectuer des tests. A supprimer avant la release." />
+    </messages>
+</list>

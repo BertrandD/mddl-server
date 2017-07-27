@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="common.xsd" />
+	<xs:element name="list">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="building" minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice maxOccurs="unbounded" minOccurs="1">
+								<xs:element name="modules" type="element_modules" minOccurs="0" maxOccurs="1" />
+								<xs:element name="buildTime" type="element_buildTime" minOccurs="1" maxOccurs="1" />
+								<xs:element name="stats" type="element_stats" minOccurs="0" maxOccurs="1" />
+								<xs:element name="energy" type="element_energy" minOccurs="0" maxOccurs="1" />
+								<xs:element name="requirements" minOccurs="0" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:choice maxOccurs="unbounded" minOccurs="1">
+												<xs:element name="functions" minOccurs="0" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:choice minOccurs="1" maxOccurs="unbounded">
+																<xs:element name="function" type="element_function" minOccurs="1" maxOccurs="unbounded" />
+															</xs:choice>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="requirement" type="element_requirement" minOccurs="0" maxOccurs="unbounded" />
+											</xs:choice>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="properties" minOccurs="0" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:choice maxOccurs="unbounded" minOccurs="1">
+												<xs:element name="property" minOccurs="1" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:attribute name="name" type="xs:string" use="required" />
+														<xs:attribute name="type" type="xs:string" use="optional" />
+														<xs:attribute name="value" type="xs:string" use="required" />
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="propertiesByLevel" minOccurs="0" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:choice maxOccurs="unbounded" minOccurs="1">
+												<xs:element name="property" minOccurs="1" maxOccurs="unbounded">
+													<xs:complexType>
+														<xs:attribute name="name" type="xs:string" use="required" />
+														<xs:attribute name="value" type="xs:string" use="required" />
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="properties" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="list" minOccurs="1" maxOccurs="unbounded">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="set" minOccurs="1" maxOccurs="unbounded">
+																			<xs:complexType>
+																				<xs:attribute name="name" type="xs:string" use="required" />
+																				<xs:attribute name="value" type="xs:string" use="required" />
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="name" type="xs:string" use="required" />
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+														<xs:attribute name="level" type="xs:integer" use="required" />
+													</xs:complexType>
+												</xs:element>
+											</xs:choice>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+						</xs:sequence>
+                        <xs:attribute name="id" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="nameId" type="xs:normalizedString" use="required" />
+						<xs:attribute name="class" type="xs:string" use="required" />
+                        <xs:attribute name="descriptionId" type="xs:normalizedString" use="required" />
+                        <xs:attribute name="maxLevel" type="xs:positiveInteger" use="required"/>
+						<xs:attribute name="maxBuild" type="xs:positiveInteger" use="optional" />
+						<xs:attribute name="type" type="xs:normalizedString" use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="disabled" type="xs:boolean" use="optional" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
