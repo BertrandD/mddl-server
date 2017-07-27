@@ -108,11 +108,15 @@ public class BuildingTaskManager {
         public synchronized void run() {
             final BuildingInstance building = getCurrentTask().getBuilding();
 
-            if (building.getTemplate().getType().equals(BuildingCategory.SILO))
-                inventoryService.refreshResources(building.getBase());
+//            if (building.getTemplate().getType().equals(BuildingCategory.SILO))
+//                inventoryService.refreshResources(building.getBase());
 
             building.setCurrentLevel(getCurrentTask().getLevel());
             buildingTaskService.delete(getCurrentTask());
+
+            if (building.getCurrentLevel() == 1) {
+                building.getBase().addBuilding(building);
+            }
 
             if (buildingTaskService.findByBuilding(building.getId()).isEmpty()) {
                 building.setEndsAt(-1);
@@ -125,6 +129,7 @@ public class BuildingTaskManager {
 
             buildingService.update(building);
 
+            // TODO : refactor this because it is not generic. This logic should not be here. Maybe in Base::addBuilding() ?
             if (building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1) {
                 final Base base = building.getBase();
                 final ModulableBuilding mine = (ModulableBuilding) building.getTemplate();
