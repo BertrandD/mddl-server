@@ -18,7 +18,7 @@ public class ControllerManagerWrapper {
         try {
             Object o = callable.call();
             if (o instanceof Response) {
-                return (Response)o;
+                return (Response) o;
             }
             return new Response(o);
         } catch (ApiException e) {

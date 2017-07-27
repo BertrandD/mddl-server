@@ -5,10 +5,10 @@ import java.time.Duration;
 /**
  * Simple interface for parser, enforces of a fall back value.<br>
  * More suitable for developers not sure about their data.<br>
+ *
  * @author xban1x
  */
-public interface IParserUtils
-{
+public interface IParserUtils {
     public boolean getBoolean(String key, boolean defaultValue);
 
     public byte getByte(String key, byte defaultValue);

@@ -45,7 +45,7 @@ public class BuildingTask {
     @Override
     public boolean equals(Object o) {
         if (o instanceof BuildingTask) {
-            final BuildingTask task = (BuildingTask)o;
+            final BuildingTask task = (BuildingTask) o;
             return (this.id == task.id);
         }
         return false;

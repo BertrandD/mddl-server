@@ -42,7 +42,7 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
-    public Response players(@AuthenticationPrincipal Account pAccount){
+    public Response players(@AuthenticationPrincipal Account pAccount) {
         return controllerManagerWrapper.wrap(() -> playerManager.getAllPlayersForAccount(pAccount));
     }
 
@@ -54,7 +54,7 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
-    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id){
+    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
         return controllerManagerWrapper.wrap(() -> playerManager.getPlayerOfAccount(account, id));
     }
 

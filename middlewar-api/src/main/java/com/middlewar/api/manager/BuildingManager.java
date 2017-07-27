@@ -61,7 +61,7 @@ public class BuildingManager {
 
     public BuildingInstance getBuilding(Base base, long id) throws BuildingNotFoundException {
         final BuildingInstance building = buildingService.findBy(base, id);
-        if(building == null) throw new BuildingNotFoundException();
+        if (building == null) throw new BuildingNotFoundException();
 
         return building;
     }
@@ -70,10 +70,11 @@ public class BuildingManager {
         base.initializeStats();
 
         final Building template = BuildingData.getInstance().getBuilding(templateId);
-        if(template == null) throw new BuildingTemplateNotFoundException();
+        if (template == null) throw new BuildingTemplateNotFoundException();
 
         final List<BuildingInstance> existingBuildings = buildingService.findByBaseAndBuildingId(base, templateId);
-        if(existingBuildings != null && existingBuildings.size() >= template.getMaxBuild()) throw new BuildingAlreadyExistsException(); // TODO: SysMsg MAX REACHED !
+        if (existingBuildings != null && existingBuildings.size() >= template.getMaxBuild())
+            throw new BuildingAlreadyExistsException(); // TODO: SysMsg MAX REACHED !
 
         final BuildingInstance tempBuilding = new BuildingInstance(base, templateId);
 
@@ -81,7 +82,7 @@ public class BuildingManager {
         validator.validateBuildingRequirements(base, tempBuilding, collector);
 
         final BuildingInstance building = buildingService.create(base, templateId);
-        if(building == null) throw new BuildingCreationException();
+        if (building == null) throw new BuildingCreationException();
 
         collector.forEach(inventoryService::consumeItem);
 
@@ -97,8 +98,8 @@ public class BuildingManager {
 
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
         final Building template = building.getTemplate();
-        if(building.getCurrentLevel() >= template.getMaxLevel() ||
-                (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())){
+        if (building.getCurrentLevel() >= template.getMaxLevel() ||
+                (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())) {
             throw new BuildingMaxLevelReachedException();
         }
 
@@ -119,18 +120,18 @@ public class BuildingManager {
         final BuildingInstance building = getBuilding(base, buildingInstId);
 
         final ItemInstance module = base.getBaseInventory().getItemsToMap().get(moduleId);
-        if(module == null) throw new ModuleNotInInventoryException();
+        if (module == null) throw new ModuleNotInInventoryException();
 
         //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new Response(JsonResponseType.ERROR, "Module already attached !"); // TODO System message
 
-        if(building.getModules().size() >= ((ModulableBuilding)building.getTemplate()).getMaxModules())
+        if (building.getModules().size() >= ((ModulableBuilding) building.getTemplate()).getMaxModules())
             throw new MaximumModulesReachedException();
 
         // TODO: MAKE A TEST !!!!
-        if(!((ModulableBuilding) building.getTemplate()).getModules().contains((Module)module.getTemplate()))
+        if (!((ModulableBuilding) building.getTemplate()).getModules().contains((Module) module.getTemplate()))
             throw new ModuleNotAllowedHereException();
 
-        if(!inventoryService.consumeItem(module, 1))
+        if (!inventoryService.consumeItem(module, 1))
             throw new NotEnoughModulesException();
 
         building.addModule(module.getTemplateId());

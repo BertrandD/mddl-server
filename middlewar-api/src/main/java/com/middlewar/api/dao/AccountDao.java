@@ -7,5 +7,6 @@ import com.middlewar.core.model.Account;
  */
 public interface AccountDao extends DefaultRepository<Account, Long> {
     Account findByUsername(String username);
+
     Account findByToken(String token);
 }

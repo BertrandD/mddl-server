@@ -17,15 +17,15 @@ public class ObjectStatSerializer extends JsonSerializer<ObjectStat> {
     public void serialize(ObjectStat value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
         for (Map.Entry<Stats, Double> entry : value.getStats().entrySet()) {
-            switch(entry.getKey())
-            {
+            switch (entry.getKey()) {
                 case RESOURCE_3:
                 case RESOURCE_2:
                 case RESOURCE_4:
                 case RESOURCE_1:
                 case RESOURCE_5:
                     break;
-                default: gen.writeNumberField(entry.getKey().toString(), entry.getValue());
+                default:
+                    gen.writeNumberField(entry.getKey().toString(), entry.getValue());
             }
         }
         gen.writeEndObject();

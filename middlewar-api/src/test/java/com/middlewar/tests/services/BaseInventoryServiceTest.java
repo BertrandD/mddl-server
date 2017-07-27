@@ -1,7 +1,6 @@
 package com.middlewar.tests.services;
 
 import com.middlewar.tests.ApplicationTest;
-import com.middlewar.tests.MddlTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

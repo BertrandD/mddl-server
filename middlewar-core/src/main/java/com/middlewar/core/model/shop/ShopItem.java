@@ -20,7 +20,7 @@ public class ShopItem {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "[ShopItem] " + itemId + " x" + count + " for " + price + "$";
     }
 }

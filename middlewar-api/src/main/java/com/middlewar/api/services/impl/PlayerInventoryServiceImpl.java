@@ -25,7 +25,7 @@ public class PlayerInventoryServiceImpl implements PlayerInventoryService {
     @Override
     public PlayerInventory create(Player player) {
         final PlayerInventory inventory = playerInventoryDao.save(new PlayerInventory(player));
-        if(inventory != null) player.setInventory(inventory);
+        if (inventory != null) player.setInventory(inventory);
         playerService.update(player);
         return inventory;
     }

@@ -168,7 +168,7 @@ public class BuildingManagerTest {
         BuildingInstance buildingInstance = buildingService.create(_base, "silo");
         _base.addBuilding(buildingInstance);
 
-        buildingManager.upgrade(_base, buildingInstance.getId()+1);
+        buildingManager.upgrade(_base, buildingInstance.getId() + 1);
     }
 
     @Test(expected = BuildingMaxLevelReachedException.class)

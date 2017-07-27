@@ -15,30 +15,25 @@ public class Evaluator {
     private final ScriptEngineManager manager = new ScriptEngineManager();
     private final ScriptEngine engine = manager.getEngineByName("js");
 
-    protected Evaluator() {}
+    protected Evaluator() {
+    }
 
-    public Object eval(String expression)
-    {
+    public static Evaluator getInstance() {
+        return SingletonHolder._instance;
+    }
+
+    public Object eval(String expression) {
         Object result;
-        try
-        {
+        try {
             result = engine.eval(expression);
-        }
-        catch(ScriptException e)
-        {
-            LOGGER.error("Expression ["+expression+"] cannot be evaluated.");
+        } catch (ScriptException e) {
+            LOGGER.error("Expression [" + expression + "] cannot be evaluated.");
             result = null;
         }
         return result;
     }
 
-    public static Evaluator getInstance()
-    {
-        return SingletonHolder._instance;
-    }
-
-    private static class SingletonHolder
-    {
+    private static class SingletonHolder {
         protected static final Evaluator _instance = new Evaluator();
     }
 }

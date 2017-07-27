@@ -28,16 +28,16 @@ public class GameItemSerializer extends JsonSerializer<GameItem> {
         gen.writeNumberField("weight", value.getWeight());
         gen.writeNumberField("volume", value.getVolume());
 
-        if(value instanceof Cargo)
+        if (value instanceof Cargo)
             gen.writeNumberField("capacity", ((Cargo) value).getCapacity());
 
-        if(value instanceof Engine)
+        if (value instanceof Engine)
             gen.writeNumberField("power", ((Engine) value).getPower());
 
-        if(value instanceof Structure)
+        if (value instanceof Structure)
             gen.writeObjectField("slots", ((Structure) value).getAvailablesSlots());
 
-        if(value instanceof Weapon)
+        if (value instanceof Weapon)
             gen.writeNumberField("damage", ((Weapon) value).getDamage());
 
         gen.writeObjectFieldStart("stats");
@@ -46,8 +46,7 @@ public class GameItemSerializer extends JsonSerializer<GameItem> {
         }
         gen.writeEndObject();
 
-        if(value instanceof Item)
-        {
+        if (value instanceof Item) {
             gen.writeStringField("rank", ((Item) value).getRank().getName());
             gen.writeNumberField("buildTime", ((Item) value).getBuildTime());
             gen.writeObjectField("requirement", ((Item) value).getRequirement());

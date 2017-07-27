@@ -31,6 +31,7 @@ public class BuildingTaskServiceImpl implements BuildingTaskService {
     public List<BuildingTask> findByBuilding(long id) {
         return buildingTaskDao.findByBuildingId(id);
     }
+
     public List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id) {
         return buildingTaskDao.findByBuildingOrderByEndsAtAsc(id);
     }

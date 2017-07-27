@@ -34,7 +34,7 @@ public class ObjectStat {
     }
 
     public void addStat(final Stats stat) {
-        if(!getStats().containsKey(stat))
+        if (!getStats().containsKey(stat))
             getStats().put(stat, stat.getValue());
         else logger.warn("Trying to replace an existing stat (" + stat.name() + "). Abort.");
     }
@@ -53,16 +53,23 @@ public class ObjectStat {
 
     public void add(final Stats stat, final double val, final StatOp op) {
 
-        if(!getStats().containsKey(stat) && op != StatOp.UNLOCK) {
-            logger.warn("Trying an operator on an non registered stat: "+stat.name());
+        if (!getStats().containsKey(stat) && op != StatOp.UNLOCK) {
+            logger.warn("Trying an operator on an non registered stat: " + stat.name());
             return;
         }
 
         switch (op) {
-            case DIFF: getStats().replace(stat, getValue(stat) + val); break;
-            case PER: getStats().replace(stat, getValue(stat) * val); break;
-            case UNLOCK: addStat(stat); break;
-            default: break;
+            case DIFF:
+                getStats().replace(stat, getValue(stat) + val);
+                break;
+            case PER:
+                getStats().replace(stat, getValue(stat) * val);
+                break;
+            case UNLOCK:
+                addStat(stat);
+                break;
+            default:
+                break;
         }
     }
 }

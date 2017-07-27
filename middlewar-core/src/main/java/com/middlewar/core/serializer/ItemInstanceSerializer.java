@@ -17,7 +17,7 @@ public class ItemInstanceSerializer extends JsonSerializer<ItemInstance> {
         gen.writeStartObject();
         gen.writeNumberField("id", value.getId());
         gen.writeStringField("templateId", value.getTemplateId());
-        gen.writeNumberField("count", (long)Math.floor(value.getCount()));
+        gen.writeNumberField("count", (long) Math.floor(value.getCount()));
         gen.writeStringField("type", value.getType().name());
         gen.writeEndObject();
     }

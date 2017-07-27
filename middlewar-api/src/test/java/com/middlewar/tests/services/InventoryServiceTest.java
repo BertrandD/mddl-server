@@ -23,7 +23,6 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.tests.ApplicationTest;
-import com.middlewar.tests.MddlTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,35 +45,27 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest(classes = ApplicationTest.class)
 public class InventoryServiceTest {
 
+    private static final String _itemTemplate = "resource_1";
     @Autowired
     private BuildingService buildingService;
-
     @Autowired
     private PlayerService playerService;
-
     @Autowired
     private AstralObjectService astralObjectService;
-
     @Autowired
     private AccountService accountService;
-
     @Autowired
     private BaseService baseService;
-
     @Autowired
     private InventoryService inventoryService;
-
     @Autowired
     private PlanetManager planetManager;
-
     @Autowired
     private ResourceDao resourceDao;
-
     private Account _account;
     private Player _player;
     private Planet _planet;
     private Base _base;
-    private static final String _itemTemplate = "resource_1";
 
     @Before
     public void init() {
@@ -153,7 +144,7 @@ public class InventoryServiceTest {
 
         Assertions.assertThat(item).isNotNull();
 
-        final boolean result = inventoryService.consumeItem(item, amount+1);
+        final boolean result = inventoryService.consumeItem(item, amount + 1);
         Assertions.assertThat(result).isFalse();
     }
 
@@ -177,7 +168,7 @@ public class InventoryServiceTest {
     @Test
     public void shouldAddResource() {
         final long amount = 100;
-        Resource resource = initResource(amount, amount+1);
+        Resource resource = initResource(amount, amount + 1);
 
         resource = resourceDao.findOne(resource.getId());
         Assertions.assertThat(resource).isNotNull();
@@ -209,7 +200,7 @@ public class InventoryServiceTest {
         buildingInstance.setCurrentLevel(1);
         _base.addBuilding(buildingInstance);
         Assertions.assertThat(_base.getBuildings().contains(buildingInstance)).isTrue();
-        Assertions.assertThat(resource.getAvailableCapacity()).isEqualTo(max+siloCapacity);
+        Assertions.assertThat(resource.getAvailableCapacity()).isEqualTo(max + siloCapacity);
 
         boolean result = inventoryService.addResource(resource, amount);
         Assertions.assertThat(result).isTrue();
@@ -222,13 +213,13 @@ public class InventoryServiceTest {
         final long amount = 500;
         Resource resource = initResource(amount, max);
         final double prodPerSecond = 100;
-        final double prodPerHour = prodPerSecond*60*60;
+        final double prodPerHour = prodPerSecond * 60 * 60;
         _base.getBaseStat().add(resource.getStat(), prodPerHour);
         Assertions.assertThat(resource.getCount()).isEqualTo(amount);
         TimeUnit.SECONDS.sleep(3);
         inventoryService.refreshResources(_base);
-        Assertions.assertThat(resource.getCount()).isGreaterThanOrEqualTo(amount+280);
-        Assertions.assertThat(resource.getCount()).isLessThanOrEqualTo(amount+310);
+        Assertions.assertThat(resource.getCount()).isGreaterThanOrEqualTo(amount + 280);
+        Assertions.assertThat(resource.getCount()).isLessThanOrEqualTo(amount + 310);
     }
 
     private Resource initResource(long amount, long max) {

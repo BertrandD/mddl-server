@@ -14,19 +14,27 @@ import java.util.List;
 public interface IShip {
 
     Structure getStructure();
+
     List<Engine> getEngines();
 
     List<Cargo> getCargos();
+
     List<Module> getModules();
+
     List<Weapon> getWeapons();
 
     double getDamage();
+
     double getShield();
+
     double getHealth();
+
     double getVolume();
+
     double getWeight();
 
     double getMaxStorableVolume();
+
     double getMaxStorableWeight();
 
 }

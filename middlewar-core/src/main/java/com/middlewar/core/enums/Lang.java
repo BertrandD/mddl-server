@@ -9,7 +9,7 @@ public enum Lang {
 
     private String name;
 
-    Lang(String name){
+    Lang(String name) {
         setName(name);
     }
 

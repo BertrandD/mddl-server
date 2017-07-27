@@ -42,8 +42,12 @@ public class BuildingData implements IXmlReader {
 
     private final HashMap<String, Building> _buildings = new HashMap<>();
 
-    protected BuildingData(){
+    protected BuildingData() {
         load();
+    }
+
+    public static BuildingData getInstance() {
+        return SingletonHolder._instance;
     }
 
     @Override
@@ -55,15 +59,12 @@ public class BuildingData implements IXmlReader {
 
     @Override
     public void parseDocument(Document doc, File f) {
-        for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
-        {
-            if ("list".equalsIgnoreCase(a.getNodeName()))
-            {
+        for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling()) {
+            if ("list".equalsIgnoreCase(a.getNodeName())) {
                 NamedNodeMap attrs = a.getAttributes();
-                if(parseBoolean(attrs, "disabled", false)) continue;
+                if (parseBoolean(attrs, "disabled", false)) continue;
 
-                for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling())
-                {
+                for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling()) {
                     if ("building".equalsIgnoreCase(b.getNodeName())) {
                         attrs = b.getAttributes();
                         final StatsSet set = new StatsSet();
@@ -86,22 +87,16 @@ public class BuildingData implements IXmlReader {
                         //final List<StatHolder> stats = new ArrayList<>();
                         final BuildingStats stats = new BuildingStats();
 
-                        for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
-                        {
+                        for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling()) {
                             attrs = c.getAttributes();
-                            if ("requirements".equalsIgnoreCase(c.getNodeName()))
-                            {
+                            if ("requirements".equalsIgnoreCase(c.getNodeName())) {
                                 final List<FunctionHolder> functions = new ArrayList<>();
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
-                                    if("functions".equalsIgnoreCase(d.getNodeName()))
-                                    {
-                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-                                        {
+                                    if ("functions".equalsIgnoreCase(d.getNodeName())) {
+                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
-                                            if("function".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            if ("function".equalsIgnoreCase(e.getNodeName())) {
                                                 final int fromLevel = parseInteger(attrs, "fromLevel", 1);
                                                 final int toLevel = parseInteger(attrs, "toLevel", set.getInt("maxLevel"));
                                                 final String itemId = parseString(attrs, "itemId");
@@ -109,22 +104,16 @@ public class BuildingData implements IXmlReader {
                                                 functions.add(new FunctionHolder(fromLevel, toLevel, itemId, function));
                                             }
                                         }
-                                    }
-                                    else if ("requirement".equalsIgnoreCase(d.getNodeName()))
-                                    {
+                                    } else if ("requirement".equalsIgnoreCase(d.getNodeName())) {
                                         final int level = parseInteger(attrs, "level");
                                         final List<BuildingHolder> buildingHolders = new ArrayList<>();
                                         final List<ItemHolder> itemHolders = new ArrayList<>();
 
-                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-                                        {
+                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
-                                            if ("item".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            if ("item".equalsIgnoreCase(e.getNodeName())) {
                                                 itemHolders.add(new ItemHolder(parseString(attrs, "id"), parseLong(attrs, "count")));
-                                            }
-                                            else if ("building".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            } else if ("building".equalsIgnoreCase(e.getNodeName())) {
                                                 buildingHolders.add(new BuildingHolder(parseString(attrs, "id"), parseInteger(attrs, "level")));
                                             }
                                         }
@@ -133,26 +122,18 @@ public class BuildingData implements IXmlReader {
                                 }
 
                                 // Finishing REQUIREMENTS with items from functions
-                                for (FunctionHolder function : functions)
-                                {
-                                    for(int i = function.getFromLevel(); i <= function.getToLevel(); i++)
-                                    {
+                                for (FunctionHolder function : functions) {
+                                    for (int i = function.getFromLevel(); i <= function.getToLevel(); i++) {
                                         Requirement req = requirements.get(i);
-                                        if(req != null)
-                                        {
+                                        if (req != null) {
                                             req.addItem(new ItemHolder(function.getItemId(), function.getResultForLevel(i)));
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             requirements.put(i, new Requirement(i, new ItemHolder(function.getItemId(), function.getResultForLevel(i))));
                                         }
                                     }
                                 }
-                            }
-                            else if ("buildTime".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                            } else if ("buildTime".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
                                     if ("set".equalsIgnoreCase(d.getNodeName())) {
                                         final int fromLevel = parseInteger(attrs, "fromLevel", 1);
@@ -160,16 +141,13 @@ public class BuildingData implements IXmlReader {
                                         final String function = parseString(attrs, "function");
 
                                         final FunctionHolder holder = new FunctionHolder(fromLevel, toLevel, function);
-                                        for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
-                                            buildTimes[i-1] = holder.getResultForLevel(i);
+                                        for (int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
+                                            buildTimes[i - 1] = holder.getResultForLevel(i);
                                         }
                                     }
                                 }
-                            }
-                            else if ("stats".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                            } else if ("stats".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
                                     if ("stat".equalsIgnoreCase(d.getNodeName())) {
                                         final Stats baseStat = parseEnum(attrs, Stats.class, "name");
@@ -179,31 +157,27 @@ public class BuildingData implements IXmlReader {
                                         final StatHolder holder = new StatHolder(baseStat, op);
 
                                         final double[] values = new double[set.getInt("maxLevel")];
-                                        if(function != null) {
-                                            for(int i = 0; i < values.length; i++) {
-                                                final String func = function.replace("$level", "" + (i+1));
+                                        if (function != null) {
+                                            for (int i = 0; i < values.length; i++) {
+                                                final String func = function.replace("$level", "" + (i + 1));
                                                 values[i] = ((Number) Evaluator.getInstance().eval(func)).doubleValue();
                                             }
                                             holder.setValues(values);
                                         }
 
-                                        if(reqBuildingLevel != 0) {
-                                            if(stats.getStatsByLevel().containsKey(reqBuildingLevel))
+                                        if (reqBuildingLevel != 0) {
+                                            if (stats.getStatsByLevel().containsKey(reqBuildingLevel))
                                                 stats.getStatsByLevel().get(reqBuildingLevel).add(holder);
                                             else {
                                                 final List<StatHolder> holders = new ArrayList<>();
                                                 holders.add(holder);
                                                 stats.getStatsByLevel().put(reqBuildingLevel, holders);
                                             }
-                                        }
-                                        else stats.getGlobalStats().add(holder);
+                                        } else stats.getGlobalStats().add(holder);
                                     }
                                 }
-                            }
-                            else if ("energy".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                            } else if ("energy".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
                                     if ("set".equalsIgnoreCase(d.getNodeName())) {
                                         final int fromLevel = parseInteger(attrs, "fromLevel", 1);
@@ -211,30 +185,24 @@ public class BuildingData implements IXmlReader {
                                         final String function = parseString(attrs, "function");
 
                                         final FunctionHolder holder = new FunctionHolder(fromLevel, toLevel, function);
-                                        for(int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
-                                            energies[i-1] = (holder.getResultForLevel(i));
+                                        for (int i = holder.getFromLevel(); i <= holder.getToLevel(); i++) {
+                                            energies[i - 1] = (holder.getResultForLevel(i));
                                         }
                                     }
                                 }
-                            }
-                            else if("modules".equalsIgnoreCase(c.getNodeName()))
-                            {
+                            } else if ("modules".equalsIgnoreCase(c.getNodeName())) {
                                 set.set("max_modules", parseInteger(attrs, "max", 1));
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
                                     if ("module".equalsIgnoreCase(d.getNodeName())) {
                                         final String id = parseString(attrs, "id");
                                         final Module module = ItemData.getInstance().getModule(id);
-                                        if(module != null)
+                                        if (module != null)
                                             modules.add(module);
                                     }
                                 }
-                            }
-                            else if ("properties".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                            } else if ("properties".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
                                     if ("property".equalsIgnoreCase(d.getNodeName())) {
                                         final String name = parseString(attrs, "name");
@@ -242,32 +210,24 @@ public class BuildingData implements IXmlReader {
                                         set.set(name, value);
                                     }
                                 }
-                            }
-                            else if("propertiesByLevel".equalsIgnoreCase(c.getNodeName()))
-                            {
+                            } else if ("propertiesByLevel".equalsIgnoreCase(c.getNodeName())) {
                                 final PropertiesHolder propertiesHolder = new PropertiesHolder();
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
-                                    if("properties".equalsIgnoreCase(d.getNodeName()))
-                                    {
+                                    if ("properties".equalsIgnoreCase(d.getNodeName())) {
                                         final int level = parseInteger(attrs, "level");
                                         final List<PropertyListHolder> groupHolder = propertiesHolder.addLevelGroup(level);
 
-                                        for(Node e = d.getFirstChild(); e != null; e = e.getNextSibling())
-                                        {
+                                        for (Node e = d.getFirstChild(); e != null; e = e.getNextSibling()) {
                                             attrs = e.getAttributes();
-                                            if("list".equalsIgnoreCase(e.getNodeName()))
-                                            {
+                                            if ("list".equalsIgnoreCase(e.getNodeName())) {
                                                 final String listName = parseString(attrs, "name");
                                                 final PropertyListHolder propertyList = new PropertyListHolder(listName);
                                                 groupHolder.add(propertyList);
 
-                                                for(Node g = e.getFirstChild(); g != null; g = g.getNextSibling())
-                                                {
+                                                for (Node g = e.getFirstChild(); g != null; g = g.getNextSibling()) {
                                                     attrs = g.getAttributes();
-                                                    if("set".equalsIgnoreCase(g.getNodeName()))
-                                                    {
+                                                    if ("set".equalsIgnoreCase(g.getNodeName())) {
                                                         final String value = parseString(attrs, "value");
                                                         final String name = parseString(attrs, "name");
                                                         propertyList.addProperty(new PropertyHolder(name, value));
@@ -289,7 +249,7 @@ public class BuildingData implements IXmlReader {
                                 building.setBuildTimes(buildTimes);
                                 building.setRequirements(requirements);
                                 building.setStats(stats);
-                                if(!modules.isEmpty()) ((ModulableBuilding) building).setModules(modules);
+                                if (!modules.isEmpty()) ((ModulableBuilding) building).setModules(modules);
                                 _buildings.put(set.getString("id"), building);
                             }
                         } catch (InvocationTargetException e) {
@@ -301,8 +261,38 @@ public class BuildingData implements IXmlReader {
         }
     }
 
-    private class FunctionHolder
-    {
+    private Building makeBuilding(StatsSet set) throws InvocationTargetException {
+        try {
+            final Constructor<?> c = Class.forName("com.middlewar.core.model.buildings." + set.getString("class", "CommonBuilding")).getConstructor(StatsSet.class);
+            return (Building) c.newInstance(set);
+        } catch (Exception e) {
+            throw new InvocationTargetException(e);
+        }
+    }
+
+    public Building getBuilding(String id) {
+        return _buildings.get(id);
+    }
+
+    public List<Building> getBuildings(BuildingCategory type) {
+        return _buildings.values().stream().filter(k -> k.getType().equals(type)).collect(Collectors.toList());
+    }
+
+    public List<Building> getBuildings() {
+        return new ArrayList<>(_buildings.values());
+    }
+
+    public List<Building> getBuildings(Lang lang) {
+        final List<Building> buildings = new ArrayList<>(_buildings.values());
+        buildings.forEach(k -> k.setLang(lang));
+        return buildings;
+    }
+
+    private static class SingletonHolder {
+        protected static final BuildingData _instance = new BuildingData();
+    }
+
+    private class FunctionHolder {
         private int fromLevel;
         private int toLevel;
         private String itemId;
@@ -337,42 +327,5 @@ public class BuildingData implements IXmlReader {
             final String func = function.replace("$level", "" + level);
             return ((Number) Evaluator.getInstance().eval(func)).longValue();
         }
-    }
-
-    private Building makeBuilding(StatsSet set) throws InvocationTargetException {
-        try {
-            final Constructor<?> c = Class.forName("com.middlewar.core.model.buildings." + set.getString("class", "CommonBuilding")).getConstructor(StatsSet.class);
-            return (Building) c.newInstance(set);
-        } catch (Exception e) {
-            throw new InvocationTargetException(e);
-        }
-    }
-
-    public Building getBuilding(String id) {
-        return _buildings.get(id);
-    }
-
-    public List<Building> getBuildings(BuildingCategory type){
-        return _buildings.values().stream().filter(k -> k.getType().equals(type)).collect(Collectors.toList());
-    }
-
-    public List<Building> getBuildings(){
-        return new ArrayList<>(_buildings.values());
-    }
-
-    public List<Building> getBuildings(Lang lang){
-        final List<Building> buildings = new ArrayList<>(_buildings.values());
-        buildings.forEach(k->k.setLang(lang));
-        return buildings;
-    }
-
-    public static BuildingData getInstance()
-    {
-        return SingletonHolder._instance;
-    }
-
-    private static class SingletonHolder
-    {
-        protected static final BuildingData _instance = new BuildingData();
     }
 }

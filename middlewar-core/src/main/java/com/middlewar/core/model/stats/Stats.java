@@ -47,8 +47,7 @@ public enum Stats {
 
     private double value;
 
-    Stats(double value)
-    {
+    Stats(double value) {
         setValue(value);
     }
 

@@ -11,8 +11,9 @@ import java.util.List;
 public interface PlayerService extends DefaultService<Player> {
     /**
      * Create a new Player
+     *
      * @param account account that's request the new creation (Warning: this variable come from the @AuthenticationPrincipal)
-     * @param name the name for the new player
+     * @param name    the name for the new player
      * @return the new created player
      */
     Player create(Account account, String name);

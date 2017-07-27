@@ -10,9 +10,14 @@ import java.util.List;
  */
 public interface BuildingTaskDao extends DefaultRepository<BuildingTask, Long> {
     BuildingTask findFirstByOrderByEndsAtAsc();
+
     List<BuildingTask> findByBuildingId(long id);
+
     List<BuildingTask> findByBuildingOrderByEndsAtAsc(String id);
+
     List<BuildingTask> findByBaseOrderByEndsAtAsc(Base base);
+
     BuildingTask findFirstByBuildingIdOrderByEndsAtAsc(long id);
+
     BuildingTask findFirstByBuildingIdOrderByEndsAtDesc(long id);
 }

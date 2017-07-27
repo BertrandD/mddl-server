@@ -39,8 +39,8 @@ public class ReportManager {
      * @param baseId source of the spy mission
      * @param target target of the spy mission
      * @return the spy report
-     * @throws BaseNotFoundException if one of the given base id is not found
-     * @throws BaseNotOwnedException if the source base is now owned by the given player
+     * @throws BaseNotFoundException      if one of the given base id is not found
+     * @throws BaseNotOwnedException      if the source base is now owned by the given player
      * @throws SpyReportCreationException if something went wrong
      */
     public SpyReport spy(Player player, long baseId, long target) throws BaseNotFoundException, BaseNotOwnedException, SpyReportCreationException {
@@ -48,7 +48,7 @@ public class ReportManager {
         final Base baseTarget = baseManager.getBase(target);
 
         final SpyReport report = spyReportServiceImpl.create(player, base, baseTarget);
-        if(report == null) throw new SpyReportCreationException();
+        if (report == null) throw new SpyReportCreationException();
 
         return report;
     }

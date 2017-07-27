@@ -45,8 +45,7 @@ public final class Config {
     // --------------------------------------------------
     // Load properties files
     // --------------------------------------------------
-    public static void load()
-    {
+    public static void load() {
         final PropertiesParser general = new PropertiesParser(GENERAL_CONFIG_FILE);
         final PropertiesParser univers = new PropertiesParser(UNIVERS_CONFIG_FILE);
 

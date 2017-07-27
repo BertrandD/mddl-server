@@ -23,7 +23,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public BuildingInstance create(Base base, String buildingId) {
         final Building template = BuildingData.getInstance().getBuilding(buildingId);
-        if(template == null) return null;
+        if (template == null) return null;
 
         return buildingDao.save(new BuildingInstance(base, buildingId));
     }

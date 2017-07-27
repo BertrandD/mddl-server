@@ -19,7 +19,8 @@ public class Requirement {
 
     /**
      * Used to parse ItemData
-     * @param items list of ItemHolder of the requirement
+     *
+     * @param items     list of ItemHolder of the requirement
      * @param buildings list of BuildingHolder of the requirement
      */
     public Requirement(List<ItemHolder> items, List<BuildingHolder> buildings) {
@@ -30,8 +31,9 @@ public class Requirement {
 
     /**
      * Used to parse BuildingData
-     * @param level The level of the requirement
-     * @param items list of ItemHolder of the requirement
+     *
+     * @param level     The level of the requirement
+     * @param items     list of ItemHolder of the requirement
      * @param buildings list of BuildingHolder of the requirement
      */
     public Requirement(int level, List<ItemHolder> items, List<BuildingHolder> buildings) {
@@ -42,8 +44,9 @@ public class Requirement {
 
     /**
      * Used to parse BuildingData (completion with functions)
+     *
      * @param level The level of the requirement
-     * @param item The item to add to the requirement
+     * @param item  The item to add to the requirement
      */
     public Requirement(int level, ItemHolder item) {
         setLevel(level);
@@ -56,13 +59,13 @@ public class Requirement {
     public void addItem(ItemHolder item) {
         final ItemHolder alreadyExistingItem =
                 getItems()
-                .stream()
-                .filter(holder -> holder.getId().equals(item.getId()))
-                .findFirst()
-                .orElse(null);
+                        .stream()
+                        .filter(holder -> holder.getId().equals(item.getId()))
+                        .findFirst()
+                        .orElse(null);
 
-        if(alreadyExistingItem != null)
-            alreadyExistingItem.setCount(alreadyExistingItem.getCount()+item.getCount());
+        if (alreadyExistingItem != null)
+            alreadyExistingItem.setCount(alreadyExistingItem.getCount() + item.getCount());
         else
             getItems().add(item);
     }

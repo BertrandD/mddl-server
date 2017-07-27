@@ -26,7 +26,6 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.tests.ApplicationTest;
-import com.middlewar.tests.MddlTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;

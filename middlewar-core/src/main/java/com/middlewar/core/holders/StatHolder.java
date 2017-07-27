@@ -52,8 +52,9 @@ public class StatHolder {
     }
 
     public double getValue(int level) {
-        if(level < 1 || level > values.length)
-            if(op.equals(StatOp.DIFF)) return 0; else return 1;
-        return values[level-1];
+        if (level < 1 || level > values.length)
+            if (op.equals(StatOp.DIFF)) return 0;
+            else return 1;
+        return values[level - 1];
     }
 }

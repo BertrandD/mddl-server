@@ -9,8 +9,7 @@ import lombok.Data;
  * @author LEBOC Philippe
  */
 @Data
-public abstract class Item extends GameItem
-{
+public abstract class Item extends GameItem {
     private Rank rank;
     private long buildTime;
     private Requirement requirement;
@@ -24,10 +23,10 @@ public abstract class Item extends GameItem
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof Item){
+    public boolean equals(Object o) {
+        if (o instanceof Item) {
             final Item item = (Item) o;
-            if(item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
+            if (item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
         }
         return false;
     }

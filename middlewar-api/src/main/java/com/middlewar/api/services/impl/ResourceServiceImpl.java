@@ -38,7 +38,7 @@ public class ResourceServiceImpl implements ResourceService {
         // original production
         base.getBaseStat().add(Stats.valueOf(itemId.toUpperCase()), Stats.valueOf(itemId.toUpperCase()).getValue(), StatOp.UNLOCK);
         // original max stored
-        base.getBaseStat().add(Stats.valueOf("MAX_"+itemId.toUpperCase()), Stats.valueOf("MAX_"+itemId.toUpperCase()).getValue(), StatOp.UNLOCK);
+        base.getBaseStat().add(Stats.valueOf("MAX_" + itemId.toUpperCase()), Stats.valueOf("MAX_" + itemId.toUpperCase()).getValue(), StatOp.UNLOCK);
         baseDao.save(base);
 
         return resource;

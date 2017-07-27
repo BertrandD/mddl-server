@@ -24,29 +24,25 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public class BuildingTaskManager {
 
-    @Autowired
-    private BuildingTaskService buildingTaskService;
-
-    @Autowired
-    private BuildingService buildingService;
-
-    @Autowired
-    private InventoryService inventoryService;
-
     private static final String BUILDING_MINE_ID = "mine";
     private static final String BUILDING_PUMP_ID = "pump";
-
+    @Autowired
+    private BuildingTaskService buildingTaskService;
+    @Autowired
+    private BuildingService buildingService;
+    @Autowired
+    private InventoryService inventoryService;
     private ScheduledFuture<?> scheduledFuture;
     private BuildingTask currentTask;
 
     @PostConstruct
-    private void load(){
+    private void load() {
         start();
     }
 
     public void notifyNewTask(BuildingTask task) {
-        if(scheduledFuture != null){
-            if(task.getEndsAt() < currentTask.getEndsAt()){
+        if (scheduledFuture != null) {
+            if (task.getEndsAt() < currentTask.getEndsAt()) {
                 scheduledFuture.cancel(false);
                 scheduledFuture = null;
             }
@@ -54,28 +50,27 @@ public class BuildingTaskManager {
         start();
     }
 
-    public void start(){
-        if(scheduledFuture == null)
-        {
+    public void start() {
+        if (scheduledFuture == null) {
             final BuildingTask task = buildingTaskService.findFirstByOrderByEndsAtAsc();
-            if(task == null) return;
+            if (task == null) return;
 
             task.getBuilding().setEndsAt(task.getEndsAt());
             buildingService.update(task.getBuilding());
 
             scheduledFuture = ThreadPoolManager.getInstance().schedule(new Upgrade(), new Date(task.getEndsAt()));
 
-            if(scheduledFuture != null){
+            if (scheduledFuture != null) {
                 currentTask = task;
             }
         }
     }
 
-    public void restart(){
+    public void restart() {
         restart(false);
     }
 
-    public void restart(boolean mayInterruptIfRunning){
+    public void restart(boolean mayInterruptIfRunning) {
         if (scheduledFuture != null)
             scheduledFuture.cancel(mayInterruptIfRunning);
         scheduledFuture = null;
@@ -88,17 +83,17 @@ public class BuildingTaskManager {
         final long now = TimeUtil.getCurrentTime();
         final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
 
-        long buildTime = (long)(building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION, Config.BUILDTIME_MODIFIER));
+        long buildTime = (long) (building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION, Config.BUILDTIME_MODIFIER));
         long endupgrade = now + buildTime;
 
-        if(lastInQueue == null){
+        if (lastInQueue == null) {
             building.setStartedAt(now); // This value is a false startedAt value ! Difference of ~30 millis
             building.setEndsAt(endupgrade);
             buildingService.update(building);
-            newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel()+1);
-        }else{
-            endupgrade = lastInQueue.getEndsAt() + (long)(building.getBuildTime() * Config.BUILDTIME_MODIFIER);
-            newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel()+1);
+            newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel() + 1);
+        } else {
+            endupgrade = lastInQueue.getEndsAt() + (long) (building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+            newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel() + 1);
         }
 
         notifyNewTask(newTask);
@@ -108,23 +103,21 @@ public class BuildingTaskManager {
         return currentTask;
     }
 
-    private class Upgrade implements Runnable
-    {
+    private class Upgrade implements Runnable {
         @Override
-        public synchronized void run()
-        {
+        public synchronized void run() {
             final BuildingInstance building = getCurrentTask().getBuilding();
 
-            if(building.getTemplate().getType().equals(BuildingCategory.SILO))
+            if (building.getTemplate().getType().equals(BuildingCategory.SILO))
                 inventoryService.refreshResources(building.getBase());
 
             building.setCurrentLevel(getCurrentTask().getLevel());
             buildingTaskService.remove(getCurrentTask());
 
-            if(buildingTaskService.findByBuilding(building.getId()).isEmpty()){
+            if (buildingTaskService.findByBuilding(building.getId()).isEmpty()) {
                 building.setEndsAt(-1);
                 building.setStartedAt(-1);
-            }else{
+            } else {
                 final BuildingTask bTask = buildingTaskService.findFirstByBuildingOrderByEndsAtAsc(building.getId());
                 bTask.getBuilding().setStartedAt(TimeUtil.getCurrentTime());
                 buildingService.update(bTask.getBuilding());
@@ -132,15 +125,13 @@ public class BuildingTaskManager {
 
             buildingService.update(building);
 
-            if(building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1)
-            {
+            if (building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1) {
                 final Base base = building.getBase();
                 final ModulableBuilding mine = (ModulableBuilding) building.getTemplate();
                 mine.getAllStats().forEach(k -> inventoryService.createNewResource(base, k.getStat().name().toLowerCase()));
             }
 
-            if(building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1)
-            {
+            if (building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1) {
                 final Base base = building.getBase();
                 final ModulableBuilding pump = (ModulableBuilding) building.getTemplate();
                 pump.getAllStats().forEach(k -> inventoryService.createNewResource(base, k.getStat().name().toLowerCase()));

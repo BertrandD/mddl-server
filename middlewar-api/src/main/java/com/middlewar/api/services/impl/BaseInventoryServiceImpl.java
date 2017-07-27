@@ -11,10 +11,11 @@ import java.util.List;
 
 /**
  * Service not used but we will keep it. If in few months we dont use, we will drop it
+ *
  * @author LEBOC Philippe
  */
 @Service
-public class BaseInventoryServiceImpl implements BaseInventoryService{
+public class BaseInventoryServiceImpl implements BaseInventoryService {
 
     @Autowired
     private BaseInventoryDao baseInventoryDao;

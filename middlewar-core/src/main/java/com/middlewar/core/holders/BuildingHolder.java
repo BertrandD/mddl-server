@@ -20,7 +20,7 @@ public class BuildingHolder {
     }
 
     @JsonIgnore
-    public Building getTemplate(){
+    public Building getTemplate() {
         return BuildingData.getInstance().getBuilding(templateId);
     }
 }

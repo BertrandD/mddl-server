@@ -31,7 +31,7 @@ public class PlayerServiceImpl implements PlayerService {
 
         // Retrieve account
         final Account playerAccount = accountService.findOne(account.getId());
-        if(playerAccount == null) return null;
+        if (playerAccount == null) return null;
 
         final Player player = dao.save(new Player(account, name));
 
@@ -51,7 +51,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<Player> findByAccount(Account account) {
-       return dao.findByAccountId(account.getId());
+        return dao.findByAccountId(account.getId());
     }
 
     @Override

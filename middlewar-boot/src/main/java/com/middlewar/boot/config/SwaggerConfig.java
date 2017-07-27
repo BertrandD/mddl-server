@@ -28,12 +28,12 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-            "Middlawar API documentation",
-            "This documentation provide informations about requests to the server API.",
-            "1.0.0",
-            "#",
-            new Contact("MiddlawarTeam", "#", ""),
-            "", "#"
+                "Middlawar API documentation",
+                "This documentation provide informations about requests to the server API.",
+                "1.0.0",
+                "#",
+                new Contact("MiddlawarTeam", "#", ""),
+                "", "#"
         );
     }
 }

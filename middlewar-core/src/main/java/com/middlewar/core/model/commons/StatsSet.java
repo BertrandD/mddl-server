@@ -15,77 +15,71 @@ import java.util.logging.Logger;
 /**
  * This class is meant to hold a set of (key,value) pairs.<br>
  * They are stored as object but can be retrieved in any type wanted. As long as cast is available.<br>
+ *
  * @author mkizub
  */
-public class StatsSet implements IParserAdvUtils
-{
+public class StatsSet implements IParserAdvUtils {
+    /**
+     * Static empty immutable map, used to avoid multiple null checks over the source.
+     */
+    public static final StatsSet EMPTY_STATSET = new StatsSet(Collections.<String, Object>emptyMap());
     private static final Logger _log = Logger.getLogger(StatsSet.class.getName());
-    /** Static empty immutable map, used to avoid multiple null checks over the source. */
-    public static final StatsSet EMPTY_STATSET = new StatsSet(Collections.<String, Object> emptyMap());
-
     private final Map<String, Object> _set;
 
-    public StatsSet()
-    {
+    public StatsSet() {
         this(new LinkedHashMap<>());
     }
 
-    public StatsSet(Map<String, Object> map)
-    {
+    public StatsSet(Map<String, Object> map) {
         _set = map;
     }
 
     /**
      * Returns the set of values
+     *
      * @return HashMap
      */
-    public final Map<String, Object> getSet()
-    {
+    public final Map<String, Object> getSet() {
         return _set;
     }
 
     /**
      * Add a set of couple values in the current set
+     *
      * @param newSet : StatsSet pointing out the list of couples to add in the current set
      */
-    public void add(StatsSet newSet)
-    {
+    public void add(StatsSet newSet) {
         _set.putAll(newSet.getSet());
     }
 
     /**
      * Verifies if the stat set is empty.
+     *
      * @return {@code true} if the stat set is empty, {@code false} otherwise
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return _set.isEmpty();
     }
 
     /**
      * Return the boolean value associated with key.
+     *
      * @param key : String designating the key in the set
      * @return boolean : value associated to the key
      * @throws IllegalArgumentException : If value is not set or value is not boolean
      */
     @Override
-    public boolean getBoolean(String key)
-    {
+    public boolean getBoolean(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Boolean value required, but not specified");
         }
-        if (val instanceof Boolean)
-        {
+        if (val instanceof Boolean) {
             return (Boolean) val;
         }
-        try
-        {
+        try {
             return Boolean.parseBoolean((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Boolean value required, but found: " + val);
         }
     }
@@ -93,84 +87,64 @@ public class StatsSet implements IParserAdvUtils
     /**
      * Return the boolean value associated with key.<br>
      * If no value is associated with key, or type of value is wrong, returns defaultValue.
+     *
      * @param key : String designating the key in the entry set
      * @return boolean : value associated to the key
      */
     @Override
-    public boolean getBoolean(String key, boolean defaultValue)
-    {
+    public boolean getBoolean(String key, boolean defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (val instanceof Boolean)
-        {
+        if (val instanceof Boolean) {
             return (Boolean) val;
         }
-        try
-        {
+        try {
             return Boolean.parseBoolean((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return defaultValue;
         }
     }
 
     @Override
-    public byte getByte(String key)
-    {
+    public byte getByte(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Byte value required, but not specified");
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).byteValue();
         }
-        try
-        {
+        try {
             return Byte.parseByte((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Byte value required, but found: " + val);
         }
     }
 
     @Override
-    public byte getByte(String key, byte defaultValue)
-    {
+    public byte getByte(String key, byte defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).byteValue();
         }
-        try
-        {
+        try {
             return Byte.parseByte((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Byte value required, but found: " + val);
         }
     }
 
-    public byte[] getByteArray(String key, String splitOn)
-    {
+    public byte[] getByteArray(String key, String splitOn) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Byte value required, but not specified");
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             final byte[] result =
                     {
                             ((Number) val).byteValue()
@@ -180,129 +154,96 @@ public class StatsSet implements IParserAdvUtils
         int c = 0;
         final String[] vals = ((String) val).split(splitOn);
         final byte[] result = new byte[vals.length];
-        for (String v : vals)
-        {
-            try
-            {
+        for (String v : vals) {
+            try {
                 result[c++] = Byte.parseByte(v);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 throw new IllegalArgumentException("Byte value required, but found: " + val);
             }
         }
         return result;
     }
 
-    public List<Byte> getByteList(String key, String splitOn)
-    {
+    public List<Byte> getByteList(String key, String splitOn) {
         final List<Byte> result = new ArrayList<>();
-        for (Byte i : getByteArray(key, splitOn))
-        {
+        for (Byte i : getByteArray(key, splitOn)) {
             result.add(i);
         }
         return result;
     }
 
     @Override
-    public short getShort(String key)
-    {
+    public short getShort(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Short value required, but not specified");
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).shortValue();
         }
-        try
-        {
+        try {
             return Short.parseShort((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Short value required, but found: " + val);
         }
     }
 
     @Override
-    public short getShort(String key, short defaultValue)
-    {
+    public short getShort(String key, short defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).shortValue();
         }
-        try
-        {
+        try {
             return Short.parseShort((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Short value required, but found: " + val);
         }
     }
 
     @Override
-    public int getInt(String key)
-    {
+    public int getInt(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Integer value required, but not specified: " + key + "!");
         }
 
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).intValue();
         }
 
-        try
-        {
+        try {
             return Integer.parseInt((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Integer value required, but found: " + val + "!");
         }
     }
 
     @Override
-    public int getInt(String key, int defaultValue)
-    {
+    public int getInt(String key, int defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).intValue();
         }
-        try
-        {
+        try {
             return Integer.parseInt((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Integer value required, but found: " + val);
         }
     }
 
-    public int[] getIntArray(String key, String splitOn)
-    {
+    public int[] getIntArray(String key, String splitOn) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Integer value required, but not specified");
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             final int[] result =
                     {
                             ((Number) val).intValue()
@@ -312,201 +253,151 @@ public class StatsSet implements IParserAdvUtils
         int c = 0;
         final String[] vals = ((String) val).split(splitOn);
         final int[] result = new int[vals.length];
-        for (String v : vals)
-        {
-            try
-            {
+        for (String v : vals) {
+            try {
                 result[c++] = Integer.parseInt(v);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 throw new IllegalArgumentException("Integer value required, but found: " + val);
             }
         }
         return result;
     }
 
-    public List<Integer> getIntegerList(String key, String splitOn)
-    {
+    public List<Integer> getIntegerList(String key, String splitOn) {
         final List<Integer> result = new ArrayList<>();
-        for (int i : getIntArray(key, splitOn))
-        {
+        for (int i : getIntArray(key, splitOn)) {
             result.add(i);
         }
         return result;
     }
 
     @Override
-    public long getLong(String key)
-    {
+    public long getLong(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Long value required, but not specified");
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).longValue();
         }
-        try
-        {
+        try {
             return Long.parseLong((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Long value required, but found: " + val);
         }
     }
 
     @Override
-    public long getLong(String key, long defaultValue)
-    {
+    public long getLong(String key, long defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).longValue();
         }
-        try
-        {
+        try {
             return Long.parseLong((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Long value required, but found: " + val);
         }
     }
 
     @Override
-    public float getFloat(String key)
-    {
+    public float getFloat(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Float value required, but not specified");
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).floatValue();
         }
-        try
-        {
+        try {
             return Float.parseFloat((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Float value required, but found: " + val);
         }
     }
 
     @Override
-    public float getFloat(String key, float defaultValue)
-    {
+    public float getFloat(String key, float defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).floatValue();
         }
-        try
-        {
+        try {
             return Float.parseFloat((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Float value required, but found: " + val);
         }
     }
 
     @Override
-    public double getDouble(String key)
-    {
+    public double getDouble(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Double value required, but not specified");
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).doubleValue();
         }
-        try
-        {
+        try {
             return Double.parseDouble((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Double value required, but found: " + val);
         }
     }
 
     @Override
-    public double getDouble(String key, double defaultValue)
-    {
+    public double getDouble(String key, double defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (val instanceof Number)
-        {
+        if (val instanceof Number) {
             return ((Number) val).doubleValue();
         }
-        try
-        {
+        try {
             return Double.parseDouble((String) val);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Double value required, but found: " + val);
         }
     }
 
     @Override
-    public String getString(String key)
-    {
+    public String getString(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("String value required, but not specified");
         }
         return String.valueOf(val);
     }
 
     @Override
-    public String getString(String key, String defaultValue)
-    {
+    public String getString(String key, String defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
         return String.valueOf(val);
     }
 
     @Override
-    public Duration getDuration(String key)
-    {
+    public Duration getDuration(String key) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("String value required, but not specified");
         }
         return TimeUtil.parseDuration(String.valueOf(val));
     }
 
     @Override
-    public Duration getDuration(String key, Duration defaultValue)
-    {
+    public Duration getDuration(String key, Duration defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
         return TimeUtil.parseDuration(String.valueOf(val));
@@ -514,117 +405,91 @@ public class StatsSet implements IParserAdvUtils
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends Enum<T>> T getEnum(String key, Class<T> enumClass)
-    {
+    public <T extends Enum<T>> T getEnum(String key, Class<T> enumClass) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             throw new IllegalArgumentException("Enum value of type " + enumClass.getName() + " required, but not specified");
         }
-        if (enumClass.isInstance(val))
-        {
+        if (enumClass.isInstance(val)) {
             return (T) val;
         }
-        try
-        {
+        try {
             return Enum.valueOf(enumClass, String.valueOf(val));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Enum value of type " + enumClass.getName() + " required, but found: " + val);
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends Enum<T>> T getEnum(String key, Class<T> enumClass, T defaultValue)
-    {
+    public <T extends Enum<T>> T getEnum(String key, Class<T> enumClass, T defaultValue) {
         final Object val = _set.get(key);
-        if (val == null)
-        {
+        if (val == null) {
             return defaultValue;
         }
-        if (enumClass.isInstance(val))
-        {
+        if (enumClass.isInstance(val)) {
             return (T) val;
         }
-        try
-        {
+        try {
             return Enum.valueOf(enumClass, String.valueOf(val));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Enum value of type " + enumClass.getName() + " required, but found: " + val);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public final <A> A getObject(String name, Class<A> type)
-    {
+    public final <A> A getObject(String name, Class<A> type) {
         final Object obj = _set.get(name);
-        if ((obj == null) || !type.isAssignableFrom(obj.getClass()))
-        {
+        if ((obj == null) || !type.isAssignableFrom(obj.getClass())) {
             return null;
         }
 
         return (A) obj;
     }
 
-    public void set(String name, Object value)
-    {
+    public void set(String name, Object value) {
         _set.put(name, value);
     }
 
-    public void set(String key, boolean value)
-    {
+    public void set(String key, boolean value) {
         _set.put(key, value);
     }
 
-    public void set(String key, byte value)
-    {
+    public void set(String key, byte value) {
         _set.put(key, value);
     }
 
-    public void set(String key, short value)
-    {
+    public void set(String key, short value) {
         _set.put(key, value);
     }
 
-    public void set(String key, int value)
-    {
+    public void set(String key, int value) {
         _set.put(key, value);
     }
 
-    public void set(String key, long value)
-    {
+    public void set(String key, long value) {
         _set.put(key, value);
     }
 
-    public void set(String key, float value)
-    {
+    public void set(String key, float value) {
         _set.put(key, value);
     }
 
-    public void set(String key, double value)
-    {
+    public void set(String key, double value) {
         _set.put(key, value);
     }
 
-    public void set(String key, String value)
-    {
+    public void set(String key, String value) {
         _set.put(key, value);
     }
 
-    public void set(String key, Enum<?> value)
-    {
+    public void set(String key, Enum<?> value) {
         _set.put(key, value);
     }
 
-    public void safeSet(String key, int value, int min, int max, String reference)
-    {
+    public void safeSet(String key, int value, int min, int max, String reference) {
         assert !(((min <= max) && ((value < min) || (value >= max))));
-        if ((min <= max) && ((value < min) || (value >= max)))
-        {
+        if ((min <= max) && ((value < min) || (value >= max))) {
             _log.log(Level.SEVERE, "Incorrect value: " + value + "for: " + key + "Ref: " + reference);
         }
 

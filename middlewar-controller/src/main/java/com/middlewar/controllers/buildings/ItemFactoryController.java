@@ -44,9 +44,9 @@ public class ItemFactoryController {
 
     @RequestMapping(value = "/me/base/{baseId}/factory/{factoryId}/structure/create/{id}", method = RequestMethod.POST)
     public Response createStructure(@AuthenticationPrincipal Account pAccount,
-                                 @PathVariable(value = "baseId") Long baseId,
+                                    @PathVariable(value = "baseId") Long baseId,
                                     @PathVariable(value = "factoryId") Long factoryId,
-                                 @PathVariable(value = "id") String itemId) {
+                                    @PathVariable(value = "id") String itemId) {
         return controllerManagerWrapper.wrap(() -> factoryManager.createStructure(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId));
     }
 }

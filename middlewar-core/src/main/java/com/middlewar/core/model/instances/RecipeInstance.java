@@ -41,7 +41,7 @@ public class RecipeInstance {
     @ElementCollection
     private List<String> weapons;
 
-    public RecipeInstance(String name, Player owner, String structureId, List<String> cargos, List<String> engines, List<String> modules, List<String> technologies, List<String> weapons){
+    public RecipeInstance(String name, Player owner, String structureId, List<String> cargos, List<String> engines, List<String> modules, List<String> technologies, List<String> weapons) {
         setName(name);
         setOwner(owner);
         setStructureId(structureId);

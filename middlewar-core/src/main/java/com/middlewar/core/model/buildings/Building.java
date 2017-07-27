@@ -48,13 +48,13 @@ public abstract class Building implements IStat {
     }
 
     public long getUseEnergyAtLevel(int level) {
-        if(level > 0 && level <= getMaxLevel())
-            return getUseEnergy()[level-1];
+        if (level > 0 && level <= getMaxLevel())
+            return getUseEnergy()[level - 1];
         else return 0;
     }
 
     public long getBuildTimeAtLevel(int level) {
-        if(level > 0 && level <= getMaxLevel()) return getBuildTimes()[level-1];
+        if (level > 0 && level <= getMaxLevel()) return getBuildTimes()[level - 1];
         else return 0;
     }
 
@@ -62,11 +62,11 @@ public abstract class Building implements IStat {
         this.getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
     }
 
-    public String getName(){
+    public String getName() {
         return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
     }
 
@@ -78,14 +78,14 @@ public abstract class Building implements IStat {
     }
 
     public StatHolder getStats(Stats stats) {
-        return getAllStats().stream().filter(k->k.getStat().equals(stats)).findFirst().orElse(null);
+        return getAllStats().stream().filter(k -> k.getStat().equals(stats)).findFirst().orElse(null);
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof Building){
+    public boolean equals(Object o) {
+        if (o instanceof Building) {
             final Building building = (Building) o;
-            if(building.getId() == this.getId()) return true;
+            if (building.getId() == this.getId()) return true;
         }
         return false;
     }

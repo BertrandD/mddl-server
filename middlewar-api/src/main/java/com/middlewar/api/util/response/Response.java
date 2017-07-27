@@ -10,24 +10,25 @@ import java.util.HashMap;
  */
 public class Response<T> {
 
+    private final HashMap<String, Object> meta = new HashMap<>();
     private String status;
     private T payload;
-    private final HashMap<String, Object> meta = new HashMap<>();
 
-    public Response(){}
+    public Response() {
+    }
 
-    public Response(JsonResponseType status){
+    public Response(JsonResponseType status) {
         setStatus(status.getName());
         setPayload(null);
     }
 
-    public Response(Lang lang, String messageId){
+    public Response(Lang lang, String messageId) {
         setStatus(JsonResponseType.ERROR.getName());
         setPayload(null);
         getMeta().put("message", SystemMessageData.getInstance().getMessage(lang, messageId));
     }
 
-    public Response(JsonResponseType type, Lang lang, String messageId){
+    public Response(JsonResponseType type, Lang lang, String messageId) {
         setStatus(type.getName());
         setPayload(null);
         getMeta().put("message", SystemMessageData.getInstance().getMessage(lang, messageId));
@@ -42,7 +43,7 @@ public class Response<T> {
     public Response(JsonResponseType status, MetaHolder... metas) {
         setStatus(status.getName());
         setPayload(null);
-        for(MetaHolder holder : metas){
+        for (MetaHolder holder : metas) {
             addMeta(holder.getKey(), holder.getObject());
         }
     }
@@ -54,6 +55,10 @@ public class Response<T> {
 
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(JsonResponseType status) {
+        setStatus(status.getName());
     }
 
     public void setStatus(String status) {
@@ -72,11 +77,7 @@ public class Response<T> {
         return meta;
     }
 
-    public void addMeta(String key, Object value){
+    public void addMeta(String key, Object value) {
         getMeta().put(key, value);
-    }
-
-    public void setStatus(JsonResponseType status) {
-        setStatus(status.getName());
     }
 }

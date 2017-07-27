@@ -21,11 +21,11 @@ import javax.persistence.OneToOne;
 
 /**
  * @author LEBOC Philippe
- *
+ * <p>
  * This class manage only one resource item
  * A Resource object is a GameItem with an amount that can be updated during time !
- *  - When a Resource Object must be transfered to a Ship, it will be converted to a regular ItemInstance because
- *    the Resource object does not need to be updated during flying.
+ * - When a Resource Object must be transfered to a Ship, it will be converted to a regular ItemInstance because
+ * the Resource object does not need to be updated during flying.
  */
 @Data
 @ToString
@@ -57,6 +57,7 @@ public class Resource {
 
     /**
      * Shortcut for getItem().getCount()
+     *
      * @return item count
      */
     public double getCount() {
@@ -69,19 +70,19 @@ public class Resource {
 
     public long getAvailableCapacity() {
         // TODO : add logic to handle modules effects on capacity
-        long capacity = (long)getBase()
+        long capacity = (long) getBase()
                 .getBaseStat()
                 .getValue(
-                        Stats.valueOf("MAX_"+getStat()),
+                        Stats.valueOf("MAX_" + getStat()),
                         0
                 );
-        for (BuildingInstance buildingInstance: getBase().getBuildings()) {
+        for (BuildingInstance buildingInstance : getBase().getBuildings()) {
             StatHolder capaStat = buildingInstance
                     .getTemplate()
                     .getStats(
                             Stats.valueOf("MAX_" + getStat())
                     );
-            if (capaStat!=null) {
+            if (capaStat != null) {
                 capacity += capaStat.getValue(buildingInstance.getCurrentLevel());
             }
         }

@@ -5,5 +5,6 @@ package com.middlewar.core.interfaces;
  */
 public interface IFleet {
     long getMaxFleetStorageCapacity();
+
     long getSpeed();
 }

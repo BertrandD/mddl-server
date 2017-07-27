@@ -33,15 +33,13 @@ public class ItemInstance {
     @ManyToOne
     private Inventory inventory;
 
-    public ItemInstance(String itemId, double count)
-    {
+    public ItemInstance(String itemId, double count) {
         setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
     }
 
-    public ItemInstance(Inventory inventory, String itemId, double count)
-    {
+    public ItemInstance(Inventory inventory, String itemId, double count) {
         setTemplateId(itemId);
         setType(getTemplate().getType());
         setCount(count);
@@ -52,33 +50,35 @@ public class ItemInstance {
         return ItemData.getInstance().getTemplate(getTemplateId());
     }
 
-    public long getWeight(){
-        return (getTemplate().getWeight() * (long)Math.floor(getCount()));
+    public long getWeight() {
+        return (getTemplate().getWeight() * (long) Math.floor(getCount()));
     }
 
-    public boolean isResource() { return getType().equals(ItemType.RESOURCE); }
+    public boolean isResource() {
+        return getType().equals(ItemType.RESOURCE);
+    }
 
-    public boolean isCargo(){
+    public boolean isCargo() {
         return getType() == ItemType.CARGO;
     }
 
-    public boolean isEngine(){
+    public boolean isEngine() {
         return getType() == ItemType.ENGINE;
     }
 
-    public boolean isModule(){
+    public boolean isModule() {
         return getType() == ItemType.MODULE;
     }
 
-    public boolean isWeapon(){
+    public boolean isWeapon() {
         return getType() == ItemType.WEAPON;
     }
 
-    public boolean isStructure(){
+    public boolean isStructure() {
         return getType() == ItemType.STRUCTURE;
     }
 
-    public boolean isCommonItem(){
+    public boolean isCommonItem() {
         return getType() == ItemType.RESOURCE;
     }
 
@@ -91,10 +91,10 @@ public class ItemInstance {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof ItemInstance){
+    public boolean equals(Object o) {
+        if (o instanceof ItemInstance) {
             final ItemInstance item = (ItemInstance) o;
-            if(item.getId() == this.getId()) return true;
+            if (item.getId() == this.getId()) return true;
         }
         return false;
     }

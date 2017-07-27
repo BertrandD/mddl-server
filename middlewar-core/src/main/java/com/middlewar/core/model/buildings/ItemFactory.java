@@ -24,10 +24,10 @@ public abstract class ItemFactory<T extends Item> extends Building {
         initialize(set.getObject("propertiesByLevel", PropertiesHolder.class));
     }
 
-    private void initialize(final PropertiesHolder properties){
+    private void initialize(final PropertiesHolder properties) {
         setItemsByLevel(new HashMap<>());
 
-        if(properties == null || properties.getPropertiesByLevel() == null) {
+        if (properties == null || properties.getPropertiesByLevel() == null) {
             logger.warning("PropertyByLevel is null !");
             return;
         }
@@ -45,7 +45,7 @@ public abstract class ItemFactory<T extends Item> extends Building {
     public List<T> getItemsByLevel(int level) {
         final List<T> all = new ArrayList<>();
         for (int i = 1; i <= level; i++)
-            if(getItemsByLevel().containsKey(i))
+            if (getItemsByLevel().containsKey(i))
                 all.addAll(getItemsByLevel().get(i));
         return all;
     }
@@ -65,13 +65,13 @@ public abstract class ItemFactory<T extends Item> extends Building {
                 T item = null;
                 switch (propertyHolder.getName()) {
                     case "module":
-                        item = (T)ItemData.getInstance().getModule(propertyHolder.getValue());
+                        item = (T) ItemData.getInstance().getModule(propertyHolder.getValue());
                         break;
                     case "structure":
-                        item = (T)ItemData.getInstance().getStructure(propertyHolder.getValue());
+                        item = (T) ItemData.getInstance().getStructure(propertyHolder.getValue());
                         break;
                     default:
-                        logger.warning("Unknown propertyHolder name '"+propertyHolder.getName()+"' !");
+                        logger.warning("Unknown propertyHolder name '" + propertyHolder.getName() + "' !");
                         break;
                 }
                 if (item != null) {

@@ -47,7 +47,7 @@ public class InventoryService implements IInventoryService {
     @Override
     public synchronized Resource createNewResource(final Base base, final String templateId) {
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
-        if(template == null) return null;
+        if (template == null) return null;
         return resourceService.create(base, templateId);
     }
 
@@ -55,20 +55,20 @@ public class InventoryService implements IInventoryService {
     public synchronized ItemInstance addItem(final Inventory inventory, final String templateId, final long amount) {
 
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
-        if(template == null) return null;
+        if (template == null) return null;
 
-        if(amount <= 0) return null;
+        if (amount <= 0) return null;
 
         long addcnt = amount;
-        if(!canBeStored(inventory, template.getVolume(), amount)) {
+        if (!canBeStored(inventory, template.getVolume(), amount)) {
             final long storableAmount = getStorableAmount(inventory, template.getVolume());
             addcnt = storableAmount == -1 ? addcnt : storableAmount;
         }
 
-        if(addcnt <= 0) return null;
+        if (addcnt <= 0) return null;
 
         final ItemInstance item = inventory.getItem(templateId);
-        if(item == null) return itemService.create(inventory, templateId, addcnt);
+        if (item == null) return itemService.create(inventory, templateId, addcnt);
 
         item.addCount(addcnt);
         itemService.update(item);
@@ -79,17 +79,17 @@ public class InventoryService implements IInventoryService {
     @Override
     public synchronized boolean addResource(Resource resource, long amount) {
 
-        if(amount <= 0) return false;
+        if (amount <= 0) return false;
 
         final GameItem template = resource.getItem().getTemplate();
 
         // Capacity of -1 == INFINITY
         final long capacity = resource.getAvailableCapacity();
-        if(capacity != -1 && capacity < template.getVolume() * amount) {
+        if (capacity != -1 && capacity < template.getVolume() * amount) {
             amount = capacity / template.getVolume();
         }
 
-        if(amount <= 0) return false;
+        if (amount <= 0) return false;
 
         resource.getItem().addCount(amount);
         itemService.update(resource.getItem());
@@ -100,11 +100,11 @@ public class InventoryService implements IInventoryService {
     @Override
     public synchronized boolean consumeItem(ItemInstance item, final long amount) {
 
-        if(item.getCount() - amount < 0) return false;
+        if (item.getCount() - amount < 0) return false;
 
         item.removeCount(amount);
 
-        if(item.getCount() == 0) {
+        if (item.getCount() == 0) {
             final Inventory inventory = (Inventory) item.getInventory();
             inventory.getItems().remove(item);
             update(inventory);
@@ -135,7 +135,7 @@ public class InventoryService implements IInventoryService {
 //    }
 
     public synchronized void refreshResources(final Base base) {
-        if(base == null) return;
+        if (base == null) return;
         base.getResources().forEach(this::refreshResources);
     }
 
@@ -146,13 +146,13 @@ public class InventoryService implements IInventoryService {
         final ItemInstance item = resource.getItem();
         final GameItem template = item.getTemplate();
 
-        if(template == null || prodPerHour <= 0) return;
+        if (template == null || prodPerHour <= 0) return;
 
         // Calculation
         // (amount per second) * (time without refreshing)
         final double profAmountPerSecond = (prodPerHour / 3600);
         final double elapsedTimeInSecond = (now - last) / 1000;
-        long add = (long)(profAmountPerSecond * elapsedTimeInSecond);
+        long add = (long) (profAmountPerSecond * elapsedTimeInSecond);
 
         if (addResource(resource, add)) {
             resource.setLastRefresh(now);
@@ -168,9 +168,9 @@ public class InventoryService implements IInventoryService {
     }
 
     public void update(IInventory inventory) {
-        if(inventory instanceof BaseInventory) update((BaseInventory) inventory);
-        else if(inventory instanceof FleetInventory) update((FleetInventory) inventory);
-        else if(inventory instanceof PlayerInventory) update((PlayerInventory)inventory);
+        if (inventory instanceof BaseInventory) update((BaseInventory) inventory);
+        else if (inventory instanceof FleetInventory) update((FleetInventory) inventory);
+        else if (inventory instanceof PlayerInventory) update((PlayerInventory) inventory);
     }
 
     public void update(Resource inventory) {

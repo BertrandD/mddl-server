@@ -38,8 +38,7 @@ import java.util.stream.Collectors;
 @Data
 @JsonSerialize(using = BaseSerializer.class)
 @Entity
-public class Base
-{
+public class Base {
     @Id
     @GeneratedValue
     private long id;
@@ -97,7 +96,7 @@ public class Base
 
     @PreRemove
     private void cleanCurrentBase() {
-        if (this.getOwner().getCurrentBase().getId()==this.getId()) {
+        if (this.getOwner().getCurrentBase().getId() == this.getId()) {
             this.getOwner().setCurrentBase(null);
         }
     }
@@ -124,8 +123,8 @@ public class Base
      * TODO : We don't use MongoDB anymore so what ?
      * Base Stats Initializer
      * Use it when you want to serialize Base or use some stats
-     *      Warning: @PostContruct does not work fine with Spring & MongoDB.
-     *               That's why we need initialize stats hand made
+     * Warning: @PostContruct does not work fine with Spring & MongoDB.
+     * That's why we need initialize stats hand made
      */
     public void initializeStats() {
         final ObjectStat stats = getBaseStat();
@@ -157,7 +156,7 @@ public class Base
                 .filter(r -> r.getBuildingId().equalsIgnoreCase("silo"))
                 .collect(Collectors.toList());
 
-        if(silos != null && !silos.isEmpty()) {
+        if (silos != null && !silos.isEmpty()) {
             silos.forEach(silo -> silo.getModules().forEach(module -> module.handleEffect(stats))); // Warning: CAN'T WORK IF WE ADD OTHERS STATS THAN MAX_RESOURCE_XX UNLOCK
         }
 
@@ -183,6 +182,7 @@ public class Base
     public void addBuilding(BuildingInstance building) {
         this.buildings.add(building);
     }
+
     public void addResource(Resource resource) {
         resources.add(resource);
     }

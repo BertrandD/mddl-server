@@ -24,7 +24,7 @@ public class BuildingInstanceSerializer extends JsonSerializer<BuildingInstance>
         gen.writeNumberField("startedAt", value.getStartedAt());
         gen.writeNumberField("endsAt", value.getEndsAt());
 
-        if(!value.getModules().isEmpty()) {
+        if (!value.getModules().isEmpty()) {
             gen.writeArrayFieldStart("modules");
             for (Module module : value.getModules())
                 gen.writeString(module.getItemId());

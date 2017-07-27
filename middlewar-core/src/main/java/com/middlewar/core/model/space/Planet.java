@@ -27,6 +27,6 @@ public class Planet extends AstralObject {
     }
 
     public void addBase(Base base) {
-        if(!getBases().contains(base)) getBases().add(base);
+        if (!getBases().contains(base)) getBases().add(base);
     }
 }

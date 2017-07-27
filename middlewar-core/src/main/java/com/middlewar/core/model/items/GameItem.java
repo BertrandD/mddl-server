@@ -49,7 +49,7 @@ public abstract class GameItem implements IStat {
 
     public String getName() {
         final String name = SystemMessageData.getInstance().getMessage(getLang(), getNameId());
-        if(name == null) return "Unamed item ["+getItemId()+"]";
+        if (name == null) return "Unamed item [" + getItemId() + "]";
         return name;
     }
 
@@ -69,9 +69,9 @@ public abstract class GameItem implements IStat {
         this.type = type;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         final String descr = SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
-        if(descr == null) return "No description for item ["+getItemId()+"]";
+        if (descr == null) return "No description for item [" + getItemId() + "]";
         return descr;
     }
 
@@ -121,10 +121,10 @@ public abstract class GameItem implements IStat {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof GameItem){
+    public boolean equals(Object o) {
+        if (o instanceof GameItem) {
             final GameItem item = (GameItem) o;
-            if(item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
+            if (item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
         }
         return false;
     }

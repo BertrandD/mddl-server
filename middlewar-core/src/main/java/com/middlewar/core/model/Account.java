@@ -33,8 +33,7 @@ import java.util.TreeSet;
 @Data
 @NoArgsConstructor
 @JsonSerialize(using = AccountSerializer.class)
-public class Account implements UserDetails
-{
+public class Account implements UserDetails {
     @Id
     @GeneratedValue
     private long id;
@@ -53,8 +52,7 @@ public class Account implements UserDetails
     private boolean credentialsNonExpired;
     private boolean enabled;
 
-    public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, Lang lang, String token)
-    {
+    public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, Lang lang, String token) {
         setUsername(username);
         setPassword(password);
         setLang(lang);
@@ -64,22 +62,22 @@ public class Account implements UserDetails
         setToken(token);
     }
 
-    public void addPlayer(Player player){
-        getPlayers().add(player);
-    }
-
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {
         Assert.notNull(authorities, "Cannot pass a null GrantedAuthority collection");
         SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet(new AuthorityComparator());
         Iterator var2 = authorities.iterator();
 
-        while(var2.hasNext()) {
-            GrantedAuthority grantedAuthority = (GrantedAuthority)var2.next();
+        while (var2.hasNext()) {
+            GrantedAuthority grantedAuthority = (GrantedAuthority) var2.next();
             Assert.notNull(grantedAuthority, "GrantedAuthority list cannot contain any null elements");
             sortedAuthorities.add(grantedAuthority);
         }
 
         return sortedAuthorities;
+    }
+
+    public void addPlayer(Player player) {
+        getPlayers().add(player);
     }
 
     private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {

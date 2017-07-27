@@ -48,14 +48,14 @@ public abstract class Report implements Comparable<Report> {
     @Enumerated
     private ReportStatus reportStatus;
 
-    public abstract ReportType getType();
-
     public Report(Player owner, Base baseSrc, ReportStatus reportStatus) {
         setDate(TimeUtil.getCurrentTime());
         setBaseSrc(baseSrc);
         setEntries(new HashMap<>());
         setReportStatus(reportStatus);
     }
+
+    public abstract ReportType getType();
 
     public void addEntry(ReportEntry reportEntry, ReportCategory category) {
         if (!entries.containsKey(category)) {

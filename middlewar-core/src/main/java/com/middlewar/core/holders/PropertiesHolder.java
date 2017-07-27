@@ -12,7 +12,7 @@ public class PropertiesHolder {
 
     private HashMap<Integer, List<PropertyListHolder>> _propertiesByLevel;
 
-    public PropertiesHolder(){
+    public PropertiesHolder() {
         setPropertiesByLevel(new HashMap<>());
     }
 
@@ -26,10 +26,11 @@ public class PropertiesHolder {
 
     /**
      * add new level Group
+     *
      * @param level
      */
-    public List<PropertyListHolder> addLevelGroup(int level){
-        if(!getPropertiesByLevel().containsKey(level)) {
+    public List<PropertyListHolder> addLevelGroup(int level) {
+        if (!getPropertiesByLevel().containsKey(level)) {
             final List<PropertyListHolder> list = new ArrayList<>();
             getPropertiesByLevel().put(level, list);
             return list;
@@ -41,7 +42,7 @@ public class PropertiesHolder {
     public String toString() {
         String tostring = "\r\nPropertiesHolder()\r\n";
         for (Map.Entry<Integer, List<PropertyListHolder>> entry : getPropertiesByLevel().entrySet()) {
-            tostring += "Level "+entry.getKey()+"\r\n";
+            tostring += "Level " + entry.getKey() + "\r\n";
             tostring += entry.getValue().toString();
         }
         return tostring;

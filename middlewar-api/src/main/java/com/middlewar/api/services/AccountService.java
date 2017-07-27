@@ -29,22 +29,22 @@ public class AccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final Account account = accountDao.findByUsername(username);
-        if(account == null){
+        if (account == null) {
             throw new UsernameNotFoundException(username);
-        }else{
+        } else {
             return account;
         }
     }
 
-    public Account findOne(Long id){
+    public Account findOne(Long id) {
         return accountDao.findOne(id);
     }
 
-    public Account findByUsername(String username){
+    public Account findByUsername(String username) {
         return accountDao.findByUsername(username);
     }
 
-    public List<Account> findAll(){
+    public List<Account> findAll() {
         return accountDao.findAll();
     }
 
@@ -56,7 +56,7 @@ public class AccountService implements UserDetailsService {
         Account account = new Account(username, passwordEncoder.encode(password), roles, Lang.EN, UUID.randomUUID().toString());
         account = accountDao.save(account);
 
-        if(account == null) return null;
+        if (account == null) return null;
         // Slack.sendInfo("New account : "+username); // TODO: Add AccountServiceTestImpl
         return account;
     }

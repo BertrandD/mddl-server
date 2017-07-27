@@ -10,8 +10,7 @@ public final class Weapon extends Item {
 
     private double damage;
 
-    public Weapon(StatsSet set, Requirement req)
-    {
+    public Weapon(StatsSet set, Requirement req) {
         super(set, req);
         setDamage(set.getDouble("damage", 0));
     }

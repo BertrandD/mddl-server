@@ -15,8 +15,7 @@ import java.net.URL;
  */
 public class Slack {
 
-    public static void sendWarning(String message)
-    {
+    public static void sendWarning(String message) {
         try {
             SlackRequest request = new SlackRequest(Config.SLACK_WARNING_CHANNEL, Config.SLACK_WARNING_BOT_NAME, message, Config.SLACK_WARNING_BOT_ICON);
 
@@ -29,8 +28,7 @@ public class Slack {
         }
     }
 
-    public static void sendInfo(String message)
-    {
+    public static void sendInfo(String message) {
         try {
             SlackRequest request = new SlackRequest(Config.SLACK_INFO_CHANNEL, Config.SLACK_INFO_BOT_NAME, message, Config.SLACK_INFO_BOT_ICON);
 
@@ -43,14 +41,13 @@ public class Slack {
         }
     }
 
-    private static String excutePost(String targetURL, String urlParameters)
-    {
+    private static String excutePost(String targetURL, String urlParameters) {
         URL url;
         HttpsURLConnection connection = null;
         try {
             //Create connection
             url = new URL(targetURL);
-            connection = (HttpsURLConnection)url.openConnection();
+            connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
                     "application/json");
@@ -59,23 +56,23 @@ public class Slack {
                     Integer.toString(urlParameters.getBytes().length));
             connection.setRequestProperty("Content-Language", "en-US");
 
-            connection.setUseCaches (false);
+            connection.setUseCaches(false);
             connection.setDoInput(true);
             connection.setDoOutput(true);
 
             //Send request
-            DataOutputStream wr = new DataOutputStream (
-                    connection.getOutputStream ());
-            wr.writeBytes (urlParameters);
-            wr.flush ();
-            wr.close ();
+            DataOutputStream wr = new DataOutputStream(
+                    connection.getOutputStream());
+            wr.writeBytes(urlParameters);
+            wr.flush();
+            wr.close();
 
             //Get Response
             InputStream is = connection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
             String line;
             StringBuilder response = new StringBuilder();
-            while((line = rd.readLine()) != null) {
+            while ((line = rd.readLine()) != null) {
                 response.append(line);
                 response.append('\r');
             }
@@ -89,7 +86,7 @@ public class Slack {
 
         } finally {
 
-            if(connection != null) {
+            if (connection != null) {
                 connection.disconnect();
             }
         }

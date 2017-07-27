@@ -28,42 +28,31 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AI {
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
-
-    @Autowired
-    private AccountManager accountManager;
-
-    @Autowired
-    private PlayerManager playerManager;
-
-    @Autowired
-    private PlayerService playerService;
-
-    @Autowired
-    private AccountService accountService;
-
-
-    @Autowired
-    private BaseService baseService;
-
-    @Autowired
-    private BaseManager baseManager;
-
-    @Autowired
-    private FriendRequestService friendRequestService;
-
-    @Autowired
-    private AstralObjectService astralObjectService;
-
-    @Autowired
-    private PlanetScanReportService planetScanReportService;
-
     final String AI_NAME = "shellbash";
     final String AI_BASE_NAME = "Home";
     final String AI_PASSWD = "test";
+    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+    @Autowired
+    private AccountManager accountManager;
+    @Autowired
+    private PlayerManager playerManager;
+    @Autowired
+    private PlayerService playerService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private BaseService baseService;
+    @Autowired
+    private BaseManager baseManager;
+    @Autowired
+    private FriendRequestService friendRequestService;
+    @Autowired
+    private AstralObjectService astralObjectService;
+    @Autowired
+    private PlanetScanReportService planetScanReportService;
 
-//    @PostConstruct
-    public void init(){
+    //    @PostConstruct
+    public void init() {
         Config.load();
         astralObjectService.saveUniverse();
         System.out.println("Yolooo");
@@ -75,9 +64,9 @@ public class AI {
             Base base = initBaseIfNeeded(account, player);
             assert base != null;
 
-            System.out.println("AI "+account.getUsername()+" logged in successfully !");
-            System.out.println("The player is "+player.getName());
-            System.out.println("The base is "+base.getName());
+            System.out.println("AI " + account.getUsername() + " logged in successfully !");
+            System.out.println("The player is " + player.getName());
+            System.out.println("The base is " + base.getName());
 
             Player player1 = playerManager.createForAccount(account, "qldskj");
             baseManager.create(player1, "f");

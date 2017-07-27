@@ -14,4 +14,5 @@ import javax.transaction.Transactional;
 @Rollback
 @SpringBootTest(classes = ApplicationTest.class)
 @Transactional
-public @interface MddlTest {}
+public @interface MddlTest {
+}

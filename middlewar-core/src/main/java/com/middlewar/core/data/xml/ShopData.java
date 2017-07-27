@@ -27,6 +27,10 @@ public class ShopData implements IXmlReader {
         load();
     }
 
+    public static ShopData getInstance() {
+        return SingletonHolder._instance;
+    }
+
     @Override
     public synchronized void load() {
         shop.clear();
@@ -41,31 +45,25 @@ public class ShopData implements IXmlReader {
 
     @Override
     public void parseDocument(Document doc, File f) {
-        for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
-        {
-            if ("list".equalsIgnoreCase(a.getNodeName()))
-            {
+        for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling()) {
+            if ("list".equalsIgnoreCase(a.getNodeName())) {
                 NamedNodeMap attrs = a.getAttributes();
-                if(parseBoolean(attrs, "disabled", false)) continue;
+                if (parseBoolean(attrs, "disabled", false)) continue;
 
-                for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling())
-                {
-                    if ("category".equalsIgnoreCase(b.getNodeName()))
-                    {
+                for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling()) {
+                    if ("category".equalsIgnoreCase(b.getNodeName())) {
                         attrs = b.getAttributes();
                         final ShopCategory shopCategory = parseEnum(attrs, ShopCategory.class, "name", null);
                         final List<ShopItem> items = new ArrayList<>();
-                        for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
-                        {
-                            if("item".equalsIgnoreCase(c.getNodeName()))
-                            {
+                        for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling()) {
+                            if ("item".equalsIgnoreCase(c.getNodeName())) {
                                 attrs = c.getAttributes();
                                 final String itemId = parseString(attrs, "id", null);
                                 final long count = parseLong(attrs, "count", 0L);
                                 final long price = parseLong(attrs, "price", 0L);
                                 final boolean disabled = parseBoolean(attrs, "disabled", false);
 
-                                if(price == 0 || count == 0) continue;
+                                if (price == 0 || count == 0) continue;
 
                                 final ShopItem si = new ShopItem(itemId, count, price, disabled);
                                 items.add(si);
@@ -78,13 +76,7 @@ public class ShopData implements IXmlReader {
         }
     }
 
-    public static ShopData getInstance()
-    {
-        return SingletonHolder._instance;
-    }
-
-    private static class SingletonHolder
-    {
+    private static class SingletonHolder {
         protected static final ShopData _instance = new ShopData();
     }
 }

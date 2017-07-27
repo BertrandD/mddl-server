@@ -26,7 +26,7 @@ public class AstralObjectSerializer extends JsonSerializer<AstralObject> {
         gen.writeObjectField("parent", new AstralObjectHolder(value.getParent()));
 
         gen.writeArrayFieldStart("satellites");
-        for (AstralObject satellite: value.getSatellites()) {
+        for (AstralObject satellite : value.getSatellites()) {
             gen.writeObject(satellite);
         }
         gen.writeEndArray();

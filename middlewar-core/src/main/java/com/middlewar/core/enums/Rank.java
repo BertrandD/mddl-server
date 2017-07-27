@@ -16,8 +16,7 @@ public enum Rank {
     private String _name;
     private String _description;
 
-    Rank(String name, String description)
-    {
+    Rank(String name, String description) {
         setName(name);
         setDescription(description);
     }

@@ -25,16 +25,22 @@ public class AstralObjectServiceImpl implements AstralObjectService {
     @Override
     public AstralObject create(String name, AstralObject parent, AstralObjectType type) {
         AstralObject object;
-        switch (type)
-        {
-            case MOON: object = new Moon(name, parent); break;
-            case PLANET: object = new Planet(name, parent); break;
-            case BLACKHOLE: object = new BlackHole(name); break;
+        switch (type) {
+            case MOON:
+                object = new Moon(name, parent);
+                break;
+            case PLANET:
+                object = new Planet(name, parent);
+                break;
+            case BLACKHOLE:
+                object = new BlackHole(name);
+                break;
             case ASTEROID:
             case COMET:
             case STAR:
             case WORMHOLE:
-            default: object = null;
+            default:
+                object = null;
         }
 
         // still usefull after migrating to hibernate ? cc @mathael

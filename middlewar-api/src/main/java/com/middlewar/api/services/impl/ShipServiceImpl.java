@@ -28,7 +28,7 @@ public class ShipServiceImpl implements ShipService {
         final Ship ship = new Ship(base, structure, count);
         base.getShips().add(ship);
 
-        if(ids != null && !ids.isEmpty()) {
+        if (ids != null && !ids.isEmpty()) {
             ship.setCargoIds(ids.stream().filter(k -> k.startsWith("cargo_")).collect(Collectors.toList()));
             ship.setEngineIds(ids.stream().filter(k -> k.startsWith("engine_")).collect(Collectors.toList()));
             ship.setModuleIds(ids.stream().filter(k -> k.startsWith("module_")).collect(Collectors.toList()));

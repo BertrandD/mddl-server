@@ -26,7 +26,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     public FriendRequest create(Player requester, Player requested, String message) {
 
         final FriendRequest request = friendRequestDao.save(new FriendRequest(requester, requested, message));
-        if(request != null) {
+        if (request != null) {
             requested.addRequest(request); // to be able to abort request
             requester.addRequest(request); // to be able to accept/refuse request
 //            playerService.update(requested);

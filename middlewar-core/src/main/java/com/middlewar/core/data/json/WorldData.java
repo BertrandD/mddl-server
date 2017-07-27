@@ -34,11 +34,15 @@ public class WorldData {
         reload();
     }
 
+    public static WorldData getInstance() {
+        return SingletonHolder._instance;
+    }
+
     public void reload() {
         _astralObjects.clear();
         parseConfigFile(Config.DATA_ROOT_DIRECTORY + "world.json");
         LOGGER.info("Loaded " + _astralObjects.size() + " astral objects");
-        if(_astralObjects.size() == 0) {
+        if (_astralObjects.size() == 0) {
             LOGGER.error("Universe not loaded ! The API will crash !");
             // TODO: shutdown the server.
         }
@@ -55,8 +59,8 @@ public class WorldData {
     @SuppressWarnings("unchecked")
     private AstralObject computeData(HashMap<String, Object> data, AstralObject parent) {
         AstralObject astralObject;
-        String name = (String)data.get("name");
-        switch ((String)data.get("type")) {
+        String name = (String) data.get("name");
+        switch ((String) data.get("type")) {
             case "BlackHole":
                 astralObject = new BlackHole(name);
                 _astralObjects.add(astralObject);
@@ -84,7 +88,7 @@ public class WorldData {
         astralObject.setSize(stats.get("size").doubleValue());
 
         if (data.containsKey("satellites")) {
-            for(HashMap<String, Object> satellite: (ArrayList<HashMap<String, Object>>)data.get("satellites")) {
+            for (HashMap<String, Object> satellite : (ArrayList<HashMap<String, Object>>) data.get("satellites")) {
                 astralObject.getSatellites().add(computeData(satellite, astralObject));
             }
         }
@@ -107,26 +111,22 @@ public class WorldData {
         int retryCount = 0;
         final int MAX_RETRY = 10;
 
-        while(planetCnt == 0 && retryCount < MAX_RETRY) {
+        while (planetCnt == 0 && retryCount < MAX_RETRY) {
 //            star = getRandomStar();
             star = (Star) getWorld().getSatellites().get(1); // TODO : get random star, but don't let this method return null
             planetCnt = star.getSatellites().size();
 
-            if(planetCnt == 0) LOGGER.warn("Star " + star.getId() + " has 0 satellites (planets) !");
+            if (planetCnt == 0) LOGGER.warn("Star " + star.getId() + " has 0 satellites (planets) !");
             retryCount++;
         }
 
-        if(planetCnt == 0 && retryCount == MAX_RETRY) {
+        if (planetCnt == 0 && retryCount == MAX_RETRY) {
             LOGGER.error("Cannot find any Planet object ! The server will crash !");
             // TODO: shutdown the server.
             return null;
         }
 
-        return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt-1));
-    }
-
-    public static WorldData getInstance() {
-        return SingletonHolder._instance;
+        return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt - 1));
     }
 
     private static class SingletonHolder {

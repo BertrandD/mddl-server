@@ -31,7 +31,7 @@ public class ShipSerializer extends JsonSerializer<Ship> {
         }
         gen.writeEndArray();
 
-        if(!value.getCargos().isEmpty()){
+        if (!value.getCargos().isEmpty()) {
             gen.writeArrayFieldStart("cargos");
             for (Cargo cargo : value.getCargos()) {
                 gen.writeObject(cargo);
@@ -39,7 +39,7 @@ public class ShipSerializer extends JsonSerializer<Ship> {
             gen.writeEndArray();
         }
 
-        if(!value.getModules().isEmpty()){
+        if (!value.getModules().isEmpty()) {
             gen.writeArrayFieldStart("modules");
             for (Module module : value.getModules()) {
                 gen.writeObject(module);
@@ -47,7 +47,7 @@ public class ShipSerializer extends JsonSerializer<Ship> {
             gen.writeEndArray();
         }
 
-        if(!value.getWeapons().isEmpty()){
+        if (!value.getWeapons().isEmpty()) {
             gen.writeArrayFieldStart("weapons");
             for (Weapon weapon : value.getWeapons()) {
                 gen.writeObject(weapon);

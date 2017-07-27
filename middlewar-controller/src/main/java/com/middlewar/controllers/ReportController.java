@@ -34,7 +34,7 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/reports", method = RequestMethod.GET)
-    public Response findAll(@AuthenticationPrincipal Account pAccount){
+    public Response findAll(@AuthenticationPrincipal Account pAccount) {
         return controllerManagerWrapper.wrap(() -> reportManager.getAllReportsOfCurrentPlayer(playerManager.getCurrentPlayerForAccount(pAccount)));
     }
 }

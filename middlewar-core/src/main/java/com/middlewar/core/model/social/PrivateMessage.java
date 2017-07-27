@@ -46,10 +46,10 @@ public class PrivateMessage {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof PrivateMessage){
+    public boolean equals(Object o) {
+        if (o instanceof PrivateMessage) {
             final PrivateMessage pm = (PrivateMessage) o;
-            if(pm.getId()== this.getId()) return true;
+            if (pm.getId() == this.getId()) return true;
         }
         return false;
     }

@@ -14,7 +14,7 @@ public class AstralObjectHolder {
     private long id;
     private String name;
     private long nbStatellites;
-    
+
     public AstralObjectHolder(AstralObject astralObject) {
         this.id = astralObject.getId();
         this.name = astralObject.getName();

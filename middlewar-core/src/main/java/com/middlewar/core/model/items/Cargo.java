@@ -6,12 +6,10 @@ import com.middlewar.core.model.commons.StatsSet;
 /**
  * @author LEBOC Philippe
  */
-public final class Cargo extends Item
-{
+public final class Cargo extends Item {
     private long capacity;
 
-    public Cargo(StatsSet set, Requirement req)
-    {
+    public Cargo(StatsSet set, Requirement req) {
         super(set, req);
         setCapacity(set.getLong("capacity", 0));
     }

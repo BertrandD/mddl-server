@@ -10,7 +10,7 @@ public enum JsonResponseType {
 
     private String name;
 
-    JsonResponseType(String name){
+    JsonResponseType(String name) {
         setName(name);
     }
 

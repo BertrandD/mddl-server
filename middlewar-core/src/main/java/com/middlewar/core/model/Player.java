@@ -33,25 +33,19 @@ import java.util.Map;
 @JsonSerialize(using = PlayerSerializer.class)
 public class Player {
 
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    protected PlayerInventory inventory;
     @Id
     @GeneratedValue
     private long id;
-
     @Column(unique = true)
     private String name;
-
     @ManyToOne
     private Account account;
-
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Base> bases;
-
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Base currentBase;
-
-    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    protected PlayerInventory inventory;
-
     @ManyToMany
     private List<Player> friends;
 
@@ -119,10 +113,10 @@ public class Player {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof Player){
+    public boolean equals(Object o) {
+        if (o instanceof Player) {
             final Player player = (Player) o;
-            if(player.getId() == this.getId()) return true;
+            if (player.getId() == this.getId()) return true;
         }
         return false;
     }

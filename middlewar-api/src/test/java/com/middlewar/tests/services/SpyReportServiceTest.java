@@ -22,7 +22,6 @@ import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.tests.ApplicationTest;
-import com.middlewar.tests.MddlTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -105,7 +104,7 @@ public class SpyReportServiceTest {
         resource.getItem().addCount(100);
         _baseTarget.getResources().add(resource);
 
-        SpyReport report =  spyReportService.create(_player, _baseSrc, _baseTarget);
+        SpyReport report = spyReportService.create(_player, _baseSrc, _baseTarget);
         Assertions.assertThat(report).isNotNull();
         Assertions.assertThat(report.getBaseSrc()).isEqualTo(_baseSrc);
         Assertions.assertThat(report.getBaseTarget()).isEqualTo(_baseTarget);

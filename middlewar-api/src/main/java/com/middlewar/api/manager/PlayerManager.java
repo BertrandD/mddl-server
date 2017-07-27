@@ -33,7 +33,7 @@ public class PlayerManager {
      * @param account Connected account
      * @return the selected player of the current account
      * @throws NoPlayerConnectedException if the account is guest
-     * @throws PlayerNotFoundException if the player of the account is not found
+     * @throws PlayerNotFoundException    if the player of the account is not found
      */
     public Player getCurrentPlayerForAccount(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
         if (account.getCurrentPlayer() == 0) {
@@ -49,13 +49,14 @@ public class PlayerManager {
 
     /**
      * Get the player with the given id and check if it is matching the given account
+     *
      * @param account the account to check if the player
-     * @param id the player id we want
+     * @param id      the player id we want
      * @return the player
      * @throws PlayerNotOwnedException if the player is not one of the account's players
      */
     public Player getPlayerOfAccount(Account account, long id) throws PlayerNotOwnedException {
-        Player player = account.getPlayers().stream().filter(k->k.getId()==(id)).findFirst().orElse(null);
+        Player player = account.getPlayers().stream().filter(k -> k.getId() == (id)).findFirst().orElse(null);
         if (player == null) {
             throw new PlayerNotOwnedException();
         }
@@ -65,21 +66,22 @@ public class PlayerManager {
 
     /**
      * Create a Player for the given account with the given name
+     *
      * @param account the account owner of the newly created Player
-     * @param name the name of the newly created Player
+     * @param name    the name of the newly created Player
      * @return the newly created Player
      * @throws MaxPlayerCreationReachedException if the account has already reached the maximum number of players
-     * @throws UsernameAlreadyExistsException if the player name is already used
-     * @throws ForbiddenNameException if the name is in the name blacklist
-     * @throws PlayerCreationFailedException if the player creation failed
+     * @throws UsernameAlreadyExistsException    if the player name is already used
+     * @throws ForbiddenNameException            if the name is in the name blacklist
+     * @throws PlayerCreationFailedException     if the player creation failed
      */
     public Player createForAccount(Account account, String name) throws MaxPlayerCreationReachedException, UsernameAlreadyExistsException, ForbiddenNameException, PlayerCreationFailedException {
         Assert.notNull(name, SystemMessageId.INVALID_PARAMETERS);
 
-        if(account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
+        if (account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
             throw new MaxPlayerCreationReachedException();
 
-        if(playerService.findByName(name) != null) throw new UsernameAlreadyExistsException();
+        if (playerService.findByName(name) != null) throw new UsernameAlreadyExistsException();
 
         // Check if name is forbidden (Like 'fuck', 'admin', ...)
         if (Config.FORBIDDEN_NAMES.length > 1) {
@@ -93,9 +95,9 @@ public class PlayerManager {
 
         // Create player
         final Player player = playerService.create(account, name);
-        if(player == null) throw new PlayerCreationFailedException();
+        if (player == null) throw new PlayerCreationFailedException();
 
-        logger.info("Player creation success : "+ player.getName() +".");
+        logger.info("Player creation success : " + player.getName() + ".");
 
         return player;
     }

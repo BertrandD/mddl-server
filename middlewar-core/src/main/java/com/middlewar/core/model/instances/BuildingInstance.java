@@ -44,7 +44,7 @@ public class BuildingInstance {
     @Transient
     private Lang lang = Lang.EN;
 
-    public BuildingInstance(){
+    public BuildingInstance() {
         setModules(new ArrayList<>());
     }
 
@@ -58,7 +58,7 @@ public class BuildingInstance {
 
     public Building getTemplate() {
         final Building building = BuildingData.getInstance().getBuilding(buildingId);
-        if(building != null)
+        if (building != null)
             building.setLang(getLang());
         return building;
     }
@@ -67,14 +67,14 @@ public class BuildingInstance {
      * @return build time (in millis from functions) to get the next level
      */
     public long getBuildTime() {
-        return getTemplate().getBuildTimeAtLevel(getCurrentLevel()+1);
+        return getTemplate().getBuildTimeAtLevel(getCurrentLevel() + 1);
     }
 
     public List<Module> getModules() {
-        final  List<Module> all = new ArrayList<>();
+        final List<Module> all = new ArrayList<>();
         for (String module : modules) {
             Module m = ItemData.getInstance().getModule(module);
-            if(m != null) all.add(m);
+            if (m != null) all.add(m);
         }
         return all;
     }
@@ -86,7 +86,7 @@ public class BuildingInstance {
     @Override
     public boolean equals(Object o) {
         if (o instanceof BuildingInstance) {
-            final BuildingInstance building = (BuildingInstance)o;
+            final BuildingInstance building = (BuildingInstance) o;
             return (this.id == building.id);
         }
         return false;

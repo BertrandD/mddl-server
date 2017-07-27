@@ -45,8 +45,12 @@ public class ItemData implements IXmlReader {
     private final HashMap<String, CommonItem> _resources = new HashMap<>();
     private final HashMap<String, CommonItem> _commons = new HashMap<>();
 
-    protected ItemData(){
+    protected ItemData() {
         load();
+    }
+
+    public static ItemData getInstance() {
+        return SingletonHolder._instance;
     }
 
     @Override
@@ -67,27 +71,22 @@ public class ItemData implements IXmlReader {
         LOGGER.info("Loaded " + _engines.size() + " engines templates.");
         LOGGER.info("Loaded " + _modules.size() + " modules templates.");
         LOGGER.info("Loaded " + _weapons.size() + " weapons templates.");
-        LOGGER.info("Loaded "+ _resources.size() + " resources templates.");
+        LOGGER.info("Loaded " + _resources.size() + " resources templates.");
         LOGGER.info("Loaded " + _commons.size() + " commons templates.");
         LOGGER.info("Loaded " + _all.size() + " items in total.");
     }
 
     @Override
-    public void parseDocument(Document doc, File f)
-    {
-        for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling())
-        {
-            if ("list".equalsIgnoreCase(a.getNodeName()))
-            {
-                for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling())
-                {
-                    if ("item".equalsIgnoreCase(b.getNodeName()))
-                    {
+    public void parseDocument(Document doc, File f) {
+        for (Node a = doc.getFirstChild(); a != null; a = a.getNextSibling()) {
+            if ("list".equalsIgnoreCase(a.getNodeName())) {
+                for (Node b = a.getFirstChild(); b != null; b = b.getNextSibling()) {
+                    if ("item".equalsIgnoreCase(b.getNodeName())) {
                         NamedNodeMap attrs = b.getAttributes();
                         final StatsSet set = new StatsSet();
 
                         set.set("id", parseString(attrs, "id"));
-                        if(_all.containsKey(set.getString("id"))) continue;
+                        if (_all.containsKey(set.getString("id"))) continue;
 
                         set.set("type", parseEnum(attrs, ItemType.class, "type"));
                         set.set("nameId", parseString(attrs, "nameId"));
@@ -102,31 +101,22 @@ public class ItemData implements IXmlReader {
                         final List<ItemHolder> itemHolders = new ArrayList<>();
                         final List<StatHolder> stats = new ArrayList<>();
 
-                        for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling())
-                        {
-                            if("requirements".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for(Node d = c.getFirstChild(); d != null ; d = d.getNextSibling())
-                                {
+                        for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling()) {
+                            if ("requirements".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
-                                    if("item".equalsIgnoreCase(d.getNodeName()))
-                                    {
+                                    if ("item".equalsIgnoreCase(d.getNodeName())) {
                                         final String itemId = parseString(attrs, "id");
                                         final long itemCount = parseLong(attrs, "count");
                                         itemHolders.add(new ItemHolder(itemId, itemCount));
-                                    }
-                                    else if("building".equalsIgnoreCase(d.getNodeName()))
-                                    {
+                                    } else if ("building".equalsIgnoreCase(d.getNodeName())) {
                                         final String buildingId = parseString(attrs, "id");
                                         final int buildingLevel = parseInteger(attrs, "level");
                                         buildingHolders.add(new BuildingHolder(buildingId, buildingLevel));
                                     }
                                 }
-                            }
-                            else if ("stats".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
+                            } else if ("stats".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
                                     attrs = d.getAttributes();
                                     if ("stat".equalsIgnoreCase(d.getNodeName())) {
                                         final Stats stat = parseEnum(attrs, Stats.class, "name", Stats.NONE);
@@ -138,13 +128,9 @@ public class ItemData implements IXmlReader {
                                         stats.add(holder);
                                     }
                                 }
-                            }
-                            else if("properties".equalsIgnoreCase(c.getNodeName()))
-                            {
-                                for(Node d = c.getFirstChild(); d != null; d = d.getNextSibling())
-                                {
-                                    if("set".equalsIgnoreCase(d.getNodeName()))
-                                    {
+                            } else if ("properties".equalsIgnoreCase(c.getNodeName())) {
+                                for (Node d = c.getFirstChild(); d != null; d = d.getNextSibling()) {
+                                    if ("set".equalsIgnoreCase(d.getNodeName())) {
                                         attrs = d.getAttributes();
                                         set.set(parseString(attrs, "name"), parseString(attrs, "value"));
                                     }
@@ -158,75 +144,71 @@ public class ItemData implements IXmlReader {
         }
     }
 
-
-
-    private void makeItem(StatsSet set, Requirement requirement, List<StatHolder> stats)
-    {
+    private void makeItem(StatsSet set, Requirement requirement, List<StatHolder> stats) {
         final String id = set.getString("id");
         final ItemType type = set.getEnum("type", ItemType.class, ItemType.NONE);
         GameItem item = null;
-        switch(type.name().toLowerCase())
-        {
-            case "resource":
-            {
+        switch (type.name().toLowerCase()) {
+            case "resource": {
                 item = new CommonItem(set);
-                _resources.put(id, (CommonItem)item); break;
+                _resources.put(id, (CommonItem) item);
+                break;
             }
-            case "common":
-            {
+            case "common": {
                 item = new CommonItem(set);
-                _commons.put(id, (CommonItem)item); break;
+                _commons.put(id, (CommonItem) item);
+                break;
             }
-            case "cargo":
-            {
+            case "cargo": {
                 item = new Cargo(set, requirement);
-                _cargos.put(id, (Cargo)item); break;
+                _cargos.put(id, (Cargo) item);
+                break;
             }
-            case "engine":
-            {
+            case "engine": {
                 item = new Engine(set, requirement);
-                _engines.put(id, (Engine)item); break;
+                _engines.put(id, (Engine) item);
+                break;
             }
-            case "module":
-            {
+            case "module": {
                 item = new Module(set, requirement);
-                _modules.put(id, (Module)item); break;
+                _modules.put(id, (Module) item);
+                break;
             }
-            case "structure":
-            {
+            case "structure": {
                 item = new Structure(set, requirement);
-                _structures.put(id, (Structure)item); break;
+                _structures.put(id, (Structure) item);
+                break;
             }
-            case "weapon":
-            {
+            case "weapon": {
                 item = new Weapon(set, requirement);
-                _weapons.put(id, (Weapon)item); break;
+                _weapons.put(id, (Weapon) item);
+                break;
             }
         }
 
-        if(item != null) {
+        if (item != null) {
             item.setStats(stats);
             _all.put(id, item);
         }
     }
 
     public List<CommonItem> getResources(Lang lang) {
-        _resources.values().forEach(k->k.setLang(lang));
+        _resources.values().forEach(k -> k.setLang(lang));
         return new ArrayList<>(_resources.values());
     }
 
     public List<CommonItem> getCommonItems(Lang lang) {
-        _commons.values().forEach(k->k.setLang(lang));
+        _commons.values().forEach(k -> k.setLang(lang));
         return new ArrayList<>(_commons.values());
     }
 
     public List<Cargo> getCargos(Lang lang) {
-        _cargos.values().forEach(k->k.setLang(lang));
+        _cargos.values().forEach(k -> k.setLang(lang));
         return new ArrayList<>(_cargos.values());
     }
 
     public List<Engine> getEngines(Lang lang) {
-        _engines.values().forEach(k->k.setLang(lang));
+        _engines.values().forEach(k -> k.setLang(lang));
         return new ArrayList<>(_engines.values());
     }
 
@@ -236,54 +218,78 @@ public class ItemData implements IXmlReader {
     }
 
     public List<Weapon> getWeapons(Lang lang) {
-        _weapons.values().forEach(k->k.setLang(lang));
+        _weapons.values().forEach(k -> k.setLang(lang));
         return new ArrayList<>(_weapons.values());
     }
 
     public List<Structure> getStructures(Lang lang) {
-        _structures.values().forEach(k->k.setLang(lang));
-        return new ArrayList<>( _structures.values());
+        _structures.values().forEach(k -> k.setLang(lang));
+        return new ArrayList<>(_structures.values());
     }
 
-    public List<CommonItem> getResources() { return new ArrayList<>(_resources.values()); }
+    public List<CommonItem> getResources() {
+        return new ArrayList<>(_resources.values());
+    }
 
-    public List<CommonItem> getCommonItems() { return new ArrayList<>(_commons.values()); }
+    public List<CommonItem> getCommonItems() {
+        return new ArrayList<>(_commons.values());
+    }
 
-    public List<Cargo> getCargos() { return new ArrayList<>(_cargos.values()); }
+    public List<Cargo> getCargos() {
+        return new ArrayList<>(_cargos.values());
+    }
 
-    public List<Engine> getEngines() { return new ArrayList<>(_engines.values()); }
+    public List<Engine> getEngines() {
+        return new ArrayList<>(_engines.values());
+    }
 
-    public List<Module> getModules() { return new ArrayList<>(_modules.values()); }
+    public List<Module> getModules() {
+        return new ArrayList<>(_modules.values());
+    }
 
-    public List<Weapon> getWeapons() { return new ArrayList<>(_weapons.values()); }
+    public List<Weapon> getWeapons() {
+        return new ArrayList<>(_weapons.values());
+    }
 
-    public List<Structure> getStructures() { return new ArrayList<>( _structures.values()); }
+    public List<Structure> getStructures() {
+        return new ArrayList<>(_structures.values());
+    }
 
-    public CommonItem getResource(String id) { return _resources.get(id); }
+    public CommonItem getResource(String id) {
+        return _resources.get(id);
+    }
 
-    public CommonItem getCommonItem(String id){
+    public CommonItem getCommonItem(String id) {
         return _commons.get(id);
     }
 
-    public Structure getStructure(String id){
+    public Structure getStructure(String id) {
         return _structures.get(id);
     }
 
-    public Cargo getCargo(String id){ return _cargos.get(id); }
-
-    public Engine getEngine(String id){ return _engines.get(id); }
-
-    public Module getModule(String id){ return _modules.get(id); }
-
-    public Weapon getWeapon(String id){ return _weapons.get(id); }
-
-    public GameItem getTemplate(String itemId){
-       return _all.get(itemId);
+    public Cargo getCargo(String id) {
+        return _cargos.get(id);
     }
 
-    public GameItem getTemplate(String itemId, Lang lang){
+    public Engine getEngine(String id) {
+        return _engines.get(id);
+    }
+
+    public Module getModule(String id) {
+        return _modules.get(id);
+    }
+
+    public Weapon getWeapon(String id) {
+        return _weapons.get(id);
+    }
+
+    public GameItem getTemplate(String itemId) {
+        return _all.get(itemId);
+    }
+
+    public GameItem getTemplate(String itemId, Lang lang) {
         final GameItem item = _all.get(itemId);
-        if(item == null) return null;
+        if (item == null) return null;
         item.setLang(lang);
         return item;
     }
@@ -316,13 +322,7 @@ public class ItemData implements IXmlReader {
         return _all.size();
     }
 
-    public static ItemData getInstance()
-    {
-        return SingletonHolder._instance;
-    }
-
-    private static class SingletonHolder
-    {
+    private static class SingletonHolder {
         protected static final ItemData _instance = new ItemData();
     }
 }

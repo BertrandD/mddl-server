@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
 @Data
 @NoArgsConstructor
 @Entity
-public class SpyReport extends Report{
+public class SpyReport extends Report {
 
     @ManyToOne
     private Base baseTarget;

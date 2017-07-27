@@ -29,20 +29,18 @@ public class BuildingSerializer extends JsonSerializer<Building> {
         gen.writeNumberField("maxLevel", value.getMaxLevel());
 
         gen.writeArrayFieldStart("useEnergy");
-        for(long val : value.getUseEnergy())
+        for (long val : value.getUseEnergy())
             gen.writeNumber(val);
         gen.writeEndArray();
 
         gen.writeArrayFieldStart("buildTimes");
-        for(long val : value.getBuildTimes())
+        for (long val : value.getBuildTimes())
             gen.writeNumber(val);
         gen.writeEndArray();
 
-        if(value instanceof ModulableBuilding)
-        {
+        if (value instanceof ModulableBuilding) {
             gen.writeNumberField("maxModules", ((ModulableBuilding) value).getMaxModules());
-            if(!((ModulableBuilding) value).getModules().isEmpty())
-            {
+            if (!((ModulableBuilding) value).getModules().isEmpty()) {
                 gen.writeArrayFieldStart("availableModules");
                 for (Module module : ((ModulableBuilding) value).getModules())
                     gen.writeString(module.getItemId());
@@ -52,8 +50,7 @@ public class BuildingSerializer extends JsonSerializer<Building> {
             gen.writeNumberField("maxModules", 0);
         }
 
-        if(!value.getAllStats().isEmpty())
-        {
+        if (!value.getAllStats().isEmpty()) {
             gen.writeObjectFieldStart("stats");
             for (StatHolder holder : value.getAllStats()) {
                 gen.writeArrayFieldStart(holder.getStat().name());
@@ -65,12 +62,11 @@ public class BuildingSerializer extends JsonSerializer<Building> {
             gen.writeEndObject();
         }
 
-        if(value instanceof ModuleFactory)
-        {
+        if (value instanceof ModuleFactory) {
             gen.writeObjectFieldStart("unlockModules");
-            for(int level : ((ModuleFactory) value).getItemsByLevel().keySet()) {
-                gen.writeArrayFieldStart(""+level);
-                for(Module module : ((ModuleFactory) value).getItemsByLevel(level))
+            for (int level : ((ModuleFactory) value).getItemsByLevel().keySet()) {
+                gen.writeArrayFieldStart("" + level);
+                for (Module module : ((ModuleFactory) value).getItemsByLevel(level))
                     gen.writeString(module.getItemId());
                 gen.writeEndArray();
             }
@@ -78,12 +74,11 @@ public class BuildingSerializer extends JsonSerializer<Building> {
         }
 
 
-        if(value instanceof StructureFactory)
-        {
+        if (value instanceof StructureFactory) {
             gen.writeObjectFieldStart("unlockStructures");
-            for(int level : ((StructureFactory) value).getItemsByLevel().keySet()) {
-                gen.writeArrayFieldStart(""+level);
-                for(Structure structure: ((StructureFactory) value).getItemsByLevel(level))
+            for (int level : ((StructureFactory) value).getItemsByLevel().keySet()) {
+                gen.writeArrayFieldStart("" + level);
+                for (Structure structure : ((StructureFactory) value).getItemsByLevel(level))
                     gen.writeString(structure.getItemId());
                 gen.writeEndArray();
             }

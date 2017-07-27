@@ -26,13 +26,13 @@ public class BaseInventory extends Inventory {
         super();
     }
 
-    public BaseInventory(Base base){
+    public BaseInventory(Base base) {
         super();
         setBase(base);
     }
 
     @Override
-    public long getAvailableCapacity(){
+    public long getAvailableCapacity() {
         Double capaStats = getBase().getBaseStat().getStats().get(Stats.BASE_MAX_STORAGE_VOLUME);
         if (capaStats != null) {
             return capaStats.longValue();

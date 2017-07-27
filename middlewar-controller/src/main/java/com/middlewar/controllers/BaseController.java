@@ -40,7 +40,7 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/me/base", method = RequestMethod.GET)
-    public Response findAll(@AuthenticationPrincipal Account pAccount){
+    public Response findAll(@AuthenticationPrincipal Account pAccount) {
         return controllerManagerWrapper.wrap(() -> baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)));
     }
 

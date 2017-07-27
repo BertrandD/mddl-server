@@ -8,7 +8,7 @@ public class MetaHolder {
     private String key;
     private Object object;
 
-    public MetaHolder(String key, Object o){
+    public MetaHolder(String key, Object o) {
         setKey(key);
         setObject(o);
     }

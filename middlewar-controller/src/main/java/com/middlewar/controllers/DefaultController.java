@@ -31,7 +31,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping(produces = "application/json")
-public class DefaultController implements ErrorController{
+public class DefaultController implements ErrorController {
 
     private static final String ERROR_PATH = "/error";
 
@@ -51,8 +51,7 @@ public class DefaultController implements ErrorController{
     private ControllerManagerWrapper controllerManagerWrapper;
 
     @RequestMapping(value = "/")
-    public Response index()
-    {
+    public Response index() {
         return new Response(JsonResponseType.SUCCESS);
     }
 
@@ -78,7 +77,7 @@ public class DefaultController implements ErrorController{
     }
 
     @RequestMapping(value = "/reload", method = RequestMethod.GET)
-    public Response reload(){
+    public Response reload() {
         BuildingData.getInstance().load();
         ItemData.getInstance().load();
         return new Response(JsonResponseType.SUCCESS);

@@ -11,6 +11,7 @@ public final class Rnd {
 
     /**
      * Gets a random integer number from min(inclusive) to max(inclusive)
+     *
      * @param min The minimum value
      * @param max The maximum value
      * @return A random integer number from min to max
@@ -21,6 +22,7 @@ public final class Rnd {
 
     /**
      * Gets a random long number from min(inclusive) to max(inclusive)
+     *
      * @param min The minimum value
      * @param max The maximum value
      * @return A random long number from min to max

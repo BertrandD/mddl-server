@@ -8,7 +8,7 @@ public class PropertyHolder {
     private String name;
     private String value;
 
-    public PropertyHolder(String name, String value){
+    public PropertyHolder(String name, String value) {
         setName(name);
         setValue(value);
     }
@@ -31,6 +31,6 @@ public class PropertyHolder {
 
     @Override
     public String toString() {
-        return "\t\t\tPropertyHolder(" + getName() + ", " + getValue() +")\r\n";
+        return "\t\t\tPropertyHolder(" + getName() + ", " + getValue() + ")\r\n";
     }
 }

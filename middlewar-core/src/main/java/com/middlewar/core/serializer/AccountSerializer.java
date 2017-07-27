@@ -20,9 +20,9 @@ public class AccountSerializer extends JsonSerializer<Account> {
         gen.writeStringField("token", value.getToken());
         gen.writeStringField("lang", value.getLang().name());
         gen.writeObjectField("authorities", value.getAuthorities());
-        if(value.getCurrentPlayer() != 0) gen.writeNumberField("currentPlayer", value.getCurrentPlayer());
+        if (value.getCurrentPlayer() != 0) gen.writeNumberField("currentPlayer", value.getCurrentPlayer());
         gen.writeArrayFieldStart("players");
-        for(Player p : value.getPlayers()) gen.writeNumber(p.getId());
+        for (Player p : value.getPlayers()) gen.writeNumber(p.getId());
         gen.writeEndArray();
         gen.writeEndObject();
     }

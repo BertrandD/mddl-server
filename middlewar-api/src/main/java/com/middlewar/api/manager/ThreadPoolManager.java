@@ -14,9 +14,13 @@ public class ThreadPoolManager implements TaskScheduler {
 
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
-    protected ThreadPoolManager(){
+    protected ThreadPoolManager() {
         threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
         threadPoolTaskScheduler.initialize();
+    }
+
+    public static ThreadPoolManager getInstance() {
+        return SingletonHolder._instance;
     }
 
     @Override
@@ -49,13 +53,7 @@ public class ThreadPoolManager implements TaskScheduler {
         return threadPoolTaskScheduler.scheduleWithFixedDelay(task, delay);
     }
 
-    public static ThreadPoolManager getInstance()
-    {
-        return SingletonHolder._instance;
-    }
-
-    private static class SingletonHolder
-    {
+    private static class SingletonHolder {
         protected static final ThreadPoolManager _instance = new ThreadPoolManager();
     }
 }

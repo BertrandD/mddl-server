@@ -20,8 +20,12 @@ public class SystemMessageData implements IXmlReader {
     private final HashMap<String, String> _english = new HashMap<>();
     private final HashMap<String, String> _french = new HashMap<>();
 
-    protected SystemMessageData(){
+    protected SystemMessageData() {
         load();
+    }
+
+    public static SystemMessageData getInstance() {
+        return SingletonHolder._instance;
     }
 
     @Override
@@ -42,8 +46,8 @@ public class SystemMessageData implements IXmlReader {
                         NamedNodeMap attrs = b.getAttributes();
                         final Lang lang = parseEnum(attrs, Lang.class, "lang");
                         final HashMap<String, String> current = getMessages(lang);
-                        for(Node c = b.getFirstChild(); c != null; c = c.getNextSibling()){
-                            if("message".equalsIgnoreCase(c.getNodeName())){
+                        for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling()) {
+                            if ("message".equalsIgnoreCase(c.getNodeName())) {
                                 attrs = c.getAttributes();
                                 final String id = parseString(attrs, "id");
                                 final String text = parseString(attrs, "text", null);
@@ -56,9 +60,9 @@ public class SystemMessageData implements IXmlReader {
         }
     }
 
-    public String getMessage(Lang lang, String id){
+    public String getMessage(Lang lang, String id) {
         String msg = getMessages(lang).get(id);
-        if(msg == null) {
+        if (msg == null) {
             //Slack.sendWarning("Missing " + lang.getName() + " translation for key `" + id + "` !");
             LOGGER.info("Missing " + lang.getName() + " translation for key `" + id + "` !");
             return "%" + id + "%";
@@ -66,21 +70,18 @@ public class SystemMessageData implements IXmlReader {
         return msg;
     }
 
-    public HashMap<String, String> getMessages(Lang lang){
-        switch(lang){
-            case EN: return _english;
-            case FR: return _french;
-            default: return _english;
+    public HashMap<String, String> getMessages(Lang lang) {
+        switch (lang) {
+            case EN:
+                return _english;
+            case FR:
+                return _french;
+            default:
+                return _english;
         }
     }
 
-    public static SystemMessageData getInstance()
-    {
-        return SingletonHolder._instance;
-    }
-
-    private static class SingletonHolder
-    {
+    private static class SingletonHolder {
         protected static final SystemMessageData _instance = new SystemMessageData();
     }
 }

@@ -64,12 +64,12 @@ public class BaseManager {
      */
     public Base getBase(long id) throws BaseNotFoundException {
         final Base base = baseService.findOne(id);
-        if(base == null) throw new BaseNotFoundException();
+        if (base == null) throw new BaseNotFoundException();
         return base;
     }
 
     /**
-     * @param id base id
+     * @param id     base id
      * @param player owner of the base
      * @return the base with the given id and check if the base is owned by the player
      * @throws BaseNotFoundException if the base boes not exists
@@ -98,12 +98,12 @@ public class BaseManager {
 
     /**
      * @param player the player we want the base
-     * @param id The id of the Base we want the details
+     * @param id     The id of the Base we want the details
      * @return the Base of the current player with the building queue
      * @throws NoPlayerConnectedException if there is no current player in the account
-     * @throws PlayerNotFoundException if the current player is not found
-     * @throws BaseNotFoundException if the base boes not exists
-     * @throws BaseNotOwnedException if the base is not owned by the given player
+     * @throws PlayerNotFoundException    if the current player is not found
+     * @throws BaseNotFoundException      if the base boes not exists
+     * @throws BaseNotOwnedException      if the base is not owned by the given player
      */
     public Response<Base> getBaseWithBuildingQueue(Player player, long id) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getOwnedBase(id, player);
@@ -122,12 +122,13 @@ public class BaseManager {
 
     /**
      * Create a base for the given account with the given name
+     *
      * @param player the owner of the new Base
-     * @param name the name of the new Base
+     * @param name   the name of the new Base
      * @return the newly created Base
      * @throws NoPlayerConnectedException if there is no current player in the account
-     * @throws PlayerNotFoundException if the current player is not found
-     * @throws BaseCreationException if the Base creation failed
+     * @throws PlayerNotFoundException    if the current player is not found
+     * @throws BaseCreationException      if the Base creation failed
      */
     public Base create(Player player, String name) throws BaseCreationException {
         final Planet planet = planetManager.pickRandom();
@@ -135,7 +136,7 @@ public class BaseManager {
         // TODO: Base creation conditions.
 
         final Base base = baseService.create(name, player, planet);
-        if(base == null) throw new BaseCreationException();
+        if (base == null) throw new BaseCreationException();
         return base;
     }
 
@@ -144,11 +145,11 @@ public class BaseManager {
      * @param baseId the id of the base we want the buildings
      * @return the list of all buildings that can be built in the current base of the current player
      * @throws NoPlayerConnectedException if there is no current player in the account
-     * @throws PlayerNotFoundException if the current player is not found
-     * @throws BaseNotFoundException if the base boes not exists
-     * @throws BaseNotOwnedException if the base is not owned by the given player
+     * @throws PlayerNotFoundException    if the current player is not found
+     * @throws BaseNotFoundException      if the base boes not exists
+     * @throws BaseNotOwnedException      if the base is not owned by the given player
      */
-    public  List<BuildingHolder> getBuildableBuildingsOfBase(Player player, long baseId) throws BaseNotFoundException, BaseNotOwnedException {
+    public List<BuildingHolder> getBuildableBuildingsOfBase(Player player, long baseId) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getOwnedBase(baseId, player);
 
         final List<BuildingHolder> nextBuildings = new ArrayList<>();
@@ -161,13 +162,12 @@ public class BaseManager {
 
             myBuildings.stream().filter(k -> k.getCurrentLevel() < building.getMaxLevel()).forEach(myBuilding ->
             {
-                if(hasRequirements(base, building, myBuilding.getCurrentLevel()+1))
-                    nextBuildings.add(new BuildingInstanceHolder(myBuilding.getId(), building.getId(), myBuilding.getCurrentLevel()+1));
+                if (hasRequirements(base, building, myBuilding.getCurrentLevel() + 1))
+                    nextBuildings.add(new BuildingInstanceHolder(myBuilding.getId(), building.getId(), myBuilding.getCurrentLevel() + 1));
             });
 
-            if(myBuildings.isEmpty())
-            {
-                if(hasRequirements(base, building, 1))
+            if (myBuildings.isEmpty()) {
+                if (hasRequirements(base, building, 1))
                     nextBuildings.add(new BuildingHolder(building.getId(), 1));
             }
         });
@@ -175,24 +175,21 @@ public class BaseManager {
         return nextBuildings;
     }
 
-    private boolean hasRequirements(Base base, Building building, int nextLevel)
-    {
+    private boolean hasRequirements(Base base, Building building, int nextLevel) {
         boolean hasRequirement = true;
         final Requirement requirement = building.getRequirements().get(nextLevel);
 
-        if(requirement != null)
-        {
+        if (requirement != null) {
             // Check building requirements
             int i = 0;
-            while(hasRequirement && i < requirement.getBuildings().size())
-            {
+            while (hasRequirement && i < requirement.getBuildings().size()) {
                 final BuildingHolder holder = requirement.getBuildings().get(i);
                 final BuildingInstance instOfReqBuilding = base.getBuildings().stream()
-                        .filter(k->k.getBuildingId().equals(holder.getTemplateId()) &&
+                        .filter(k -> k.getBuildingId().equals(holder.getTemplateId()) &&
                                 k.getCurrentLevel() >= holder.getLevel()
                         ).findFirst().orElse(null);
 
-                if(instOfReqBuilding == null) hasRequirement = false;
+                if (instOfReqBuilding == null) hasRequirement = false;
                 i++;
             }
 

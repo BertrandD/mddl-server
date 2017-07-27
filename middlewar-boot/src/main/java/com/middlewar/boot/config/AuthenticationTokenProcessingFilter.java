@@ -35,8 +35,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        @SuppressWarnings("unchecked")
-        final HttpServletRequest httpRequest = (HttpServletRequest) request;
+        @SuppressWarnings("unchecked") final HttpServletRequest httpRequest = (HttpServletRequest) request;
         // FIXME ? Là je pars du principe que le token est dans le header X-auth-token, est-ce qu'on fait ça ou on le met dans les cookies ? ça change pas grand chose pour le back, à voir pour le front
         // TODO ! Il faut que ce token soit dans les cookies pour éviter les failles XSS
         String token = httpRequest.getHeader("X-auth-token");

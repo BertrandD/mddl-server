@@ -19,7 +19,7 @@ public class BuildingStats {
     private List<StatHolder> globalStats;
     private Map<Integer, List<StatHolder>> statsByLevel;
 
-    public BuildingStats(){
+    public BuildingStats() {
         setGlobalStats(new ArrayList<>());
         setStatsByLevel(new HashMap<>());
     }
@@ -33,12 +33,12 @@ public class BuildingStats {
     }
 
     /**
-     * @param stat The Stat to retrieve
+     * @param stat  The Stat to retrieve
      * @param level The building level that has this Stat
      * @return The stat stored in StatsByLevel list corresponding to the given stat
      */
     public StatHolder getStat(Stats stat, int level) {
-        if(!getStatsByLevel().containsKey(level)) return null;
+        if (!getStatsByLevel().containsKey(level)) return null;
         final List<StatHolder> stats = getStatsByLevel().get(level);
         return retrieveStat(stats, stat);
     }
@@ -51,8 +51,8 @@ public class BuildingStats {
         final List<StatHolder> stats = new ArrayList<>();
         stats.addAll(getGlobalStats());
 
-        for(int i = 1; i <= level; i++){
-            if(getStatsByLevel().containsKey(i))
+        for (int i = 1; i <= level; i++) {
+            if (getStatsByLevel().containsKey(i))
                 stats.addAll(getStatsByLevel().get(level));
         }
 
@@ -60,7 +60,7 @@ public class BuildingStats {
     }
 
     /**
-     * @param stats The list of stats
+     * @param stats      The list of stats
      * @param statToFind The stats to find in "stats" param
      * @return The stat corresponding to the searched stat in the "stats" list
      */

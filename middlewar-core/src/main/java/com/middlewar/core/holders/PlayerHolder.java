@@ -24,10 +24,10 @@ public class PlayerHolder {
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof PlayerHolder){
+    public boolean equals(Object o) {
+        if (o instanceof PlayerHolder) {
             final PlayerHolder player = (PlayerHolder) o;
-            if(player.getId() == this.getId()) return true;
+            if (player.getId() == this.getId()) return true;
         }
         return false;
     }

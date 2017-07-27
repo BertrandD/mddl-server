@@ -40,13 +40,13 @@ public class TestController {
     @RequestMapping(value = "/create/item", method = RequestMethod.POST)
     public Response createItem(@AuthenticationPrincipal Account pAccount, @RequestParam(name = "itemId") String itemId, @RequestParam(name = "count") Long count) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if(player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+        if (player == null) return new Response(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
         final Base base = player.getCurrentBase();
-        if(base == null) return new Response(JsonResponseType.ERROR, SystemMessageId.BASE_NOT_FOUND);
+        if (base == null) return new Response(JsonResponseType.ERROR, SystemMessageId.BASE_NOT_FOUND);
 
         GameItem item = ItemData.getInstance().getTemplate(itemId);
-        if(item == null) return new Response(JsonResponseType.ERROR, "Item ["+itemId+"] doesnt exist !");
+        if (item == null) return new Response(JsonResponseType.ERROR, "Item [" + itemId + "] doesnt exist !");
 
         base.initializeStats();
         inventoryService.addItem(base.getBaseInventory(), itemId, count);

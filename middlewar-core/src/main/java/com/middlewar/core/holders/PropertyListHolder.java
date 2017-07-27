@@ -6,12 +6,11 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-public class PropertyListHolder
-{
+public class PropertyListHolder {
     private String name;
     private List<PropertyHolder> properties;
 
-    public PropertyListHolder(String name){
+    public PropertyListHolder(String name) {
         setName(name);
         setProperties(new ArrayList<>());
     }
@@ -32,7 +31,7 @@ public class PropertyListHolder
         this.properties = properties;
     }
 
-    public void addProperty(PropertyHolder holder){
+    public void addProperty(PropertyHolder holder) {
         getProperties().add(holder);
     }
 

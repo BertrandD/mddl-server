@@ -24,8 +24,7 @@ import java.util.concurrent.Executor;
 @ComponentScan("com")
 public class Application extends AsyncConfigurerSupport {
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         // Config
         Config.load();
 

@@ -24,7 +24,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemInstance create(Inventory inventory, String itemId, long count) {
-        final ItemInstance inst =  itemDao.save(new ItemInstance(inventory, itemId, count));
+        final ItemInstance inst = itemDao.save(new ItemInstance(inventory, itemId, count));
         inventory.getItems().add(inst);
         inventoryService.update(inventory);
         return inst;

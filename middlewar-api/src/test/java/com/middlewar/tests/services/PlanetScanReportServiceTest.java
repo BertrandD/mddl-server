@@ -19,7 +19,6 @@ import com.middlewar.core.model.report.BaseReportEntry;
 import com.middlewar.core.model.report.PlanetScanReport;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.tests.ApplicationTest;
-import com.middlewar.tests.MddlTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,7 +84,7 @@ public class PlanetScanReportServiceTest {
     public void testCreatePlanetScanReport() {
 
         _planet.addBase(_base);
-        PlanetScanReport report =  planetScanReportService.create(_player, _base, _planet);
+        PlanetScanReport report = planetScanReportService.create(_player, _base, _planet);
 
         Assertions.assertThat(report).isNotNull();
         Assertions.assertThat(report.getBaseSrc()).isEqualTo(_base);

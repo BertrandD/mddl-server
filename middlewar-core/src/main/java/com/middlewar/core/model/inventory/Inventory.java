@@ -54,11 +54,11 @@ public abstract class Inventory implements IInventory {
         this.id = id;
     }
 
-    public void setItems(List<ItemInstance> items) {
-        this.items = items;
-    }
-
     public List<ItemInstance> getItems() {
         return items;
+    }
+
+    public void setItems(List<ItemInstance> items) {
+        this.items = items;
     }
 }
