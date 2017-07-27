@@ -22,19 +22,28 @@ import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.Stats;
+import com.middlewar.tests.ApplicationTest;
 import com.middlewar.tests.MddlTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Darbon Bertrand, LEBOC Philippe
  */
-@MddlTest
+@RunWith(SpringRunner.class)
+@Rollback
+@Transactional
+@SpringBootTest(classes = ApplicationTest.class)
 public class InventoryServiceTest {
 
     @Autowired

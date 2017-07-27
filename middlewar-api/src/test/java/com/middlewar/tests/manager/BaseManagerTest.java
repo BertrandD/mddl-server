@@ -25,19 +25,28 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.Planet;
+import com.middlewar.tests.ApplicationTest;
 import com.middlewar.tests.MddlTest;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * @author Bertrand
  */
-@MddlTest
+@RunWith(SpringRunner.class)
+@Rollback
+@Transactional
+@SpringBootTest(classes = ApplicationTest.class)
 public class BaseManagerTest {
 
     @Autowired
