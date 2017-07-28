@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
+import com.middlewar.core.enums.StatOp;
+import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
+import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
 import org.springframework.data.annotation.Transient;
@@ -90,5 +94,16 @@ public class BuildingInstance {
             return (this.id == building.id);
         }
         return false;
+    }
+
+    public StatHolder getProduction(Resource resource) {
+        ObjectStat production = new ObjectStat();
+        production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
+        production.add(getModulesModifier(resource));
+        return new StatHolder(resource.getStat(), StatOp.DIFF, production.getValue(resource.getStat()));
+    }
+
+    private StatHolder getModulesModifier(Resource resource) {
+        return new StatHolder(resource.getStat(), StatOp.PER, 1);
     }
 }

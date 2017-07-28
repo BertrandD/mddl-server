@@ -160,7 +160,10 @@ public class InventoryService implements IInventoryService {
     }
 
     private long getStorableAmount(IInventory inventory, long volume) {
-        return (inventory.getAvailableCapacity() / volume); // TODO: check division
+        if (volume == 0) {
+            return -1;
+        }
+        return (inventory.getAvailableCapacity() / volume);
     }
 
     private boolean canBeStored(final IInventory inventory, long volume, final long amount) {

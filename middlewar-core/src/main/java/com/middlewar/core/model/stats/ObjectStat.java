@@ -2,6 +2,7 @@ package com.middlewar.core.model.stats;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.StatOp;
+import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.serializer.ObjectStatSerializer;
 import lombok.Data;
 import org.apache.log4j.Logger;
@@ -35,7 +36,7 @@ public class ObjectStat {
 
     public void addStat(final Stats stat) {
         if (!getStats().containsKey(stat))
-            getStats().put(stat, stat.getValue());
+            getStats().put(stat, 0D);
         else logger.warn("Trying to replace an existing stat (" + stat.name() + "). Abort.");
     }
 
@@ -49,6 +50,10 @@ public class ObjectStat {
 
     public void add(final Stats stat, final double val) {
         add(stat, val, StatOp.DIFF);
+    }
+
+    public void add(StatHolder statHolder) {
+        add(statHolder.getStat(), statHolder.getValue(), statHolder.getOp());
     }
 
     public void add(final Stats stat, final double val, final StatOp op) {

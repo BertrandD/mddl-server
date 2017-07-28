@@ -153,27 +153,32 @@ public class BuildingData implements IXmlReader {
                                         final Stats baseStat = parseEnum(attrs, Stats.class, "name");
                                         final String function = parseString(attrs, "function", null);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
-                                        final int reqBuildingLevel = parseInteger(attrs, "requiredBuildingLevel", 0);
-                                        final StatHolder holder = new StatHolder(baseStat, op);
 
-                                        final double[] values = new double[set.getInt("maxLevel")];
                                         if (function != null) {
-                                            for (int i = 0; i < values.length; i++) {
+                                            List<StatHolder> statHolders = stats.getStatFunctions().computeIfAbsent(baseStat, k -> new ArrayList<>());
+
+                                            int count = set.getInt("maxLevel");
+                                            for (int i = 0; i < count; i++) {
                                                 final String func = function.replace("$level", "" + (i + 1));
-                                                values[i] = ((Number) Evaluator.getInstance().eval(func)).doubleValue();
+                                                statHolders.add(new StatHolder(baseStat, op, ((Number) Evaluator.getInstance().eval(func)).doubleValue()));
                                             }
-                                            holder.setValues(values);
+                                        } else {
+                                            final int reqBuildingLevel = parseInteger(attrs, "requiredBuildingLevel", 0);
+                                            final int value = parseInteger(attrs, "value");
+                                            StatHolder holder = new StatHolder(baseStat, op, value);
+                                            if (reqBuildingLevel != 0) {
+                                                if (stats.getStatsByLevel().containsKey(reqBuildingLevel))
+                                                    stats.getStatsByLevel().get(reqBuildingLevel).add(holder);
+                                                else {
+                                                    final List<StatHolder> holders = new ArrayList<>();
+                                                    holders.add(holder);
+                                                    stats.getStatsByLevel().put(reqBuildingLevel, holders);
+                                                }
+                                            } else stats.getGlobalStats().add(holder);
+
                                         }
 
-                                        if (reqBuildingLevel != 0) {
-                                            if (stats.getStatsByLevel().containsKey(reqBuildingLevel))
-                                                stats.getStatsByLevel().get(reqBuildingLevel).add(holder);
-                                            else {
-                                                final List<StatHolder> holders = new ArrayList<>();
-                                                holders.add(holder);
-                                                stats.getStatsByLevel().put(reqBuildingLevel, holders);
-                                            }
-                                        } else stats.getGlobalStats().add(holder);
+
                                     }
                                 }
                             } else if ("energy".equalsIgnoreCase(c.getNodeName())) {

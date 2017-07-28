@@ -122,8 +122,7 @@ public class ItemData implements IXmlReader {
                                         final Stats stat = parseEnum(attrs, Stats.class, "name", Stats.NONE);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
                                         final double value = parseDouble(attrs, "value", 0.0);
-                                        final StatHolder holder = new StatHolder(stat, op);
-                                        holder.setValue(value);
+                                        final StatHolder holder = new StatHolder(stat, op, value);
 
                                         stats.add(holder);
                                     }

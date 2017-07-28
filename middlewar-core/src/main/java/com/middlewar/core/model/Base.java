@@ -102,21 +102,12 @@ public class Base {
     }
 
     public double getResourceProduction(Resource resource) {
-        double production = getBaseStat().getValue(resource.getStat());
+        ObjectStat production = new ObjectStat();
         for (BuildingInstance building : getBuildings()) {
-            StatHolder statProd = building
-                    .getTemplate()
-                    .getStats(
-                            resource.getStat()
-                    );
-            if (statProd != null) {
-                production += statProd.getValue(building.getCurrentLevel());
-
-            }
-            // TODO : production modifiers /!\ (modules, etc)
+            production.add(building.getProduction(resource));
         }
 
-        return production;
+        return production.getValue(resource.getStat());
     }
 
     /**

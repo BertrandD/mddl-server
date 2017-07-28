@@ -2,11 +2,13 @@ package com.middlewar.core.holders;
 
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.stats.Stats;
+import lombok.Data;
 
 /**
  * @author LEBOC Philippe
  * TODO: REFACTOR !
  */
+@Data
 public class StatHolder {
 
     private Stats stat;
@@ -14,42 +16,16 @@ public class StatHolder {
     private double value; // direct baseStat value
     private double[] values; // buildings: values indexed by levels
 
-    public StatHolder(Stats stats, StatOp op) {
+    public StatHolder(Stats stats, StatOp op, double value) {
         setStat(stats);
         setOp(op);
+        setValue(value);
     }
 
-    public Stats getStat() {
-        return stat;
-    }
-
-    private void setStat(Stats stat) {
-        this.stat = stat;
-    }
-
-    public StatOp getOp() {
-        return op;
-    }
-
-    private void setOp(StatOp op) {
-        this.op = op;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
-
-    public double[] getValues() {
-        return values;
-    }
-
-    public void setValues(double[] values) {
-        this.values = values;
-    }
+//    public StatHolder(Stats stats, StatOp op) {
+//        setStat(stats);
+//        setOp(op);
+//    }
 
     public double getValue(int level) {
         if (level < 1 || level > values.length)

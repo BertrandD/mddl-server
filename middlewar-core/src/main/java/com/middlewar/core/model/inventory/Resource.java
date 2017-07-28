@@ -68,6 +68,10 @@ public class Resource {
         return Stats.valueOf(item.getTemplateId().toUpperCase());
     }
 
+    public Stats getStatMax() {
+        return Stats.valueOf("MAX_" + item.getTemplateId().toUpperCase());
+    }
+
     public long getAvailableCapacity() {
         // TODO : add logic to handle modules effects on capacity
         long capacity = (long) getBase()

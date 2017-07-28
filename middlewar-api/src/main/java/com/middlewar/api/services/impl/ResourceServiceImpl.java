@@ -4,6 +4,7 @@ import com.middlewar.api.dao.BaseDao;
 import com.middlewar.api.dao.ResourceDao;
 import com.middlewar.api.services.ItemService;
 import com.middlewar.api.services.ResourceService;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -31,12 +32,11 @@ public class ResourceServiceImpl extends DefaultServiceImpl<Resource, ResourceDa
     public Resource create(Base base, String itemId) {
         final ItemInstance item = itemService.create(base.getBaseInventory(), itemId, 0);
         final Resource resource = resourceDao.save(new Resource(base, item));
-//        resource.setStat(Stats.valueOf(itemId.toUpperCase()));
         base.addResource(resource);
         // original production
-        base.getBaseStat().add(Stats.valueOf(itemId.toUpperCase()), Stats.valueOf(itemId.toUpperCase()).getValue(), StatOp.UNLOCK);
+        base.getBaseStat().add(resource.getStat(), 0, StatOp.UNLOCK);
         // original max stored
-        base.getBaseStat().add(Stats.valueOf("MAX_" + itemId.toUpperCase()), Stats.valueOf("MAX_" + itemId.toUpperCase()).getValue(), StatOp.UNLOCK);
+        base.getBaseStat().add(resource.getStatMax(), Config.BASE_INITIAL_MAX_RESOURCE_STORAGE, StatOp.UNLOCK);
         baseDao.save(base);
 
         return resource;
