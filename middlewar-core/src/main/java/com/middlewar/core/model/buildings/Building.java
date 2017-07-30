@@ -18,6 +18,7 @@ import lombok.Data;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author LEBOC Philippe
@@ -51,14 +52,20 @@ public abstract class Building implements IStat {
 
 
     public StatHolder getProductionAtLevel(Resource resource, int level) {
-        ObjectStat production = new ObjectStat();
+        ObjectStat production = new ObjectStat(resource.getStat());
 
-        for (StatHolder statHolder: getStats().getStatFunctions().get(resource.getStat())) {
-            production.add(statHolder);
+        List<StatHolder> statFunctions = getStats().getStatFunctions().get(resource.getStat());
+        if (statFunctions != null) {
+            for (StatHolder statHolder: statFunctions) {
+                production.add(statHolder);
+            }
         }
 
-        for (StatHolder statHolder: getStats().getStatsByLevel().get(level)) {
-            production.add(statHolder);
+        List<StatHolder> statLevels = getStats().getStatsByLevel().get(level);
+        if (statLevels != null) {
+            for (StatHolder statHolder: statLevels) {
+                production.add(statHolder);
+            }
         }
 
         return new StatHolder(resource.getStat(), StatOp.DIFF, production.getValue(resource.getStat()));
@@ -96,6 +103,20 @@ public abstract class Building implements IStat {
 
     public StatHolder getStats(Stats stats) {
         return getAllStats().stream().filter(k -> k.getStat().equals(stats)).findFirst().orElse(null);
+    }
+
+    public StatHolder getAvailableCapacity(Resource resource, int level) {
+        // TODO add logic to check statByLevel (& globalStats ?)
+        ObjectStat capacity = new ObjectStat(resource.getStatMax());
+        List<StatHolder> statMax = getStats()
+                .getStatFunctions()
+                .get(resource.getStatMax());
+        if (statMax != null) {
+            capacity.add(statMax
+                    .get(level)
+            );
+        }
+        return new StatHolder(resource.getStatMax(), StatOp.DIFF, capacity.getValue(resource.getStatMax()));
     }
 
     @Override

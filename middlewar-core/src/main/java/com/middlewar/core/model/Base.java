@@ -101,8 +101,23 @@ public class Base {
         }
     }
 
+    public long getResourceStorageAvailableCapacity(Resource resource) {
+        // TODO : add logic to handle modules effects on capacity
+        ObjectStat capacity = new ObjectStat(resource.getStatMax());
+        capacity.add(resource.getStatMax(), getBaseStat().getValue(resource.getStatMax()));
+
+        for (BuildingInstance buildingInstance : getBuildings()) {
+            capacity.add(buildingInstance.getAvailableCapacity(resource));
+        }
+
+        return ((Number)capacity.getValue(resource.getStatMax())).longValue();
+    }
+
     public double getResourceProduction(Resource resource) {
-        ObjectStat production = new ObjectStat();
+        // TODO : add logic to handle modules effects on production
+        ObjectStat production = new ObjectStat(resource.getStat());
+        production.add(resource.getStat(), getBaseStat().getValue(resource.getStat()));
+
         for (BuildingInstance building : getBuildings()) {
             production.add(building.getProduction(resource));
         }
@@ -110,24 +125,18 @@ public class Base {
         return production.getValue(resource.getStat());
     }
 
-    /**
-     * TODO : We don't use MongoDB anymore so what ?
-     * Base Stats Initializer
-     * Use it when you want to serialize Base or use some stats
-     * Warning: @PostContruct does not work fine with Spring & MongoDB.
-     * That's why we need initialize stats hand made
-     */
+    // TODO : remove that
     public void initializeStats() {
         final ObjectStat stats = getBaseStat();
 
         // Register base stats
         stats.addStat(Stats.BASE_HEALTH);
-        stats.addStat(Stats.BASE_MAX_HEALTH);
+        stats.addStat(Stats.BASE_MAX_HEALTH, Config.BASE_INITIAL_MAX_HEALTH);
         stats.addStat(Stats.BASE_SHIELD);
-        stats.addStat(Stats.BASE_MAX_SHIELD);
+        stats.addStat(Stats.BASE_MAX_SHIELD, Config.BASE_INITIAL_MAX_SHIELD);
 
         stats.addStat(Stats.ENERGY);
-        stats.addStat(Stats.BASE_MAX_STORAGE_VOLUME);
+        stats.addStat(Stats.BASE_MAX_STORAGE_VOLUME, Config.BASE_INITIAL_MAX_RESOURCE_STORAGE);
 
         stats.addStat(Stats.RESOURCE_1);
         stats.addStat(Stats.RESOURCE_2);

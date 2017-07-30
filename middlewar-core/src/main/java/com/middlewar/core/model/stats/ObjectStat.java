@@ -28,15 +28,24 @@ public class ObjectStat {
 
     @ElementCollection
     @MapKeyEnumerated(EnumType.STRING)
-    private Map<Stats, Double> stats;
+    private Map<Stats, Double> stats; // TODO : move this to List<StatHolder>
+
+    public ObjectStat(Stats stats) {
+        setStats(new HashMap<>());
+        addStat(stats);
+    }
 
     public ObjectStat() {
         setStats(new HashMap<>());
     }
 
     public void addStat(final Stats stat) {
+        addStat(stat, 0);
+    }
+
+    public void addStat(final Stats stat, double val) {
         if (!getStats().containsKey(stat))
-            getStats().put(stat, 0D);
+            getStats().put(stat, val);
         else logger.warn("Trying to replace an existing stat (" + stat.name() + "). Abort.");
     }
 
@@ -53,6 +62,7 @@ public class ObjectStat {
     }
 
     public void add(StatHolder statHolder) {
+        if (statHolder == null) return;
         add(statHolder.getStat(), statHolder.getValue(), statHolder.getOp());
     }
 
@@ -72,6 +82,7 @@ public class ObjectStat {
                 break;
             case UNLOCK:
                 addStat(stat);
+                add(stat, val);
                 break;
             default:
                 break;

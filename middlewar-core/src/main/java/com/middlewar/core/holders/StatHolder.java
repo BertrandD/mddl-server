@@ -14,7 +14,7 @@ public class StatHolder {
     private Stats stat;
     private StatOp op;
     private double value; // direct baseStat value
-    private double[] values; // buildings: values indexed by levels
+    private double[] values; // buildings: values indexed by levels // TODO remove this
 
     public StatHolder(Stats stats, StatOp op, double value) {
         setStat(stats);

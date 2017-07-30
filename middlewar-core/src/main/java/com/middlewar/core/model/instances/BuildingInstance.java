@@ -96,8 +96,12 @@ public class BuildingInstance {
         return false;
     }
 
+    public StatHolder getAvailableCapacity(Resource resource) {
+        return getTemplate().getAvailableCapacity(resource, getCurrentLevel());
+    }
+
     public StatHolder getProduction(Resource resource) {
-        ObjectStat production = new ObjectStat();
+        ObjectStat production = new ObjectStat(resource.getStat());
         production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
         production.add(getModulesModifier(resource));
         return new StatHolder(resource.getStat(), StatOp.DIFF, production.getValue(resource.getStat()));

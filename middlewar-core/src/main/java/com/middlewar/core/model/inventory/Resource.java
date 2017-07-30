@@ -1,10 +1,12 @@
 package com.middlewar.core.model.inventory;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.ResourceSerializer;
 import com.middlewar.core.utils.TimeUtil;
@@ -18,6 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -73,24 +76,7 @@ public class Resource {
     }
 
     public long getAvailableCapacity() {
-        // TODO : add logic to handle modules effects on capacity
-        long capacity = (long) getBase()
-                .getBaseStat()
-                .getValue(
-                        Stats.valueOf("MAX_" + getStat()),
-                        0
-                );
-        for (BuildingInstance buildingInstance : getBase().getBuildings()) {
-            StatHolder capaStat = buildingInstance
-                    .getTemplate()
-                    .getStats(
-                            Stats.valueOf("MAX_" + getStat())
-                    );
-            if (capaStat != null) {
-                capacity += capaStat.getValue(buildingInstance.getCurrentLevel());
-            }
-        }
-        return capacity;
+        return base.getResourceStorageAvailableCapacity(this);
     }
 
     public double getProdPerHour() {
