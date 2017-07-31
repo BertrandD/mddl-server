@@ -94,11 +94,13 @@ public abstract class Building implements IStat {
 
 
     @Override
+    @Deprecated
     public List<StatHolder> getAllStats() {
         // Retrieve all stats for each level + global stats (with no level)
         return stats.getAllStats(getMaxLevel());
     }
 
+    @Deprecated
     public StatHolder getStats(Stats stats) {
         return getAllStats().stream().filter(k -> k.getStat().equals(stats)).findFirst().orElse(null);
     }

@@ -6,7 +6,6 @@ import lombok.Data;
 
 /**
  * @author LEBOC Philippe
- * TODO: REFACTOR !
  */
 @Data
 public class StatHolder {
