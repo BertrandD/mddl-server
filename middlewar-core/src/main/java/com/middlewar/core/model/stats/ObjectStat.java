@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.serializer.ObjectStatSerializer;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 
 import javax.persistence.ElementCollection;
@@ -19,13 +20,9 @@ import java.util.Map;
  * @author LEBOC Philippe
  */
 @JsonSerialize(using = ObjectStatSerializer.class)
+@Slf4j
 public class ObjectStat {
 
-    @Transient
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
-
-    @ElementCollection
-    @MapKeyEnumerated(EnumType.STRING)
     private Map<Stats, List<StatHolder>> stats;
 
     public ObjectStat() {
@@ -35,7 +32,7 @@ public class ObjectStat {
     public void unlock(final Stats stat) {
         if (!stats.containsKey(stat))
             stats.put(stat, new ArrayList<>());
-        else logger.warn("Trying to replace an existing stat (" + stat.name() + "). Abort.");
+        else log.warn("Trying to replace an existing stat (" + stat.name() + "). Abort.");
     }
 
     public void unlock(final Stats stat, double val, StatOp op) {
@@ -64,13 +61,13 @@ public class ObjectStat {
         if (stats.containsKey(statHolder.getStat()))
             stats.get(statHolder.getStat()).add(statHolder);
         else
-            logger.warn("Trying to add a not unlocked stat: " + statHolder.getStat().name());
+            log.warn("Trying to add a not unlocked stat: " + statHolder.getStat().name());
     }
 
     public void add(final Stats stat, final double val, final StatOp op) {
 
         if (!stats.containsKey(stat) && op != StatOp.UNLOCK) {
-            logger.warn("Trying an operator on an non unlocked stat: " + stat.name());
+            log.warn("Trying an operator on an non unlocked stat: " + stat.name());
             return;
         }
 

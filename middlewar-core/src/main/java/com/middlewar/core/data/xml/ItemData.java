@@ -19,8 +19,7 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import com.middlewar.core.model.stats.Stats;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -33,9 +32,9 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Slf4j
 public class ItemData implements IXmlReader {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
     private final HashMap<String, GameItem> _all = new HashMap<>();
     private final HashMap<String, Structure> _structures = new HashMap<>();
     private final HashMap<String, Cargo> _cargos = new HashMap<>();
@@ -66,14 +65,14 @@ public class ItemData implements IXmlReader {
 
         parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "stats/items"), true);
 
-        LOGGER.info("Loaded " + _structures.size() + " structures templates.");
-        LOGGER.info("Loaded " + _cargos.size() + " cargos templates.");
-        LOGGER.info("Loaded " + _engines.size() + " engines templates.");
-        LOGGER.info("Loaded " + _modules.size() + " modules templates.");
-        LOGGER.info("Loaded " + _weapons.size() + " weapons templates.");
-        LOGGER.info("Loaded " + _resources.size() + " resources templates.");
-        LOGGER.info("Loaded " + _commons.size() + " commons templates.");
-        LOGGER.info("Loaded " + _all.size() + " items in total.");
+        log.info("Loaded " + _structures.size() + " structures templates.");
+        log.info("Loaded " + _cargos.size() + " cargos templates.");
+        log.info("Loaded " + _engines.size() + " engines templates.");
+        log.info("Loaded " + _modules.size() + " modules templates.");
+        log.info("Loaded " + _weapons.size() + " weapons templates.");
+        log.info("Loaded " + _resources.size() + " resources templates.");
+        log.info("Loaded " + _commons.size() + " commons templates.");
+        log.info("Loaded " + _all.size() + " items in total.");
     }
 
     @Override

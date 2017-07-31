@@ -4,6 +4,7 @@ import com.middlewar.core.config.Config;
 import com.middlewar.core.interfaces.IXmlReader;
 import com.middlewar.core.model.shop.ShopCategory;
 import com.middlewar.core.model.shop.ShopItem;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -18,9 +19,9 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Slf4j
 public class ShopData implements IXmlReader {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass().getSimpleName());
     private final HashMap<ShopCategory, List<ShopItem>> shop = new HashMap<>();
 
     protected ShopData() {
@@ -35,12 +36,12 @@ public class ShopData implements IXmlReader {
     public synchronized void load() {
         shop.clear();
         parseFile(new File(Config.DATA_ROOT_DIRECTORY + "shop.xml"));
-        logger.info("Loaded " + shop.size() + " shop categories");
+        log.info("Loaded " + shop.size() + " shop categories");
         long shopItemCount = 0;
         for (List<ShopItem> list : shop.values()) {
             shopItemCount += list.size();
         }
-        logger.info("Loaded " + shopItemCount + " items in shop");
+        log.info("Loaded " + shopItemCount + " items in shop");
     }
 
     @Override

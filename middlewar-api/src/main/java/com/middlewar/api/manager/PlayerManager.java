@@ -12,6 +12,7 @@ import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ import java.util.List;
  * @author Bertrand
  */
 @Service
+@Slf4j
 public class PlayerManager {
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
     @Autowired
     private PlayerService playerService;
@@ -87,7 +88,7 @@ public class PlayerManager {
         if (Config.FORBIDDEN_NAMES.length > 1) {
             for (String st : Config.FORBIDDEN_NAMES) {
                 if (name.toLowerCase().contains(st.toLowerCase())) {
-                    logger.info("Player creation failed for account [ " + account.getUsername() + " ] : Forbidden name.");
+                    log.info("Player creation failed for account [ " + account.getUsername() + " ] : Forbidden name.");
                     throw new ForbiddenNameException();
                 }
             }
@@ -97,7 +98,7 @@ public class PlayerManager {
         final Player player = playerService.create(account, name);
         if (player == null) throw new PlayerCreationFailedException();
 
-        logger.info("Player creation success : " + player.getName() + ".");
+        log.info("Player creation success : " + player.getName() + ".");
 
         return player;
     }

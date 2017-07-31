@@ -19,8 +19,7 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.utils.Evaluator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -36,9 +35,8 @@ import java.util.stream.Collectors;
 /**
  * @author LEBOC Philippe
  */
+@Slf4j
 public class BuildingData implements IXmlReader {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
 
     private final HashMap<String, Building> _buildings = new HashMap<>();
 
@@ -54,7 +52,7 @@ public class BuildingData implements IXmlReader {
     public synchronized void load() {
         _buildings.clear();
         parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "stats/buildings"), true);
-        LOGGER.info("Loaded " + _buildings.size() + " buildings Templates.");
+        log.info("Loaded " + _buildings.size() + " buildings Templates.");
     }
 
     @Override

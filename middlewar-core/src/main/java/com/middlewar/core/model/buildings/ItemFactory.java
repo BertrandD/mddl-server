@@ -6,6 +6,7 @@ import com.middlewar.core.holders.PropertyHolder;
 import com.middlewar.core.holders.PropertyListHolder;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.items.Item;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +15,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 
+@Slf4j
 public abstract class ItemFactory<T extends Item> extends Building {
 
-    private static final Logger logger = Logger.getLogger(Building.class.getName());
     private HashMap<Integer, List<T>> itemsByLevel;
 
     public ItemFactory(StatsSet set) {
@@ -28,7 +29,7 @@ public abstract class ItemFactory<T extends Item> extends Building {
         setItemsByLevel(new HashMap<>());
 
         if (properties == null || properties.getPropertiesByLevel() == null) {
-            logger.warning("PropertyByLevel is null !");
+            log.warn("PropertyByLevel is null !");
             return;
         }
 
@@ -71,7 +72,7 @@ public abstract class ItemFactory<T extends Item> extends Building {
                         item = (T) ItemData.getInstance().getStructure(propertyHolder.getValue());
                         break;
                     default:
-                        logger.warning("Unknown propertyHolder name '" + propertyHolder.getName() + "' !");
+                        log.warn("Unknown propertyHolder name '" + propertyHolder.getName() + "' !");
                         break;
                 }
                 if (item != null) {
