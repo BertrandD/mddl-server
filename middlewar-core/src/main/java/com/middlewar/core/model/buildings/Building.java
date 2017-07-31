@@ -4,21 +4,19 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.enums.Lang;
-import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.interfaces.IStat;
 import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.stats.BuildingStats;
-import com.middlewar.core.model.stats.ObjectStat;
+import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BuildingSerializer;
 import lombok.Data;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author LEBOC Philippe
@@ -52,7 +50,7 @@ public abstract class Building implements IStat {
 
 
     public StatHolder getProductionAtLevel(Resource resource, int level) {
-        ObjectStat production = new ObjectStat(resource.getStat());
+        StatCalculator production = new StatCalculator(resource.getStat());
 
         List<StatHolder> statFunctions = getStats().getStatFunctions().get(resource.getStat());
         if (statFunctions != null) {
@@ -68,7 +66,7 @@ public abstract class Building implements IStat {
             }
         }
 
-        return new StatHolder(resource.getStat(), StatOp.DIFF, production.getValue(resource.getStat()));
+        return production.toStatHolder();
     }
 
     public long getUseEnergyAtLevel(int level) {
@@ -82,9 +80,9 @@ public abstract class Building implements IStat {
         else return 0;
     }
 
-    public void handleEffect(final ObjectStat stats, int level) {
-        this.getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
-    }
+//    public void handleEffect(final ObjectStat stats, int level) {
+//        this.getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
+//    }
 
     public String getName() {
         return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
@@ -107,16 +105,14 @@ public abstract class Building implements IStat {
 
     public StatHolder getAvailableCapacity(Resource resource, int level) {
         // TODO add logic to check statByLevel (& globalStats ?)
-        ObjectStat capacity = new ObjectStat(resource.getStatMax());
+        StatCalculator capacity = new StatCalculator(resource.getStatMax());
         List<StatHolder> statMax = getStats()
                 .getStatFunctions()
                 .get(resource.getStatMax());
         if (statMax != null) {
-            capacity.add(statMax
-                    .get(level)
-            );
+            capacity.add(statMax.get(level));
         }
-        return new StatHolder(resource.getStatMax(), StatOp.DIFF, capacity.getValue(resource.getStatMax()));
+        return capacity.toStatHolder();
     }
 
     @Override

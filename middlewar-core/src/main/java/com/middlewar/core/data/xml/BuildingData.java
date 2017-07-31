@@ -160,12 +160,12 @@ public class BuildingData implements IXmlReader {
                                             int count = set.getInt("maxLevel");
                                             for (int i = 0; i < count; i++) {
                                                 final String func = function.replace("$level", "" + (i + 1));
-                                                statHolders.add(new StatHolder(baseStat, op, ((Number) Evaluator.getInstance().eval(func)).doubleValue()));
+                                                statHolders.add(new StatHolder(baseStat, ((Number) Evaluator.getInstance().eval(func)).doubleValue(), op));
                                             }
                                         } else {
                                             final int reqBuildingLevel = parseInteger(attrs, "requiredBuildingLevel", 0);
                                             final int value = parseInteger(attrs, "value");
-                                            StatHolder holder = new StatHolder(baseStat, op, value);
+                                            StatHolder holder = new StatHolder(baseStat, value, op);
                                             if (reqBuildingLevel != 0) {
                                                 if (stats.getStatsByLevel().containsKey(reqBuildingLevel))
                                                     stats.getStatsByLevel().get(reqBuildingLevel).add(holder);

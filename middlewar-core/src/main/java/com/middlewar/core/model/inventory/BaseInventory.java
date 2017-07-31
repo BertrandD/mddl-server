@@ -1,6 +1,7 @@
 package com.middlewar.core.model.inventory;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
@@ -33,11 +34,7 @@ public class BaseInventory extends Inventory {
 
     @Override
     public long getAvailableCapacity() {
-        Double capaStats = getBase().getBaseStat().getStats().get(Stats.BASE_MAX_STORAGE_VOLUME);
-        if (capaStats != null) {
-            return capaStats.longValue();
-        }
-        return 0L;
+        return ((Number)getBase().getBaseStat().getValue(Stats.BASE_MAX_STORAGE_VOLUME, Config.BASE_INITIAL_MAX_RESOURCE_STORAGE)).longValue();
     }
 
     @Override

@@ -10,16 +10,16 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
-import com.middlewar.core.model.stats.ObjectStat;
+import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,13 +101,14 @@ public class BuildingInstance {
     }
 
     public StatHolder getProduction(Resource resource) {
-        ObjectStat production = new ObjectStat(resource.getStat());
+        StatCalculator production = new StatCalculator(resource.getStat());
         production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
         production.add(getModulesModifier(resource));
-        return new StatHolder(resource.getStat(), StatOp.DIFF, production.getValue(resource.getStat()));
+        return production.toStatHolder();
     }
 
     private StatHolder getModulesModifier(Resource resource) {
-        return new StatHolder(resource.getStat(), StatOp.PER, 1);
+        // TODO getModulesModifier
+        return new StatHolder(resource.getStat(), 1, StatOp.PER);
     }
 }
