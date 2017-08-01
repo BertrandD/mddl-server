@@ -2,8 +2,8 @@ package com.middlewar.controllers;
 
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.PlanetScanReportService;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.services.impl.PlanetScanReportServiceImpl;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -39,7 +39,7 @@ public class SpaceController {
     private AstralObjectService astralObjectService;
 
     @Autowired
-    private PlanetScanReportServiceImpl planetScanReportServiceImpl;
+    private PlanetScanReportService planetScanReportService;
 
     @RequestMapping(value = "/system", method = RequestMethod.GET)
     public Response findMySystem(@AuthenticationPrincipal Account pAccount) {
@@ -74,7 +74,7 @@ public class SpaceController {
             return new Response<>(JsonResponseType.ERROR, "Not a planet");
         }
 
-        PlanetScanReport report = planetScanReportServiceImpl.create(player, player.getCurrentBase(), (Planet) planet);
+        PlanetScanReport report = planetScanReportService.create(player, player.getCurrentBase(), (Planet) planet);
         Response response = new Response<>(report);
         response.addMeta("player", player);
         return response;

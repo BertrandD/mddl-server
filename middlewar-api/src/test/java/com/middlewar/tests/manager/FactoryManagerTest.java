@@ -18,6 +18,7 @@ import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
 import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -152,7 +153,7 @@ public class FactoryManagerTest {
     public void createItemShouldConsumeResourceAndReturnItem() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
         _structureFactory.setCurrentLevel(2);
         Resource resource1 = inventoryService.createNewResource(_base, "resource_1");
-        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, 1000);
+        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, 1000 - Config.BASE_INITIAL_MAX_RESOURCE_STORAGE);
         boolean add = inventoryService.addResource(resource1, 500);
         Assertions.assertThat(add).isTrue();
         ItemInstance itemInstance = factoryManager.createStructure(_base, _structureFactory.getId(), "structure_test");

@@ -1,20 +1,21 @@
 package com.middlewar.core.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * Simplifies loading of property files and adds logging if a non existing property is requested.
  *
  * @author NosBit
  */
+@Slf4j
 public final class PropertiesParser {
-    private static final Logger _log = Logger.getLogger(PropertiesParser.class.getName());
 
     private final Properties _properties = new Properties();
     private final File _file;
@@ -30,7 +31,7 @@ public final class PropertiesParser {
                 _properties.load(inputStreamReader);
             }
         } catch (Exception e) {
-            _log.warning("[" + _file.getName() + "] There was an error loading config reason: " + e.getMessage());
+            log.warn("[" + _file.getName() + "] There was an error loading config reason: " + e.getMessage());
         }
     }
 
@@ -46,7 +47,7 @@ public final class PropertiesParser {
     public boolean getBoolean(String key, boolean defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
@@ -55,7 +56,7 @@ public final class PropertiesParser {
         } else if (value.equalsIgnoreCase("false")) {
             return false;
         } else {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"boolean\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"boolean\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -63,14 +64,14 @@ public final class PropertiesParser {
     public byte getByte(String key, byte defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
         try {
             return Byte.parseByte(value);
         } catch (NumberFormatException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"byte\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"byte\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -78,14 +79,14 @@ public final class PropertiesParser {
     public short getShort(String key, short defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
         try {
             return Short.parseShort(value);
         } catch (NumberFormatException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"short\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"short\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -93,14 +94,14 @@ public final class PropertiesParser {
     public int getInt(String key, int defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"int\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"int\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -108,14 +109,14 @@ public final class PropertiesParser {
     public long getLong(String key, long defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"long\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"long\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -123,14 +124,14 @@ public final class PropertiesParser {
     public float getFloat(String key, float defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
         try {
             return Float.parseFloat(value);
         } catch (NumberFormatException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"float\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"float\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -138,14 +139,14 @@ public final class PropertiesParser {
     public double getDouble(String key, double defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
         try {
             return Double.parseDouble(value);
         } catch (NumberFormatException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"double\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be \"double\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -153,7 +154,7 @@ public final class PropertiesParser {
     public String getString(String key, String defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
         return value;
@@ -162,14 +163,14 @@ public final class PropertiesParser {
     public <T extends Enum<T>> T getEnum(String key, Class<T> clazz, T defaultValue) {
         final String value = getValue(key);
         if (value == null) {
-            _log.warning("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] missing property for key: " + key + " using default value: " + defaultValue);
             return defaultValue;
         }
 
         try {
             return Enum.valueOf(clazz, value);
         } catch (IllegalArgumentException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be enum value of \"" + clazz.getSimpleName() + "\" using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + key + " specified value: " + value + " should be enum value of \"" + clazz.getSimpleName() + "\" using default value: " + defaultValue);
             return defaultValue;
         }
     }
@@ -194,7 +195,7 @@ public final class PropertiesParser {
         try {
             return TimeUtil.parseDuration(value);
         } catch (IllegalStateException e) {
-            _log.warning("[" + _file.getName() + "] Invalid value specified for key: " + durationPattern + " specified value: " + value + " should be time patttern using default value: " + defaultValue);
+            log.warn("[" + _file.getName() + "] Invalid value specified for key: " + durationPattern + " specified value: " + value + " should be time patttern using default value: " + defaultValue);
         }
         return defaultDuration;
     }

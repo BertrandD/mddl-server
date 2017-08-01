@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.buildings.ModuleFactory;
@@ -50,17 +49,17 @@ public class BuildingSerializer extends JsonSerializer<Building> {
             gen.writeNumberField("maxModules", 0);
         }
 
-        if (!value.getAllStats().isEmpty()) {
-            gen.writeObjectFieldStart("stats");
-            for (StatHolder holder : value.getAllStats()) {
-                gen.writeArrayFieldStart(holder.getStat().name());
-                for (double v : holder.getValues()) {
-                    gen.writeNumber(v);
-                }
-                gen.writeEndArray();
-            }
-            gen.writeEndObject();
-        }
+//        if (!value.getAllStats().isEmpty()) {
+//            gen.writeObjectFieldStart("stats");
+//            for (StatHolder holder : value.getAllStats()) {
+//                gen.writeArrayFieldStart(holder.getStat().name());
+//                for (double v : holder.getValues()) {
+//                    gen.writeNumber(v);
+//                }
+//                gen.writeEndArray();
+//            }
+//            gen.writeEndObject();
+//        }
 
         if (value instanceof ModuleFactory) {
             gen.writeObjectFieldStart("unlockModules");

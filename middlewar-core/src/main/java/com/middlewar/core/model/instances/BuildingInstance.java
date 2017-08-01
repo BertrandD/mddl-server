@@ -4,18 +4,22 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
+import com.middlewar.core.enums.StatOp;
+import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
+import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,5 +94,21 @@ public class BuildingInstance {
             return (this.id == building.id);
         }
         return false;
+    }
+
+    public StatHolder getAvailableCapacity(Resource resource) {
+        return getTemplate().getAvailableCapacity(resource, getCurrentLevel());
+    }
+
+    public StatHolder getProduction(Resource resource) {
+        StatCalculator production = new StatCalculator(resource.getStat());
+        production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
+        production.add(getModulesModifier(resource));
+        return production.toStatHolder();
+    }
+
+    private StatHolder getModulesModifier(Resource resource) {
+        // TODO getModulesModifier
+        return new StatHolder(resource.getStat(), 1, StatOp.PER);
     }
 }

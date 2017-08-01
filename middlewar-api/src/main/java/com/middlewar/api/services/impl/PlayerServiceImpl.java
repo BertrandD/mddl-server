@@ -6,6 +6,7 @@ import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.model.inventory.PlayerInventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,9 @@ public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> imp
         account.addPlayer(player);
         account.setCurrentPlayer(player.getId());
 
-        playerInventoryService.create(player);
+        PlayerInventory playerInventory = playerInventoryService.create(player);
+        player.setInventory(playerInventory);
+        repository.save(player);
 
         return player;
     }

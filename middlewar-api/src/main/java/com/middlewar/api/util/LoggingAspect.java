@@ -1,20 +1,18 @@
 package com.middlewar.api.util;
 
 import com.middlewar.api.annotations.Dev;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 @Dev
+@Slf4j
 public class LoggingAspect {
-
-    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     // Cette méthode est appelée à chaque fois (et avant) qu'une méthode controller soit executée
     @Before("execution(* com.middlewar.api.gameserver.controllers.*.*(..))")
@@ -35,7 +33,7 @@ public class LoggingAspect {
         }
         sb.append("]");
 
-        logger.info(sb.toString());
+        log.info(sb.toString());
     }
 
     @AfterReturning(pointcut = "execution(* com.middlewar.api.gameserver.controllers.*.*(..))", returning = "result")
@@ -43,6 +41,6 @@ public class LoggingAspect {
         // Nom de la méthode interceptée
         String name = joinPoint.getSignature().getName();
         String className = joinPoint.getSignature().getDeclaringTypeName();
-        logger.info(className + " > " + name + " End - returning: [" + result + "]");
+        log.info(className + " > " + name + " End - returning: [" + result + "]");
     }
 }

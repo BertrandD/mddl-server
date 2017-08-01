@@ -1,6 +1,6 @@
 package com.middlewar.core.utils;
 
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -9,9 +9,9 @@ import javax.script.ScriptException;
 /**
  * @author LEBOC Philippe
  */
+@Slf4j
 public class Evaluator {
 
-    private final Logger LOGGER = Logger.getLogger(getClass().getSimpleName());
     private final ScriptEngineManager manager = new ScriptEngineManager();
     private final ScriptEngine engine = manager.getEngineByName("js");
 
@@ -27,7 +27,7 @@ public class Evaluator {
         try {
             result = engine.eval(expression);
         } catch (ScriptException e) {
-            LOGGER.error("Expression [" + expression + "] cannot be evaluated.");
+            log.error("Expression [" + expression + "] cannot be evaluated.");
             result = null;
         }
         return result;

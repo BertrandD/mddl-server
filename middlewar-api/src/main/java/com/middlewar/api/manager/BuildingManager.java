@@ -37,11 +37,6 @@ import java.util.List;
  */
 @Service
 public class BuildingManager {
-    @Autowired
-    private BaseManager baseManager;
-
-    @Autowired
-    private PlayerManager playerManager;
 
     @Autowired
     private BuildingService buildingService;

@@ -9,6 +9,7 @@ import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -187,7 +188,7 @@ public class InventoryServiceTest {
         final long amount = max + siloCapacity + 100;
 
         Resource resource = inventoryService.createNewResource(_base, _itemTemplate);
-        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, max);
+        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, max - Config.BASE_INITIAL_MAX_RESOURCE_STORAGE);
         BuildingInstance buildingInstance = buildingService.create(_base, "silo");
         buildingInstance.setCurrentLevel(1);
         _base.addBuilding(buildingInstance);
@@ -216,8 +217,9 @@ public class InventoryServiceTest {
 
     private Resource initResource(long amount, long max) {
         Resource resource = inventoryService.createNewResource(_base, _itemTemplate);
-        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, max);
+        _base.getBaseStat().add(Stats.MAX_RESOURCE_1, max - Config.BASE_INITIAL_MAX_RESOURCE_STORAGE);
         Assertions.assertThat(resource).isNotNull();
+        Assertions.assertThat(_base.getBaseStat().getValue(Stats.MAX_RESOURCE_1)).isEqualTo(max);
 
         boolean result = inventoryService.addResource(resource, amount);
         Assertions.assertThat(result).isTrue();
