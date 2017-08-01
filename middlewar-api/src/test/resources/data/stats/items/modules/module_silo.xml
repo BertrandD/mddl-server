@@ -3,27 +3,17 @@
     <!-- Silo specialization -->
     <item id="module_silo_improve_1" nameId="module_silo_improve_1_n" type="MODULE" descriptionId="module_silo_improve_1_d" >
         <stats>
-            <stat name="MAX_RESOURCE_1" op="UNLOCK" />
+            <stat name="MAX_RESOURCE_1" op="DIFF" value="50" />
+        </stats>
+    </item>
+    <item id="module_silo_improve_1_2" nameId="module_silo_improve_1_n" type="MODULE" descriptionId="module_silo_improve_1_d" >
+        <stats>
+            <stat name="MAX_RESOURCE_1" op="PER" value="1.5" />
         </stats>
     </item>
     <item id="module_silo_improve_2" nameId="module_silo_improve_2_n" type="MODULE" descriptionId="module_silo_improve_2_d" >
         <stats>
             <stat name="MAX_RESOURCE_2" op="UNLOCK" />
-        </stats>
-    </item>
-    <item id="module_silo_improve_3" nameId="module_silo_improve_3_n" type="MODULE" descriptionId="module_silo_improve_3_d" >
-        <stats>
-            <stat name="MAX_RESOURCE_3" op="UNLOCK" />
-        </stats>
-    </item>
-    <item id="module_silo_improve_4" nameId="module_silo_improve_4_n" type="MODULE" descriptionId="module_silo_improve_4_d" >
-        <stats>
-            <stat name="MAX_RESOURCE_4" op="UNLOCK" />
-        </stats>
-    </item>
-    <item id="module_silo_improve_5" nameId="module_silo_improve_5_n" type="MODULE" descriptionId="module_silo_improve_5_d" >
-        <stats>
-            <stat name="MAX_RESOURCE_5" op="UNLOCK" />
         </stats>
     </item>
 </list>

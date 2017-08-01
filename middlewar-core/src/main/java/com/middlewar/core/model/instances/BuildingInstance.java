@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -97,18 +98,69 @@ public class BuildingInstance {
     }
 
     public StatHolder getAvailableCapacity(Resource resource) {
-        return getTemplate().getAvailableCapacity(resource, getCurrentLevel());
+
+        // If the buildingInstance has 3 modules :
+        // 2 modules giving +50% each of bonus (so a total of +100%)        <-- getModulesCapacityModifier()
+        // 1 module giving a raw +50 capacity bonus (StatOp.DIFF)           <-- getModulesCapacityBonus()
+        //     |-> N.B. : Raw bonuses are not affected by other modules
+        // And the basic availableCapacity of the building is 1000
+        // So, the formula is : 1000 * (1 + 0.5 + 0.5) + 50 = 2050
+
+        StatCalculator capacity = new StatCalculator(resource.getStatMax());
+        capacity.add(getTemplate().getAvailableCapacity(resource, getCurrentLevel()));
+        capacity.add(getModulesCapacityModifier(resource));
+        capacity.add(getModulesCapacityBonus(resource));
+        return capacity.toStatHolder();
+    }
+
+    private StatHolder getModulesCapacityModifier(Resource resource) {
+        StatCalculator capacity = new StatCalculator(resource.getStatMax());
+        capacity.add(1, StatOp.DIFF);
+
+        for (Module module: getModules()) {
+            List<StatHolder> stats = module
+                    .getAllStats()
+                    .stream()
+                    .filter(
+                            k -> k.getStat().equals(resource.getStatMax()) && k.getOp().equals(StatOp.PER)
+                    )
+                    .collect(Collectors.toList());
+            for (StatHolder stat: stats) {
+                capacity.add(stat.getValue() - 1, StatOp.DIFF);
+            }
+        }
+
+        return capacity.toStatHolder(StatOp.PER);
+    }
+
+    private StatHolder getModulesCapacityBonus(Resource resource) {
+        StatCalculator capacity = new StatCalculator(resource.getStatMax());
+
+        for (Module module: getModules()) {
+            List<StatHolder> stats = module
+                    .getAllStats()
+                    .stream()
+                    .filter(
+                            k -> k.getStat().equals(resource.getStatMax()) && k.getOp().equals(StatOp.DIFF)
+                    )
+                    .collect(Collectors.toList());
+            for (StatHolder stat: stats) {
+                capacity.add(stat);
+            }
+        }
+
+        return capacity.toStatHolder(StatOp.DIFF);
     }
 
     public StatHolder getProduction(Resource resource) {
         StatCalculator production = new StatCalculator(resource.getStat());
         production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
-        production.add(getModulesModifier(resource));
+        production.add(getModulesProductionModifier(resource));
         return production.toStatHolder();
     }
 
-    private StatHolder getModulesModifier(Resource resource) {
-        // TODO getModulesModifier
+    private StatHolder getModulesProductionModifier(Resource resource) {
+        // TODO getModulesProductionModifier
         return new StatHolder(resource.getStat(), 1, StatOp.PER);
     }
 }

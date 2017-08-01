@@ -9,6 +9,7 @@ import com.middlewar.core.interfaces.IStat;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.serializer.GameItemSerializer;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
+@Data
 @JsonSerialize(using = GameItemSerializer.class)
 public abstract class GameItem implements IStat {
 
@@ -39,34 +41,10 @@ public abstract class GameItem implements IStat {
         setStats(new ArrayList<>());
     }
 
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
-
     public String getName() {
         final String name = SystemMessageData.getInstance().getMessage(getLang(), getNameId());
         if (name == null) return "Unamed item [" + getItemId() + "]";
         return name;
-    }
-
-    public String getNameId() {
-        return nameId;
-    }
-
-    public void setNameId(String name) {
-        this.nameId = name;
-    }
-
-    public ItemType getType() {
-        return type;
-    }
-
-    public void setType(ItemType type) {
-        this.type = type;
     }
 
     public String getDescription() {
@@ -75,38 +53,7 @@ public abstract class GameItem implements IStat {
         return descr;
     }
 
-    public String getDescriptionId() {
-        return descriptionId;
-    }
-
-    public void setDescriptionId(String descriptionId) {
-        this.descriptionId = descriptionId;
-    }
-
-    public long getWeight() {
-        return weight;
-    }
-
-    public void setWeight(long weight) {
-        this.weight = weight;
-    }
-
-    public long getVolume() {
-        return volume;
-    }
-
-    public void setVolume(long volume) {
-        this.volume = volume;
-    }
-
-    public Lang getLang() {
-        return lang;
-    }
-
-    public void setLang(Lang lang) {
-        this.lang = lang;
-    }
-
+    @Deprecated
     public void handleEffect(final ObjectStat stats) {
         getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(), stat.getOp()));
     }
@@ -114,10 +61,6 @@ public abstract class GameItem implements IStat {
     @Override
     public List<StatHolder> getAllStats() {
         return stats;
-    }
-
-    public void setStats(List<StatHolder> stats) {
-        this.stats = stats;
     }
 
     @Override

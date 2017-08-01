@@ -96,7 +96,6 @@ public class Base {
     }
 
     public long getResourceStorageAvailableCapacity(Resource resource) {
-        // TODO : add logic to handle modules effects on capacity
         StatCalculator capacity = new StatCalculator(resource.getStatMax());
         capacity.add(getBaseStat().getValue(resource.getStatMax()));
 
