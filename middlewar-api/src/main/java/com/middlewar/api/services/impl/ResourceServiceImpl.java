@@ -32,10 +32,10 @@ public class ResourceServiceImpl extends DefaultServiceImpl<Resource, ResourceDa
         final ItemInstance item = itemService.create(base.getBaseInventory(), itemId, 0);
         final Resource resource = resourceDao.save(new Resource(base, item));
         base.addResource(resource);
-        // original production
-        base.getBaseStat().add(resource.getStat(), 0, StatOp.UNLOCK);
-        // original max stored
-        base.getBaseStat().add(resource.getStatMax(), Config.BASE_INITIAL_MAX_RESOURCE_STORAGE, StatOp.UNLOCK);
+        // original production = 0
+        base.getBaseStat().unlock(resource.getStat());
+        // original max stored = BASE_INITIAL_MAX_RESOURCE_STORAGE
+        base.getBaseStat().unlock(resource.getStatMax(), Config.BASE_INITIAL_MAX_RESOURCE_STORAGE, StatOp.DIFF);
         baseDao.save(base);
 
         return resource;
