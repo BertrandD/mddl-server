@@ -104,7 +104,7 @@ public class Base {
             capacity.add(buildingInstance.getAvailableCapacity(resource));
         }
 
-        return ((Number)capacity.getValue()).longValue();
+        return ((Number) capacity.getValue()).longValue();
     }
 
     public double getResourceProduction(Resource resource) {

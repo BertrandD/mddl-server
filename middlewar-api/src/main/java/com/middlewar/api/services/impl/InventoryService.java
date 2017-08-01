@@ -17,8 +17,6 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,12 +54,12 @@ public class InventoryService implements IInventoryService {
 
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
         if (template == null) {
-            log.info("Template "+templateId+" nod found");
+            log.info("Template " + templateId + " nod found");
             return null;
         }
 
         if (amount <= 0) {
-            log.info("Not allowed to add a null or negative amount of " + templateId + ". Given "+amount);
+            log.info("Not allowed to add a null or negative amount of " + templateId + ". Given " + amount);
             return null;
         }
 

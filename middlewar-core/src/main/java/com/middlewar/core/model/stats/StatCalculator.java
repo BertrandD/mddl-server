@@ -56,7 +56,7 @@ public class StatCalculator {
 
     public double calc(List<StatHolder> statHolders) {
         if (statHolders == null) return 0;
-        for (StatHolder statHolder: statHolders) {
+        for (StatHolder statHolder : statHolders) {
             this.add(statHolder);
         }
         return getValue();

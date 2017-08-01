@@ -2,7 +2,6 @@ package com.middlewar.api.services.impl;
 
 import com.middlewar.api.dao.PlayerInventoryDao;
 import com.middlewar.api.services.PlayerInventoryService;
-import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import org.springframework.beans.factory.annotation.Autowired;

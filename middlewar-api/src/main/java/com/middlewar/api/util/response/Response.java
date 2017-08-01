@@ -57,12 +57,12 @@ public class Response<T> {
         return status;
     }
 
-    public void setStatus(JsonResponseType status) {
-        setStatus(status.getName());
-    }
-
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setStatus(JsonResponseType status) {
+        setStatus(status.getName());
     }
 
     public T getPayload() {

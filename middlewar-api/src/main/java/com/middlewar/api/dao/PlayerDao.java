@@ -10,5 +10,6 @@ import java.util.List;
  */
 public interface PlayerDao extends JpaRepository<Player, Long> {
     List<Player> findByAccountId(long accountId);
+
     Player findByName(String name);
 }

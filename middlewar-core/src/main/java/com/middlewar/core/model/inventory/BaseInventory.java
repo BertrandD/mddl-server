@@ -34,7 +34,7 @@ public class BaseInventory extends Inventory {
 
     @Override
     public long getAvailableCapacity() {
-        return ((Number)getBase().getBaseStat().getValue(Stats.BASE_MAX_STORAGE_VOLUME, Config.BASE_INITIAL_MAX_RESOURCE_STORAGE)).longValue();
+        return ((Number) getBase().getBaseStat().getValue(Stats.BASE_MAX_STORAGE_VOLUME, Config.BASE_INITIAL_MAX_RESOURCE_STORAGE)).longValue();
     }
 
     @Override

@@ -5,12 +5,7 @@ import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.serializer.ObjectStatSerializer;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.EnumType;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

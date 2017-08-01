@@ -5,8 +5,6 @@ import com.middlewar.core.interfaces.IXmlReader;
 import com.middlewar.core.model.shop.ShopCategory;
 import com.middlewar.core.model.shop.ShopItem;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

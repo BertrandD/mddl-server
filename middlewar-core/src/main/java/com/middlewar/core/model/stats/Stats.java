@@ -1,7 +1,5 @@
 package com.middlewar.core.model.stats;
 
-import com.middlewar.core.config.Config;
-
 /**
  * @author LEBOC Philippe
  */

@@ -9,7 +9,6 @@ import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.Resource;
-import com.middlewar.core.model.stats.Stats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

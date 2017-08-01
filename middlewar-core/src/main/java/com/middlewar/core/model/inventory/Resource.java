@@ -1,12 +1,8 @@
 package com.middlewar.core.model.inventory;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.enums.StatOp;
-import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
-import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.ResourceSerializer;
 import com.middlewar.core.utils.TimeUtil;
@@ -20,7 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import java.util.List;
 
 /**
  * @author LEBOC Philippe
