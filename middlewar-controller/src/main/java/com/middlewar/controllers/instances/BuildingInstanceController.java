@@ -50,7 +50,7 @@ public class BuildingInstanceController {
         return controllerManagerWrapper.wrap(() -> buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(value = "/me/base/{baseId}/building/{id}/attach/module/{module}")
+    @RequestMapping(value = "/me/base/{baseId}/building/{id}/attach/module/{module}", method = RequestMethod.PUT)
     public Response attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long buildingInstId, @PathVariable("module") String moduleId) {
         return controllerManagerWrapper.wrap(() -> buildingManager.attachModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), buildingInstId, moduleId));
     }

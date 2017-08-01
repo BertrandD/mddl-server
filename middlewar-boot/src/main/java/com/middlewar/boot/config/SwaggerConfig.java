@@ -20,7 +20,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.middlewar"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
@@ -28,11 +28,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Middlawar API documentation",
+                "Middlewar API documentation",
                 "This documentation provide informations about requests to the server API.",
                 "1.0.0",
                 "#",
-                new Contact("MiddlawarTeam", "#", ""),
+                new Contact("Middlewar Team", "#", ""),
                 "", "#"
         );
     }
