@@ -33,8 +33,8 @@ public class SystemMessageData implements IXmlReader {
         _english.clear();
         _french.clear();
         parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "messages"), false);
-        log.info(" Loaded " + _english.size() + " English System Messages.");
-        log.info(" Loaded " + _french.size() + " French System Messages.");
+        log.info("Loaded " + _english.size() + " English System Messages.");
+        log.info("Loaded " + _french.size() + " French System Messages.");
     }
 
     @Override

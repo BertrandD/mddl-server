@@ -17,14 +17,8 @@ public class PlayerInventoryServiceImpl extends DefaultServiceImpl<PlayerInvento
     @Autowired
     private PlayerInventoryDao playerInventoryDao;
 
-    @Autowired
-    private PlayerService playerService;
-
     @Override
     public PlayerInventory create(Player player) {
-        final PlayerInventory inventory = playerInventoryDao.save(new PlayerInventory(player));
-        if (inventory != null) player.setInventory(inventory);
-        playerService.update(player);
-        return inventory;
+        return playerInventoryDao.save(new PlayerInventory(player));
     }
 }
