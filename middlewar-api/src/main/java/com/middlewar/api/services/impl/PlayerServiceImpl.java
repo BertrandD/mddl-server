@@ -19,7 +19,7 @@ import java.util.List;
 public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> implements PlayerService {
 
     @Autowired
-    private PlayerDao repository;
+    private PlayerDao playerRepository;
 
     @Autowired
     private AccountService accountService;
@@ -34,7 +34,7 @@ public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> imp
         final Account playerAccount = accountService.findOne(account.getId());
         if (playerAccount == null) return null;
 
-        final Player player = repository.save(new Player(account, name));
+        final Player player = playerRepository.save(new Player(account, name));
 
         // Update database account
         playerAccount.addPlayer(player);
@@ -54,11 +54,11 @@ public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> imp
 
     @Override
     public List<Player> findByAccount(Account account) {
-        return repository.findByAccountId(account.getId());
+        return playerRepository.findByAccountId(account.getId());
     }
 
     @Override
     public Player findByName(String name) {
-        return repository.findByName(name);
+        return playerRepository.findByName(name);
     }
 }

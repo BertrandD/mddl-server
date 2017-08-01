@@ -27,7 +27,6 @@ public class Application extends AsyncConfigurerSupport {
 
     public static void main(String[] args) {
         // Spring
-        System.setProperty("spring.config.location", Config.APPLICATION_CONFIG_LOCATION);
         SpringApplication.run(Application.class, args);
     }
 

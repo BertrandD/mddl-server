@@ -33,7 +33,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/resources</outputDirectory>
+                            <outputDirectory>src/main/resources</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/test/resources</directory>
