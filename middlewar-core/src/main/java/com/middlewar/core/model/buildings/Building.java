@@ -54,9 +54,7 @@ public abstract class Building implements IStat {
 
         List<StatHolder> statFunctions = getStats().getStatFunctions().get(resource.getStat());
         if (statFunctions != null) {
-            for (StatHolder statHolder : statFunctions) {
-                production.add(statHolder);
-            }
+            production.add(statFunctions.get(level));
         }
 
         List<StatHolder> statLevels = getStats().getStatsByLevel().get(level);

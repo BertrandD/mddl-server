@@ -8,9 +8,7 @@
             <set fromLevel="2" function="100 + ($level * 125)" />
         </energy>
         <stats>
-            <stat name="RESOURCE_1" function="(18*Math.pow($level,2)+150)" op="DIFF" />
-            <stat name="RESOURCE_2" function="(18*Math.pow($level,2)+150)" op="DIFF" />
-            <stat name="RESOURCE_3" function="(18*Math.pow($level,2)+150)" op="DIFF" />
+            <stat name="RESOURCE_1" function="1000" op="DIFF" />
         </stats>
         <modules max="2">
             <module id="module_optimizer_1" />
