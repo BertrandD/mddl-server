@@ -49,4 +49,16 @@ public class BaseTest {
         Assertions.assertThat(_base.getResourceStorageAvailableCapacity(resource)).isEqualTo(2050);
     }
 
+
+    @Test
+    public void shouldComputeResourceProduction() {
+        Resource resource = new Resource(_base, new ItemInstance(_base.getBaseInventory(), "resource_1", 0));
+        BuildingInstance buildingInstance = new BuildingInstance(_base, "mine");
+        buildingInstance.setCurrentLevel(1);
+        buildingInstance.addModule("module_optimizer_1");
+        buildingInstance.addModule("module_optimizer_1");
+        buildingInstance.addModule("module_optimizer_1_2");
+        _base.addBuilding(buildingInstance);
+        Assertions.assertThat(_base.getResourceProduction(resource)).isEqualTo(2050);
+    }
 }

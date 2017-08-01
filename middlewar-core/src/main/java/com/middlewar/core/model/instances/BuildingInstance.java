@@ -11,6 +11,7 @@ import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.stats.StatCalculator;
+import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
 
@@ -100,32 +101,43 @@ public class BuildingInstance {
     public StatHolder getAvailableCapacity(Resource resource) {
 
         // If the buildingInstance has 3 modules :
-        // 2 modules giving +50% each of bonus (so a total of +100%)        <-- getModulesCapacityModifier()
-        // 1 module giving a raw +50 capacity bonus (StatOp.DIFF)           <-- getModulesCapacityBonus()
+        // 2 modules giving +50% each of bonus (so a total of +100%)        <-- getModulesModifier()
+        // 1 module giving a raw +50 capacity bonus (StatOp.DIFF)           <-- getModulesBonus()
         //     |-> N.B. : Raw bonuses are not affected by other modules
         // And the basic availableCapacity of the building is 1000
         // So, the formula is : 1000 * (1 + 0.5 + 0.5) + 50 = 2050
 
         StatCalculator capacity = new StatCalculator(resource.getStatMax());
         capacity.add(getTemplate().getAvailableCapacity(resource, getCurrentLevel()));
-        capacity.add(getModulesCapacityModifier(resource));
-        capacity.add(getModulesCapacityBonus(resource));
+        capacity.add(getModulesModifier(resource.getStatMax()));
+        capacity.add(getModulesBonus(resource.getStatMax()));
         return capacity.toStatHolder();
     }
 
-    private StatHolder getModulesCapacityModifier(Resource resource) {
-        StatCalculator capacity = new StatCalculator(resource.getStatMax());
+    public StatHolder getProduction(Resource resource) {
+
+        // Cf getAvailableCapacity for some explanations on formula
+
+        StatCalculator production = new StatCalculator(resource.getStat());
+        production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
+        production.add(getModulesModifier(resource.getStat()));
+        production.add(getModulesBonus(resource.getStat()));
+        return production.toStatHolder();
+    }
+
+    private StatHolder getModulesModifier(Stats stats) {
+        StatCalculator capacity = new StatCalculator(stats);
         capacity.add(1, StatOp.DIFF);
 
         for (Module module: getModules()) {
-            List<StatHolder> stats = module
+            List<StatHolder> statHolders = module
                     .getAllStats()
                     .stream()
                     .filter(
-                            k -> k.getStat().equals(resource.getStatMax()) && k.getOp().equals(StatOp.PER)
+                            k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.PER)
                     )
                     .collect(Collectors.toList());
-            for (StatHolder stat: stats) {
+            for (StatHolder stat: statHolders) {
                 capacity.add(stat.getValue() - 1, StatOp.DIFF);
             }
         }
@@ -133,34 +145,22 @@ public class BuildingInstance {
         return capacity.toStatHolder(StatOp.PER);
     }
 
-    private StatHolder getModulesCapacityBonus(Resource resource) {
-        StatCalculator capacity = new StatCalculator(resource.getStatMax());
+    private StatHolder getModulesBonus(Stats stats) {
+        StatCalculator capacity = new StatCalculator(stats);
 
         for (Module module: getModules()) {
-            List<StatHolder> stats = module
+            List<StatHolder> statHolders = module
                     .getAllStats()
                     .stream()
                     .filter(
-                            k -> k.getStat().equals(resource.getStatMax()) && k.getOp().equals(StatOp.DIFF)
+                            k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.DIFF)
                     )
                     .collect(Collectors.toList());
-            for (StatHolder stat: stats) {
+            for (StatHolder stat: statHolders) {
                 capacity.add(stat);
             }
         }
 
         return capacity.toStatHolder(StatOp.DIFF);
-    }
-
-    public StatHolder getProduction(Resource resource) {
-        StatCalculator production = new StatCalculator(resource.getStat());
-        production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
-        production.add(getModulesProductionModifier(resource));
-        return production.toStatHolder();
-    }
-
-    private StatHolder getModulesProductionModifier(Resource resource) {
-        // TODO getModulesProductionModifier
-        return new StatHolder(resource.getStat(), 1, StatOp.PER);
     }
 }
