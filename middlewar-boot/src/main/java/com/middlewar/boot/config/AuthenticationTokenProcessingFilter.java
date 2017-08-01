@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 @Component
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
-    private final Logger logger = Logger.getLogger(AuthenticationTokenProcessingFilter.class.getName());
+    private final Logger log = Logger.getLogger(AuthenticationTokenProcessingFilter.class.getName());
 
     @Autowired
     AuthenticationManager authManager;
@@ -53,10 +53,10 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
                     // set the authentication into the SecurityContext
                     SecurityContextHolder.getContext().setAuthentication(authManager.authenticate(authentication));
                 } else {
-                    logger.info("Account is null");
+                    log.info("Account is null");
                 }
             } else {
-                logger.info("Invalid token !");
+                log.info("Invalid token !");
             }
         }
         // continue thru the filter chain

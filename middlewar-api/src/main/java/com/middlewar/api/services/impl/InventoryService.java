@@ -16,8 +16,7 @@ import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.utils.TimeUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +24,8 @@ import org.springframework.stereotype.Service;
  * @author LEBOC Philippe
  */
 @Service
+@Slf4j
 public class InventoryService implements IInventoryService {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(InventoryService.class);
 
     @Autowired
     private PlayerInventoryService playerInventoryService;
@@ -55,9 +53,15 @@ public class InventoryService implements IInventoryService {
     public synchronized ItemInstance addItem(final Inventory inventory, final String templateId, final long amount) {
 
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
-        if (template == null) return null;
+        if (template == null) {
+            log.info("Template " + templateId + " nod found");
+            return null;
+        }
 
-        if (amount <= 0) return null;
+        if (amount <= 0) {
+            log.info("Not allowed to add a null or negative amount of " + templateId + ". Given " + amount);
+            return null;
+        }
 
         long addcnt = amount;
         if (!canBeStored(inventory, template.getVolume(), amount)) {
@@ -65,10 +69,16 @@ public class InventoryService implements IInventoryService {
             addcnt = storableAmount == -1 ? addcnt : storableAmount;
         }
 
-        if (addcnt <= 0) return null;
+        if (addcnt <= 0) {
+            log.info("Item " + templateId + " cannot be stored");
+            return null;
+        }
 
         final ItemInstance item = inventory.getItem(templateId);
-        if (item == null) return itemService.create(inventory, templateId, addcnt);
+        if (item == null) {
+            log.debug(templateId + " not found in inventory. Item created.");
+            return itemService.create(inventory, templateId, addcnt);
+        }
 
         item.addCount(addcnt);
         itemService.update(item);
@@ -160,7 +170,10 @@ public class InventoryService implements IInventoryService {
     }
 
     private long getStorableAmount(IInventory inventory, long volume) {
-        return (inventory.getAvailableCapacity() / volume); // TODO: check division
+        if (volume == 0) {
+            return -1;
+        }
+        return (inventory.getAvailableCapacity() / volume);
     }
 
     private boolean canBeStored(final IInventory inventory, long volume, final long amount) {

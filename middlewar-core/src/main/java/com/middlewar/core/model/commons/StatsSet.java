@@ -2,6 +2,7 @@ package com.middlewar.core.model.commons;
 
 import com.middlewar.core.interfaces.IParserAdvUtils;
 import com.middlewar.core.utils.TimeUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -9,8 +10,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This class is meant to hold a set of (key,value) pairs.<br>
@@ -18,12 +17,12 @@ import java.util.logging.Logger;
  *
  * @author mkizub
  */
+@Slf4j
 public class StatsSet implements IParserAdvUtils {
     /**
      * Static empty immutable map, used to avoid multiple null checks over the source.
      */
     public static final StatsSet EMPTY_STATSET = new StatsSet(Collections.<String, Object>emptyMap());
-    private static final Logger _log = Logger.getLogger(StatsSet.class.getName());
     private final Map<String, Object> _set;
 
     public StatsSet() {
@@ -490,7 +489,7 @@ public class StatsSet implements IParserAdvUtils {
     public void safeSet(String key, int value, int min, int max, String reference) {
         assert !(((min <= max) && ((value < min) || (value >= max))));
         if ((min <= max) && ((value < min) || (value >= max))) {
-            _log.log(Level.SEVERE, "Incorrect value: " + value + "for: " + key + "Ref: " + reference);
+            log.error("Incorrect value: " + value + "for: " + key + "Ref: " + reference);
         }
 
         set(key, value);

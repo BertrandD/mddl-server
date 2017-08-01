@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,7 +13,7 @@
 
     <name>Middlewar :: Boot</name>
     <artifactId>middlewar-boot</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.11-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,17 +78,17 @@
         <dependency>
             <groupId>com.middlewar</groupId>
             <artifactId>middlewar-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.11-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.middlewar</groupId>
             <artifactId>middlewar-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.11-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.middlewar</groupId>
             <artifactId>middlewar-controller</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.11-SNAPSHOT</version>
         </dependency>
         <!-- Database -->
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->

@@ -6,6 +6,7 @@ import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.model.inventory.PlayerInventory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import java.util.List;
 public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> implements PlayerService {
 
     @Autowired
-    private PlayerDao repository;
+    private PlayerDao playerRepository;
 
     @Autowired
     private AccountService accountService;
@@ -33,7 +34,7 @@ public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> imp
         final Account playerAccount = accountService.findOne(account.getId());
         if (playerAccount == null) return null;
 
-        final Player player = repository.save(new Player(account, name));
+        final Player player = playerRepository.save(new Player(account, name));
 
         // Update database account
         playerAccount.addPlayer(player);
@@ -44,18 +45,20 @@ public class PlayerServiceImpl extends DefaultServiceImpl<Player, PlayerDao> imp
         account.addPlayer(player);
         account.setCurrentPlayer(player.getId());
 
-        playerInventoryService.create(player);
+        PlayerInventory playerInventory = playerInventoryService.create(player);
+        player.setInventory(playerInventory);
+        repository.save(player);
 
         return player;
     }
 
     @Override
     public List<Player> findByAccount(Account account) {
-        return repository.findByAccountId(account.getId());
+        return playerRepository.findByAccountId(account.getId());
     }
 
     @Override
     public Player findByName(String name) {
-        return repository.findByName(name);
+        return playerRepository.findByName(name);
     }
 }

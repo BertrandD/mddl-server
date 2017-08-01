@@ -19,8 +19,7 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.utils.Evaluator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -36,9 +35,8 @@ import java.util.stream.Collectors;
 /**
  * @author LEBOC Philippe
  */
+@Slf4j
 public class BuildingData implements IXmlReader {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
 
     private final HashMap<String, Building> _buildings = new HashMap<>();
 
@@ -54,7 +52,7 @@ public class BuildingData implements IXmlReader {
     public synchronized void load() {
         _buildings.clear();
         parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "stats/buildings"), true);
-        LOGGER.info("Loaded " + _buildings.size() + " buildings Templates.");
+        log.info("Loaded " + _buildings.size() + " buildings Templates.");
     }
 
     @Override
@@ -153,27 +151,32 @@ public class BuildingData implements IXmlReader {
                                         final Stats baseStat = parseEnum(attrs, Stats.class, "name");
                                         final String function = parseString(attrs, "function", null);
                                         final StatOp op = parseEnum(attrs, StatOp.class, "op", StatOp.DIFF);
-                                        final int reqBuildingLevel = parseInteger(attrs, "requiredBuildingLevel", 0);
-                                        final StatHolder holder = new StatHolder(baseStat, op);
 
-                                        final double[] values = new double[set.getInt("maxLevel")];
                                         if (function != null) {
-                                            for (int i = 0; i < values.length; i++) {
+                                            List<StatHolder> statHolders = stats.getStatFunctions().computeIfAbsent(baseStat, k -> new ArrayList<>());
+
+                                            int count = set.getInt("maxLevel");
+                                            for (int i = 0; i < count; i++) {
                                                 final String func = function.replace("$level", "" + (i + 1));
-                                                values[i] = ((Number) Evaluator.getInstance().eval(func)).doubleValue();
+                                                statHolders.add(new StatHolder(baseStat, ((Number) Evaluator.getInstance().eval(func)).doubleValue(), op));
                                             }
-                                            holder.setValues(values);
+                                        } else {
+                                            final int reqBuildingLevel = parseInteger(attrs, "requiredBuildingLevel", 0);
+                                            final int value = parseInteger(attrs, "value");
+                                            StatHolder holder = new StatHolder(baseStat, value, op);
+                                            if (reqBuildingLevel != 0) {
+                                                if (stats.getStatsByLevel().containsKey(reqBuildingLevel))
+                                                    stats.getStatsByLevel().get(reqBuildingLevel).add(holder);
+                                                else {
+                                                    final List<StatHolder> holders = new ArrayList<>();
+                                                    holders.add(holder);
+                                                    stats.getStatsByLevel().put(reqBuildingLevel, holders);
+                                                }
+                                            } else stats.getGlobalStats().add(holder);
+
                                         }
 
-                                        if (reqBuildingLevel != 0) {
-                                            if (stats.getStatsByLevel().containsKey(reqBuildingLevel))
-                                                stats.getStatsByLevel().get(reqBuildingLevel).add(holder);
-                                            else {
-                                                final List<StatHolder> holders = new ArrayList<>();
-                                                holders.add(holder);
-                                                stats.getStatsByLevel().put(reqBuildingLevel, holders);
-                                            }
-                                        } else stats.getGlobalStats().add(holder);
+
                                     }
                                 }
                             } else if ("energy".equalsIgnoreCase(c.getNodeName())) {
