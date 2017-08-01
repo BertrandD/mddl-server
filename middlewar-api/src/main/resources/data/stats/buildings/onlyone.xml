@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="onlyone" type="test" nameId="building_shield_n" class="ModulableBuilding" descriptionId="building_shield_d" maxLevel="10">
-        <buildTime>
-            <set fromLevel="1" function="10000" />
-        </buildTime>
-    </building>
-</list>
