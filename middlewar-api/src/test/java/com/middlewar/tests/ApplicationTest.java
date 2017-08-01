@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.PostConstruct;
 
@@ -19,6 +20,7 @@ import javax.annotation.PostConstruct;
 @EnableAutoConfiguration
 @EnableJpaRepositories("com.middlewar.api.dao")
 @EntityScan({"com.middlewar.core"})
+@ContextConfiguration(locations={"classpath:application.properties"})
 public class ApplicationTest {
     public static void main(String... args) {
         SpringApplication.run(ApplicationTest.class);
@@ -26,7 +28,18 @@ public class ApplicationTest {
 
     @PostConstruct
     public void init() {
+
+        // Override default config file location
+        Config.APPLICATION_CONFIG_LOCATION = "./src/test/resources/config/";
+        Config.GENERAL_CONFIG_FILE = "./src/test/resources/general.properties";
+        Config.UNIVERS_CONFIG_FILE = "./src/test/resources/univers.properties";
+
+        // Loading config
         Config.load();
+
+        // Override default "DATA" directory
+        Config.DATA_ROOT_DIRECTORY = "./src/test/resources/data/";
+
         BuildingData.getInstance();
         SystemMessageData.getInstance();
         ItemData.getInstance();
