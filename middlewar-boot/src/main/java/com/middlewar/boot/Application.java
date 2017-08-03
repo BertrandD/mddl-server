@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.Executor;
 
 @SpringBootApplication
@@ -25,21 +26,18 @@ import java.util.concurrent.Executor;
 public class Application extends AsyncConfigurerSupport {
 
     public static void main(String[] args) {
-        // Config
+        // Spring
+        SpringApplication.run(Application.class, args);
+    }
+
+    @PostConstruct
+    public void init() {
         Config.load();
-
-        // Parsing JSON
         WorldData.getInstance();
-
-        // Parsing XML
         SystemMessageData.getInstance();
         ItemData.getInstance();
         BuildingData.getInstance();
         ShopData.getInstance();
-
-        // Spring
-        System.setProperty("spring.config.location", Config.APPLICATION_CONFIG_LOCATION);
-        SpringApplication.run(Application.class, args);
     }
 
     @Override

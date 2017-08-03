@@ -51,7 +51,7 @@ public class DefaultController implements ErrorController {
     @Autowired
     private ControllerManagerWrapper controllerManagerWrapper;
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public Response index() {
         return new Response<>(JsonResponseType.SUCCESS);
     }

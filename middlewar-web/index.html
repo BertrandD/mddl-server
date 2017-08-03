@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Middlewar</title>
+</head>
+<style>
+    body {
+        font-size: 10.0pt;
+        font-family: "Calibri",sans-serif;
+        max-width: 1000px;
+        margin: 25px auto auto;
+        padding: 5px;
+        background: url("https://c1.staticflickr.com/6/5052/5518992555_e7119f4017_b.jpg") no-repeat center fixed;
+        background-size: cover;
+    }
+
+    .body-inner {
+        background-color: rgba(255,255,255,0.5);
+        padding-bottom: 10pt;
+        margin-bottom: 250pt;
+    }
+
+    h1, h2 {
+        font-size: 11.0pt;
+    }
+
+    h2 span {
+        font-size: 8.0pt;
+    }
+
+    h1 {
+        margin: 5.0pt 0 .0001pt;
+        line-height: 115%;
+        background: #5B9BD5;
+        border: none;
+        padding: 5pt;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: .75pt;
+        font-weight: normal;
+    }
+    h2 {
+        margin: 0 0 .0001pt;
+        line-height: 115%;
+        background: #DEEAF6;
+        border: none;
+        padding: 8pt 5pt 5pt 5pt;
+        text-transform: uppercase;
+        letter-spacing: .75pt;
+        font-weight: normal;
+    }
+
+    .title {
+        font-family: "Calibri Light",sans-serif;
+        text-align: center;
+        color: #5B9BD5;
+    }
+
+    .title-inner {
+        text-transform: uppercase;
+        border-top: solid #5B9BD5 1.0pt;
+        border-bottom: solid #5B9BD5 1.0pt;
+        /*border-top: solid #000000 1.0pt;*/
+        /*border-bottom: solid #000000 1.0pt;*/
+        padding: 10pt 0;
+        font-size: 36.0pt;
+        margin: 18pt;
+    }
+
+    .subtitle {
+        font-size: 14.0pt;
+    }
+
+    p, h3 {
+        padding-left: 5pt;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .footer {
+        color: #ffffff;
+        text-align: center;
+    }
+
+    .timeline {
+        background-color: rgba(29,29,29,0.9);
+        min-height: 120vh;
+        margin: 0;
+        font-family: 'Droid Sans', sans-serif;
+        position: relative;
+    }
+    .timeline:before {
+        content: '';
+        position: absolute;
+        height: 100%;
+        top: 0px;
+        left: 50%;
+        bottom: 0px;
+        -webkit-transform: translateX(-50%);
+        transform: translateX(-50%);
+        width: 4px;
+        background-color: #fff;
+    }
+    .timeline ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+    }
+    .timeline .entries {
+        width: calc(100% - 80px);
+        max-width: 800px;
+        margin: auto;
+        position: relative;
+        left: -5px;
+    }
+    .timeline .entries .entry {
+        width: calc(50% - 80px);
+        float: left;
+        padding: 20px;
+        clear: both;
+        text-align: right;
+    }
+    .timeline .entries .entry:not(:first-child) {
+        margin-top: -60px;
+    }
+    .timeline .entries .entry .title {
+        font-size: 32px;
+        margin-bottom: 12px;
+        position: relative;
+        color: #fff;
+    }
+    .timeline .entries .entry .title:before {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border: 4px solid #ffffff;
+        background-color: #1D1D1D;
+        border-radius: 100%;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        right: -73px;
+        z-index: 1000;
+    }
+    .timeline .entries .entry .title.big:before {
+        width: 24px;
+        height: 24px;
+        -webkit-transform: translate(8px, -50%);
+        transform: translate(8px, -50%);
+    }
+    .timeline .entries .entry .body {
+        color: #aaa;
+    }
+    .timeline .entries .entry .body p {
+        line-height: 1.4em;
+    }
+    .timeline .entries .entry:nth-child(2n) {
+        text-align: left;
+        float: right;
+    }
+    .timeline .entries .entry:nth-child(2n) .title:before {
+        left: -63px;
+    }
+    .timeline .entries .entry:nth-child(2n) .title.big:before {
+        -webkit-transform: translate(-8px, -50%);
+        transform: translate(-8px, -50%);
+    }
+
+    .btn {
+        cursor: pointer;
+    }
+</style>
+
+<body>
+
+<div class="title">
+    <img class="title" src="assets/image001.png" width="149" height="79" alt=""/>
+    <p class="title-inner">
+        Middlewar
+    </p>
+    <p class="subtitle"><span id="btn_avancement" class="btn">Avancement du projet</span> | <span id="btn_presentation" class="btn">Présentation du projet</span></p>
+    <img class="title" src="assets/image003.png" width="80" height="51" alt=""/>
+</div>
+
+<div class="body-inner">
+    <!--
+<h1 id="fonctionnalite">Avancement</h1>
+<h2 id="terminees">Terminé</h2>
+<h3 id="v0.10">v0.10</h3>
+<ul>
+    <li>Création de compte + joueur + base (basique)</li>
+</ul>
+<h2 id="en_cours">EN COURS (v0.11)</h2>
+<h3>Terminé</h3>
+<ul>
+    <li>Production de ressources au fil du temps</li>
+    <li>Gestion du stockage des ressources</li>
+    <li>Construction d’un bâtiment dans la base</li>
+    <li>Ajout d’un module à un bâtiment</li>
+    <li>Construction d’un module</li>
+</ul>
+<h3>En cours</h3>
+<ul>
+    <li>Tests techniques</li>
+</ul>
+<h2 id="todo">Prochaine version (v0.12)</h2>
+<ul>
+    <li>Construction de vaisseaux</li>
+    <li>Personnalisation des vaisseaux</li>
+    <li>Gestion de flottes</li>
+    <li>Gestion des combats</li>
+</ul>
+<h2 id="attente">EN ATTENTE <span>(Commencé, mais non prioritaire)</span></h2>
+<ul>
+    <li>Scan d’une planète (v0.13)</li>
+    <li>Espionnage d’une base (v0.13)</li>
+    <li>Demandes d’amis (v0.14)</li>
+    <li>Messagerie (v0.14)</li>
+    <li>Gestion de l'énergie (v0.15)</li>
+</ul>
+<h2 id="todo2">A FAIRE</h2>
+<ul>
+    <li>Alliances (v0.14)</li>
+    <li>Marché (v0.16)</li>
+    <li>OSNI (0.17)</li>
+</ul>
+<h2 id="discussion">EN DISCUSSION</h2>
+<ul>
+    <li>Technologies (v0.15)</li>
+    <li>Quêtes (v0.18)</li>
+</ul>
+-->
+    <div id="avancement">
+    <div class="timeline">
+        <div class="entries">
+            <div class="entry">
+                <div class="title">v0.10 : départ</div>
+                <div class="body">
+                    <ul>
+                        <li>Création de compte + joueur + base (basique)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title big">v0.11 : bases</div>
+                <div class="body">
+                    <h3 class="center">Terminé</h3>
+                    <ul>
+                        <li>Production de ressources au fil du temps</li>
+                        <li>Gestion du stockage des ressources</li>
+                        <li>Construction d’un bâtiment dans la base</li>
+                        <li>Ajout d’un module à un bâtiment</li>
+                        <li>Construction d’un module</li>
+                    </ul>
+                    <h3 class="center">En cours</h3>
+                    <ul>
+                        <li>Tests techniques</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">v0.12 : guerres</div>
+                <div class="body">
+                    <ul>
+                        <li>Construction de vaisseaux</li>
+                        <li>Personnalisation des vaisseaux</li>
+                        <li>Gestion de flottes</li>
+                        <li>Gestion des combats</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">v0.13 : espionnage</div>
+                <div class="body">
+                    <ul>
+                        <li>Scan d’une planète</li>
+                        <li>Espionnage d’une base</li>
+                        <li>Protection anti espionnage</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">v0.14 : social</div>
+                <div class="body">
+                    <ul>
+                        <li>Alliances</li>
+                        <li>Demandes d’amis</li>
+                        <li>Messagerie</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">v0.15 : technologies</div>
+                <div class="body">
+                    <ul>
+                        <li>Gestion de l'énergie</li>
+                        <li>Technologies</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">v0.16 : économie</div>
+                <div class="body">
+                    <ul>
+                        <li>Crédits galactiques</li>
+                        <li>Impôts</li>
+                        <li>Marché</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">v0.17 : univers</div>
+                <div class="body">
+                    <ul>
+                        <li>OSNI</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title">v0.18 : quêtes</div>
+                <div class="body">
+                    <ul>
+                        <li>Quêtes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+<div id="presentation">
+<h1 id="ressources">LES RESSOURCES</h1>
+<h2>RESSOURCES PRIMAIRES</h2>
+<p>Les ressources primaires servent à la construction des <a href="#batiments">bâtiments</a>, des <a href="#unites">unités de combat</a>, des
+    <a href="#objets">objets du jeu</a>… Elles peuvent
+    être récupérées par différents bâtiments.</p>
+
+<h2 id="credits">CREDITS GALACTIQUES</h2>
+<p>Monnaie du jeu pour les échanges entre les joueurs</p>
+<h2 id="energie">ÉNERGIE</h2>
+<p>Nécessaire au bon fonctionnement des <a href="#batiments">bâtiments</a></p>
+<h2 id="objets">OBJETS</h2>
+<p>Les objets sont une ressource supplémentaire, qui contrairement aux ressources primaires ne se produisent pas petit à
+    petit avec le temps. Il faut passer commande dans les usines (bâtiment constructible dans une base), qui se mettent
+    alors à produire la quantité demandée, dans la mesure des stocks de ressources ou objets disponible.</p>
+<p>Les objets sont utilisés pour construire d’autres objets, des modules, des bâtiments, des unités de combat.</p>
+<h2 id="population">POPULATION</h2>
+<p>Présente sur les <a href="#planetes">planètes</a>, la population se développe. Elle a des attentes qui doivent être satisfaites. Elle paye
+    des impôts, première source de revenue du joueur. Plus la population est élevée, plus les revenus sont importants.
+    Plus la population est heureuse, plus les impôts peuvent être élevés. La population diminue si elle est maltraitée,
+    la base est attaquée, ou lors de la construction de vaisseaux nécessitant des pilotes. Certains bâtiments ont besoin
+    d’une main d’œuvre, occupant ainsi une partie de la population.</p>
+<h1 id="bases">LES BASES</h1>
+<p>Le joueur commence avec une base sur une planète. Il sera amené à en créer d’autre, sur des <a href="#planetes">planètes</a> comme sur des
+    <a href="#lunes">lunes</a>.</p>
+<p>Les bases permettent de construire des <a href="#batiments">bâtiments</a> et de faire développer la <a href="#population">population</a>. Les opérations militaires
+    peuvent être lancées depuis une base, ou depuis une orbite. Certains disent même que les plus grandes puissances
+    sont capables de créer des bases directement dans l’espace… Permettant alors de se cacher des indiscrets, et surgir
+    par surprise sur le champ de bataille.</p>
+<h1 id="batiments">LES BATIMENTS</h1>
+<p>Les bâtiments servent à débloquer différentes fonctionnalités pour une base ou pour un joueur. Ils peuvent être
+    améliorés pour offrir de meilleures performances, ou débloquer d’autres fonctionnalités.</p>
+<p>Certains bâtiments peuvent être équipés de <a href="#modules">modules</a>. Si le bâtiment peut être équipé de module, il a alors un nombre
+    maximal d’emplacements de modules. Les modules ayant une taille définie, s’il y a 2 emplacements de modules sur le
+    bâtiment, le joueur peut y mettre soit 2 modules de taille 1, soit 1 module de taille 2.</p>
+
+<h1 id="modules">LES MODULES</h1>
+<p>Les modules sont des ajouts qui peuvent être fait à des <a href="#batiments">bâtiments</a>. Il existe différent types de modules.</p>
+<p>Sur un bâtiment de production de ressource, on peut ajouter par exemple un module d’amélioration de productivité
+    augmentant la production, soit de manière proportionnelle, soit de manière brute.</p>
+<p>Si un bâtiment produit une ressource de type <b>fer</b> au rythme de 1000 unités par heure, et qu’il y a 3 modules d’équipé
+    sur le bâtiment :</p>
+<ul>
+    <li>Un module d’amélioration de productivité brut de 50 unités de fer par heure</li>
+    <li>Deux modules d’amélioration de productivité proportionnelle de 50% par heure</li>
+</ul>
+<p>Dans ce cas les deux modules proportionnels se cumulent et offrent alors un bonus de 100% à la production de base.
+    Les modules proportionnels n’influent pas sur les bonus de production brut. Ainsi, dans l’exemple donné la formule
+    de la production est 1000 * (0.5 + 0.5) + 50 = 2050 unités de fer par heure.</p>
+<p>Il existe différents types de modules améliorant :</p>
+<ul>
+    <li>Les coûts énergétiques</li>
+    <li>La capacité de stockage</li>
+    <li>La vitesse de production</li>
+    <li>La vitesse de construction</li>
+    <li>L’efficacité du bouclier</li>
+    <li>L’efficacité du contre-espionnage</li>
+    <li>…</li>
+</ul>
+<p>Pour tous les modules, la stratégie de calcul est la même qu’expliquée précédemment.</p>
+<p>Il existe d’autres types de modules pour les <a href="#unites">unités de combats</a>. <a href="#modules_combat">Voir la section correspondant plus bas</a>.</p>
+<h1 id="unites">LES UNITES DE COMBATS</h1>
+<p>Les unités de combats sont un assemblage d’objets que le joueur a choisis de mettre ensemble. À la base de toute
+    unité de combat il y a une structure.</p>
+<h2 id="structures">LES STRUCTURES</h2>
+<p>Les structures sont produites dans les usines comme tous les autres objets.</p>
+<p>Tout comme les <a href="#batiments">bâtiments</a>, les structures disposent d’un certain nombre d’emplacements pour :</p>
+<ul>
+    <li>Des armes</li>
+    <li>Des moteurs</li>
+    <li>Des protections (boucliers, blindage…)</li>
+    <li>Des modules</li>
+    <li>Des technologies</li>
+    <li>Des cargos</li>
+</ul>
+<h2 id="modules_combat">LES MODULES DE COMBAT</h2>
+<p>Les modules de combat sont pour certains sur le même principe que les <a href="#modules">modules</a> pour les bâtiments (amélioration de
+    l’efficacité des armes, des moteurs, des boucliers…), et pour d’autre ils apportent des capacités unique aux unités
+    de combat.</p>
+<p>Quelques exemples :</p>
+<ul>
+    <li>Furtivité : rendant l’unité de combat plus difficile à détecter</li>
+    <li>Extraction : permettant à l’unité de combat d’extraire des ressources des OSNI</li>
+    <li>Exploration : permettant à l’unité de combat de scanner une planète ou une lune pour en découvrir quelques
+        caractéristiques
+    </li>
+    <li>Porte spatiale : permet l’ouverture d’une porte spatiale pour transporter une flotte discrètement et
+        rapidement
+    </li>
+</ul>
+<h1 id="univers">L’UNIVERS</h1>
+<h2 id="planetes">LES PLANETES</h2>
+<ul>
+    <li>Température</li>
+    <li>Superficie</li>
+    <li>Quantité de ressources basiques infinie</li>
+    <li>Quantité de ressources rares limitées avec ou sans régénération</li>
+    <li>Nombre de lunes</li>
+    <li>Une orbite + vitesse de rotation</li>
+    <li>Type de planète (Définira ses bonus / malus)</li>
+    <li>Population</li>
+    <li>Humeur de la population</li>
+</ul>
+<p>Les différentes caractéristiques d’une planète influeront sur le temps de trajet des unités de combat entre 2 planètes, si
+celes-ci ont besoin de descendre sur la planète pour agir. Il peut donc être intéressant et stratégique de posséder une
+    <a href="#lunes">lune</a> pour accélérer les échanges commerciaux ou les départs de flottes.</p>
+<h2 id="lunes">LES LUNES</h2>
+<ul>
+    <li>Taille de la lune</li>
+    <li>Ressource spéciale : Matière noire</li>
+    <li>Accès aux bâtiments spéciaux disponibles uniquement sur les lunes</li>
+</ul>
+<p>Les lunes peuvent produire certaines ressources rares non disponibles sur les planètes, et peuvent servir de relai pour
+    les flottes pour accélérer les échanges commerciaux ou les départs de flottes.</p>
+<h2 id="osni">OSNI (OBJET SPATIAL NON IDENTIFIE)</h2>
+<p>Matière première gisant dans l’espace, résultat d’une confrontation entre deux flottes. Ils peuvent être analysés ou
+    récupérés</p>
+<h2 id="asteroides">ASTEROÏDES</h2>
+<p>Objet volant à vitesse réduite se déplaçant d’un point à un autre. Les vaisseaux ayant un module d’extraction peuvent se
+poser dessus et extraire des ressources. En maîtrisant bien les techniques de vol spatial, il peut être possible aux
+    meilleurs pilotes de s’y cacher de manière à s’approcher de l’ennemi sans se faire repérer !</p>
+<h2 id="trous_noir">TROUS NOIR</h2>
+<p>Un grand mystère règne autour des trous noirs… à vous de résoudre l’énigme !</p>
+</div>
+</div>
+
+<div class="footer">
+    (c) Middlewar 2017 - version de l'api : v0.11-SNAPSHOT
+</div>
+
+<script>
+    (function () {
+        var btn_avancement = document.getElementById("btn_avancement");
+        var btn_presentation = document.getElementById("btn_presentation");
+        var avancement = document.getElementById("avancement");
+        var presentation = document.getElementById("presentation");
+
+        btn_avancement.addEventListener("click", function () {
+            avancement.style.display="block";
+            presentation.style.display="none";
+        });
+
+        btn_presentation.addEventListener("click", function () {
+            avancement.style.display="none";
+            presentation.style.display="block";
+        })
+    })();
+</script>
+</body>
+</html>

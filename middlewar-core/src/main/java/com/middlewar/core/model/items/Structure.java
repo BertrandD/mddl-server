@@ -21,6 +21,10 @@ public final class Structure extends Item {
         return availablesSlots;
     }
 
+    public void setAvailablesSlots(HashMap<StructureSlot, Integer> availablesSlots) {
+        this.availablesSlots = availablesSlots;
+    }
+
     public void setAvailablesSlots(StatsSet set) {
         setAvailablesSlots(new HashMap<>());
         getAvailablesSlots().put(StructureSlot.CARGO, set.getInt("slot_cargo", 0));
@@ -28,9 +32,5 @@ public final class Structure extends Item {
         getAvailablesSlots().put(StructureSlot.MODULE, set.getInt("slot_module", 0));
         getAvailablesSlots().put(StructureSlot.WEAPON, set.getInt("slot_weapon", 0));
         getAvailablesSlots().put(StructureSlot.TECHNOLOGY, set.getInt("slot_technology", 0));
-    }
-
-    public void setAvailablesSlots(HashMap<StructureSlot, Integer> availablesSlots) {
-        this.availablesSlots = availablesSlots;
     }
 }

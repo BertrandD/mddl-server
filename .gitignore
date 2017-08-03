@@ -12,4 +12,3 @@ gradle/
 target/
 LOG_FILE_IS_UNDEFINED
 /resources/
-/middlewar-api/resources/

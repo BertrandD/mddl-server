@@ -5,7 +5,7 @@ import com.middlewar.api.exceptions.BaseNotOwnedException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.SpyReportCreationException;
-import com.middlewar.api.services.impl.SpyReportServiceImpl;
+import com.middlewar.api.services.SpyReportService;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.Report;
@@ -26,7 +26,7 @@ public class ReportManager {
     private BaseManager baseManager;
 
     @Autowired
-    private SpyReportServiceImpl spyReportServiceImpl;
+    private SpyReportService spyReportService;
 
     public List<Report> getAllReportsOfCurrentPlayer(Player player) throws NoPlayerConnectedException, PlayerNotFoundException {
         player.getCurrentBase().getReports().sort(Collections.reverseOrder());
@@ -46,7 +46,7 @@ public class ReportManager {
         final Base base = baseManager.getOwnedBase(baseId, player);
         final Base baseTarget = baseManager.getBase(target);
 
-        final SpyReport report = spyReportServiceImpl.create(player, base, baseTarget);
+        final SpyReport report = spyReportService.create(player, base, baseTarget);
         if (report == null) throw new SpyReportCreationException();
 
         return report;

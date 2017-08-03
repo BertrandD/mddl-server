@@ -8,13 +8,13 @@ import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.FleetSerializer;
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,11 +57,11 @@ public class Fleet {
         final ObjectStat stats = getStats();
 
         // Unlock stats
-        stats.addStat(Stats.FLEET_HEALTH);
-        stats.addStat(Stats.FLEET_MAX_HEALTH);
-        stats.addStat(Stats.FLEET_SHIELD);
-        stats.addStat(Stats.FLEET_MAX_SHIELD);
-        stats.addStat(Stats.FLEET_DAMAGE);
+        stats.unlock(Stats.FLEET_HEALTH);
+        stats.unlock(Stats.FLEET_MAX_HEALTH);
+        stats.unlock(Stats.FLEET_SHIELD);
+        stats.unlock(Stats.FLEET_MAX_SHIELD);
+        stats.unlock(Stats.FLEET_DAMAGE);
 
         // Apply specific ship stats and modules effects
         getShips().forEach(ship -> {

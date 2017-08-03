@@ -30,8 +30,6 @@ import java.util.List;
 @RequestMapping(value = "/friend", produces = "application/json")
 public class FriendController {
 
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
-
     @Autowired
     private PlayerService playerService;
 

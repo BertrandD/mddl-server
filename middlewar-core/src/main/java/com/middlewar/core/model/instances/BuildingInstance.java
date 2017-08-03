@@ -4,20 +4,26 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
+import com.middlewar.core.enums.StatOp;
+import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
+import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.stats.StatCalculator;
+import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -90,5 +96,71 @@ public class BuildingInstance {
             return (this.id == building.id);
         }
         return false;
+    }
+
+    public StatHolder getAvailableCapacity(Resource resource) {
+
+        // If the buildingInstance has 3 modules :
+        // 2 modules giving +50% each of bonus (so a total of +100%)        <-- getModulesModifier()
+        // 1 module giving a raw +50 capacity bonus (StatOp.DIFF)           <-- getModulesBonus()
+        //     |-> N.B. : Raw bonuses are not affected by other modules
+        // And the basic availableCapacity of the building is 1000
+        // So, the formula is : 1000 * (1 + 0.5 + 0.5) + 50 = 2050
+
+        StatCalculator capacity = new StatCalculator(resource.getStatMax());
+        capacity.add(getTemplate().getAvailableCapacity(resource, getCurrentLevel()));
+        capacity.add(getModulesModifier(resource.getStatMax()));
+        capacity.add(getModulesBonus(resource.getStatMax()));
+        return capacity.toStatHolder();
+    }
+
+    public StatHolder getProduction(Resource resource) {
+
+        // Cf getAvailableCapacity for some explanations on formula
+
+        StatCalculator production = new StatCalculator(resource.getStat());
+        production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
+        production.add(getModulesModifier(resource.getStat()));
+        production.add(getModulesBonus(resource.getStat()));
+        return production.toStatHolder();
+    }
+
+    private StatHolder getModulesModifier(Stats stats) {
+        StatCalculator capacity = new StatCalculator(stats);
+        capacity.add(1, StatOp.DIFF);
+
+        for (Module module: getModules()) {
+            List<StatHolder> statHolders = module
+                    .getAllStats()
+                    .stream()
+                    .filter(
+                            k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.PER)
+                    )
+                    .collect(Collectors.toList());
+            for (StatHolder stat: statHolders) {
+                capacity.add(stat.getValue() - 1, StatOp.DIFF);
+            }
+        }
+
+        return capacity.toStatHolder(StatOp.PER);
+    }
+
+    private StatHolder getModulesBonus(Stats stats) {
+        StatCalculator capacity = new StatCalculator(stats);
+
+        for (Module module: getModules()) {
+            List<StatHolder> statHolders = module
+                    .getAllStats()
+                    .stream()
+                    .filter(
+                            k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.DIFF)
+                    )
+                    .collect(Collectors.toList());
+            for (StatHolder stat: statHolders) {
+                capacity.add(stat);
+            }
+        }
+
+        return capacity.toStatHolder(StatOp.DIFF);
     }
 }

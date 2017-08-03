@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(produces = "application/json")
 public class PlayerController {
 
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
-
     private final PlayerService playerService;
 
     private final PlayerManager playerManager;

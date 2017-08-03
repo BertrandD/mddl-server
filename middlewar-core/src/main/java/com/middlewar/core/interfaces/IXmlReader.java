@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * @author Zoey76
  */
 public interface IXmlReader {
-    Logger LOGGER = Logger.getLogger(IXmlReader.class.getName());
+    Logger log = Logger.getLogger(IXmlReader.class.getName());
 
     String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
     String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
@@ -65,7 +65,7 @@ public interface IXmlReader {
      */
     default void parseFile(File f) {
         if (!getCurrentFileFilter().accept(f)) {
-            LOGGER.warning("Could not parse " + f.getName() + " is not a file or it doesn't exist!");
+            log.warning("Could not parse " + f.getName() + " is not a file or it doesn't exist!");
             return;
         }
 
@@ -79,10 +79,10 @@ public interface IXmlReader {
             db.setErrorHandler(new XMLErrorHandler());
             parseDocument(db.parse(f), f);
         } catch (SAXParseException e) {
-            LOGGER.log(Level.WARNING, "Could not parse file: " + f.getName() + " at line: " + e.getLineNumber() + ", column: " + e.getColumnNumber() + " :", e);
+            log.log(Level.WARNING, "Could not parse file: " + f.getName() + " at line: " + e.getLineNumber() + ", column: " + e.getColumnNumber() + " :", e);
             return;
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Could not parse file: " + f.getName(), e);
+            log.log(Level.WARNING, "Could not parse file: " + f.getName(), e);
             return;
         }
     }
@@ -124,7 +124,7 @@ public interface IXmlReader {
      */
     default boolean parseDirectory(File dir, boolean recursive) {
         if (!dir.exists()) {
-            LOGGER.warning("Folder " + dir.getAbsolutePath() + " doesn't exist!");
+            log.warning("Folder " + dir.getAbsolutePath() + " doesn't exist!");
             return false;
         }
 
@@ -538,7 +538,7 @@ public interface IXmlReader {
         try {
             return Enum.valueOf(clazz, node.getNodeValue());
         } catch (IllegalArgumentException e) {
-            LOGGER.warning("Invalid value specified for node: " + node.getNodeName() + " specified value: " + node.getNodeValue() + " should be enum value of \"" + clazz.getSimpleName() + "\" using default value: " + defaultValue);
+            log.warning("Invalid value specified for node: " + node.getNodeName() + " specified value: " + node.getNodeValue() + " should be enum value of \"" + clazz.getSimpleName() + "\" using default value: " + defaultValue);
             return defaultValue;
         }
     }

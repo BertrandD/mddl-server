@@ -19,6 +19,7 @@ import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,11 +28,12 @@ import org.springframework.stereotype.Component;
  * Created by bertrand on 7/4/17.
  */
 @Component
+@Slf4j
 public class AI {
     final String AI_NAME = "shellbash";
     final String AI_BASE_NAME = "Home";
     final String AI_PASSWD = "test";
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+
     @Autowired
     private AccountManager accountManager;
     @Autowired

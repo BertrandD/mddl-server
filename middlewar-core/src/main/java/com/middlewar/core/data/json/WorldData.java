@@ -8,8 +8,7 @@ import com.middlewar.core.model.space.Moon;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.Star;
 import com.middlewar.core.utils.Rnd;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,9 +21,8 @@ import java.util.List;
 /**
  * @author bertrand.
  */
+@Slf4j
 public class WorldData {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass().getSimpleName());
 
     private final List<AstralObject> _astralObjects = new ArrayList<>();
 
@@ -41,15 +39,15 @@ public class WorldData {
     public void reload() {
         _astralObjects.clear();
         parseConfigFile(Config.DATA_ROOT_DIRECTORY + "world.json");
-        LOGGER.info("Loaded " + _astralObjects.size() + " astral objects");
+        log.info("Loaded " + _astralObjects.size() + " astral objects");
         if (_astralObjects.size() == 0) {
-            LOGGER.error("Universe not loaded ! The API will crash !");
+            log.error("Universe not loaded ! The API will crash !");
             // TODO: shutdown the server.
         }
     }
 
     private void parseConfigFile(String configFile) {
-        LOGGER.info("Loading World data file : " + configFile);
+        log.info("Loading World data file : " + configFile);
 
         final ConfigParser parser = new ConfigParser(configFile);
 
@@ -116,12 +114,12 @@ public class WorldData {
             star = (Star) getWorld().getSatellites().get(1); // TODO : get random star, but don't let this method return null
             planetCnt = star.getSatellites().size();
 
-            if (planetCnt == 0) LOGGER.warn("Star " + star.getId() + " has 0 satellites (planets) !");
+            if (planetCnt == 0) log.warn("Star " + star.getId() + " has 0 satellites (planets) !");
             retryCount++;
         }
 
         if (planetCnt == 0 && retryCount == MAX_RETRY) {
-            LOGGER.error("Cannot find any Planet object ! The server will crash !");
+            log.error("Cannot find any Planet object ! The server will crash !");
             // TODO: shutdown the server.
             return null;
         }
@@ -146,7 +144,7 @@ public class WorldData {
 
                 _configData = mapper.readValue(file, HashMap.class);
             } catch (IOException e) {
-                LOGGER.error("World data cannot be loaded. Parse error on file : " + fileName);
+                log.error("World data cannot be loaded. Parse error on file : " + fileName);
                 e.printStackTrace();
             }
         }
