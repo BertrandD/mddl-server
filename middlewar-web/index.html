@@ -170,6 +170,9 @@
         transform: translate(-8px, -50%);
     }
 
+    .btn {
+        cursor: pointer;
+    }
 </style>
 
 <body>
@@ -179,7 +182,7 @@
     <p class="title-inner">
         Middlewar
     </p>
-    <p class="subtitle">Document de présentation</p>
+    <p class="subtitle"><span id="btn_avancement" class="btn">Avancement du projet</span> | <span id="btn_presentation" class="btn">Présentation du projet</span></p>
     <img class="title" src="assets/image003.png" width="80" height="51" alt=""/>
 </div>
 
@@ -231,6 +234,7 @@
     <li>Quêtes (v0.18)</li>
 </ul>
 -->
+    <div id="avancement">
     <div class="timeline">
         <div class="entries">
             <div class="entry">
@@ -326,9 +330,10 @@
             </div>
         </div>
     </div>
+    </div>
 
 
-
+<div id="presentation">
 <h1 id="ressources">LES RESSOURCES</h1>
 <h2>RESSOURCES PRIMAIRES</h2>
 <p>Les ressources primaires servent à la construction des <a href="#batiments">bâtiments</a>, des <a href="#unites">unités de combat</a>, des
@@ -452,10 +457,29 @@ poser dessus et extraire des ressources. En maîtrisant bien les techniques de v
 <h2 id="trous_noir">TROUS NOIR</h2>
 <p>Un grand mystère règne autour des trous noirs… à vous de résoudre l’énigme !</p>
 </div>
+</div>
 
 <div class="footer">
     (c) Middlewar 2017 - version de l'api : v0.11-SNAPSHOT
 </div>
 
+<script>
+    (function () {
+        var btn_avancement = document.getElementById("btn_avancement");
+        var btn_presentation = document.getElementById("btn_presentation");
+        var avancement = document.getElementById("avancement");
+        var presentation = document.getElementById("presentation");
+
+        btn_avancement.addEventListener("click", function () {
+            avancement.style.display="block";
+            presentation.style.display="none";
+        });
+
+        btn_presentation.addEventListener("click", function () {
+            avancement.style.display="none";
+            presentation.style.display="block";
+        })
+    })();
+</script>
 </body>
 </html>
