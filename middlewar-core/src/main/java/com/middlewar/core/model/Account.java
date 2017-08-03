@@ -7,6 +7,8 @@ import com.middlewar.core.enums.Lang;
 import com.middlewar.core.serializer.AccountSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
@@ -48,6 +50,7 @@ public class Account implements UserDetails {
     private String token;
     private String password;
     private String username;
+    @Fetch(FetchMode.JOIN)
     @ElementCollection
     private Set<GrantedAuthority> authorities;
     private boolean accountNonExpired = true;
