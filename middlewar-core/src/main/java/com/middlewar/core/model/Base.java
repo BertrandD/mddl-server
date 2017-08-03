@@ -12,6 +12,8 @@ import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.core.serializer.BaseSerializer;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -50,6 +52,7 @@ public class Base {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fleet> fleets;
 
+    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BuildingInstance> buildings;
 

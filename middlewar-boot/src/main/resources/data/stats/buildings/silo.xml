@@ -2,7 +2,7 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
     <building id="silo" class="ModulableBuilding" nameId="building_silo_n" maxLevel="5" maxBuild="5" descriptionId="building_silo_d">
         <buildTime>
-            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
+            <set fromLevel="1" function="10" />
         </buildTime>
         <stats>
             <stat name="MAX_RESOURCE_1" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
