@@ -1,6 +1,8 @@
 package com.middlewar.core.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.deserializer.AccountDeserializer;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.serializer.AccountSerializer;
 import lombok.Data;
@@ -33,6 +35,7 @@ import java.util.TreeSet;
 @Data
 @NoArgsConstructor
 @JsonSerialize(using = AccountSerializer.class)
+@JsonDeserialize(using = AccountDeserializer.class)
 public class Account implements UserDetails {
     @Id
     @GeneratedValue
@@ -47,10 +50,10 @@ public class Account implements UserDetails {
     private String username;
     @ElementCollection
     private Set<GrantedAuthority> authorities;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+    private boolean accountNonExpired = true;
+    private boolean accountNonLocked = true;
+    private boolean credentialsNonExpired = true;
+    private boolean enabled = true;
 
     public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, Lang lang, String token) {
         setUsername(username);

@@ -1,13 +1,17 @@
 package com.middlewar.controllers;
 
+import com.middlewar.api.exceptions.ForbiddenNameException;
+import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
+import com.middlewar.api.exceptions.PlayerCreationFailedException;
+import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Player;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -57,8 +61,8 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/player", method = RequestMethod.POST)
-    public Response create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
-        return controllerManagerWrapper.wrap(() -> playerManager.createForAccount(account, name));
+    public Player create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+        return playerManager.createForAccount(account, name);
 
     }
 }
