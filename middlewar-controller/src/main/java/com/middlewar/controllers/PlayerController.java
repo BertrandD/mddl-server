@@ -8,6 +8,7 @@ import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.core.dto.PlayerDTO;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import io.swagger.annotations.Api;
@@ -61,8 +62,8 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/player", method = RequestMethod.POST)
-    public Player create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
-        return playerManager.createForAccount(account, name);
+    public PlayerDTO create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+        return new PlayerDTO(playerManager.createForAccount(account, name));
 
     }
 }

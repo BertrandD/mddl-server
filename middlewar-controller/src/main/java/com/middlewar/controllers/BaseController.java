@@ -1,10 +1,14 @@
 package com.middlewar.controllers;
 
+import com.middlewar.api.exceptions.BaseCreationException;
+import com.middlewar.api.exceptions.NoPlayerConnectedException;
+import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.core.dto.BaseDTO;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,8 +54,8 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/me/base", method = RequestMethod.POST)
-    public Response create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
-        return controllerManagerWrapper.wrap(() -> baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name));
+    public BaseDTO create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) throws NoPlayerConnectedException, PlayerNotFoundException, BaseCreationException {
+        return new BaseDTO(baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name));
     }
 
     @RequestMapping(value = "/me/base/{id}/buildables", method = RequestMethod.GET)

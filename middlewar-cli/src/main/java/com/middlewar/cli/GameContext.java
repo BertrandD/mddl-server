@@ -1,7 +1,8 @@
 package com.middlewar.cli;
 
-import com.middlewar.core.model.Account;
-import com.middlewar.core.model.Player;
+import com.middlewar.core.dto.AccountDTO;
+import com.middlewar.core.dto.BaseDTO;
+import com.middlewar.core.dto.PlayerDTO;
 import lombok.Data;
 
 /**
@@ -16,8 +17,9 @@ public class GameContext {
         return SingletonHolder._instance;
     }
 
-    Account account;
-    Player player;
+    AccountDTO account;
+    PlayerDTO player;
+    BaseDTO base;
 
     private static class SingletonHolder {
         protected static final GameContext _instance = new GameContext();

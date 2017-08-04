@@ -3,14 +3,15 @@ package com.middlewar.cli.commands;
 import com.middlewar.cli.APICall;
 import com.middlewar.cli.CommandHandler;
 import com.middlewar.cli.GameContext;
-import com.middlewar.core.model.Player;
+import com.middlewar.core.dto.BaseDTO;
+import com.middlewar.core.dto.PlayerDTO;
 
 /**
  * @author Bertrand
  */
 public class CreateCommand extends Command{
 
-    public static String USAGE = "create player";
+    public static String USAGE = "create <player|base>";
 
     public CreateCommand() {
         super(USAGE, "Create a player");
@@ -22,22 +23,42 @@ public class CreateCommand extends Command{
             printUsage();
             return;
         }
+        switch (getInput()[1]) {
+            case "player":
+                if (GameContext.getInstance().getPlayer() != null) {
+                    System.out.println("You already have a player.");
+                    return;
+                }
 
-        if (getInput()[1].equals("player")) {
-            if (GameContext.getInstance().getPlayer() != null) {
-                System.out.println("You already have a player.");
-                return;
-            }
+                System.out.println("Name for the player : ");
+                String name = CommandHandler.askForString();
 
-            System.out.println("Name for the player : ");
-            String name = CommandHandler.askForString();
+                PlayerDTO player = APICall.createPlayer(name);
+                if (player == null) return;
 
-            Player player = APICall.createPlayer(name);
-            if (player == null) return;
+                GameContext.getInstance().setPlayer(player);
 
-            GameContext.getInstance().setPlayer(player);
+                System.out.println("Player " + player.getName() + " created ! You should now create a base !");
+                break;
+            case "base":
+                if (GameContext.getInstance().getBase() != null) {
+                    System.out.println("You already have a base.");
+                    return;
+                }
+                System.out.println("Name for the base : ");
+                name = CommandHandler.askForString();
 
-            System.out.println("Player " + player.getName() + " created ! ");
+                BaseDTO base = APICall.createBase(name);
+                if (base == null) return;
+
+                GameContext.getInstance().setBase(base);
+
+                System.out.println("Base " + base.getName() + " created ! ");
+                break;
+            default:
+                System.out.println("Unknown option : " + getInput()[1]);
+                printUsage();
+                break;
         }
 
     }

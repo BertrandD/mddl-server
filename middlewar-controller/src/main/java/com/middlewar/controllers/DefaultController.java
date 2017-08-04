@@ -13,6 +13,7 @@ import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
+import com.middlewar.core.dto.AccountDTO;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +99,8 @@ public class DefaultController implements ErrorController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Account login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws IncorrectCredentialsException, UsernameNotFoundException {
-        return accountManager.login(username, password);
+    public AccountDTO login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws IncorrectCredentialsException, UsernameNotFoundException {
+        return new AccountDTO(accountManager.login(username, password));
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
@@ -110,8 +111,8 @@ public class DefaultController implements ErrorController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Account register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) throws AccountAlreadyExistsException {
-        return accountManager.register(username, password);
+    public AccountDTO register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) throws AccountAlreadyExistsException {
+        return new AccountDTO(accountManager.register(username, password));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

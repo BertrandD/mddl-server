@@ -1,7 +1,8 @@
 package com.middlewar.cli;
 
-import com.middlewar.core.model.Account;
-import com.middlewar.core.model.Player;
+import com.middlewar.core.dto.AccountDTO;
+import com.middlewar.core.dto.BaseDTO;
+import com.middlewar.core.dto.PlayerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,26 +45,33 @@ public class APICall {
         }
     }
 
-    public static Account login(String username, String password) {
+    public static AccountDTO login(String username, String password) {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("username", username);
         uriParams.put("password", password);
 
-        return call("/login?username={username}&password={password}", Account.class, uriParams);
+        return call("/login?username={username}&password={password}", AccountDTO.class, uriParams);
     }
 
-    public static Account register(String username, String password) {
+    public static AccountDTO register(String username, String password) {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("username", username);
         uriParams.put("password", password);
 
-        return call("/register?username={username}&password={password}", Account.class, uriParams);
+        return call("/register?username={username}&password={password}", AccountDTO.class, uriParams);
     }
 
-    public static Player createPlayer(String name) {
+    public static PlayerDTO createPlayer(String name) {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("name", name);
 
-        return call("/player?name={name}", Player.class, uriParams);
+        return call("/player?name={name}", PlayerDTO.class, uriParams);
+    }
+
+    public static BaseDTO createBase(String name) {
+        Map<String, String> uriParams = new HashMap<>();
+        uriParams.put("name", name);
+
+        return call("/me/base?name={name}", BaseDTO.class, uriParams);
     }
 }

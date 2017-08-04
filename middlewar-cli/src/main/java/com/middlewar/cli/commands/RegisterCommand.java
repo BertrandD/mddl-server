@@ -3,7 +3,7 @@ package com.middlewar.cli.commands;
 import com.middlewar.cli.APICall;
 import com.middlewar.cli.CommandHandler;
 import com.middlewar.cli.GameContext;
-import com.middlewar.core.model.Account;
+import com.middlewar.core.dto.AccountDTO;
 
 /**
  * @author Bertrand
@@ -23,7 +23,7 @@ public class RegisterCommand extends Command{
         System.out.println("Password : ");
         String password = CommandHandler.askForString();
 
-        Account account = APICall.register(getInput()[1], password);
+        AccountDTO account = APICall.register(getInput()[1], password);
         if (account == null) return;
 
         GameContext.getInstance().setAccount(account);
