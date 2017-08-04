@@ -12,7 +12,7 @@ public class ApplicationCLI {
 
         while (true) {
 
-            System.out.println("> ");
+            System.out.print("> ");
 
             try {
                 String input = CommandHandler.askForString();

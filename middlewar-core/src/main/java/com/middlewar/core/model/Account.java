@@ -45,14 +45,14 @@ public class Account implements UserDetails {
     private Lang lang;
 
     @OneToMany(mappedBy = "account", orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
     private long currentPlayer;
     private String token;
     private String password;
     private String username;
     @Fetch(FetchMode.JOIN)
     @ElementCollection
-    private Set<GrantedAuthority> authorities;
+    private Set<GrantedAuthority> authorities = new HashSet<>();
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;

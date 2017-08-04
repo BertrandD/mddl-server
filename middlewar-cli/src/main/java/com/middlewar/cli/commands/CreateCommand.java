@@ -9,8 +9,11 @@ import com.middlewar.core.model.Player;
  * @author Bertrand
  */
 public class CreateCommand extends Command{
+
+    public static String USAGE = "create player";
+
     public CreateCommand() {
-        super("create player", "Create a player");
+        super(USAGE, "Create a player");
     }
 
     @Override
@@ -21,6 +24,10 @@ public class CreateCommand extends Command{
         }
 
         if (getInput()[1].equals("player")) {
+            if (GameContext.getInstance().getPlayer() != null) {
+                System.out.println("You already have a player.");
+                return;
+            }
 
             System.out.println("Name for the player : ");
             String name = CommandHandler.askForString();

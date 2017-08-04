@@ -28,6 +28,6 @@ public class RegisterCommand extends Command{
 
         GameContext.getInstance().setAccount(account);
 
-        System.out.println("You are now registered ! ");
+        System.out.println("You are now registered ! You should create a player with " + CreateCommand.USAGE);
     }
 }

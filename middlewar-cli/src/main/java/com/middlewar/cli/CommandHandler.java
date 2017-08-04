@@ -53,7 +53,7 @@ public class CommandHandler {
 
         if (!COMMANDS.containsKey(command)) {
             if (!ALIASES.containsKey(command)) {
-                System.out.println(command.length() > 0 ? "Unknown command \""+command + "\"": "");
+                System.out.print(command.length() > 0 ? "Unknown command \""+command + "\" \n": "");
                 return;
             }
             command = ALIASES.get(command);
