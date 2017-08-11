@@ -11,15 +11,15 @@ import lombok.Data;
 @Data
 public class GameContext {
 
-    protected GameContext() {}
+    AccountDTO account;
+    PlayerDTO player;
+    BaseDTO base;
+    protected GameContext() {
+    }
 
     public static GameContext getInstance() {
         return SingletonHolder._instance;
     }
-
-    AccountDTO account;
-    PlayerDTO player;
-    BaseDTO base;
 
     public void setAccount(AccountDTO account) {
         this.account = account;

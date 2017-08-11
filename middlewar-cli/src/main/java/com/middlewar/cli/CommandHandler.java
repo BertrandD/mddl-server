@@ -20,7 +20,7 @@ public class CommandHandler {
     public static Map<String, String> ALIASES = new HashMap<>();
     private static Scanner scanIn = new Scanner(System.in);
 
-    public static String  askForString() {
+    public static String askForString() {
         try {
             return scanIn.nextLine();
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class CommandHandler {
 
         if (!COMMANDS.containsKey(command)) {
             if (!ALIASES.containsKey(command)) {
-                System.out.print(command.length() > 0 ? "Unknown command \""+command + "\" \n": "");
+                System.out.print(command.length() > 0 ? "Unknown command \"" + command + "\" \n" : "");
                 return;
             }
             command = ALIASES.get(command);

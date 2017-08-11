@@ -1,6 +1,5 @@
 package com.middlewar.cli.commands;
 
-import com.middlewar.cli.CommandHandler;
 import com.middlewar.cli.GameContext;
 import com.middlewar.client.BaseClient;
 import com.middlewar.client.PlayerClient;
@@ -10,7 +9,7 @@ import com.middlewar.dto.PlayerDTO;
 /**
  * @author Bertrand
  */
-public class CreateCommand extends Command{
+public class CreateCommand extends Command {
 
     public static String USAGE = "create [player <name> | base <name>]";
 

@@ -5,7 +5,7 @@ import com.middlewar.cli.CommandHandler;
 /**
  * @author Bertrand
  */
-public class HelpCommand extends Command{
+public class HelpCommand extends Command {
     public HelpCommand() {
         super("help", "display help");
     }
@@ -13,6 +13,6 @@ public class HelpCommand extends Command{
     @Override
     public void exec() {
         System.out.println("Commands available : ");
-        CommandHandler.COMMANDS.forEach((k,v)-> System.out.println(" - " + v.getUsage() + " : " + v.getDescription()));
+        CommandHandler.COMMANDS.forEach((k, v) -> System.out.println(" - " + v.getUsage() + " : " + v.getDescription()));
     }
 }

@@ -2,12 +2,13 @@ package com.middlewar.cli.commands;
 
 import com.middlewar.cli.GameContext;
 import com.middlewar.dto.AccountDTO;
+import com.middlewar.dto.BaseDTO;
 import com.middlewar.dto.PlayerDTO;
 
 /**
  * @author Bertrand
  */
-public class InfoCommand extends Command{
+public class InfoCommand extends Command {
     public InfoCommand() {
         super("info <account|player>", "Display info on the account");
     }
@@ -41,6 +42,16 @@ public class InfoCommand extends Command{
                 System.out.println(player.toString());
                 System.out.println("ID   : " + player.getId());
                 System.out.println("Name : " + player.getName());
+                break;
+            case "base":
+                BaseDTO base = GameContext.getInstance().getBase();
+                if (base == null) {
+                    System.out.println("You don't have any base. Let's create it !");
+                    return;
+                }
+                System.out.println(base.toString());
+                System.out.println("ID   : " + base.getId());
+                System.out.println("Name : " + base.getName());
                 break;
         }
 

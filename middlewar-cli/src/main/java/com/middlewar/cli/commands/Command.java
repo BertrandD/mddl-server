@@ -12,12 +12,12 @@ public abstract class Command {
     private String usage;
     private String description;
 
-    public abstract void exec();
-
     public Command(String usage, String description) {
         this.usage = usage;
         this.description = description;
     }
+
+    public abstract void exec();
 
     protected String getParam(String name, int pos) {
         if (getInput().length > pos) {

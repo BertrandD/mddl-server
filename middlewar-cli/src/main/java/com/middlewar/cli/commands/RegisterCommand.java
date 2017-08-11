@@ -1,6 +1,5 @@
 package com.middlewar.cli.commands;
 
-import com.middlewar.cli.CommandHandler;
 import com.middlewar.cli.GameContext;
 import com.middlewar.client.AccountClient;
 import com.middlewar.dto.AccountDTO;
@@ -8,7 +7,7 @@ import com.middlewar.dto.AccountDTO;
 /**
  * @author Bertrand
  */
-public class RegisterCommand extends Command{
+public class RegisterCommand extends Command {
     public RegisterCommand() {
         super("register <username> <password>", "Register on the middlewar server");
     }
