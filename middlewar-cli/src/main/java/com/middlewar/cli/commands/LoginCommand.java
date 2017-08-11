@@ -10,20 +10,15 @@ import com.middlewar.dto.AccountDTO;
  */
 public class LoginCommand extends Command{
     public LoginCommand() {
-        super("login <username>", "Log in on the middlewar server");
+        super("login <username> <password>", "Log in on the middlewar server");
     }
 
     @Override
     public void exec() {
-        if (getInput().length <= 1) {
-            printUsage();
-            return;
-        }
+        String username = getParam("Username", 1);
+        String password = getParam("Password", 2);
 
-        System.out.println("Password : ");
-        String password = CommandHandler.askForString();
-
-        AccountDTO account = AccountClient.login(getInput()[1], password);
+        AccountDTO account = AccountClient.login(username, password);
         if (account == null) return;
 
         GameContext.getInstance().setAccount(account);
@@ -34,7 +29,5 @@ public class LoginCommand extends Command{
             System.out.println("You don't have any player. You should create one with  with " + CreateCommand.USAGE);
             return;
         }
-
-        GameContext.getInstance().setPlayer(account.getPlayers().get(0));
     }
 }

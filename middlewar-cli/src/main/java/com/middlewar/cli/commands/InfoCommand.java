@@ -9,7 +9,7 @@ import com.middlewar.dto.PlayerDTO;
  */
 public class InfoCommand extends Command{
     public InfoCommand() {
-        super("info account", "Display info on the account");
+        super("info <account|player>", "Display info on the account");
     }
 
     @Override

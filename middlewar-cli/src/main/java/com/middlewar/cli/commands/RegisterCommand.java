@@ -10,20 +10,15 @@ import com.middlewar.dto.AccountDTO;
  */
 public class RegisterCommand extends Command{
     public RegisterCommand() {
-        super("register <username>", "Register on the middlewar server");
+        super("register <username> <password>", "Register on the middlewar server");
     }
 
     @Override
     public void exec() {
-        if (getInput().length <= 1) {
-            printUsage();
-            return;
-        }
+        String username = getParam("Username", 1);
+        String password = getParam("Password", 2);
 
-        System.out.println("Password : ");
-        String password = CommandHandler.askForString();
-
-        AccountDTO account = AccountClient.register(getInput()[1], password);
+        AccountDTO account = AccountClient.register(username, password);
         if (account == null) return;
 
         GameContext.getInstance().setAccount(account);

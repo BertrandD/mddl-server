@@ -12,7 +12,7 @@ import com.middlewar.dto.PlayerDTO;
  */
 public class CreateCommand extends Command{
 
-    public static String USAGE = "create <player|base>";
+    public static String USAGE = "create [player <name> | base <name>]";
 
     public CreateCommand() {
         super(USAGE, "Create a player");
@@ -31,8 +31,7 @@ public class CreateCommand extends Command{
                     return;
                 }
 
-                System.out.println("Name for the player : ");
-                String name = CommandHandler.askForString();
+                String name = getParam("Name for the player", 1);
 
                 PlayerDTO player = PlayerClient.createPlayer(name);
                 if (player == null) return;
@@ -46,8 +45,7 @@ public class CreateCommand extends Command{
                     System.out.println("You already have a base.");
                     return;
                 }
-                System.out.println("Name for the base : ");
-                name = CommandHandler.askForString();
+                name = getParam("Name for the base", 1);
 
                 BaseDTO base = BaseClient.createBase(name);
                 if (base == null) return;
