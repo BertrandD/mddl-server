@@ -1,2 +1,7 @@
-login shelb
+
+# Sample Middlewar script
+# This tool is not the final game, it's more a dev tool we made for testing purpose
+# You can enjoy a great part of the game, but some features are not yet available here
+
+login toto toto
 info account
