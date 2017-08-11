@@ -1,8 +1,8 @@
 package com.middlewar.cli;
 
-import com.middlewar.core.dto.AccountDTO;
-import com.middlewar.core.dto.BaseDTO;
-import com.middlewar.core.dto.PlayerDTO;
+import com.middlewar.dto.AccountDTO;
+import com.middlewar.dto.BaseDTO;
+import com.middlewar.dto.PlayerDTO;
 import lombok.Data;
 
 /**

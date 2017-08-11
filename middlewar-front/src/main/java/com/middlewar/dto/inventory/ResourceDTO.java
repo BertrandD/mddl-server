@@ -1,4 +1,4 @@
-package com.middlewar.core.dto.inventory;
+package com.middlewar.dto.inventory;
 
 import com.middlewar.core.model.inventory.Resource;
 import lombok.Data;

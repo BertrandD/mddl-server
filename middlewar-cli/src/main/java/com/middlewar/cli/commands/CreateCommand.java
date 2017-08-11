@@ -1,10 +1,11 @@
 package com.middlewar.cli.commands;
 
-import com.middlewar.cli.APICall;
 import com.middlewar.cli.CommandHandler;
 import com.middlewar.cli.GameContext;
-import com.middlewar.core.dto.BaseDTO;
-import com.middlewar.core.dto.PlayerDTO;
+import com.middlewar.client.BaseClient;
+import com.middlewar.client.PlayerClient;
+import com.middlewar.dto.BaseDTO;
+import com.middlewar.dto.PlayerDTO;
 
 /**
  * @author Bertrand
@@ -33,7 +34,7 @@ public class CreateCommand extends Command{
                 System.out.println("Name for the player : ");
                 String name = CommandHandler.askForString();
 
-                PlayerDTO player = APICall.createPlayer(name);
+                PlayerDTO player = PlayerClient.createPlayer(name);
                 if (player == null) return;
 
                 GameContext.getInstance().setPlayer(player);
@@ -48,7 +49,7 @@ public class CreateCommand extends Command{
                 System.out.println("Name for the base : ");
                 name = CommandHandler.askForString();
 
-                BaseDTO base = APICall.createBase(name);
+                BaseDTO base = BaseClient.createBase(name);
                 if (base == null) return;
 
                 GameContext.getInstance().setBase(base);

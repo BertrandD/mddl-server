@@ -13,7 +13,7 @@ import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.dto.AccountDTO;
+import com.middlewar.dto.AccountDTO;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.middlewar.cli.commands;
 
 import com.middlewar.cli.GameContext;
-import com.middlewar.core.dto.AccountDTO;
-import com.middlewar.core.dto.PlayerDTO;
+import com.middlewar.dto.AccountDTO;
+import com.middlewar.dto.PlayerDTO;
 
 /**
  * @author Bertrand

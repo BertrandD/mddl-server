@@ -1,9 +1,9 @@
 package com.middlewar.cli.commands;
 
-import com.middlewar.cli.APICall;
 import com.middlewar.cli.CommandHandler;
 import com.middlewar.cli.GameContext;
-import com.middlewar.core.dto.AccountDTO;
+import com.middlewar.client.AccountClient;
+import com.middlewar.dto.AccountDTO;
 
 /**
  * @author Bertrand
@@ -23,7 +23,7 @@ public class LoginCommand extends Command{
         System.out.println("Password : ");
         String password = CommandHandler.askForString();
 
-        AccountDTO account = APICall.login(getInput()[1], password);
+        AccountDTO account = AccountClient.login(getInput()[1], password);
         if (account == null) return;
 
         GameContext.getInstance().setAccount(account);

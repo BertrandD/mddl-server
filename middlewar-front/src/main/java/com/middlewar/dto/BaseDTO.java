@@ -1,9 +1,9 @@
-package com.middlewar.core.dto;
+package com.middlewar.dto;
 
-import com.middlewar.core.dto.instances.BuildingInstanceDTO;
-import com.middlewar.core.dto.inventory.BaseInventoryDTO;
-import com.middlewar.core.dto.inventory.ResourceDTO;
-import com.middlewar.core.dto.space.AstralObjectDTO;
+import com.middlewar.dto.instances.BuildingInstanceDTO;
+import com.middlewar.dto.inventory.BaseInventoryDTO;
+import com.middlewar.dto.inventory.ResourceDTO;
+import com.middlewar.dto.space.AstralObjectDTO;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.stats.ObjectStat;
 import lombok.Data;

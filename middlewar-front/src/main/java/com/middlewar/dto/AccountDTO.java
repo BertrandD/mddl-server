@@ -1,4 +1,4 @@
-package com.middlewar.core.dto;
+package com.middlewar.dto;
 
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;

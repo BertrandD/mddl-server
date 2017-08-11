@@ -1,4 +1,4 @@
-package com.middlewar.core.dto.instances;
+package com.middlewar.dto.instances;
 
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.items.GameItem;

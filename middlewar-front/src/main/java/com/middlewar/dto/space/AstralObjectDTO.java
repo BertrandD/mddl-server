@@ -1,4 +1,4 @@
-package com.middlewar.core.dto.space;
+package com.middlewar.dto.space;
 
 import com.middlewar.core.model.space.AstralObject;
 import lombok.Data;
