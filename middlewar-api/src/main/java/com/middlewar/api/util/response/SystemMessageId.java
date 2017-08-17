@@ -68,4 +68,8 @@ public final class SystemMessageId {
     public static final String MAXIMUM_MODULE_REACHED = "maximum_module_reached";
     public static final String MODULE_NOT_ALLOWED_HERE = "module_not_allowed_here";
     public static final String NOT_ENOUGH_MODULES = "not_enough_modules";
+
+    //ship
+    public static final String SHIP_CREATION_FAILED = "ship_creation_failed";
+
 }
