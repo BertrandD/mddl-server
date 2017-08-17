@@ -21,7 +21,11 @@ public class GameContext {
         return SingletonHolder._instance;
     }
 
+    public static void setInstance(GameContext gameContext) {
+        SingletonHolder._instance = gameContext;
+    }
+
     private static class SingletonHolder {
-        protected static final GameContext _instance = new GameContext();
+        protected static GameContext _instance = new GameContext();
     }
 }

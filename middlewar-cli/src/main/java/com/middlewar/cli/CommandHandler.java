@@ -4,8 +4,10 @@ import com.middlewar.cli.commands.Command;
 import com.middlewar.cli.commands.CreateCommand;
 import com.middlewar.cli.commands.HelpCommand;
 import com.middlewar.cli.commands.InfoCommand;
+import com.middlewar.cli.commands.LoadCommand;
 import com.middlewar.cli.commands.LoginCommand;
 import com.middlewar.cli.commands.RegisterCommand;
+import com.middlewar.cli.commands.SaveCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +38,8 @@ public class CommandHandler {
         COMMANDS.put("login", new LoginCommand());
         COMMANDS.put("create", new CreateCommand());
         COMMANDS.put("help", new HelpCommand());
+        COMMANDS.put("save", new SaveCommand());
+        COMMANDS.put("load", new LoadCommand());
 
         ALIASES.put("i", "info");
         ALIASES.put("c", "create");
