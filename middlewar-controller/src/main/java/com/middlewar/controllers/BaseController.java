@@ -1,13 +1,12 @@
 package com.middlewar.controllers;
 
-import com.middlewar.api.exceptions.BaseCreationException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.api.exceptions.*;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.dto.holder.BuildingHolderDTO;
 import com.middlewar.dto.BaseDTO;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -59,8 +61,8 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/me/base/{id}/buildables", method = RequestMethod.GET)
-    public Response calc(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) {
-        return controllerManagerWrapper.wrap(() -> baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id));
+    public List<BuildingHolderDTO> getBuildables(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
+        return baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id).stream().map(BuildingHolderDTO::new).collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/me/base/{id}/spy/{target}", method = RequestMethod.GET)

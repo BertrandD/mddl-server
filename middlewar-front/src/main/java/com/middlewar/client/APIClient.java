@@ -3,6 +3,8 @@ package com.middlewar.client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +25,15 @@ class APIClient {
         }
     }
 
-    static  <T> T call(String url, Class<T> responseType, Map<String, String> uriParams) {
+    static  <T> T get(String url, Class<T> responseType, Map<String, String> uriParams) {
+        return call(HttpMethod.GET, url, responseType, uriParams);
+    }
+
+    static  <T> T post(String url, Class<T> responseType, Map<String, String> uriParams) {
+        return call(HttpMethod.POST, url, responseType, uriParams);
+    }
+
+    static  private <T> T call(HttpMethod httpMethod, String url, Class<T> responseType, Map<String, String> uriParams) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         if (!ClientConfig.TOKEN.isEmpty()) {
@@ -31,10 +41,10 @@ class APIClient {
         }
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
-        T object;
         try {
-            object = restTemplate.postForObject(ClientConfig.SERVER + url, entity, responseType, uriParams);
-            return object;
+            ResponseEntity<T> responseEntity = restTemplate.exchange(ClientConfig.SERVER + url, httpMethod, entity, responseType, uriParams);
+            log.debug(responseEntity.toString());
+            return responseEntity.getBody();
         } catch (RestClientResponseException e) {
             handleErrror(e);
             return null;

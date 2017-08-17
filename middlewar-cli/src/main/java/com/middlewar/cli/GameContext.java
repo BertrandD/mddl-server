@@ -23,7 +23,9 @@ public class GameContext {
 
     public void setAccount(AccountDTO account) {
         this.account = account;
-        setPlayer(account.getPlayers().get(0)); // TODO : get current Player
+        if (account.getPlayers().size()>0) {
+            setPlayer(account.getPlayers().get(0)); // TODO : get current Player
+        }
     }
 
     public void setPlayer(PlayerDTO player) {

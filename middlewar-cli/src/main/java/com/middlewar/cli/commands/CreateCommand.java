@@ -30,7 +30,7 @@ public class CreateCommand extends Command {
                     return;
                 }
 
-                String name = getParam("Name for the player", 1);
+                String name = getParam("Name for the player", 2);
 
                 PlayerDTO player = PlayerClient.createPlayer(name);
                 if (player == null) return;

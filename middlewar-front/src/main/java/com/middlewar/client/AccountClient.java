@@ -10,8 +10,13 @@ public class AccountClient extends APIClient {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("username", username);
         uriParams.put("password", password);
+        AccountDTO account =  post("/login?username={username}&password={password}", AccountDTO.class, uriParams);
 
-        return call("/login?username={username}&password={password}", AccountDTO.class, uriParams);
+        if (account != null) {
+            ClientConfig.TOKEN = account.getToken();
+        }
+
+        return account;
     }
 
     public static AccountDTO register(String username, String password) {
@@ -19,6 +24,12 @@ public class AccountClient extends APIClient {
         uriParams.put("username", username);
         uriParams.put("password", password);
 
-        return call("/register?username={username}&password={password}", AccountDTO.class, uriParams);
+        AccountDTO account = post("/register?username={username}&password={password}", AccountDTO.class, uriParams);;
+
+        if (account != null) {
+            ClientConfig.TOKEN = account.getToken();
+        }
+
+        return account;
     }
 }

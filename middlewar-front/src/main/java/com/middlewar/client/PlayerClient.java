@@ -10,7 +10,7 @@ public class PlayerClient extends APIClient {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("name", name);
 
-        return call("/player?name={name}", PlayerDTO.class, uriParams);
+        return post("/player?name={name}", PlayerDTO.class, uriParams);
     }
 
 }

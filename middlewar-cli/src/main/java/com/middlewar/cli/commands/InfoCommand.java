@@ -1,9 +1,13 @@
 package com.middlewar.cli.commands;
 
 import com.middlewar.cli.GameContext;
+import com.middlewar.client.BaseClient;
 import com.middlewar.dto.AccountDTO;
 import com.middlewar.dto.BaseDTO;
 import com.middlewar.dto.PlayerDTO;
+import com.middlewar.dto.holder.BuildingHolderDTO;
+
+import java.util.List;
 
 /**
  * @author Bertrand
@@ -52,6 +56,10 @@ public class InfoCommand extends Command {
                 System.out.println(base.toString());
                 System.out.println("ID   : " + base.getId());
                 System.out.println("Name : " + base.getName());
+                break;
+            case "base.buildable":
+                List<BuildingHolderDTO> buildings = BaseClient.getBuildables(GameContext.getInstance().getBase());
+                buildings.forEach(k-> System.out.println(k.getTemplateId()));
                 break;
         }
 
