@@ -9,6 +9,8 @@ import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.serializer.PlayerSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -42,6 +44,7 @@ public class Player {
     private String name;
     @ManyToOne
     private Account account;
+    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Base> bases;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)

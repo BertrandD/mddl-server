@@ -51,8 +51,8 @@ public class BaseController {
     }
 
     @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
-    public Response findOne(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
-        return controllerManagerWrapper.wrap(() -> baseManager.getBaseWithBuildingQueue(playerManager.getCurrentPlayerForAccount(account), id));
+    public BaseDTO findOne(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
+        return new BaseDTO(baseManager.getOwnedBase(id, playerManager.getCurrentPlayerForAccount(account)));
     }
 
     @RequestMapping(value = "/me/base", method = RequestMethod.POST)

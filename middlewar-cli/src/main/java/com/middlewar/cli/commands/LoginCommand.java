@@ -2,7 +2,10 @@ package com.middlewar.cli.commands;
 
 import com.middlewar.cli.GameContext;
 import com.middlewar.client.AccountClient;
+import com.middlewar.client.BaseClient;
+import com.middlewar.client.PlayerClient;
 import com.middlewar.dto.AccountDTO;
+import com.middlewar.dto.PlayerDTO;
 
 /**
  * @author Bertrand
@@ -22,11 +25,15 @@ public class LoginCommand extends Command {
 
         GameContext.getInstance().setAccount(account);
 
-        System.out.println("Logged in as " + account.getUsername() + "! ");
+        if (account.getCurrentPlayer() > 0) {
+            PlayerDTO playerDTO = PlayerClient.getPlayer(account.getCurrentPlayer());
+            GameContext.getInstance().setPlayer(playerDTO);
 
-        if (account.getPlayers().size() == 0) {
-            System.out.println("You don't have any player. You should create one with  with " + CreateCommand.USAGE);
-            return;
+            if (playerDTO.getCurrentBase() > 0) {
+                GameContext.getInstance().setBase(BaseClient.getBase(playerDTO.getCurrentBase()));
+            }
         }
+
+        System.out.println("Logged in as " + account.getUsername() + "! ");
     }
 }

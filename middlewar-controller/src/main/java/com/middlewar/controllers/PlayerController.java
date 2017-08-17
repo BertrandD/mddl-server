@@ -3,6 +3,7 @@ package com.middlewar.controllers;
 import com.middlewar.api.exceptions.ForbiddenNameException;
 import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
 import com.middlewar.api.exceptions.PlayerCreationFailedException;
+import com.middlewar.api.exceptions.PlayerNotOwnedException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
@@ -56,8 +57,8 @@ public class PlayerController {
     }
 
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
-    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
-        return controllerManagerWrapper.wrap(() -> playerManager.getPlayerOfAccount(account, id));
+    public PlayerDTO player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) throws PlayerNotOwnedException {
+        return new PlayerDTO(playerManager.getPlayerOfAccount(account, id));
     }
 
     @RequestMapping(value = "/player", method = RequestMethod.POST)

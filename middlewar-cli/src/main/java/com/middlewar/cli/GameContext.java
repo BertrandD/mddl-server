@@ -21,18 +21,6 @@ public class GameContext {
         return SingletonHolder._instance;
     }
 
-    public void setAccount(AccountDTO account) {
-        this.account = account;
-        if (account.getPlayers().size()>0) {
-            setPlayer(account.getPlayers().get(0)); // TODO : get current Player
-        }
-    }
-
-    public void setPlayer(PlayerDTO player) {
-        this.player = player;
-        setBase(player.getCurrentBase());
-    }
-
     private static class SingletonHolder {
         protected static final GameContext _instance = new GameContext();
     }

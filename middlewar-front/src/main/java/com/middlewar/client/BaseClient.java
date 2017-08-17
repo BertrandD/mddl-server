@@ -26,4 +26,12 @@ public class BaseClient extends APIClient {
         }
         return Arrays.asList(buildings);
     }
+
+    public static BaseDTO getBase(Long currentBase) {
+        Map<String, String> uriParams = new HashMap<>();
+        uriParams.put("id", Long.toString(currentBase));
+
+        return get("/me/player/{id}", BaseDTO.class, uriParams);
+
+    }
 }
