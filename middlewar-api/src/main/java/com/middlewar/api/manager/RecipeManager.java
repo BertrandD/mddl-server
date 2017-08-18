@@ -8,9 +8,11 @@ import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.RecipeInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RecipeManager {
 
     @Autowired

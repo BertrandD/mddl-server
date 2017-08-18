@@ -14,6 +14,7 @@ import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
+import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.model.space.Planet;
@@ -91,10 +92,14 @@ public class SpyReportServiceTest {
     @Test
     public void testCreateSpyReport() {
 
-        _baseTarget.getShips().add(new Ship(_baseTarget, "structure_test", 5));
         final Resource resource = resourceService.create(_baseTarget, "resource_1");
         resource.getItem().addCount(100);
         _baseTarget.getResources().add(resource);
+
+        RecipeInstance recipeInstance = new RecipeInstance();
+        recipeInstance.setStructureId("structure_test");
+
+        _baseTarget.getShips().add(new Ship(_baseTarget, recipeInstance, 5));
 
         SpyReport report = spyReportService.create(_player, _baseSrc, _baseTarget);
         Assertions.assertThat(report).isNotNull();

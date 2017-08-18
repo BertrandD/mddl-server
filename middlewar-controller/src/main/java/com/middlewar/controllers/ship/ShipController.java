@@ -7,6 +7,8 @@ import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.api.exceptions.RecipeNotFoundException;
+import com.middlewar.api.exceptions.RecipeNotOwnedException;
 import com.middlewar.api.exceptions.ShipCreationFailedException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
@@ -16,6 +18,7 @@ import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/ship", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class ShipController {
 
     @Autowired
@@ -40,12 +43,12 @@ public class ShipController {
     @Autowired
     private BaseManager baseManager;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/me/base/{baseId}/ship", method = RequestMethod.POST)
     public Ship create(@AuthenticationPrincipal Account pAccount,
+                       @PathVariable("baseId") Long baseId,
                        @RequestParam(value = "count") Long count,
-                       @RequestParam(value = "structureId") String structure,
-                       @RequestParam(value = "attachments") List<String> ids) throws NoPlayerConnectedException, PlayerNotFoundException, PlayerHasNoBaseException, BaseNotFoundException, BaseNotOwnedException, ItemRequirementMissingException, ItemNotFoundException, ShipCreationFailedException {
-        return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, structure, ids);
+                       @RequestParam(value = "recipeId") Long recipeId) throws NoPlayerConnectedException, PlayerNotFoundException, PlayerHasNoBaseException, BaseNotFoundException, BaseNotOwnedException, ItemNotFoundException, ShipCreationFailedException, ItemRequirementMissingException, RecipeNotOwnedException, RecipeNotFoundException {
+        return shipManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), count, recipeId);
     }
 
 }

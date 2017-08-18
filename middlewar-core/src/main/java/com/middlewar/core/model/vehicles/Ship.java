@@ -1,9 +1,9 @@
 package com.middlewar.core.model.vehicles;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.VehicleState;
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
@@ -12,9 +12,7 @@ import com.middlewar.core.model.items.Weapon;
 import com.middlewar.core.serializer.ShipSerializer;
 import lombok.Data;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,58 +23,40 @@ import java.util.List;
 @JsonSerialize(using = ShipSerializer.class)
 public class Ship extends Vehicle {
 
-    private String structureId;
-    @ElementCollection
-    private List<String> cargoIds;
-    @ElementCollection
-    private List<String> engineIds;
-    @ElementCollection
-    private List<String> moduleIds;
-    @ElementCollection
-    private List<String> weaponIds;
-
     public Ship() {
         super();
-        setCargoIds(new ArrayList<>());
-        setEngineIds(new ArrayList<>());
-        setModuleIds(new ArrayList<>());
-        setWeaponIds(new ArrayList<>());
     }
 
-    public Ship(Base base, String structureId, long count) {
+    public Ship(Base base, RecipeInstance recipeInstance, long count) {
         super();
         setBase(base);
-        setStructureId(structureId);
+        setRecipeInstance(recipeInstance);
         setCount(count);
         setState(VehicleState.BASED);
-        setCargoIds(new ArrayList<>());
-        setEngineIds(new ArrayList<>());
-        setModuleIds(new ArrayList<>());
-        setWeaponIds(new ArrayList<>());
     }
 
     @Override
     public Structure getStructure() {
-        return ItemData.getInstance().getStructure(this.structureId);
+        return getRecipeInstance().getStructure();
     }
 
     @Override
     public List<Cargo> getCargos() {
-        return ItemData.getInstance().getCargos(this.cargoIds);
+        return getRecipeInstance().getCargos();
     }
 
     @Override
     public List<Engine> getEngines() {
-        return ItemData.getInstance().getEngines(this.engineIds);
+        return getRecipeInstance().getEngines();
     }
 
     @Override
     public List<Module> getModules() {
-        return ItemData.getInstance().getModules(this.moduleIds);
+        return getRecipeInstance().getModules();
     }
 
     @Override
     public List<Weapon> getWeapons() {
-        return ItemData.getInstance().getWeapons(this.weaponIds);
+        return getRecipeInstance().getWeapons();
     }
 }

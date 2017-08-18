@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -49,6 +50,15 @@ public class RecipeInstance {
         setEngines(engines);
         setModules(modules);
         setWeapons(weapons);
+    }
+
+    public List<String> getAttachmentsIds() {
+        List<String> collector = new LinkedList<>();
+        collector.addAll(cargos);
+        collector.addAll(engines);
+        collector.addAll(modules);
+        collector.addAll(weapons);
+        return collector;
     }
 
     public Structure getStructure() {

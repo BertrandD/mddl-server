@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/ship", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class RecipeController {
 
     @Autowired
@@ -35,15 +35,14 @@ public class RecipeController {
     @Autowired
     private BaseManager baseManager;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/me/recipe", method = RequestMethod.POST)
     public RecipeInstance create(@AuthenticationPrincipal Account pAccount,
-                                 @RequestParam(value = "count") Long count,
                                  @RequestParam(value = "name") String name,
                                  @RequestParam(value = "structureId") String structure,
                                  @RequestParam(value = "cargos") List<String> cargos,
-                                 @RequestParam(value = "cargos") List<String> engines,
-                                 @RequestParam(value = "cargos") List<String> modules,
-                                 @RequestParam(value = "cargos") List<String> weapons) throws NoPlayerConnectedException, PlayerNotFoundException, ItemNotFoundException {
+                                 @RequestParam(value = "engines") List<String> engines,
+                                 @RequestParam(value = "modules") List<String> modules,
+                                 @RequestParam(value = "weapons") List<String> weapons) throws NoPlayerConnectedException, PlayerNotFoundException, ItemNotFoundException {
         return recipeManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name, structure, cargos, engines, modules, weapons);
     }
 

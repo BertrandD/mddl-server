@@ -71,5 +71,7 @@ public final class SystemMessageId {
 
     //ship
     public static final String SHIP_CREATION_FAILED = "ship_creation_failed";
+    public static final String RECIPE_NOT_FOUND = "recipe_not_found";
+    public static final String RECIPE_NOT_OWNED = "recipe_not_owned";
 
 }
