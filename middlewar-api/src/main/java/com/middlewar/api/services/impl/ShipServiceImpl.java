@@ -4,7 +4,7 @@ import com.middlewar.api.dao.BaseDao;
 import com.middlewar.api.dao.ShipDao;
 import com.middlewar.api.services.ShipService;
 import com.middlewar.core.model.Base;
-import com.middlewar.core.model.instances.RecipeInstance;
+import com.middlewar.core.model.instances.Recipe;
 import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ public class ShipServiceImpl extends DefaultServiceImpl<Ship, ShipDao> implement
     @Autowired
     private BaseDao baseDao;
 
-    public Ship create(Base base, Long count, RecipeInstance recipeInstance) {
+    public Ship create(Base base, Long count, Recipe recipe) {
 
-        final Ship ship = new Ship(base, recipeInstance, count);
+        final Ship ship = new Ship(base, recipe, count);
         base.getShips().add(ship);
 
         shipDao.save(ship);

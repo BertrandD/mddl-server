@@ -10,7 +10,7 @@ import com.middlewar.api.services.ShipService;
 import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.instances.RecipeInstance;
+import com.middlewar.core.model.instances.Recipe;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +33,23 @@ public class ShipManager {
 
     public Ship create(Base base, Long count, long recipeId) throws ItemNotFoundException, ItemRequirementMissingException, ShipCreationFailedException, RecipeNotFoundException, RecipeNotOwnedException {
 
-        RecipeInstance recipeInstance = recipeService.findOne(recipeId);
-        if (recipeInstance == null) {
+        Recipe recipe = recipeService.findOne(recipeId);
+        if (recipe == null) {
             throw new RecipeNotFoundException();
         }
 
-        if (!recipeInstance.getOwner().equals(base.getOwner())) {
+        if (!recipe.getOwner().equals(base.getOwner())) {
             throw new RecipeNotOwnedException();
         }
 
         final BaseInventory inventory = base.getBaseInventory();
         final List<ItemInstance> collector = new LinkedList<>();
 
-        final ItemInstance structuresInst = inventory.getItemsToMap().get(recipeInstance.getStructureId());
+        final ItemInstance structuresInst = inventory.getItemsToMap().get(recipe.getStructureId());
         if (structuresInst == null || structuresInst.getCount() < count)
             throw new ItemRequirementMissingException();
 
-        for (String template: recipeInstance.getAttachmentsIds()) {
+        for (String template: recipe.getAttachmentsIds()) {
             final ItemInstance inst = inventory.getItemsToMap().get(template);
             if (inst != null && inst.getCount() >= count) collector.add(inst);
             else throw new ItemRequirementMissingException();
@@ -58,7 +58,7 @@ public class ShipManager {
         for (ItemInstance inst : collector)
             inventoryService.consumeItem(inst, 1);
 
-        final Ship ship = shipService.create(base, count, recipeInstance);
+        final Ship ship = shipService.create(base, count, recipe);
         if (ship == null) throw new ShipCreationFailedException();
         return ship;
     }

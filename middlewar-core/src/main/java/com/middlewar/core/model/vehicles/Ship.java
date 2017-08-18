@@ -3,7 +3,7 @@ package com.middlewar.core.model.vehicles;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.VehicleState;
 import com.middlewar.core.model.Base;
-import com.middlewar.core.model.instances.RecipeInstance;
+import com.middlewar.core.model.instances.Recipe;
 import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
@@ -27,36 +27,36 @@ public class Ship extends Vehicle {
         super();
     }
 
-    public Ship(Base base, RecipeInstance recipeInstance, long count) {
+    public Ship(Base base, Recipe recipe, long count) {
         super();
         setBase(base);
-        setRecipeInstance(recipeInstance);
+        this.setRecipe(recipe);
         setCount(count);
         setState(VehicleState.BASED);
     }
 
     @Override
     public Structure getStructure() {
-        return getRecipeInstance().getStructure();
+        return this.getRecipe().getStructure();
     }
 
     @Override
     public List<Cargo> getCargos() {
-        return getRecipeInstance().getCargos();
+        return this.getRecipe().getCargos();
     }
 
     @Override
     public List<Engine> getEngines() {
-        return getRecipeInstance().getEngines();
+        return this.getRecipe().getEngines();
     }
 
     @Override
     public List<Module> getModules() {
-        return getRecipeInstance().getModules();
+        return this.getRecipe().getModules();
     }
 
     @Override
     public List<Weapon> getWeapons() {
-        return getRecipeInstance().getWeapons();
+        return this.getRecipe().getWeapons();
     }
 }

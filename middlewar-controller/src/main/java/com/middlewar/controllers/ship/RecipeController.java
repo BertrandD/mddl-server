@@ -7,7 +7,7 @@ import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.RecipeManager;
 import com.middlewar.core.model.Account;
-import com.middlewar.core.model.instances.RecipeInstance;
+import com.middlewar.core.model.instances.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,13 +36,13 @@ public class RecipeController {
     private BaseManager baseManager;
 
     @RequestMapping(value = "/me/recipe", method = RequestMethod.POST)
-    public RecipeInstance create(@AuthenticationPrincipal Account pAccount,
-                                 @RequestParam(value = "name") String name,
-                                 @RequestParam(value = "structureId") String structure,
-                                 @RequestParam(value = "cargos") List<String> cargos,
-                                 @RequestParam(value = "engines") List<String> engines,
-                                 @RequestParam(value = "modules") List<String> modules,
-                                 @RequestParam(value = "weapons") List<String> weapons) throws NoPlayerConnectedException, PlayerNotFoundException, ItemNotFoundException {
+    public Recipe create(@AuthenticationPrincipal Account pAccount,
+                         @RequestParam(value = "name") String name,
+                         @RequestParam(value = "structureId") String structure,
+                         @RequestParam(value = "cargos") List<String> cargos,
+                         @RequestParam(value = "engines") List<String> engines,
+                         @RequestParam(value = "modules") List<String> modules,
+                         @RequestParam(value = "weapons") List<String> weapons) throws NoPlayerConnectedException, PlayerNotFoundException, ItemNotFoundException {
         return recipeManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name, structure, cargos, engines, modules, weapons);
     }
 

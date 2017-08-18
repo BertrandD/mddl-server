@@ -2,11 +2,9 @@ package com.middlewar.api.manager;
 
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.services.RecipeService;
-import com.middlewar.api.services.ShipService;
-import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.model.instances.RecipeInstance;
+import com.middlewar.core.model.instances.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,7 @@ public class RecipeManager {
     @Autowired
     private RecipeService recipeService;
 
-    public RecipeInstance create(Player player, String name, String structure, List<String> cargos, List<String> engines, List<String> modules, List<String> weapons) throws ItemNotFoundException{
+    public Recipe create(Player player, String name, String structure, List<String> cargos, List<String> engines, List<String> modules, List<String> weapons) throws ItemNotFoundException{
 
         if (ItemData.getInstance().getStructure(structure) == null)
             throw new ItemNotFoundException();

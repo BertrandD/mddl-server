@@ -2,7 +2,7 @@ package com.middlewar.core.model.vehicles;
 
 import com.middlewar.core.enums.VehicleState;
 import com.middlewar.core.model.Base;
-import com.middlewar.core.model.instances.RecipeInstance;
+import com.middlewar.core.model.instances.Recipe;
 import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
@@ -31,7 +31,7 @@ public abstract class Vehicle implements IShip {
     private Base base;
 
     @ManyToOne
-    private RecipeInstance recipeInstance;
+    private Recipe recipe;
 
     private VehicleState state;
 
