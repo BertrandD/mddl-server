@@ -1,6 +1,7 @@
 package com.middlewar.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.model.social.FriendRequest;
@@ -48,6 +49,9 @@ public class Player {
     private Base currentBase;
     @ManyToMany
     private List<Player> friends;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<RecipeInstance> recipes;
 
     @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FriendRequest> emittedFriendRequests;

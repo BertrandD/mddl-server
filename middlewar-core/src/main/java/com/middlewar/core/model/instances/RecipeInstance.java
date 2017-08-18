@@ -41,7 +41,7 @@ public class RecipeInstance {
     @ElementCollection
     private List<String> weapons;
 
-    public RecipeInstance(String name, Player owner, String structureId, List<String> cargos, List<String> engines, List<String> modules, List<String> technologies, List<String> weapons) {
+    public RecipeInstance(String name, Player owner, String structureId, List<String> cargos, List<String> engines, List<String> modules, List<String> weapons) {
         setName(name);
         setOwner(owner);
         setStructureId(structureId);
@@ -55,7 +55,7 @@ public class RecipeInstance {
         return ItemData.getInstance().getStructure(structureId);
     }
 
-    public ArrayList<Cargo> getCargos() {
+    public List<Cargo> getCargos() {
         final ArrayList<Cargo> res = new ArrayList<>();
         cargos.forEach(k -> res.add(ItemData.getInstance().getCargo(k)));
         return res;
@@ -65,7 +65,7 @@ public class RecipeInstance {
         this.cargos = cargos;
     }
 
-    public ArrayList<Engine> getEngines() {
+    public List<Engine> getEngines() {
         final ArrayList<Engine> res = new ArrayList<>();
         engines.forEach(k -> res.add(ItemData.getInstance().getEngine(k)));
         return res;
@@ -75,7 +75,7 @@ public class RecipeInstance {
         this.engines = engines;
     }
 
-    public ArrayList<Module> getModules() {
+    public List<Module> getModules() {
         final ArrayList<Module> res = new ArrayList<>();
         modules.forEach(k -> res.add(ItemData.getInstance().getModule(k)));
         return res;
@@ -85,7 +85,7 @@ public class RecipeInstance {
         this.modules = modules;
     }
 
-    public ArrayList<Weapon> getWeapons() {
+    public List<Weapon> getWeapons() {
         final ArrayList<Weapon> res = new ArrayList<>();
         weapons.forEach(k -> res.add(ItemData.getInstance().getWeapon(k)));
         return res;
