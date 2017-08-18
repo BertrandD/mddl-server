@@ -16,9 +16,12 @@
     }
 
     .body-inner {
-        background-color: rgba(255,255,255,0.5);
         padding-bottom: 10pt;
         margin-bottom: 250pt;
+    }
+
+    #presentation {
+        background-color: rgba(255,255,255,0.5);
     }
 
     h1, h2 {
@@ -87,7 +90,7 @@
 
     .timeline {
         background-color: rgba(29,29,29,0.9);
-        min-height: 120vh;
+        min-height: 180vh;
         margin: 0;
         font-family: 'Droid Sans', sans-serif;
         position: relative;
@@ -469,6 +472,8 @@ poser dessus et extraire des ressources. En maîtrisant bien les techniques de v
         var btn_presentation = document.getElementById("btn_presentation");
         var avancement = document.getElementById("avancement");
         var presentation = document.getElementById("presentation");
+
+        presentation.style.display="none";
 
         btn_avancement.addEventListener("click", function () {
             avancement.style.display="block";
