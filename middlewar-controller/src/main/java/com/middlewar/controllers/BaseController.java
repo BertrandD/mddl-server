@@ -1,14 +1,19 @@
 package com.middlewar.controllers;
 
-import com.middlewar.api.exceptions.*;
+import com.middlewar.api.exceptions.BaseCreationException;
+import com.middlewar.api.exceptions.BaseNotFoundException;
+import com.middlewar.api.exceptions.BaseNotOwnedException;
+import com.middlewar.api.exceptions.NoPlayerConnectedException;
+import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.dto.holder.BuildingHolderDTO;
-import com.middlewar.dto.BaseDTO;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.BaseDTO;
+import com.middlewar.dto.holder.BuildingHolderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,27 +50,27 @@ public class BaseController {
         this.controllerManagerWrapper = controllerManagerWrapper;
     }
 
-    @RequestMapping(value = "/me/base", method = RequestMethod.GET)
+    @RequestMapping(value = Route.BASE_ALL, method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount) {
         return controllerManagerWrapper.wrap(() -> baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)));
     }
 
-    @RequestMapping(value = "/me/base/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.BASE_ONE, method = RequestMethod.GET)
     public BaseDTO findOne(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
         return new BaseDTO(baseManager.getOwnedBase(id, playerManager.getCurrentPlayerForAccount(account)));
     }
 
-    @RequestMapping(value = "/me/base", method = RequestMethod.POST)
+    @RequestMapping(value = Route.BASE_CREATE, method = RequestMethod.POST)
     public BaseDTO create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) throws NoPlayerConnectedException, PlayerNotFoundException, BaseCreationException {
         return new BaseDTO(baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name));
     }
 
-    @RequestMapping(value = "/me/base/{id}/buildables", method = RequestMethod.GET)
+    @RequestMapping(value = Route.BASE_BUILDABLE, method = RequestMethod.GET)
     public List<BuildingHolderDTO> getBuildables(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
         return baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id).stream().map(BuildingHolderDTO::new).collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/me/base/{id}/spy/{target}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.BASE_SPY, method = RequestMethod.GET)
     public Response spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id, @PathVariable("id") Long target) {
         return controllerManagerWrapper.wrap(() -> reportManager.spy(playerManager.getCurrentPlayerForAccount(pAccount), id, target));
 

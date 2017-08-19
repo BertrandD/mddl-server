@@ -10,13 +10,13 @@ public class PlayerClient extends APIClient {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("name", name);
 
-        return post("/player?name={name}", PlayerDTO.class, uriParams);
+        return post(Route.PLAYER_CREATE + "?name={name}", PlayerDTO.class, uriParams);
     }
 
     public static PlayerDTO getPlayer(long currentPlayer) {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("id", Long.toString(currentPlayer));
 
-        return get("/me/player/{id}", PlayerDTO.class, uriParams);
+        return get(Route.PLAYER_ONE, PlayerDTO.class, uriParams);
     }
 }

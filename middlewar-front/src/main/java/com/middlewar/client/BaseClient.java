@@ -14,13 +14,13 @@ public class BaseClient extends APIClient {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("name", name);
 
-        return post("/me/base?name={name}", BaseDTO.class, uriParams);
+        return post(Route.BASE_CREATE + "?name={name}", BaseDTO.class, uriParams);
     }
 
     public static List<BuildingHolderDTO> getBuildables(BaseDTO base) {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("id", ""+base.getId());
-        BuildingHolderDTO[] buildings = get("/me/base/{id}/buildables", BuildingHolderDTO[].class, uriParams);
+        BuildingHolderDTO[] buildings = get(Route.BASE_BUILDABLE, BuildingHolderDTO[].class, uriParams);
         if (buildings == null) {
             return new ArrayList<>();
         }
@@ -31,7 +31,7 @@ public class BaseClient extends APIClient {
         Map<String, String> uriParams = new HashMap<>();
         uriParams.put("id", Long.toString(currentBase));
 
-        return get("/me/player/{id}", BaseDTO.class, uriParams);
+        return get(Route.BASE_ONE, BaseDTO.class, uriParams);
 
     }
 }

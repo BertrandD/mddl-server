@@ -5,6 +5,7 @@ import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,22 +36,22 @@ public class BuildingInstanceController {
     @Autowired
     private BuildingManager buildingManager;
 
-    @RequestMapping(value = "/me/base/{baseId}/building/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.BUILDING_ONE, method = RequestMethod.GET)
     public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long id) {
         return controllerManagerWrapper.wrap(() -> buildingManager.getBuilding(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(value = "/me/base/{baseId}/building", method = RequestMethod.POST)
+    @RequestMapping(value = Route.BUILDING_CREATE, method = RequestMethod.POST)
     public Response create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @RequestParam(value = "building") String templateId) {
         return controllerManagerWrapper.wrap(() -> buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId));
     }
 
-    @RequestMapping(value = "/me/base/{baseId}/building/{id}/upgrade", method = RequestMethod.PUT)
+    @RequestMapping(value = Route.BUILDING_UPGRADE, method = RequestMethod.PUT)
     public Response upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long id) {
         return controllerManagerWrapper.wrap(() -> buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(value = "/me/base/{baseId}/building/{id}/attach/module/{module}", method = RequestMethod.PUT)
+    @RequestMapping(value = Route.BUILDING_ATTACH_MODULE, method = RequestMethod.PUT)
     public Response attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long buildingInstId, @PathVariable("module") String moduleId) {
         return controllerManagerWrapper.wrap(() -> buildingManager.attachModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), buildingInstId, moduleId));
     }

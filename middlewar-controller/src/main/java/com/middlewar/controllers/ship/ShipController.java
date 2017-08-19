@@ -6,6 +6,7 @@ import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.client.Route;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/ship", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class ShipController {
 
     @Autowired
@@ -42,7 +43,7 @@ public class ShipController {
     @Autowired
     private ShipService shipService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = Route.SHIP_CREATE, method = RequestMethod.POST)
     public Response create(@AuthenticationPrincipal Account pAccount,
                            @RequestParam(value = "count") Long count,
                            @RequestParam(value = "structureId") String structure,

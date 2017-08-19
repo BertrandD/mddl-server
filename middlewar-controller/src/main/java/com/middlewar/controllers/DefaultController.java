@@ -11,11 +11,12 @@ import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.dto.AccountDTO;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.AccountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
@@ -98,7 +99,7 @@ public class DefaultController implements ErrorController {
         return new Response<>(JsonResponseType.SUCCESS);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = Route.LOGIN, method = RequestMethod.POST)
     public AccountDTO login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws IncorrectCredentialsException, UsernameNotFoundException {
         return new AccountDTO(accountManager.login(username, password));
     }
@@ -110,7 +111,7 @@ public class DefaultController implements ErrorController {
         return new Response<>(JsonResponseType.SUCCESS);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = Route.REGISTER, method = RequestMethod.POST)
     public AccountDTO register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) throws AccountAlreadyExistsException {
         return new AccountDTO(accountManager.register(username, password));
     }

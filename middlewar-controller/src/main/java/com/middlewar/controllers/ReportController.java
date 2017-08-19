@@ -4,6 +4,7 @@ import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +34,7 @@ public class ReportController {
         this.playerManager = playerManager;
     }
 
-    @RequestMapping(value = "/reports", method = RequestMethod.GET)
+    @RequestMapping(value = Route.REPORT_ALL, method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount) {
         return controllerManagerWrapper.wrap(() -> reportManager.getAllReportsOfCurrentPlayer(playerManager.getCurrentPlayerForAccount(pAccount)));
     }
