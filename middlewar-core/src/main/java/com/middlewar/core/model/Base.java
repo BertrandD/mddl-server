@@ -11,6 +11,11 @@ import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.core.serializer.BaseSerializer;
+import com.middlewar.dto.BaseDTO;
+import com.middlewar.dto.instances.BuildingInstanceDTO;
+import com.middlewar.dto.inventory.BaseInventoryDTO;
+import com.middlewar.dto.inventory.ResourceDTO;
+import com.middlewar.dto.space.AstralObjectDTO;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -27,6 +32,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -91,6 +97,17 @@ public class Base {
         setFleets(new ArrayList<>());
         setReports(new ArrayList<>());
         setPlanet(planet);
+    }
+
+    public BaseDTO toDTO() {
+        BaseDTO dto = new BaseDTO();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setBuildings(this.getBuildings().stream().map(BuildingInstance::toDTO).collect(Collectors.toList()));
+        dto.setBaseInventory(this.getBaseInventory().toDTO());
+        dto.setResources(this.getResources().stream().map(Resource::toDTO).collect(Collectors.toList()));
+        dto.setPlanet(this.getPlanet().toDTO());
+        return dto;
     }
 
     @PreRemove

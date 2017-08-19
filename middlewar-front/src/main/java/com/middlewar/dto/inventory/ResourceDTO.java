@@ -1,6 +1,5 @@
 package com.middlewar.dto.inventory;
 
-import com.middlewar.core.model.inventory.Resource;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,11 +10,4 @@ public class ResourceDTO {
     private double count;
     private long availableCapacity;
     private double prodPerHour;
-
-    public ResourceDTO(Resource resource) {
-        setLastRefresh(resource.getLastRefresh());
-        setCount(resource.getCount());
-        setAvailableCapacity(resource.getAvailableCapacity());
-        setProdPerHour(resource.getProdPerHour());
-    }
 }

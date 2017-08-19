@@ -9,10 +9,12 @@ import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.inventory.Resource;
+import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BuildingInstanceSerializer;
+import com.middlewar.dto.instances.BuildingInstanceDTO;
 import lombok.Data;
 
 import javax.persistence.ElementCollection;
@@ -60,6 +62,17 @@ public class BuildingInstance {
         setCurrentLevel(0);
         setStartedAt(-1);
         setModules(new ArrayList<>());
+    }
+
+    public BuildingInstanceDTO toDTO() {
+        BuildingInstanceDTO dto = new BuildingInstanceDTO();
+        dto.setId(this.getId());
+        dto.setBuildingId(this.getBuildingId());
+        dto.setCurrentLevel(this.getCurrentLevel());
+        dto.setEndsAt(this.getEndsAt());
+        dto.setStartedAt(this.getStartedAt());
+        dto.setModules(this.getModules().stream().map(GameItem::getItemId).collect(Collectors.toList()));
+        return dto;
     }
 
     public Building getTemplate() {

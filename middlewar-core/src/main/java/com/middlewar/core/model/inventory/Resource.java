@@ -6,6 +6,7 @@ import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.ResourceSerializer;
 import com.middlewar.core.utils.TimeUtil;
+import com.middlewar.dto.inventory.ResourceDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -51,6 +52,15 @@ public class Resource {
         setBase(base);
         setItem(item);
         setLastRefresh(TimeUtil.getCurrentTime());
+    }
+
+    public ResourceDTO toDTO() {
+        ResourceDTO dto = new ResourceDTO();
+        dto.setLastRefresh(this.getLastRefresh());
+        dto.setCount(this.getCount());
+        dto.setAvailableCapacity(this.getAvailableCapacity());
+        dto.setProdPerHour(this.getProdPerHour());
+        return dto;
     }
 
     /**

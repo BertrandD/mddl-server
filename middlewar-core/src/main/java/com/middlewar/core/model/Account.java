@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.deserializer.AccountDeserializer;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.serializer.AccountSerializer;
+import com.middlewar.dto.AccountDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -66,6 +68,17 @@ public class Account implements UserDetails {
         setPlayers(players == null ? new ArrayList<>() : players);
         setCurrentPlayer(currentPlayer);
         setToken(token);
+    }
+
+    public AccountDTO toDTO() {
+        AccountDTO dto = new AccountDTO();
+        dto.setId(this.getId());
+        dto.setLang(this.getLang().getName());
+        dto.setPlayers(this.getPlayers().stream().map(Player::getId).collect(Collectors.toList()));
+        dto.setCurrentPlayer(this.getCurrentPlayer());
+        dto.setToken(this.getToken());
+        dto.setUsername(this.getUsername());
+        return dto;
     }
 
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {

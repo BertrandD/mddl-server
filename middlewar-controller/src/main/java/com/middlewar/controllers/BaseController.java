@@ -11,6 +11,7 @@ import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.client.Route;
+import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.model.Account;
 import com.middlewar.dto.BaseDTO;
 import com.middlewar.dto.holder.BuildingHolderDTO;
@@ -57,17 +58,17 @@ public class BaseController {
 
     @RequestMapping(value = Route.BASE_ONE, method = RequestMethod.GET)
     public BaseDTO findOne(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
-        return new BaseDTO(baseManager.getOwnedBase(id, playerManager.getCurrentPlayerForAccount(account)));
+        return baseManager.getOwnedBase(id, playerManager.getCurrentPlayerForAccount(account)).toDTO();
     }
 
     @RequestMapping(value = Route.BASE_CREATE, method = RequestMethod.POST)
     public BaseDTO create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) throws NoPlayerConnectedException, PlayerNotFoundException, BaseCreationException {
-        return new BaseDTO(baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name));
+        return baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name).toDTO();
     }
 
     @RequestMapping(value = Route.BASE_BUILDABLE, method = RequestMethod.GET)
     public List<BuildingHolderDTO> getBuildables(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
-        return baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id).stream().map(BuildingHolderDTO::new).collect(Collectors.toList());
+        return baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id).stream().map(BuildingHolder::toDTO).collect(Collectors.toList());
     }
 
     @RequestMapping(value = Route.BASE_SPY, method = RequestMethod.GET)

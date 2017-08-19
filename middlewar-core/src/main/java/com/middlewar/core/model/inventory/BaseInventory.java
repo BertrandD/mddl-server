@@ -6,6 +6,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BaseInventorySerializer;
+import com.middlewar.dto.inventory.BaseInventoryDTO;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -40,5 +41,11 @@ public class BaseInventory extends Inventory {
     @Override
     public ItemInstance getItem(String id) {
         return getItemsToMap().getOrDefault(id, null);
+    }
+
+    public BaseInventoryDTO toDTO() {
+        BaseInventoryDTO dto = new BaseInventoryDTO();
+        dto.setAvailableCapacity(this.getAvailableCapacity());
+        return dto;
     }
 }

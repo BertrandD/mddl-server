@@ -59,12 +59,12 @@ public class PlayerController {
 
     @RequestMapping(value = Route.PLAYER_ONE, method = RequestMethod.GET)
     public PlayerDTO player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) throws PlayerNotOwnedException {
-        return new PlayerDTO(playerManager.getPlayerOfAccount(account, id));
+        return playerManager.getPlayerOfAccount(account, id).toDTO();
     }
 
     @RequestMapping(value = Route.PLAYER_CREATE, method = RequestMethod.POST)
     public PlayerDTO create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
-        return new PlayerDTO(playerManager.createForAccount(account, name));
+        return playerManager.createForAccount(account, name).toDTO();
 
     }
 }

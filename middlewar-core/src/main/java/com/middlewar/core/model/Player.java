@@ -8,6 +8,7 @@ import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.serializer.PlayerSerializer;
 import com.middlewar.core.utils.TimeUtil;
+import com.middlewar.dto.PlayerDTO;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -77,6 +79,16 @@ public class Player {
         setEmittedFriendRequests(new ArrayList<>());
         setReceivedFriendRequests(new ArrayList<>());
         setPlanetScans(new HashMap<>());
+    }
+
+    public PlayerDTO toDTO() {
+        PlayerDTO dto = new PlayerDTO();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setBases(this.getBases().stream().map(Base::getId).collect(Collectors.toList()));
+        if (this.getCurrentBase() != null)
+            dto.setCurrentBase(this.getCurrentBase().getId());
+        return dto;
     }
 
     public void addBase(Base base) {

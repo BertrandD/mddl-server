@@ -101,7 +101,7 @@ public class DefaultController implements ErrorController {
 
     @RequestMapping(value = Route.LOGIN, method = RequestMethod.POST)
     public AccountDTO login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws IncorrectCredentialsException, UsernameNotFoundException {
-        return new AccountDTO(accountManager.login(username, password));
+        return accountManager.login(username, password).toDTO();
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
@@ -113,7 +113,7 @@ public class DefaultController implements ErrorController {
 
     @RequestMapping(value = Route.REGISTER, method = RequestMethod.POST)
     public AccountDTO register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) throws AccountAlreadyExistsException {
-        return new AccountDTO(accountManager.register(username, password));
+        return accountManager.register(username, password).toDTO();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
