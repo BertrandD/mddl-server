@@ -3,180 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Middlewar</title>
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
-<style>
-    body {
-        font-size: 10.0pt;
-        font-family: "Calibri",sans-serif;
-        max-width: 1000px;
-        margin: 25px auto auto;
-        padding: 5px;
-        background: url("https://c1.staticflickr.com/6/5052/5518992555_e7119f4017_b.jpg") no-repeat center fixed;
-        background-size: cover;
-    }
-
-    .body-inner {
-        padding-bottom: 10pt;
-        margin-bottom: 250pt;
-    }
-
-    #presentation {
-        background-color: rgba(255,255,255,0.5);
-    }
-
-    h1, h2 {
-        font-size: 11.0pt;
-    }
-
-    h2 span {
-        font-size: 8.0pt;
-    }
-
-    h1 {
-        margin: 5.0pt 0 .0001pt;
-        line-height: 115%;
-        background: #5B9BD5;
-        border: none;
-        padding: 5pt;
-        color: white;
-        text-transform: uppercase;
-        letter-spacing: .75pt;
-        font-weight: normal;
-    }
-    h2 {
-        margin: 0 0 .0001pt;
-        line-height: 115%;
-        background: #DEEAF6;
-        border: none;
-        padding: 8pt 5pt 5pt 5pt;
-        text-transform: uppercase;
-        letter-spacing: .75pt;
-        font-weight: normal;
-    }
-
-    .title {
-        font-family: "Calibri Light",sans-serif;
-        text-align: center;
-        color: #5B9BD5;
-    }
-
-    .title-inner {
-        text-transform: uppercase;
-        border-top: solid #5B9BD5 1.0pt;
-        border-bottom: solid #5B9BD5 1.0pt;
-        /*border-top: solid #000000 1.0pt;*/
-        /*border-bottom: solid #000000 1.0pt;*/
-        padding: 10pt 0;
-        font-size: 36.0pt;
-        margin: 18pt;
-    }
-
-    .subtitle {
-        font-size: 14.0pt;
-    }
-
-    p, h3 {
-        padding-left: 5pt;
-    }
-
-    .center {
-        text-align: center;
-    }
-
-    .footer {
-        color: #ffffff;
-        text-align: center;
-    }
-
-    .timeline {
-        background-color: rgba(29,29,29,0.9);
-        min-height: 180vh;
-        margin: 0;
-        font-family: 'Droid Sans', sans-serif;
-        position: relative;
-    }
-    .timeline:before {
-        content: '';
-        position: absolute;
-        height: 100%;
-        top: 0px;
-        left: 50%;
-        bottom: 0px;
-        -webkit-transform: translateX(-50%);
-        transform: translateX(-50%);
-        width: 4px;
-        background-color: #fff;
-    }
-    .timeline ul {
-        list-style-type: none;
-        padding: 0;
-        text-align: center;
-    }
-    .timeline .entries {
-        width: calc(100% - 80px);
-        max-width: 800px;
-        margin: auto;
-        position: relative;
-        left: -5px;
-    }
-    .timeline .entries .entry {
-        width: calc(50% - 80px);
-        float: left;
-        padding: 20px;
-        clear: both;
-        text-align: right;
-    }
-    .timeline .entries .entry:not(:first-child) {
-        margin-top: -60px;
-    }
-    .timeline .entries .entry .title {
-        font-size: 32px;
-        margin-bottom: 12px;
-        position: relative;
-        color: #fff;
-    }
-    .timeline .entries .entry .title:before {
-        content: '';
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        border: 4px solid #ffffff;
-        background-color: #1D1D1D;
-        border-radius: 100%;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        transform: translateY(-50%);
-        right: -73px;
-        z-index: 1000;
-    }
-    .timeline .entries .entry .title.big:before {
-        width: 24px;
-        height: 24px;
-        -webkit-transform: translate(8px, -50%);
-        transform: translate(8px, -50%);
-    }
-    .timeline .entries .entry .body {
-        color: #aaa;
-    }
-    .timeline .entries .entry .body p {
-        line-height: 1.4em;
-    }
-    .timeline .entries .entry:nth-child(2n) {
-        text-align: left;
-        float: right;
-    }
-    .timeline .entries .entry:nth-child(2n) .title:before {
-        left: -63px;
-    }
-    .timeline .entries .entry:nth-child(2n) .title.big:before {
-        -webkit-transform: translate(-8px, -50%);
-        transform: translate(-8px, -50%);
-    }
-
-    .btn {
-        cursor: pointer;
-    }
-</style>
 
 <body>
 
@@ -473,16 +301,26 @@ poser dessus et extraire des ressources. En maîtrisant bien les techniques de v
         var avancement = document.getElementById("avancement");
         var presentation = document.getElementById("presentation");
 
-        presentation.style.display="none";
+        console.log(window.location.hash);
+
+        if (window.location.hash === "#avancement") {
+            presentation.style.display="none";
+            avancement.style.display="block";
+        } else if (window.location.hash === "#presentation") {
+            avancement.style.display="none";
+            presentation.style.display="block";
+        }
 
         btn_avancement.addEventListener("click", function () {
             avancement.style.display="block";
             presentation.style.display="none";
+            window.location.hash="avancement";
         });
 
         btn_presentation.addEventListener("click", function () {
             avancement.style.display="none";
             presentation.style.display="block";
+            window.location.hash="presentation";
         })
     })();
 </script>
