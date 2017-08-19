@@ -18,11 +18,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <springboot.version>1.5.4.RELEASE</springboot.version>
-        <spring-security-core.version>4.2.2.RELEASE</spring-security-core.version>
         <spring-aspects.version>4.3.7.RELEASE</spring-aspects.version>
-        <spring-webmvc.version>4.3.7.RELEASE</spring-webmvc.version>
-        <spring-data-mongodb.version>1.10.1.RELEASE</spring-data-mongodb.version>
-        <spring-data-commons.version>1.13.1.RELEASE</spring-data-commons.version>
         <swagger2.version>2.6.1</swagger2.version>
         <swagger2-ui.version>2.6.1</swagger2-ui.version>
         <jackson-2-version>2.9.0.pr4</jackson-2-version>
