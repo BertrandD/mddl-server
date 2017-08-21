@@ -12,6 +12,8 @@ import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.core.serializer.BaseSerializer;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -36,6 +38,7 @@ public class Base {
     @Id
     @GeneratedValue
     private long id;
+
     private String name;
 
     @ManyToOne
@@ -54,9 +57,11 @@ public class Base {
     private List<BuildingInstance> buildings;
 
     @OneToOne(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.JOIN)
     private BaseInventory baseInventory;
 
-    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Resource> resources;
 
     @OneToMany(mappedBy = "baseSrc", cascade = CascadeType.REMOVE, orphanRemoval = true)
