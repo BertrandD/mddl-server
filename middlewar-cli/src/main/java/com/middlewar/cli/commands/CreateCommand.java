@@ -44,7 +44,7 @@ public class CreateCommand extends Command {
                     System.out.println("You already have a base.");
                     return;
                 }
-                name = getParam("Name for the base", 1);
+                name = getParam("Name for the base", 2);
 
                 BaseDTO base = BaseClient.createBase(name);
                 if (base == null) return;
