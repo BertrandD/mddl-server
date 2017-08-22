@@ -1,5 +1,6 @@
 package com.middlewar.cli;
 
+import com.middlewar.cli.commands.BuildCommand;
 import com.middlewar.cli.commands.Command;
 import com.middlewar.cli.commands.CreateCommand;
 import com.middlewar.cli.commands.HelpCommand;
@@ -40,7 +41,9 @@ public class CommandHandler {
         COMMANDS.put("help", new HelpCommand());
         COMMANDS.put("save", new SaveCommand());
         COMMANDS.put("load", new LoadCommand());
+        COMMANDS.put("build", new BuildCommand());
 
+        ALIASES.put("b", "build");
         ALIASES.put("i", "info");
         ALIASES.put("c", "create");
         ALIASES.put("l", "login");

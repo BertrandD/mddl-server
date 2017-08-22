@@ -1,5 +1,14 @@
 package com.middlewar.controllers.instances;
 
+import com.middlewar.api.exceptions.BaseNotFoundException;
+import com.middlewar.api.exceptions.BaseNotOwnedException;
+import com.middlewar.api.exceptions.BuildingAlreadyExistsException;
+import com.middlewar.api.exceptions.BuildingCreationException;
+import com.middlewar.api.exceptions.BuildingRequirementMissingException;
+import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
+import com.middlewar.api.exceptions.ItemRequirementMissingException;
+import com.middlewar.api.exceptions.NoPlayerConnectedException;
+import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.PlayerManager;
@@ -7,6 +16,7 @@ import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.instances.BuildingInstanceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,8 +52,8 @@ public class BuildingInstanceController {
     }
 
     @RequestMapping(value = Route.BUILDING_CREATE, method = RequestMethod.POST)
-    public Response create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @RequestParam(value = "building") String templateId) {
-        return controllerManagerWrapper.wrap(() -> buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId));
+    public BuildingInstanceDTO create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @RequestParam(value = "building") String templateId) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException, BuildingTemplateNotFoundException, BuildingAlreadyExistsException, ItemRequirementMissingException, BuildingCreationException, BuildingRequirementMissingException {
+        return buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId).toDTO();
     }
 
     @RequestMapping(value = Route.BUILDING_UPGRADE, method = RequestMethod.PUT)
