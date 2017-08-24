@@ -22,7 +22,7 @@ public class ApplicationCLI {
                 while ((sCurrentLine = br.readLine()) != null) {
                     if (!sCurrentLine.isEmpty()) {
                         if (sCurrentLine.charAt(0) != '#') {
-                            System.out.println("> " + sCurrentLine);
+                            System.out.println(CommandHandler.PROMPT + sCurrentLine);
                             CommandHandler.handle(sCurrentLine);
                         }
                     }
@@ -34,9 +34,6 @@ public class ApplicationCLI {
         }
 
         while (true) {
-
-            System.out.print("> ");
-
             try {
                 String input = CommandHandler.askForString();
                 if ("q".equals(input)) {

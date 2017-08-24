@@ -9,10 +9,11 @@ import com.middlewar.cli.commands.LoadCommand;
 import com.middlewar.cli.commands.LoginCommand;
 import com.middlewar.cli.commands.RegisterCommand;
 import com.middlewar.cli.commands.SaveCommand;
+import org.jline.reader.LineReader;
+import org.jline.reader.LineReaderBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  * @author Bertrand
@@ -21,11 +22,16 @@ public class CommandHandler {
 
     public static Map<String, Command> COMMANDS = new HashMap<>();
     public static Map<String, String> ALIASES = new HashMap<>();
-    private static Scanner scanIn = new Scanner(System.in);
+    private static LineReader reader = LineReaderBuilder.builder().build();
+    public static String PROMPT = "> ";
 
     public static String askForString() {
+        return askForString(PROMPT, false);
+    }
+
+    public static String askForString(String prompt, boolean password) {
         try {
-            return scanIn.nextLine();
+            return reader.readLine(prompt, password ? '*' : null);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

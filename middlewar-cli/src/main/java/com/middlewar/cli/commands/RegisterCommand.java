@@ -15,7 +15,7 @@ public class RegisterCommand extends Command {
     @Override
     public void exec() {
         String username = getParam("Username", 1);
-        String password = getParam("Password", 2);
+        String password = getParam("Password", 2, true);
 
         AccountDTO account = AccountClient.register(username, password);
         if (account == null) return;

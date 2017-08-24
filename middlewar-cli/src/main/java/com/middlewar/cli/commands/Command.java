@@ -20,12 +20,15 @@ public abstract class Command {
     public abstract void exec();
 
     protected String getParam(String name, int pos) {
+        return getParam(name, pos, false);
+    }
+
+    protected String getParam(String name, int pos, boolean password) {
         if (getInput().length > pos) {
-            System.out.println(name + " : " + getInput()[pos]);
+            System.out.println(name + " : " + (password ? "****" : getInput()[pos]));
             return getInput()[pos];
         } else {
-            System.out.print(name + " : ");
-            return CommandHandler.askForString();
+            return CommandHandler.askForString(name + " : ", password);
         }
 
     }

@@ -18,7 +18,7 @@ public class LoginCommand extends Command {
     @Override
     public void exec() {
         String username = getParam("Username", 1);
-        String password = getParam("Password", 2);
+        String password = getParam("Password", 2, true);
 
         AccountDTO account = AccountClient.login(username, password);
         if (account == null) return;

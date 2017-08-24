@@ -72,5 +72,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-2-version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/jline/jline -->
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>3.3.0</version>
+        </dependency>
     </dependencies>
 </project>
