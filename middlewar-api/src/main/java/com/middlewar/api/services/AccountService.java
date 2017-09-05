@@ -3,6 +3,7 @@ package com.middlewar.api.services;
 import com.middlewar.api.dao.AccountDao;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,7 @@ import java.util.UUID;
  * @author LEBOC Philippe
  */
 @Service
+@Slf4j
 public class AccountService implements UserDetailsService {
 
     @Autowired
@@ -57,6 +59,7 @@ public class AccountService implements UserDetailsService {
         account = accountDao.save(account);
 
         if (account == null) return null;
+        log.info("New account : " + username);
         // Slack.sendInfo("New account : "+username); // TODO: Add AccountServiceTestImpl
         return account;
     }
