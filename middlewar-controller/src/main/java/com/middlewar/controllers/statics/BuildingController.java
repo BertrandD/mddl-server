@@ -6,12 +6,16 @@ import com.middlewar.client.Route;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.buildings.Building;
+import com.middlewar.dto.BuildingDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -22,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class BuildingController {
 
     @RequestMapping(value = Route.STATIC_BUILDING_ALL, method = RequestMethod.GET)
-    public Response findAll(@AuthenticationPrincipal Account pAccount) {
-        return new Response<>(BuildingData.getInstance().getBuildings(pAccount.getLang()));
+    public List<BuildingDTO> findAll(@AuthenticationPrincipal Account pAccount) {
+        return BuildingData.getInstance().getBuildings(pAccount.getLang()).stream().map(Building::toDTO).collect(Collectors.toList());
     }
 
     @RequestMapping(value = Route.STATIC_BUILDING_ONE, method = RequestMethod.GET)

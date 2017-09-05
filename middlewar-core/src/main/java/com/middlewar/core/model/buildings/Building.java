@@ -13,6 +13,7 @@ import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.BuildingSerializer;
+import com.middlewar.dto.BuildingDTO;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -48,6 +49,18 @@ public abstract class Building implements IStat {
         setRequirements(new HashMap<>());
     }
 
+    public BuildingDTO toDTO() {
+        BuildingDTO dto = new BuildingDTO();
+        dto.setId(getId());
+        dto.setName(getName());
+        dto.setDescription(getDescription());
+        dto.setType(getType().name());
+        dto.setMaxLevel(getMaxLevel());
+        dto.setMaxBuild(getMaxBuild());
+        dto.setBuildTimes(getBuildTimes());
+        dto.setUseEnergy(getUseEnergy());
+        return dto;
+    }
 
     public StatHolder getProductionAtLevel(Resource resource, int level) {
         StatCalculator production = new StatCalculator(resource.getStat());
