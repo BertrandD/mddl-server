@@ -14,7 +14,14 @@ import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.core.serializer.BaseSerializer;
 import com.middlewar.core.utils.Observable;
 import javafx.collections.transformation.SortedList;
+import com.middlewar.dto.BaseDTO;
+import com.middlewar.dto.instances.BuildingInstanceDTO;
+import com.middlewar.dto.inventory.BaseInventoryDTO;
+import com.middlewar.dto.inventory.ResourceDTO;
+import com.middlewar.dto.space.AstralObjectDTO;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -29,6 +36,7 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -58,9 +66,11 @@ public class Base extends Observable {
     private List<BuildingInstance> buildings;
 
     @OneToOne(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.JOIN)
     private BaseInventory baseInventory;
 
-    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Resource> resources;
 
     @OneToMany(mappedBy = "baseSrc", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -95,6 +105,17 @@ public class Base extends Observable {
         setReports(new ArrayList<>());
         setPlanet(planet);
         setBuildingTasks(new PriorityQueue<>());
+    }
+
+    public BaseDTO toDTO() {
+        BaseDTO dto = new BaseDTO();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setBuildings(this.getBuildings().stream().map(BuildingInstance::toDTO).collect(Collectors.toList()));
+        dto.setBaseInventory(this.getBaseInventory().toDTO());
+        dto.setResources(this.getResources().stream().map(Resource::toDTO).collect(Collectors.toList()));
+        dto.setPlanet(this.getPlanet().toDTO());
+        return dto;
     }
 
     @PreRemove

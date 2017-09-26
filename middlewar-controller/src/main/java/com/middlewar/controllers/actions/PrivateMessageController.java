@@ -5,6 +5,7 @@ import com.middlewar.api.services.PrivateMessageService;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.PrivateMessage;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/pm", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class PrivateMessageController {
 
     @Autowired
@@ -32,7 +33,7 @@ public class PrivateMessageController {
     @Autowired
     private PlayerService playerService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = Route.PM_ALL, method = RequestMethod.GET)
     public Response showAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
@@ -40,7 +41,7 @@ public class PrivateMessageController {
         return new Response<>(JsonResponseType.ERROR, "TODO: implement me");
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.PM_ONE, method = RequestMethod.GET)
     public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") int pmId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
@@ -57,7 +58,7 @@ public class PrivateMessageController {
         return new Response<>(pm);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = Route.PM_SEND, method = RequestMethod.POST)
     public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") int receiverId, @RequestParam("message") String message) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);

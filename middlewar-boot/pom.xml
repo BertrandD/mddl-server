@@ -22,7 +22,6 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <springboot.version>1.5.4.RELEASE</springboot.version>
-        <spring-webmvc.version>4.3.7.RELEASE</spring-webmvc.version>
     </properties>
 
     <build>

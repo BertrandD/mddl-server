@@ -9,7 +9,10 @@ import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.serializer.PlayerSerializer;
 import com.middlewar.core.utils.Observable;
 import com.middlewar.core.utils.TimeUtil;
+import com.middlewar.dto.PlayerDTO;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -43,6 +47,7 @@ public class Player extends Observable {
     private String name;
     @ManyToOne
     private Account account;
+    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Base> bases;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -77,6 +82,16 @@ public class Player extends Observable {
         setReceivedFriendRequests(new ArrayList<>());
         setPlanetScans(new HashMap<>());
         setInventory(new PlayerInventory(this));
+    }
+
+    public PlayerDTO toDTO() {
+        PlayerDTO dto = new PlayerDTO();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setBases(this.getBases().stream().map(Base::getId).collect(Collectors.toList()));
+        if (this.getCurrentBase() != null)
+            dto.setCurrentBase(this.getCurrentBase().getId());
+        return dto;
     }
 
     public void addBase(Base base) {

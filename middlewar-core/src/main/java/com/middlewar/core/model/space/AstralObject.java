@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.AstralStat;
 import com.middlewar.core.serializer.AstralObjectSerializer;
 import com.middlewar.core.utils.TimeUtil;
+import com.middlewar.dto.space.AstralObjectDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author bertrand Darbond
@@ -63,6 +65,17 @@ public abstract class AstralObject {
         this.stats = new HashMap<>();
         this.satellites = new ArrayList<>();
         this.parent = parent;
+    }
+
+    public AstralObjectDTO toDTO() {
+        AstralObjectDTO dto = new AstralObjectDTO();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setRevolution(this.getRevolution());
+        dto.setOrbit(this.getOrbit());
+        dto.setSize(this.getSize());
+        dto.setSatellites(this.getSatellites().stream().map(AstralObject::toDTO).collect(Collectors.toList()));
+        return dto;
     }
 
     public double getAngle() {

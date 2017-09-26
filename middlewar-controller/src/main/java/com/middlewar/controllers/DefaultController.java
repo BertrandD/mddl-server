@@ -1,23 +1,32 @@
 package com.middlewar.controllers;
 
+import com.middlewar.api.exceptions.AccountAlreadyExistsException;
+import com.middlewar.api.exceptions.ApiException;
+import com.middlewar.api.exceptions.IncorrectCredentialsException;
+import com.middlewar.api.exceptions.UsernameNotFoundException;
 import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.AccountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -46,6 +55,12 @@ public class DefaultController implements ErrorController {
 
     @Autowired
     private ControllerManagerWrapper controllerManagerWrapper;
+
+    @ResponseStatus(value= HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ApiException.class)
+    public String handleApiException(HttpServletRequest req, ApiException e) {
+        return e.getMessage();
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Response index() {
@@ -77,9 +92,9 @@ public class DefaultController implements ErrorController {
         return new Response<>(JsonResponseType.SUCCESS);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Response login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
-        return controllerManagerWrapper.wrap(() -> accountManager.login(username, password));
+    @RequestMapping(value = Route.LOGIN, method = RequestMethod.POST)
+    public AccountDTO login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) throws IncorrectCredentialsException, UsernameNotFoundException {
+        return accountManager.login(username, password).toDTO();
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
@@ -88,9 +103,9 @@ public class DefaultController implements ErrorController {
         return new Response<>(JsonResponseType.SUCCESS);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Response register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        return controllerManagerWrapper.wrap(() -> accountManager.register(username, password));
+    @RequestMapping(value = Route.REGISTER, method = RequestMethod.POST)
+    public AccountDTO register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) throws AccountAlreadyExistsException {
+        return accountManager.register(username, password).toDTO();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

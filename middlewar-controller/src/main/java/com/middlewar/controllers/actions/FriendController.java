@@ -5,6 +5,7 @@ import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/friend", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class FriendController {
 
     @Autowired
@@ -34,8 +35,17 @@ public class FriendController {
     @Autowired
     private FriendRequestService friendRequestService;
 
+    @RequestMapping(value = Route.REQUEST_ALL, method = RequestMethod.GET)
+    public Response showFriendRequest(@AuthenticationPrincipal Account pAccount) {
 
-    @RequestMapping(value = "/request", method = RequestMethod.POST)
+        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
+
+        final List<FriendRequest> requests = friendRequestService.findPlayerRequest(player.getId());
+        return new Response<>(requests);
+    }
+
+    @RequestMapping(value = Route.REQUEST_CREATE, method = RequestMethod.POST)
     public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") int friendId, @RequestParam(value = "message") String message) {
 //        Assert.hasLength(friendId, "Invalid parameter friendId.");
         Assert.hasLength(message, "Empty message.");
@@ -71,7 +81,7 @@ public class FriendController {
         return new Response<>(player); // TODO: send only the new friendrequest instead of Player !
     }
 
-    @RequestMapping(value = "/accept/{requestId}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.REQUEST_ACCEPT, method = RequestMethod.GET)
     public Response acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") Long requestId) {
 //        Assert.hasLength(requestId, "Invalid parameter requestId");
 
@@ -95,7 +105,7 @@ public class FriendController {
         return new Response<>(player);
     }
 
-    @RequestMapping(value = "/refuse/{requestId}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.REQUEST_REFUSE, method = RequestMethod.GET)
     public Response refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") Long requestId) {
 //        Assert.hasLength(requestId, "Invalid parameter requestId");
 

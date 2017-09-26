@@ -1,11 +1,16 @@
 package com.middlewar.core.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.deserializer.AccountDeserializer;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.serializer.AccountSerializer;
 import com.middlewar.core.utils.Observable;
+import com.middlewar.dto.AccountDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
@@ -26,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -34,6 +40,7 @@ import java.util.TreeSet;
 @Data
 @NoArgsConstructor
 @JsonSerialize(using = AccountSerializer.class)
+@JsonDeserialize(using = AccountDeserializer.class)
 public class Account extends Observable implements UserDetails {
     @Id
     @GeneratedValue
@@ -41,17 +48,18 @@ public class Account extends Observable implements UserDetails {
     private Lang lang;
 
     @OneToMany(mappedBy = "account", orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
     private int currentPlayer;
     private String token;
     private String password;
     private String username;
+    @Fetch(FetchMode.JOIN)
     @ElementCollection
-    private Set<GrantedAuthority> authorities;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+    private Set<GrantedAuthority> authorities = new HashSet<>();
+    private boolean accountNonExpired = true;
+    private boolean accountNonLocked = true;
+    private boolean credentialsNonExpired = true;
+    private boolean enabled = true;
     private boolean deleted;
 
     public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, Lang lang, String token) {
@@ -62,6 +70,17 @@ public class Account extends Observable implements UserDetails {
         setPlayers(players == null ? new ArrayList<>() : players);
         setCurrentPlayer(currentPlayer);
         setToken(token);
+    }
+
+    public AccountDTO toDTO() {
+        AccountDTO dto = new AccountDTO();
+        dto.setId(this.getId());
+        dto.setLang(this.getLang().getName());
+        dto.setPlayers(this.getPlayers().stream().map(Player::getId).collect(Collectors.toList()));
+        dto.setCurrentPlayer(this.getCurrentPlayer());
+        dto.setToken(this.getToken());
+        dto.setUsername(this.getUsername());
+        return dto;
     }
 
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {

@@ -1,10 +1,17 @@
 package com.middlewar.controllers;
 
+import com.middlewar.api.exceptions.ForbiddenNameException;
+import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
+import com.middlewar.api.exceptions.PlayerCreationFailedException;
+import com.middlewar.api.exceptions.PlayerNotOwnedException;
+import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.PlayerDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,28 +45,28 @@ public class PlayerController {
         this.controllerManagerWrapper = controllerManagerWrapper;
     }
 
-    @RequestMapping(value = "/me/player", method = RequestMethod.GET)
+    @RequestMapping(value = Route.PLAYER_ALL_OWNED, method = RequestMethod.GET)
     public Response players(@AuthenticationPrincipal Account pAccount) {
         return controllerManagerWrapper.wrap(() -> playerManager.getAllPlayersForAccount(pAccount));
     }
 
 /*
     @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN", response = Response.class)
-    @RequestMapping(value = "/players", method = RequestMethod.GET)
+    @RequestMapping(value = Route.PLAYER_ALL, method = RequestMethod.GET)
     public Response showAllPlayers() {
         // TODO: used for tests. Remove when administration will be done
         return new Response<>(playerService.findAll());
     }
 */
 
-    @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
-    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
-        return controllerManagerWrapper.wrap(() -> playerManager.getPlayerOfAccount(account, id));
+    @RequestMapping(value = Route.PLAYER_ONE, method = RequestMethod.GET)
+    public PlayerDTO player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) throws PlayerNotOwnedException {
+        return playerManager.getPlayerOfAccount(account, id).toDTO();
     }
 
-    @RequestMapping(value = "/player", method = RequestMethod.POST)
-    public Response create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
-        return controllerManagerWrapper.wrap(() -> playerManager.createForAccount(account, name));
+    @RequestMapping(value = Route.PLAYER_CREATE, method = RequestMethod.POST)
+    public PlayerDTO create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+        return playerManager.createForAccount(account, name).toDTO();
 
     }
 }

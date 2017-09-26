@@ -3,6 +3,7 @@ package com.middlewar.api.services;
 import com.middlewar.api.dao.AccountDAO;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
+import lombok.extern.slf4j.Slf4j;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.PrivateMessage;
@@ -30,6 +31,7 @@ import java.util.Vector;
  * @author LEBOC Philippe
  */
 @Service
+@Slf4j
 public class AccountService implements UserDetailsService, DefaultService<Account>, Observer {
 
     @Autowired
@@ -95,6 +97,7 @@ public class AccountService implements UserDetailsService, DefaultService<Accoun
         account.setAccountNonLocked(true);
         account.setAccountNonExpired(true);
         account.setCredentialsNonExpired(true);
+        log.info("New account : " + username);
         // Slack.sendInfo("New account : "+username); // TODO: Add AccountServiceTestImpl
         return account;
     }

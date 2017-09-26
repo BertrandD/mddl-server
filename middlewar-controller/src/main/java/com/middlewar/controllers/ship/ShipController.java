@@ -7,6 +7,7 @@ import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.client.Route;
 import com.middlewar.api.exceptions.ShipCreationFailedException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 @RestController
 @PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(value = "/ship", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class ShipController {
 
     @Autowired
@@ -40,7 +41,7 @@ public class ShipController {
     @Autowired
     private BaseManager baseManager;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = Route.SHIP_CREATE, method = RequestMethod.POST)
     public Ship create(@AuthenticationPrincipal Account pAccount,
                        @RequestParam(value = "count") Long count,
                        @RequestParam(value = "structureId") String structure,
