@@ -38,20 +38,7 @@ public interface IInventoryService {
      * @return
      */
     boolean consumeItem(ItemInstance item, final long amount);
-
-//    24/07/2017 : code used only in tests, so commented because seems to be useless. Delete it later if it's still useless !
-//    /**
-//     * @param resource
-//     * @param amount
-//     * @return
-//     */
-//    boolean consumeResource(Resource resource, final long amount);
-
-    /**
-     * @param inventory
-     */
-    void update(IInventory inventory);
-
+    
     /**
      * @param base
      */

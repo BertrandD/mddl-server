@@ -8,9 +8,12 @@ import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.StatCalculator;
+import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.core.serializer.BaseSerializer;
+import com.middlewar.core.utils.Observable;
+import javafx.collections.transformation.SortedList;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
@@ -25,6 +28,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * @author LEBOC Philippe
@@ -32,10 +36,10 @@ import java.util.List;
 @Data
 @JsonSerialize(using = BaseSerializer.class)
 @Entity
-public class Base {
+public class Base extends Observable {
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     private String name;
 
     @ManyToOne
@@ -62,8 +66,10 @@ public class Base {
     @OneToMany(mappedBy = "baseSrc", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Report> reports;
 
-    @ManyToOne
+    private PriorityQueue<BuildingTask> buildingTasks;
+
     private Planet planet;
+    private boolean deleted;
 
     public Base() {
         setBuildings(new ArrayList<>());
@@ -74,6 +80,7 @@ public class Base {
         setFleets(new ArrayList<>());
         setResources(new ArrayList<>());
         setReports(new ArrayList<>());
+        setBuildingTasks(new PriorityQueue<>());
     }
 
     public Base(String name, Player owner, Planet planet) {
@@ -81,11 +88,13 @@ public class Base {
         setOwner(owner);
         setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
+        setBaseInventory(new BaseInventory(this));
         setResources(new ArrayList<>());
         setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
         setReports(new ArrayList<>());
         setPlanet(planet);
+        setBuildingTasks(new PriorityQueue<>());
     }
 
     @PreRemove
@@ -178,5 +187,24 @@ public class Base {
 
     public void addResource(Resource resource) {
         resources.add(resource);
+    }
+
+    @Override
+    public String toString() {
+        return "Base{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", owner='" + owner.getId() + '\'' +
+                ", baseStat=" + baseStat +
+                ", ships=" + ships +
+                ", fleets=" + fleets +
+                ", buildings=" + buildings +
+                ", baseInventory=" + baseInventory +
+                ", resources=" + resources +
+                ", reports=" + reports +
+                ", buildingTasks=" + buildingTasks +
+                ", planet=" + planet +
+                ", deleted=" + deleted +
+                '}';
     }
 }

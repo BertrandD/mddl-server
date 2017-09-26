@@ -2,7 +2,6 @@ package com.middlewar.controllers.actions;
 
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.PrivateMessageService;
-import com.middlewar.api.services.impl.PrivateMessageServiceImpl;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -42,7 +41,7 @@ public class PrivateMessageController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") Long pmId) {
+    public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") int pmId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
@@ -59,7 +58,7 @@ public class PrivateMessageController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") Long receiverId, @RequestParam("message") String message) {
+    public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") int receiverId, @RequestParam("message") String message) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 

@@ -1,18 +1,19 @@
 package com.middlewar.controllers;
 
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlanetScanReportService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.PlanetScanReport;
 import com.middlewar.core.model.space.AstralObject;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.Star;
+import org.h2.table.Plan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,9 +37,6 @@ public class SpaceController {
     private PlayerService playerService;
 
     @Autowired
-    private AstralObjectService astralObjectService;
-
-    @Autowired
     private PlanetScanReportService planetScanReportService;
 
     @RequestMapping(value = "/system", method = RequestMethod.GET)
@@ -47,31 +45,31 @@ public class SpaceController {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response<>(SystemMessageId.PLAYER_NOT_FOUND);
 
-        Star star = (Star) astralObjectService.findOne(player.getCurrentBase().getPlanet().getParent().getId());
+        Star star = (Star) player.getCurrentBase().getPlanet().getParent();
 
         return new Response<>(star);
     }
 
     @RequestMapping(value = "/system/{id}", method = RequestMethod.GET)
-    public Response findSystem(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) {
+    public Response findSystem(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         if (pAccount.getCurrentPlayer() == 0) return new Response<>(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
 
-        Star star = (Star) astralObjectService.findOne(id);
+        Star star = (Star) WorldData.getInstance().getStar(id);
 
         return new Response<>(star);
     }
 
     @RequestMapping(value = "/scan/{id}", method = RequestMethod.GET)
-    public Response scanAstralObject(@AuthenticationPrincipal Account pAccount, @PathVariable("id") Long id) {
+    public Response scanAstralObject(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
         if (pAccount.getCurrentPlayer() == 0) return new Response<>(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
 
-        AstralObject planet = astralObjectService.findOne(id);
+        Planet planet = WorldData.getInstance().getPlanet(id);
 
-        if (!(planet instanceof Planet)) {
-            return new Response<>(JsonResponseType.ERROR, "Not a planet");
+        if (planet == null) {
+            return new Response<>(JsonResponseType.ERROR, "Planet not found");
         }
 
         PlanetScanReport report = planetScanReportService.create(player, player.getCurrentBase(), (Planet) planet);

@@ -5,11 +5,9 @@ import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.holders.PlayerHolder;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,18 +34,9 @@ public class FriendController {
     @Autowired
     private FriendRequestService friendRequestService;
 
-    @RequestMapping(value = "/request", method = RequestMethod.GET)
-    public Response showFriendRequest(@AuthenticationPrincipal Account pAccount) {
-
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
-
-        final List<FriendRequest> requests = friendRequestService.findPlayerRequest(player.getId());
-        return new Response<>(requests);
-    }
 
     @RequestMapping(value = "/request", method = RequestMethod.POST)
-    public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") Long friendId, @RequestParam(value = "message") String message) {
+    public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") int friendId, @RequestParam(value = "message") String message) {
 //        Assert.hasLength(friendId, "Invalid parameter friendId.");
         Assert.hasLength(message, "Empty message.");
 
@@ -103,10 +92,6 @@ public class FriendController {
         friend.getEmittedFriendRequests().remove(request);
         player.getReceivedFriendRequests().remove(request);
 
-        playerService.update(friend);
-        playerService.update(player);
-        friendRequestService.delete(request);
-
         return new Response<>(player);
     }
 
@@ -125,10 +110,6 @@ public class FriendController {
 
         friend.getEmittedFriendRequests().remove(request);
         player.getEmittedFriendRequests().remove(request);
-
-        friendRequestService.delete(request);
-        playerService.update(friend);
-        playerService.update(player);
 
         return new Response<>(player); // TODO: SysMsg
     }

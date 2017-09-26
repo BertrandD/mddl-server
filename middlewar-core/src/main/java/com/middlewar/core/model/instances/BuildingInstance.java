@@ -35,7 +35,7 @@ public class BuildingInstance {
 
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
 
     @ManyToOne
     private Base base;

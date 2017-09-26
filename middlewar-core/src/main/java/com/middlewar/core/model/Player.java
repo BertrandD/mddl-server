@@ -7,6 +7,7 @@ import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.serializer.PlayerSerializer;
+import com.middlewar.core.utils.Observable;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 
@@ -31,13 +32,13 @@ import java.util.Map;
 @Data
 @Entity
 @JsonSerialize(using = PlayerSerializer.class)
-public class Player {
+public class Player extends Observable {
 
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     protected PlayerInventory inventory;
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     @Column(unique = true)
     private String name;
     @ManyToOne
@@ -57,6 +58,7 @@ public class Player {
 
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Map<Long, PlanetScan> planetScans;
+    private boolean deleted;
 
     public Player() {
         setBases(new ArrayList<>());
@@ -74,6 +76,7 @@ public class Player {
         setEmittedFriendRequests(new ArrayList<>());
         setReceivedFriendRequests(new ArrayList<>());
         setPlanetScans(new HashMap<>());
+        setInventory(new PlayerInventory(this));
     }
 
     public void addBase(Base base) {
@@ -119,5 +122,21 @@ public class Player {
             if (player.getId() == this.getId()) return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "inventory=" + inventory +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", bases=" + bases +
+                ", currentBase=" + currentBase +
+                ", friends=" + friends +
+                ", emittedFriendRequests=" + emittedFriendRequests +
+                ", receivedFriendRequests=" + receivedFriendRequests +
+                ", planetScans=" + planetScans +
+                ", deleted=" + deleted +
+                '}';
     }
 }

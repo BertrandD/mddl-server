@@ -5,6 +5,7 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.serializer.PlayerInventorySerializer;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -39,5 +40,10 @@ public class PlayerInventory extends Inventory {
     @Override
     public long getAvailableCapacity() {
         return -1; // Unlimited
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerInventory{"+super.toString()+"}";
     }
 }

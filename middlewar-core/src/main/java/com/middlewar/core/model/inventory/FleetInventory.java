@@ -35,4 +35,9 @@ public final class FleetInventory extends Inventory {
         // Sum of all Cargo of all Ships
         return getFleet().getShips().stream().mapToLong(ship -> ship.getCargos().stream().mapToLong(Cargo::getCapacity).sum()).sum();
     }
+
+    @Override
+    public String toString() {
+        return "FleetInventory{"+super.toString()+"}";
+    }
 }

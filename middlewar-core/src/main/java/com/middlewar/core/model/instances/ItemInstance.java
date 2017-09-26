@@ -98,4 +98,14 @@ public class ItemInstance {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "ItemInstance{" +
+                "id=" + id +
+                ", templateId='" + templateId + '\'' +
+                ", count=" + count +
+                ", type=" + type +
+                '}';
+    }
 }

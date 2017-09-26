@@ -3,8 +3,8 @@ package com.middlewar.api.manager;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.ShipCreationFailedException;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.api.services.ShipService;
-import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -12,10 +12,12 @@ import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ShipManager {
 
     @Autowired

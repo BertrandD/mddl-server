@@ -9,9 +9,7 @@ import com.middlewar.core.data.xml.SystemMessageData;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -20,8 +18,6 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@EnableJpaRepositories("com.middlewar.api.dao")
-@EntityScan({"com.middlewar.core.model", "com.middlewar.core.holders"})
 @ComponentScan("com")
 public class Application extends AsyncConfigurerSupport {
 

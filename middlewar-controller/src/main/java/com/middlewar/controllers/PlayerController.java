@@ -7,7 +7,6 @@ import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,12 +43,14 @@ public class PlayerController {
         return controllerManagerWrapper.wrap(() -> playerManager.getAllPlayersForAccount(pAccount));
     }
 
+/*
     @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN", response = Response.class)
     @RequestMapping(value = "/players", method = RequestMethod.GET)
     public Response showAllPlayers() {
         // TODO: used for tests. Remove when administration will be done
         return new Response<>(playerService.findAll());
     }
+*/
 
     @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
     public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {

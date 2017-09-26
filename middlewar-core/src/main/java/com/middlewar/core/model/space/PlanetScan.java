@@ -32,7 +32,7 @@ public class PlanetScan {
     private Planet planet;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Map<Long, BasePlanetScanProjection> baseScanned;
+    private Map<Integer, BasePlanetScanProjection> baseScanned;
 
     public PlanetScan(Planet planet) {
         this.date = TimeUtil.getCurrentTime();

@@ -14,9 +14,8 @@ import com.middlewar.api.exceptions.ModuleNotInInventoryException;
 import com.middlewar.api.exceptions.NotEnoughModulesException;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
@@ -42,9 +41,6 @@ public class BuildingManager {
     private BuildingService buildingService;
 
     @Autowired
-    private BaseService baseService;
-
-    @Autowired
     private InventoryService inventoryService;
 
     @Autowired
@@ -53,11 +49,8 @@ public class BuildingManager {
     @Autowired
     private BuildingTaskManager buildingTaskManager;
 
-    @Autowired
-    private BuildingTaskService buildingTaskService;
-
-    public BuildingInstance getBuilding(Base base, long id) throws BuildingNotFoundException {
-        final BuildingInstance building = buildingService.findByBaseAndId(base, id);
+    public BuildingInstance getBuilding(Base base, int id) throws BuildingNotFoundException {
+        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId() == id).findFirst().orElse(null);
         if (building == null) throw new BuildingNotFoundException();
 
         return building;
@@ -83,17 +76,15 @@ public class BuildingManager {
 
         collector.forEach(inventoryService::consumeItem);
 
-        baseService.update(base); // TODO : do not update a base given in parameter (security)
-
         buildingTaskManager.ScheduleUpgrade(building);
 
         return building;
     }
 
-    public BuildingInstance upgrade(Base base, long id) throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public BuildingInstance upgrade(Base base, int id) throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
         final BuildingInstance building = getBuilding(base, id);
 
-        final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
+        final BuildingTask lastInQueue = buildingTaskManager.findTaskInQueue(building);
         final Building template = building.getTemplate();
         if (building.getCurrentLevel() >= template.getMaxLevel() ||
                 (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())) {
@@ -111,7 +102,7 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance attachModule(Base base, long buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException, ItemNotFoundException {
+    public BuildingInstance attachModule(Base base, int buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException, ItemNotFoundException {
         base.initializeStats();
 
         final BuildingInstance building = getBuilding(base, buildingInstId);
@@ -133,7 +124,6 @@ public class BuildingManager {
         inventoryService.consumeItem(module, 1);
 
         building.addModule(module.getTemplateId());
-        buildingService.update(building);
 
         return building;
     }

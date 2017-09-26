@@ -2,7 +2,6 @@ package com.middlewar.controllers;
 
 import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.MetaHolder;
@@ -46,9 +45,6 @@ public class DefaultController implements ErrorController {
     private AccountManager accountManager;
 
     @Autowired
-    private AstralObjectService astralObjectService;
-
-    @Autowired
     private ControllerManagerWrapper controllerManagerWrapper;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -65,15 +61,12 @@ public class DefaultController implements ErrorController {
         Account account = accountService.findOne(pAccount.getId());
         account.getPlayers().clear();
         account.setCurrentPlayer(0);
-        accountService.update(account);
-        astralObjectService.saveUniverse();
         return new Response<>(JsonResponseType.SUCCESS);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
     public Response resetWorld(@AuthenticationPrincipal Account pAccount) {
-        astralObjectService.saveUniverse();
         return new Response<>(JsonResponseType.SUCCESS);
     }
 
@@ -92,7 +85,6 @@ public class DefaultController implements ErrorController {
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
     public Response logout(@AuthenticationPrincipal Account account) {
         account.setToken(UUID.randomUUID().toString());
-        accountService.update(account);
         return new Response<>(JsonResponseType.SUCCESS);
     }
 
@@ -115,7 +107,6 @@ public class DefaultController implements ErrorController {
         final Account currentAccount = accountService.findOne(account.getId());
         account.setLang(newLang);
         currentAccount.setLang(newLang);
-        accountService.update(currentAccount);
         return new Response<>(JsonResponseType.SUCCESS);
     }
 

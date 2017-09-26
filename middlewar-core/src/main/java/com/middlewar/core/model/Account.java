@@ -3,6 +3,7 @@ package com.middlewar.core.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.serializer.AccountSerializer;
+import com.middlewar.core.utils.Observable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,15 +34,15 @@ import java.util.TreeSet;
 @Data
 @NoArgsConstructor
 @JsonSerialize(using = AccountSerializer.class)
-public class Account implements UserDetails {
+public class Account extends Observable implements UserDetails {
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     private Lang lang;
 
     @OneToMany(mappedBy = "account", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Player> players;
-    private long currentPlayer;
+    private int currentPlayer;
     private String token;
     private String password;
     private String username;
@@ -51,6 +52,7 @@ public class Account implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
+    private boolean deleted;
 
     public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, Lang lang, String token) {
         setUsername(username);

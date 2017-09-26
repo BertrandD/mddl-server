@@ -2,7 +2,6 @@ package com.middlewar.api.services;
 
 import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.holders.BuildingHolder;

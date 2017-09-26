@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @Entity
 @JsonSerialize(using = BuildingTaskSerializer.class)
-public class BuildingTask {
+public class BuildingTask implements Comparable<BuildingTask> {
 
     @Id
     @GeneratedValue
@@ -49,5 +49,12 @@ public class BuildingTask {
             return (this.id == task.id);
         }
         return false;
+    }
+
+
+    @Override
+    public int compareTo(BuildingTask o) {
+        if (equals(o)) return 0;
+        return this.endsAt < o.getEndsAt() ? -1 : 1;
     }
 }

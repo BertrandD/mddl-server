@@ -18,8 +18,6 @@ import javax.annotation.PostConstruct;
  */
 @SpringBootApplication(scanBasePackages = {"com.middlewar.api", "com.middlewar.core"})
 @EnableAutoConfiguration
-@EnableJpaRepositories("com.middlewar.api.dao")
-@EntityScan({"com.middlewar.core"})
 @ContextConfiguration(locations={"classpath:application.properties"})
 public class ApplicationTest {
     public static void main(String... args) {

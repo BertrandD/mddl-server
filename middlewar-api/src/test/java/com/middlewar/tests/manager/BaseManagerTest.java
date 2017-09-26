@@ -15,7 +15,6 @@ import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.json.WorldData;
@@ -29,7 +28,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -62,9 +60,6 @@ public class BaseManagerTest {
     @Autowired
     private PlanetManager planetManager;
 
-    @Autowired
-    private AstralObjectService astralObjectService;
-
     private Account _account;
     private Player _playerOwner;
     private Player _playerNotOwner;
@@ -72,10 +67,9 @@ public class BaseManagerTest {
     private Base _base2;
 
     @Before
-    public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
         WorldData.getInstance().reload();
-        astralObjectService.saveUniverse();
-        MockitoAnnotations.initMocks(this);
+        accountService.deleteAll();
         _account = accountService.create("toto", "");
         _playerOwner = playerManager.createForAccount(_account, "owner");
         _playerNotOwner = playerManager.createForAccount(_account, "notOwner");
@@ -85,7 +79,7 @@ public class BaseManagerTest {
     }
 
     @Test
-    public void shouldReturnAllBases() throws BaseNotFoundException, NoPlayerConnectedException, PlayerNotFoundException {
+    public void shouldReturnAllBases() {
         final List<Base> bases = baseManager.findAllBaseOfPlayer(_playerOwner);
         Assertions.assertThat(bases).isNotNull();
         Assertions.assertThat(bases.size()).isEqualTo(2);

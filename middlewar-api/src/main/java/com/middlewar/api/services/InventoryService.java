@@ -1,18 +1,11 @@
-package com.middlewar.api.services.impl;
+package com.middlewar.api.services;
 
-import com.middlewar.api.services.BaseInventoryService;
-import com.middlewar.api.services.ItemService;
-import com.middlewar.api.services.PlayerInventoryService;
-import com.middlewar.api.services.ResourceService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.interfaces.IInventory;
 import com.middlewar.core.interfaces.IInventoryService;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.inventory.BaseInventory;
-import com.middlewar.core.model.inventory.FleetInventory;
 import com.middlewar.core.model.inventory.Inventory;
-import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.utils.TimeUtil;
@@ -28,16 +21,7 @@ import org.springframework.stereotype.Service;
 public class InventoryService implements IInventoryService {
 
     @Autowired
-    private PlayerInventoryService playerInventoryService;
-
-    @Autowired
     private ItemService itemService;
-
-    @Autowired
-    private BaseInventoryService baseInventoryService;
-
-    //@Autowired
-    //private FleetInventoryService fleetInventoryService;
 
     @Autowired
     private ResourceService resourceService;
@@ -81,7 +65,6 @@ public class InventoryService implements IInventoryService {
         }
 
         item.addCount(addcnt);
-        itemService.update(item);
 
         return item;
     }
@@ -102,7 +85,6 @@ public class InventoryService implements IInventoryService {
         if (amount <= 0) return false;
 
         resource.getItem().addCount(amount);
-        itemService.update(resource.getItem());
 
         return true;
     }
@@ -117,10 +99,6 @@ public class InventoryService implements IInventoryService {
         if (item.getCount() == 0) {
             final Inventory inventory = (Inventory) item.getInventory();
             inventory.getItems().remove(item);
-            update(inventory);
-            itemService.delete(item);
-        } else {
-            itemService.update(item);
         }
 
         return true;
@@ -178,28 +156,5 @@ public class InventoryService implements IInventoryService {
 
     private boolean canBeStored(final IInventory inventory, long volume, final long amount) {
         return inventory.getAvailableCapacity() > (volume * amount);
-    }
-
-    public void update(IInventory inventory) {
-        if (inventory instanceof BaseInventory) update((BaseInventory) inventory);
-        else if (inventory instanceof FleetInventory) update((FleetInventory) inventory);
-        else if (inventory instanceof PlayerInventory) update((PlayerInventory) inventory);
-    }
-
-    public void update(Resource inventory) {
-        resourceService.update(inventory);
-    }
-
-    public void update(PlayerInventory inventory) {
-        playerInventoryService.update(inventory);
-    }
-
-    public void update(BaseInventory inventory) {
-        baseInventoryService.update(inventory);
-    }
-
-    public void update(FleetInventory inventory) {
-        // TODO:
-        //fleetInventoryService.update(inventory);
     }
 }

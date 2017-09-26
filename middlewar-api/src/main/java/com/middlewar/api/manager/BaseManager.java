@@ -7,7 +7,6 @@ import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 /**
@@ -34,9 +34,6 @@ public class BaseManager {
 
     @Autowired
     private BaseService baseService;
-
-    @Autowired
-    private BuildingTaskService buildingTaskService;
 
     @Autowired
     private PlanetManager planetManager;
@@ -56,7 +53,7 @@ public class BaseManager {
      * @return the Base with the given id
      * @throws BaseNotFoundException if the base does not exists
      */
-    public Base getBase(long id) throws BaseNotFoundException {
+    public Base getBase(int id) throws BaseNotFoundException {
         final Base base = baseService.findOne(id);
         if (base == null) throw new BaseNotFoundException();
         return base;
@@ -69,7 +66,7 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public Base getOwnedBase(long id, Player player) throws BaseNotFoundException, BaseNotOwnedException {
+    public Base getOwnedBase(int id, Player player) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getBase(id);
         if (base.getOwner().getId() != player.getId()) {
             throw new BaseNotOwnedException();
@@ -99,10 +96,12 @@ public class BaseManager {
      * @throws BaseNotFoundException      if the base boes not exists
      * @throws BaseNotOwnedException      if the base is not owned by the given player
      */
-    public Response<Base> getBaseWithBuildingQueue(Player player, long id) throws BaseNotFoundException, BaseNotOwnedException {
+    public Response<Base> getBaseWithBuildingQueue(Player player, int id) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getOwnedBase(id, player);
         final Response<Base> response = new Response<>(base);
-        response.addMeta("queue", getBaseBuildingQueue(base));
+        ArrayList<BuildingTask> queue = new ArrayList<>();
+        queue.addAll(getBaseBuildingQueue(base));
+        response.addMeta("queue", queue);
         return response;
     }
 
@@ -110,8 +109,8 @@ public class BaseManager {
      * @param base the base we want the building queue
      * @return the given base's building queue
      */
-    public List<BuildingTask> getBaseBuildingQueue(Base base) {
-        return buildingTaskService.findByBaseOrderByEndsAtAsc(base);
+    public PriorityQueue<BuildingTask> getBaseBuildingQueue(Base base) {
+        return base.getBuildingTasks();
     }
 
     /**
@@ -143,7 +142,7 @@ public class BaseManager {
      * @throws BaseNotFoundException      if the base boes not exists
      * @throws BaseNotOwnedException      if the base is not owned by the given player
      */
-    public List<BuildingHolder> getBuildableBuildingsOfBase(Player player, long baseId) throws BaseNotFoundException, BaseNotOwnedException {
+    public List<BuildingHolder> getBuildableBuildingsOfBase(Player player, int baseId) throws BaseNotFoundException, BaseNotOwnedException {
         final Base base = getOwnedBase(baseId, player);
 
         final List<BuildingHolder> nextBuildings = new ArrayList<>();

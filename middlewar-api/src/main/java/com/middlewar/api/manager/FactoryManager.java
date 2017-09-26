@@ -7,7 +7,7 @@ import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemNotUnlockedException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.ItemFactory;
@@ -44,7 +44,7 @@ public class FactoryManager {
      * @throws ItemNotUnlockedException            if the module is not yet unlocked in the factory
      * @throws ItemCreationException               if something went wrong
      */
-    public ItemInstance createModule(Base base, Long factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
+    public ItemInstance createModule(Base base, int factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
         final Item item = ItemData.getInstance().getModule(itemId);
         if (item == null) throw new ItemNotFoundException();
 
@@ -62,14 +62,14 @@ public class FactoryManager {
      * @throws ItemNotUnlockedException            if the structure is not yet unlocked in the factory
      * @throws ItemCreationException               if something went wrong
      */
-    public ItemInstance createStructure(Base base, Long factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
+    public ItemInstance createStructure(Base base, int factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
         final Item item = ItemData.getInstance().getStructure(itemId);
         if (item == null) throw new ItemNotFoundException();
 
         return createItem(base, factoryId, STRUCTURE_FACTORY, item);
     }
 
-    private ItemInstance createItem(Base base, Long factoryId, String factoryType, Item item) throws BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException, ItemCreationException {
+    private ItemInstance createItem(Base base, int factoryId, String factoryType, Item item) throws BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException, ItemCreationException {
         base.initializeStats();
         final BuildingInstance factory = base.getBuildings().stream().filter(k -> k.getId() == factoryId).findFirst().orElse(null);
         if (factory == null) throw new BuildingNotFoundException();

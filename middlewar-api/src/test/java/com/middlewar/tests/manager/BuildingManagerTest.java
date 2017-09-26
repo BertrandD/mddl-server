@@ -25,10 +25,9 @@ import com.middlewar.api.manager.BuildingTaskManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -52,7 +51,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.PriorityQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -80,9 +79,6 @@ public class BuildingManagerTest {
     private PlanetManager planetManager;
 
     @Autowired
-    private AstralObjectService astralObjectService;
-
-    @Autowired
     private BuildingManager buildingManager;
 
     @Autowired
@@ -99,8 +95,8 @@ public class BuildingManagerTest {
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
         WorldData.getInstance().reload();
+        accountService.deleteAll();
         TestUtils.init(buildingService, inventoryService);
-        astralObjectService.saveUniverse();
         MockitoAnnotations.initMocks(this);
         Account _account = accountService.create("toto", "");
         Player _player = playerManager.createForAccount(_account, "owner");
@@ -139,9 +135,9 @@ public class BuildingManagerTest {
         Assertions.assertThat(_base.getResources().get(0).getCount()).isEqualTo(400);
         Assertions.assertThat(_base.getBuildings().size()).isEqualTo(0);
 
-        List<BuildingTask> buildQueue = baseManager.getBaseBuildingQueue(_base);
+        PriorityQueue<BuildingTask> buildQueue = baseManager.getBaseBuildingQueue(_base);
         Assertions.assertThat(buildQueue.size()).isEqualTo(1);
-        BuildingTask buildingInstanceInQueue = baseManager.getBaseBuildingQueue(_base).get(0);
+        BuildingTask buildingInstanceInQueue = baseManager.getBaseBuildingQueue(_base).peek();
         Assertions.assertThat(buildingInstanceInQueue.getBase()).isEqualTo(_base);
         Assertions.assertThat(buildingInstanceInQueue.getBuilding().getBuildingId()).isEqualTo("shield");
         Assertions.assertThat(buildingInstanceInQueue.getBuilding().getCurrentLevel()).isEqualTo(0);
@@ -149,7 +145,7 @@ public class BuildingManagerTest {
 
     @Test(expected = BuildingNotFoundException.class)
     public void getBuildingShouldCheckBuilding() throws BuildingNotFoundException {
-        buildingManager.getBuilding(_base, 20L);
+        buildingManager.getBuilding(_base, 20);
     }
 
     @Test

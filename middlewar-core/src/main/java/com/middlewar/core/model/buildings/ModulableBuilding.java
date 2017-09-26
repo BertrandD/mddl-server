@@ -21,4 +21,13 @@ public class ModulableBuilding extends Building {
         setModules(new ArrayList<>());
         setMaxModules(set.getInt("max_modules", 1));
     }
+
+    @Override
+    public String toString() {
+        return "ModulableBuilding{" +
+                "modules=" + modules +
+                ", maxModules=" + maxModules +
+                ", "+ super.toString() +
+                '}';
+    }
 }

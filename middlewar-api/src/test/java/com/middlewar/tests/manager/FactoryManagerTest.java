@@ -14,10 +14,9 @@ import com.middlewar.api.manager.FactoryManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
@@ -69,9 +68,6 @@ public class FactoryManagerTest {
     private BuildingService buildingService;
 
     @Autowired
-    private AstralObjectService astralObjectService;
-
-    @Autowired
     private InventoryService inventoryService;
 
     private Player _playerOwner;
@@ -82,7 +78,7 @@ public class FactoryManagerTest {
     @Before
     public void init() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
         WorldData.getInstance().reload();
-        astralObjectService.saveUniverse();
+        accountService.deleteAll();
         MockitoAnnotations.initMocks(this);
         Account _account = accountService.create("toto", "");
         _playerOwner = playerManager.createForAccount(_account, "owner");
@@ -107,7 +103,7 @@ public class FactoryManagerTest {
 
     @Test(expected = BuildingNotFoundException.class)
     public void createModuleShouldCheckIfFactoryExists() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
-        factoryManager.createModule(_base, 123L, "module_silo_improve_1");
+        factoryManager.createModule(_base, 123, "module_silo_improve_1");
     }
 
     @Test(expected = BuildingNotFoundException.class)
@@ -126,7 +122,7 @@ public class FactoryManagerTest {
 
     @Test(expected = BuildingNotFoundException.class)
     public void createStructureShouldCheckIfFactoryExists() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
-        factoryManager.createStructure(_base, 123L, "structure_test");
+        factoryManager.createStructure(_base, 123, "structure_test");
     }
 
     @Test(expected = BuildingNotFoundException.class)

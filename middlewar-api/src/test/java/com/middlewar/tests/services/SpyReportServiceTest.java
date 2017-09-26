@@ -3,7 +3,6 @@ package com.middlewar.tests.services;
 
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.ItemService;
 import com.middlewar.api.services.PlayerService;
@@ -60,9 +59,6 @@ public class SpyReportServiceTest {
     @Autowired
     private SpyReportService spyReportService;
 
-    @Autowired
-    private AstralObjectService astralObjectService;
-
     private Account _account;
     private Account _account2nd;
 
@@ -75,7 +71,7 @@ public class SpyReportServiceTest {
     @Before
     public void init() {
         WorldData.getInstance().reload();
-        astralObjectService.saveUniverse();
+        accountService.deleteAll();
 
         _account = accountService.create("AccountTest", "no-password");
         _account2nd = accountService.create("AccountTest2nd", "no-password");

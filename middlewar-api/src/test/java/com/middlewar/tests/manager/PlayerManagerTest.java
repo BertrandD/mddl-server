@@ -56,6 +56,7 @@ public class PlayerManagerTest {
     @Before
     public void init() throws NoPlayerConnectedException, PlayerNotFoundException {
         MAX_PLAYER_IN_ACCOUNT = Config.MAX_PLAYER_IN_ACCOUNT;
+        accountService.deleteAll();
         _account = accountService.create("tt", "tt");
         _account2 = accountService.create("tt2", "tt");
         _player = playerService.create(_account, "yoloo");

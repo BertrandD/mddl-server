@@ -3,10 +3,8 @@ package com.middlewar.tests.services;
 
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlanetScanReportService;
-import com.middlewar.api.services.PlayerInventoryService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.enums.ReportCategory;
@@ -38,13 +36,7 @@ import javax.transaction.Transactional;
 public class PlanetScanReportServiceTest {
 
     @Autowired
-    private PlayerInventoryService playerInventoryService;
-
-    @Autowired
     private PlayerService playerService;
-
-    @Autowired
-    private AstralObjectService astralObjectService;
 
     @Autowired
     private AccountService accountService;
@@ -66,7 +58,7 @@ public class PlanetScanReportServiceTest {
     @Before
     public void init() {
         WorldData.getInstance().reload();
-        astralObjectService.saveUniverse();
+        accountService.deleteAll();
 
         _account = accountService.create("AccountTest", "no-password");
         _player = playerService.create(_account, "PlayerTest");

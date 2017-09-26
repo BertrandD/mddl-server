@@ -2,6 +2,7 @@ package com.middlewar.core.data.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.middlewar.core.config.Config;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.AstralObject;
 import com.middlewar.core.model.space.BlackHole;
 import com.middlewar.core.model.space.Moon;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * @author bertrand.
@@ -27,6 +30,8 @@ public class WorldData {
     private final List<AstralObject> _astralObjects = new ArrayList<>();
 
     private AstralObject _blackHole;
+    private Map<String, Star> stars = new HashMap<>();
+    private Map<String, Planet> planets = new HashMap<>();
 
     protected WorldData() {
         reload();
@@ -66,10 +71,12 @@ public class WorldData {
             case "Planet":
                 astralObject = new Planet(name, parent);
                 _astralObjects.add(astralObject);
+                planets.put(astralObject.getName(), (Planet)astralObject);
                 break;
             case "Star":
                 astralObject = new Star(name, parent);
                 _astralObjects.add(astralObject);
+                stars.put(astralObject.getName(), (Star) astralObject);
                 break;
             case "Moon":
                 astralObject = new Moon(name, parent);
@@ -125,6 +132,14 @@ public class WorldData {
         }
 
         return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt - 1));
+    }
+
+    public Star getStar(String id) {
+        return stars.get(id);
+    }
+
+    public Planet getPlanet(String id) {
+        return planets.get(id);
     }
 
     private static class SingletonHolder {

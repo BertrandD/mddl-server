@@ -61,4 +61,12 @@ public abstract class Inventory implements IInventory {
     public void setItems(List<ItemInstance> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "id=" + id +
+                ", items=" + items +
+                '}';
+    }
 }

@@ -10,7 +10,6 @@ import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.FriendRequestService;
 import com.middlewar.api.services.PlanetScanReportService;
@@ -20,7 +19,6 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,14 +47,11 @@ public class AI {
     @Autowired
     private FriendRequestService friendRequestService;
     @Autowired
-    private AstralObjectService astralObjectService;
-    @Autowired
     private PlanetScanReportService planetScanReportService;
 
     //    @PostConstruct
     public void init() {
         Config.load();
-        astralObjectService.saveUniverse();
         System.out.println("Yolooo");
         try {
             Account account = logOrRegister();
@@ -80,7 +75,7 @@ public class AI {
             System.out.println("Cleaning...");
 //            planetScanReportService.remove(report);
             baseService.deleteAll();
-            astralObjectService.deleteAll();
+//            astralObjectService.deleteAll();
             accountService.deleteAll();
 //            playerService.remove(player);
             System.out.println("Cleaning... OK");

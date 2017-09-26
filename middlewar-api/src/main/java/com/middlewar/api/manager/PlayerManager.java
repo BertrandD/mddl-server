@@ -107,6 +107,6 @@ public class PlayerManager {
      * @return the list of Player of the given account
      */
     public List<Player> getAllPlayersForAccount(Account account) {
-        return playerService.findByAccount(account);
+        return account.getPlayers();
     }
 }
