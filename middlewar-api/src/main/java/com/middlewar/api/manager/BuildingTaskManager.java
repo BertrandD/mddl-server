@@ -9,6 +9,7 @@ import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.core.utils.TimeUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.ScheduledFuture;
  * @author LEBOC Philippe
  */
 @Service
+@Slf4j
 public class BuildingTaskManager {
 
     private static final String BUILDING_MINE_ID = "mine";
@@ -104,6 +106,7 @@ public class BuildingTaskManager {
         building.getBase().getBuildingTasks().offer(newTask);
         queue.offer(newTask);
 
+        log.info("Scheduling upgrade of "+ newTask.getBuilding().getBuildingId() + " to level " + newTask.getLevel());
         notifyNewTask(newTask);
     }
 
@@ -116,11 +119,16 @@ public class BuildingTaskManager {
         public synchronized void run() {
             BuildingTask buildingTask = queue.poll();
             final BuildingInstance building = buildingTask.getBuilding();
+            log.info("End of upgrade for " + buildingTask.getBuilding().getBuildingId());
 
             if (building.getTemplate().getType().equals(BuildingCategory.SILO))
                 inventoryService.refreshResources(building.getBase());
 
             building.setCurrentLevel(getCurrentTask().getLevel());
+            if (building.getCurrentLevel() == 1) {
+                building.getBase().addBuilding(building);
+                building.getBase().getBuildingTasks().remove(buildingTask);
+            }
 
             final BuildingTask lastInQueue = findTaskInQueue(building);
 
