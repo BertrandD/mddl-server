@@ -2,7 +2,6 @@ package com.middlewar.core.data.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.middlewar.core.config.Config;
-import com.middlewar.core.model.Player;
 import com.middlewar.core.model.space.AstralObject;
 import com.middlewar.core.model.space.BlackHole;
 import com.middlewar.core.model.space.Moon;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 /**
  * @author bertrand.
@@ -71,7 +69,7 @@ public class WorldData {
             case "Planet":
                 astralObject = new Planet(name, parent);
                 _astralObjects.add(astralObject);
-                planets.put(astralObject.getName(), (Planet)astralObject);
+                planets.put(astralObject.getName(), (Planet) astralObject);
                 break;
             case "Star":
                 astralObject = new Star(name, parent);

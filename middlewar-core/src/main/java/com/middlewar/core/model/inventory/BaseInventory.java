@@ -45,7 +45,7 @@ public class BaseInventory extends Inventory {
 
     @Override
     public String toString() {
-        return "BaseInventory{"+super.toString()+"}";
+        return "BaseInventory{" + super.toString() + "}";
     }
 
     public BaseInventoryDTO toDTO() {

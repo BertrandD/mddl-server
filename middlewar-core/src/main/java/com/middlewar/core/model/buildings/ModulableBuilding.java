@@ -27,7 +27,7 @@ public class ModulableBuilding extends Building {
         return "ModulableBuilding{" +
                 "modules=" + modules +
                 ", maxModules=" + maxModules +
-                ", "+ super.toString() +
+                ", " + super.toString() +
                 '}';
     }
 }

@@ -3,23 +3,23 @@
     <xs:element name="list">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="category" type="categoryType" minOccurs="1" maxOccurs="unbounded" />
+                <xs:element name="category" type="categoryType" minOccurs="1" maxOccurs="unbounded"/>
             </xs:sequence>
-            <xs:attribute name="disabled" type="xs:boolean" use="optional" />
+            <xs:attribute name="disabled" type="xs:boolean" use="optional"/>
         </xs:complexType>
     </xs:element>
 
     <xs:complexType name="categoryType">
         <xs:sequence>
-            <xs:element name="item" type="shopItemType" minOccurs="1" maxOccurs="unbounded" />
+            <xs:element name="item" type="shopItemType" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="shopItemType">
-        <xs:attribute name="id" type="xs:string" use="required" />
-        <xs:attribute name="count" type="xs:positiveInteger" use="required" />
-        <xs:attribute name="price" type="xs:positiveInteger" use="required" />
-        <xs:attribute name="disabled" type="xs:boolean" use="optional" />
+        <xs:attribute name="id" type="xs:string" use="required"/>
+        <xs:attribute name="count" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="price" type="xs:positiveInteger" use="required"/>
+        <xs:attribute name="disabled" type="xs:boolean" use="optional"/>
     </xs:complexType>
 </xs:schema>

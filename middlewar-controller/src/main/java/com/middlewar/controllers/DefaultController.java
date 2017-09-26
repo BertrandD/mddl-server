@@ -56,7 +56,7 @@ public class DefaultController implements ErrorController {
     @Autowired
     private ControllerManagerWrapper controllerManagerWrapper;
 
-    @ResponseStatus(value= HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ApiException.class)
     public String handleApiException(HttpServletRequest req, ApiException e) {
         return e.getMessage();

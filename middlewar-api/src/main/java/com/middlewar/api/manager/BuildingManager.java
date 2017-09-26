@@ -12,10 +12,9 @@ import com.middlewar.api.exceptions.MaximumModulesReachedException;
 import com.middlewar.api.exceptions.ModuleNotAllowedHereException;
 import com.middlewar.api.exceptions.ModuleNotInInventoryException;
 import com.middlewar.api.exceptions.NotEnoughModulesException;
-import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.ValidatorService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
@@ -50,7 +49,7 @@ public class BuildingManager {
     private BuildingTaskManager buildingTaskManager;
 
     public BuildingInstance getBuilding(Base base, int id) throws BuildingNotFoundException {
-        final BuildingInstance building = base.getBuildings().stream().filter(k->k.getId() == id).findFirst().orElse(null);
+        final BuildingInstance building = base.getBuildings().stream().filter(k -> k.getId() == id).findFirst().orElse(null);
         if (building == null) throw new BuildingNotFoundException();
 
         return building;

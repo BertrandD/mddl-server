@@ -142,7 +142,7 @@ public class BuildingInstance {
         StatCalculator capacity = new StatCalculator(stats);
         capacity.add(1, StatOp.DIFF);
 
-        for (Module module: getModules()) {
+        for (Module module : getModules()) {
             List<StatHolder> statHolders = module
                     .getAllStats()
                     .stream()
@@ -150,7 +150,7 @@ public class BuildingInstance {
                             k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.PER)
                     )
                     .collect(Collectors.toList());
-            for (StatHolder stat: statHolders) {
+            for (StatHolder stat : statHolders) {
                 capacity.add(stat.getValue() - 1, StatOp.DIFF);
             }
         }
@@ -161,7 +161,7 @@ public class BuildingInstance {
     private StatHolder getModulesBonus(Stats stats) {
         StatCalculator capacity = new StatCalculator(stats);
 
-        for (Module module: getModules()) {
+        for (Module module : getModules()) {
             List<StatHolder> statHolders = module
                     .getAllStats()
                     .stream()
@@ -169,7 +169,7 @@ public class BuildingInstance {
                             k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.DIFF)
                     )
                     .collect(Collectors.toList());
-            for (StatHolder stat: statHolders) {
+            for (StatHolder stat : statHolders) {
                 capacity.add(stat);
             }
         }

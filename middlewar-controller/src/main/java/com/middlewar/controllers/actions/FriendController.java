@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 /**
  * @author LEBOC Philippe
  */
@@ -66,7 +64,8 @@ public class FriendController {
             return new Response<>(JsonResponseType.ERROR, "You have already sent a friend request to " + friend.getName());
 
         final FriendRequest request = friendRequestService.create(player, friend, message);
-        if (request == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
+        if (request == null)
+            return new Response<>(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
 
         return new Response<>(player); // TODO: send only the new friendrequest instead of Player !
     }

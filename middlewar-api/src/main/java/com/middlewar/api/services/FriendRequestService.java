@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  * @author LEBOC Philippe
  */
 @Service
-public class FriendRequestService implements DefaultService<FriendRequest>{
+public class FriendRequestService implements DefaultService<FriendRequest> {
     private int nextId = 0;
 
     public FriendRequest create(Player requester, Player requested, String message) {

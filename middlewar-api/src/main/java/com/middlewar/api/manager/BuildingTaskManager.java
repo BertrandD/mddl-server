@@ -106,7 +106,7 @@ public class BuildingTaskManager {
         building.getBase().getBuildingTasks().offer(newTask);
         queue.offer(newTask);
 
-        log.info("Scheduling upgrade of "+ newTask.getBuilding().getBuildingId() + " to level " + newTask.getLevel());
+        log.info("Scheduling upgrade of " + newTask.getBuilding().getBuildingId() + " to level " + newTask.getLevel());
         notifyNewTask(newTask);
     }
 

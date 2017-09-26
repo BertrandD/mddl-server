@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="silo" class="ModulableBuilding" nameId="building_silo_n" maxLevel="5" maxBuild="5" descriptionId="building_silo_d">
+    <building id="silo" class="ModulableBuilding" nameId="building_silo_n" maxLevel="5" maxBuild="5"
+              descriptionId="building_silo_d">
         <buildTime>
-            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
+            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10"/>
         </buildTime>
         <stats>
-            <stat name="MAX_RESOURCE_1" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
-            <stat name="MAX_RESOURCE_2" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
-            <stat name="MAX_RESOURCE_4" requiredBuildingLevel="3" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
-            <stat name="MAX_RESOURCE_3" requiredBuildingLevel="3" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
-            <stat name="MAX_RESOURCE_5" requiredBuildingLevel="5" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF" />
+            <stat name="MAX_RESOURCE_1" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF"/>
+            <stat name="MAX_RESOURCE_2" function="(1000+(Math.pow($level, 2)*100))*10" op="DIFF"/>
+            <stat name="MAX_RESOURCE_4" requiredBuildingLevel="3" function="(1000+(Math.pow($level, 2)*100))*10"
+                  op="DIFF"/>
+            <stat name="MAX_RESOURCE_3" requiredBuildingLevel="3" function="(1000+(Math.pow($level, 2)*100))*10"
+                  op="DIFF"/>
+            <stat name="MAX_RESOURCE_5" requiredBuildingLevel="5" function="(1000+(Math.pow($level, 2)*100))*10"
+                  op="DIFF"/>
         </stats>
         <modules max="1">
-            <module id="module_silo_improve_1" />
-            <module id="module_silo_improve_2" />
-            <module id="module_silo_improve_3" />
-            <module id="module_silo_improve_4" />
-            <module id="module_silo_improve_5" />
+            <module id="module_silo_improve_1"/>
+            <module id="module_silo_improve_2"/>
+            <module id="module_silo_improve_3"/>
+            <module id="module_silo_improve_4"/>
+            <module id="module_silo_improve_5"/>
         </modules>
         <requirements>
             <functions>

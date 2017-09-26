@@ -5,7 +5,6 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.serializer.PlayerInventorySerializer;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -44,6 +43,6 @@ public class PlayerInventory extends Inventory {
 
     @Override
     public String toString() {
-        return "PlayerInventory{"+super.toString()+"}";
+        return "PlayerInventory{" + super.toString() + "}";
     }
 }

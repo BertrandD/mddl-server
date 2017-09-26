@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="structure_factory" class="StructureFactory" nameId="building_structure_factory_n" maxLevel="25" descriptionId="building_structure_factory_d">
+    <building id="structure_factory" class="StructureFactory" nameId="building_structure_factory_n" maxLevel="25"
+              descriptionId="building_structure_factory_d">
         <buildTime>
-            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
+            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10"/>
         </buildTime>
         <propertiesByLevel>
             <properties level="2">
                 <list name="unlock_structures">
-                    <set name="structure" value="structure_test" />
+                    <set name="structure" value="structure_test"/>
                 </list>
             </properties>
         </propertiesByLevel>
@@ -16,8 +17,8 @@
                 <function fromLevel="2" itemId="resource_1" value="0,2*Math.pow($level,4)"/>
             </functions>
             <requirement level="5">
-                <building id="mine" level="2" />
-                <building id="storage" level="2" />
+                <building id="mine" level="2"/>
+                <building id="storage" level="2"/>
             </requirement>
         </requirements>
     </building>

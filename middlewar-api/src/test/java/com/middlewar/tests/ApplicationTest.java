@@ -7,8 +7,6 @@ import com.middlewar.core.data.xml.SystemMessageData;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +16,7 @@ import javax.annotation.PostConstruct;
  */
 @SpringBootApplication(scanBasePackages = {"com.middlewar.api", "com.middlewar.core"})
 @EnableAutoConfiguration
-@ContextConfiguration(locations={"classpath:application.properties"})
+@ContextConfiguration(locations = {"classpath:application.properties"})
 public class ApplicationTest {
     public static void main(String... args) {
         SpringApplication.run(ApplicationTest.class);

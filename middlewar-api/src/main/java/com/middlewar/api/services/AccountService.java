@@ -3,12 +3,10 @@ package com.middlewar.api.services;
 import com.middlewar.api.dao.AccountDAO;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
-import lombok.extern.slf4j.Slf4j;
-import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.model.social.PrivateMessage;
 import com.middlewar.core.utils.Observable;
 import com.middlewar.core.utils.Observer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,12 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.Vector;
 
 /**
  * @author LEBOC Philippe

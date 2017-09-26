@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Vector;
 
 @Service
-public class PlayerDAO  implements DAO<Player> {
+public class PlayerDAO implements DAO<Player> {
     private Vector<Player> players = new Vector<>();
     private Map<String, Player> playerNames = new HashMap<>();
 

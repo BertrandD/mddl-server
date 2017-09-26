@@ -38,7 +38,7 @@ public interface IInventoryService {
      * @return
      */
     boolean consumeItem(ItemInstance item, final long amount);
-    
+
     /**
      * @param base
      */

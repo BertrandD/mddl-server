@@ -1,12 +1,8 @@
 package com.middlewar.api.dao;
 
 import com.middlewar.core.model.Base;
-import com.middlewar.core.model.Player;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 @Service
@@ -36,7 +32,7 @@ public class BaseDAO implements DAO<Base> {
     @Override
     public Base getById(int i) {
         try {
-            return bases.get(i-1);
+            return bases.get(i - 1);
         } catch (Exception e) {
             return null;
         }

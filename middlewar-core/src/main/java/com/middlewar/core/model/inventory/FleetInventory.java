@@ -38,6 +38,6 @@ public final class FleetInventory extends Inventory {
 
     @Override
     public String toString() {
-        return "FleetInventory{"+super.toString()+"}";
+        return "FleetInventory{" + super.toString() + "}";
     }
 }

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/buildings.xsd">
-    <building id="pump" nameId="building_pump_n" class="ModulableBuilding" descriptionId="building_pump_d" maxLevel="100">
+    <building id="pump" nameId="building_pump_n" class="ModulableBuilding" descriptionId="building_pump_d"
+              maxLevel="100">
         <buildTime>
-            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
+            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10"/>
         </buildTime>
         <stats>
-            <stat name="RESOURCE_4" function="100+(35*$level)" op="DIFF" />
-            <stat name="RESOURCE_5" function="100+(100*$level)" op="DIFF" />
+            <stat name="RESOURCE_4" function="100+(35*$level)" op="DIFF"/>
+            <stat name="RESOURCE_5" function="100+(100*$level)" op="DIFF"/>
         </stats>
         <modules max="2">
-            <module id="module_optimizer_5" />
-            <module id="module_optimizer_4" />
+            <module id="module_optimizer_5"/>
+            <module id="module_optimizer_4"/>
         </modules>
         <requirements>
             <functions>
@@ -19,8 +20,8 @@
                 <function fromLevel="4" itemId="resource_3" value="0,2*Math.pow($level,4)"/>
             </functions>
             <requirement level="5">
-                <building id="power_factory" level="2" />
-                <item id="resource_5" count="250" />
+                <building id="power_factory" level="2"/>
+                <item id="resource_5" count="250"/>
             </requirement>
         </requirements>
     </building>
