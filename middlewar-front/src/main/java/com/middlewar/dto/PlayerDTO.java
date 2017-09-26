@@ -9,8 +9,8 @@ import java.util.List;
 @NoArgsConstructor
 public class PlayerDTO {
 
-    private long id;
+    private int id;
     private String name;
-    private List<Long> bases;
-    private Long currentBase;
+    private List<Integer> bases;
+    private Integer currentBase;
 }

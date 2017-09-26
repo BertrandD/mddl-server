@@ -8,10 +8,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class AccountDTO {
-    private long id;
+    private int id;
     private String lang;
-    private List<Long> players;
-    private long currentPlayer;
+    private List<Integer> players;
+    private int currentPlayer;
     private String token;
     private String username;
 }

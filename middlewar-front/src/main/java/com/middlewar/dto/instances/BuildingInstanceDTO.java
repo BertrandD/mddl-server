@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BuildingInstanceDTO {
 
-    private long id;
+    private int id;
     private String buildingId;
     private int currentLevel;
     private long endsAt;

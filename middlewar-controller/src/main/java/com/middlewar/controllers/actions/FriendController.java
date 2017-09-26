@@ -35,16 +35,6 @@ public class FriendController {
     @Autowired
     private FriendRequestService friendRequestService;
 
-    @RequestMapping(value = Route.REQUEST_ALL, method = RequestMethod.GET)
-    public Response showFriendRequest(@AuthenticationPrincipal Account pAccount) {
-
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response<>(JsonResponseType.ERROR, SystemMessageId.PLAYER_NOT_FOUND);
-
-        final List<FriendRequest> requests = friendRequestService.findPlayerRequest(player.getId());
-        return new Response<>(requests);
-    }
-
     @RequestMapping(value = Route.REQUEST_CREATE, method = RequestMethod.POST)
     public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") int friendId, @RequestParam(value = "message") String message) {
 //        Assert.hasLength(friendId, "Invalid parameter friendId.");

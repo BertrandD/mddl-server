@@ -1,6 +1,5 @@
 package com.middlewar.boot;
 
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.data.xml.BuildingData;
@@ -28,9 +27,6 @@ public class Application extends AsyncConfigurerSupport {
         SpringApplication.run(Application.class, args);
     }
 
-    @Autowired
-    AstralObjectService astralObjectService;
-
     @PostConstruct
     public void init() {
         Config.load();
@@ -39,7 +35,6 @@ public class Application extends AsyncConfigurerSupport {
         ItemData.getInstance();
         BuildingData.getInstance();
         ShopData.getInstance();
-        astralObjectService.saveUniverse();
     }
 
     @Override

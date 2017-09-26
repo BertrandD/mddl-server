@@ -27,9 +27,9 @@ public class BaseClient extends APIClient {
         return Arrays.asList(buildings);
     }
 
-    public static BaseDTO getBase(Long currentBase) {
+    public static BaseDTO getBase(Integer currentBase) {
         Map<String, String> uriParams = new HashMap<>();
-        uriParams.put("id", Long.toString(currentBase));
+        uriParams.put("id", Integer.toString(currentBase));
 
         return get(Route.BASE_ONE, BaseDTO.class, uriParams);
 

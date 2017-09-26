@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BuildingClient extends APIClient {
-    public static BuildingInstanceDTO create(long baseId, String templateId) {
+    public static BuildingInstanceDTO create(int baseId, String templateId) {
         Map<String, String> uriParams = new HashMap<>();
-        uriParams.put("baseId", Long.toString(baseId));
+        uriParams.put("baseId", Integer.toString(baseId));
         uriParams.put("building", templateId);
 
         return post(Route.BUILDING_CREATE + "?building={building}", BuildingInstanceDTO.class, uriParams);

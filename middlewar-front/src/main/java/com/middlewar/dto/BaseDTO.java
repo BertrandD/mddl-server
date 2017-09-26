@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BaseDTO {
 
-    private long id;
+    private int id;
     private String name;
     private List<BuildingInstanceDTO> buildings;
     private BaseInventoryDTO baseInventory;
