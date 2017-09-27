@@ -7,6 +7,7 @@ import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
@@ -36,6 +37,9 @@ public class BaseManager {
     private BaseService baseService;
 
     @Autowired
+    private InventoryService inventoryService;
+
+    @Autowired
     private PlanetManager planetManager;
 
     /**
@@ -55,6 +59,7 @@ public class BaseManager {
      */
     public Base getBase(int id) throws BaseNotFoundException {
         final Base base = baseService.findOne(id);
+        inventoryService.refreshResources(base); // TODO : move this
         if (base == null) throw new BaseNotFoundException();
         return base;
     }
