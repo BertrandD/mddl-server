@@ -70,7 +70,7 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public synchronized boolean addResource(Resource resource, long amount) {
+    public synchronized boolean addResource(Resource resource, double amount) {
 
         if (amount <= 0) return false;
 
@@ -140,7 +140,7 @@ public class InventoryService implements IInventoryService {
         // (amount per second) * (time without refreshing)
         final double profAmountPerSecond = (prodPerHour / 3600);
         final double elapsedTimeInSecond = (now - last) / 1000;
-        long add = (long) (profAmountPerSecond * elapsedTimeInSecond);
+        double add = (profAmountPerSecond * elapsedTimeInSecond);
 
         if (addResource(resource, add)) {
             resource.setLastRefresh(now);

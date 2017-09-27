@@ -30,7 +30,7 @@ public interface IInventoryService {
      * @param amount
      * @return
      */
-    boolean addResource(Resource resource, long amount);
+    boolean addResource(Resource resource, double amount);
 
     /**
      * @param item
