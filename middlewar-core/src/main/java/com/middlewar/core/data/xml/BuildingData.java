@@ -252,7 +252,7 @@ public class BuildingData implements IXmlReader {
                                 building.setBuildTimes(buildTimes);
                                 building.setRequirements(requirements);
                                 building.setStats(stats);
-                                if (!modules.isEmpty()) ((ModulableBuilding) building).setModules(modules);
+                                if (!modules.isEmpty()) ((ModulableBuilding) building).setAuthorizedModules(modules);
                                 _buildings.put(set.getString("id"), building);
                             }
                         } catch (InvocationTargetException e) {
