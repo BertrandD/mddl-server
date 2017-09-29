@@ -53,6 +53,7 @@ public class Fleet {
         setMission(mission);
     }
 
+/*
     public void initializeStats() {
         final ObjectStat stats = getStats();
 
@@ -76,6 +77,7 @@ public class Fleet {
         });
 
     }
+*/
 
     public long getShipCount() {
         return getShips().stream().mapToLong(Ship::getCount).sum();

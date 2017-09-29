@@ -50,7 +50,7 @@ public class ShipManager {
         for (ItemInstance inst : collector)
             inventoryService.consumeItem(inst, count);
 
-        final Ship ship = shipService.create(base, recipe.getStructure().getItemId(), count, recipe.getComponents().stream().map(GameItem::getItemId).collect(Collectors.toList()));
+        final Ship ship = shipService.create(base, recipe, count);
         if (ship == null) throw new ShipCreationFailedException();
         return ship;
     }

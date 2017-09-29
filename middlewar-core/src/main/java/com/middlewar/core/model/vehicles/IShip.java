@@ -25,16 +25,12 @@ public interface IShip {
 
     double getDamage();
 
-    double getShield();
+//    double getShield();
 
     double getHealth();
 
     double getVolume();
 
-    double getWeight();
-
-    double getMaxStorableVolume();
-
-    double getMaxStorableWeight();
+//    double getWeight();
 
 }
