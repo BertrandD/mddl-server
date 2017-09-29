@@ -117,7 +117,7 @@ public class BuildingManager {
             throw new MaximumModulesReachedException();
 
         // TODO: MAKE A TEST !!!!
-        if (!((ModulableBuilding) building.getTemplate()).getModules().contains((Module) module.getTemplate()))
+        if (!((ModulableBuilding) building.getTemplate()).getAuthorizedModules().contains((Module) module.getTemplate()))
             throw new ModuleNotAllowedHereException();
 
         inventoryService.consumeItem(module, 1);

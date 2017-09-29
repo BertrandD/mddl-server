@@ -49,6 +49,7 @@ public final class SystemMessageId {
     public static final String ITEM_NOT_FOUND_IN_INVENTORY = "item_not_found_in_inventory";
     public static final String ITEM_CANNOT_CREATE = "item_cannot_create";
     public static final String ITEM_NOT_UNLOCKED = "item_not_unlocked";
+    public static final String BAD_ITEM = "bad_item";
 
     // inventory
     public static final String INVENTORY_NOT_FOUND = "inventory_not_found";
@@ -71,5 +72,9 @@ public final class SystemMessageId {
 
     //ship
     public static final String SHIP_CREATION_FAILED = "ship_creation_failed";
+
+    // recipe
+    public static final String RECIPE_CREATION_FAILED = "recipe_creation_failed";
+    public static final String NOT_ENOUGH_SLOTS = "not_enough_slots";
 
 }

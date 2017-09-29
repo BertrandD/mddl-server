@@ -13,19 +13,19 @@ import java.util.List;
 @Data
 public class ModulableBuilding extends Building {
 
-    private List<Module> modules;
+    private List<Module> authorizedModules;
     private int maxModules;
 
     public ModulableBuilding(StatsSet set) {
         super(set);
-        setModules(new ArrayList<>());
+        setAuthorizedModules(new ArrayList<>());
         setMaxModules(set.getInt("max_modules", 1));
     }
 
     @Override
     public String toString() {
         return "ModulableBuilding{" +
-                "modules=" + modules +
+                "authorizedModules=" + authorizedModules +
                 ", maxModules=" + maxModules +
                 ", " + super.toString() +
                 '}';

@@ -8,11 +8,15 @@ import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.interfaces.IStat;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.stats.ObjectStat;
+import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.serializer.GameItemSerializer;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author LEBOC Philippe
@@ -28,7 +32,7 @@ public abstract class GameItem implements IStat {
     private long weight;
     private long volume;
     private Lang lang;
-    private List<StatHolder> stats;
+    private Map<Stats, StatHolder> stats;
 
     public GameItem(StatsSet set) {
         setItemId(set.getString("id"));
@@ -38,7 +42,7 @@ public abstract class GameItem implements IStat {
         setWeight(set.getLong("weight", 0));
         setVolume(set.getLong("volume", 0));
         setLang(Lang.EN);
-        setStats(new ArrayList<>());
+        setStats(new HashMap<>());
     }
 
     public String getName() {
@@ -53,14 +57,18 @@ public abstract class GameItem implements IStat {
         return descr;
     }
 
+    public void addStats(List<StatHolder> statHolders) {
+        statHolders.forEach(k->stats.put(k.getStat(), k));
+    }
+
     @Deprecated
     public void handleEffect(final ObjectStat stats) {
-        getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(), stat.getOp()));
+        //getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(), stat.getOp()));
     }
 
     @Override
     public List<StatHolder> getAllStats() {
-        return stats;
+        return new ArrayList<>(stats.values());
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.middlewar.core.enums;
 /**
  * @author LEBOC Philippe
  */
-public enum StructureSlot {
+public enum Slot {
     CARGO,
     ENGINE,
     MODULE,

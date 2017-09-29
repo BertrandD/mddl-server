@@ -1,6 +1,7 @@
 package com.middlewar.core.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.model.social.FriendRequest;
@@ -65,12 +66,15 @@ public class Player extends Observable {
     private Map<Long, PlanetScan> planetScans;
     private boolean deleted;
 
+    private List<RecipeInstance> recipes;
+
     public Player() {
         setBases(new ArrayList<>());
         setFriends(new ArrayList<>());
         setEmittedFriendRequests(new ArrayList<>());
         setReceivedFriendRequests(new ArrayList<>());
         setPlanetScans(new HashMap<>());
+        setRecipes(new ArrayList<>());
     }
 
     public Player(Account account, String name) {
@@ -82,6 +86,7 @@ public class Player extends Observable {
         setReceivedFriendRequests(new ArrayList<>());
         setPlanetScans(new HashMap<>());
         setInventory(new PlayerInventory(this));
+        setRecipes(new ArrayList<>());
     }
 
     public PlayerDTO toDTO() {

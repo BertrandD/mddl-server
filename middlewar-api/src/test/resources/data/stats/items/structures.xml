@@ -2,6 +2,22 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
     <item id="structure_test" type="STRUCTURE" nameId="structure_test_n" descriptionId="structure_test_d" rank="A"
           buildTime="60" volume="72">
+        <properties>
+            <set name="slot_weapon" value="1"/>
+        </properties>
+        <requirements>
+            <item id="resource_1" count="1"/>
+        </requirements>
+    </item>
+    <item id="structure_test_may_slots" type="STRUCTURE" nameId="structure_test_n" descriptionId="structure_test_d" rank="A"
+          buildTime="60" volume="72">
+        <properties>
+            <set name="slot_weapon" value="2"/>
+            <set name="slot_cargo" value="2"/>
+            <set name="slot_engine" value="2"/>
+            <set name="slot_module" value="2"/>
+            <set name="slot_technology" value="2"/>
+        </properties>
         <requirements>
             <item id="resource_1" count="1"/>
         </requirements>
