@@ -7,6 +7,6 @@ import com.middlewar.api.util.response.SystemMessageId;
  */
 public class NotEnoughSlotsException extends ApiException {
     public NotEnoughSlotsException() {
-        super(SystemMessageId.ITEM_NOT_FOUND);
+        super(SystemMessageId.NOT_ENOUGH_SLOTS);
     }
 }

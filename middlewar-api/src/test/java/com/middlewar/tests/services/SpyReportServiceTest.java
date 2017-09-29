@@ -1,7 +1,12 @@
 package com.middlewar.tests.services;
 
 
+import com.middlewar.api.exceptions.BadItemException;
+import com.middlewar.api.exceptions.ItemNotFoundException;
+import com.middlewar.api.exceptions.NotEnoughSlotsException;
+import com.middlewar.api.exceptions.RecipeCreationFailedException;
 import com.middlewar.api.manager.PlanetManager;
+import com.middlewar.api.manager.RecipeManager;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.ItemService;
@@ -28,6 +33,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 
 /**
  * @author Leboc Philippe.
@@ -59,6 +65,9 @@ public class SpyReportServiceTest {
     @Autowired
     private SpyReportService spyReportService;
 
+    @Autowired
+    private RecipeManager recipeManager;
+
     private Account _account;
     private Account _account2nd;
 
@@ -85,9 +94,9 @@ public class SpyReportServiceTest {
     }
 
     @Test
-    public void testCreateSpyReport() {
+    public void testCreateSpyReport() throws ItemNotFoundException, NotEnoughSlotsException, RecipeCreationFailedException, BadItemException {
 
-        _baseTarget.getShips().add(new Ship(_baseTarget, "structure_test", 5));
+        _baseTarget.getShips().add(new Ship(_baseTarget, recipeManager.create(_player, "testRecipe", "structure_test_free", new ArrayList<>()), 5));
         final Resource resource = resourceService.create(_baseTarget, "resource_1");
         resource.getItem().addCount(100);
         _baseTarget.getResources().add(resource);
@@ -103,7 +112,7 @@ public class SpyReportServiceTest {
 //        Assertions.assertThat(report.getEntries().get(ReportCategory.RESOURCES).get(0).getValue()).isEqualTo(100);
 
         Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS)).isNotNull();
-        Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS).get(0).getName()).isEqualTo("structure_test");
+        Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS).get(0).getName()).isEqualTo("structure_test_free");
 //        Assertions.assertThat(report.getEntries().get(ReportCategory.SHIPS).get(0).getValue()).isEqualTo(5L);
     }
 }
