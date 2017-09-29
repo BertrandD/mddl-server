@@ -7,6 +7,7 @@ import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
+import com.middlewar.api.exceptions.RecipeNotFoundException;
 import com.middlewar.api.exceptions.ShipCreationFailedException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
@@ -44,9 +45,8 @@ public class ShipController {
     @RequestMapping(value = Route.SHIP_CREATE, method = RequestMethod.POST)
     public Ship create(@AuthenticationPrincipal Account pAccount,
                        @RequestParam(value = "count") Long count,
-                       @RequestParam(value = "structureId") String structure,
-                       @RequestParam(value = "attachments") List<String> ids) throws NoPlayerConnectedException, PlayerNotFoundException, PlayerHasNoBaseException, BaseNotFoundException, BaseNotOwnedException, ItemRequirementMissingException, ItemNotFoundException, ShipCreationFailedException {
-        return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, structure, ids);
+                       @RequestParam(value = "recipeId") Long recipeId) throws NoPlayerConnectedException, PlayerNotFoundException, PlayerHasNoBaseException, BaseNotFoundException, BaseNotOwnedException, ItemRequirementMissingException, ItemNotFoundException, ShipCreationFailedException, RecipeNotFoundException {
+        return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, recipeId);
     }
 
 }
