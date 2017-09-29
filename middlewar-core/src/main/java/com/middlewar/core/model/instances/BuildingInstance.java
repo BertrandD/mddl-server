@@ -111,34 +111,34 @@ public class BuildingInstance {
         return false;
     }
 
-    public StatHolder getAvailableCapacity(Resource resource) {
+    public StatHolder calcAvailableCapacity(Resource resource) {
 
         // If the buildingInstance has 3 modules :
-        // 2 modules giving +50% each of bonus (so a total of +100%)        <-- getModulesModifier()
-        // 1 module giving a raw +50 capacity bonus (StatOp.DIFF)           <-- getModulesBonus()
+        // 2 modules giving +50% each of bonus (so a total of +100%)        <-- calcModulesModifier()
+        // 1 module giving a raw +50 capacity bonus (StatOp.DIFF)           <-- calcModulesBonus()
         //     |-> N.B. : Raw bonuses are not affected by other modules
         // And the basic availableCapacity of the building is 1000
         // So, the formula is : 1000 * (1 + 0.5 + 0.5) + 50 = 2050
 
         StatCalculator capacity = new StatCalculator(resource.getStatMax());
-        capacity.add(getTemplate().getAvailableCapacity(resource, getCurrentLevel()));
-        capacity.add(getModulesModifier(resource.getStatMax()));
-        capacity.add(getModulesBonus(resource.getStatMax()));
+        capacity.add(getTemplate().calcAvailableCapacity(resource, getCurrentLevel()));
+        capacity.add(calcModulesModifier(resource.getStatMax()));
+        capacity.add(calcModulesBonus(resource.getStatMax()));
         return capacity.toStatHolder();
     }
 
-    public StatHolder getProduction(Resource resource) {
+    public StatHolder calcProduction(Resource resource) {
 
-        // Cf getAvailableCapacity for some explanations on formula
+        // Cf calcAvailableCapacity for some explanations on formula
 
         StatCalculator production = new StatCalculator(resource.getStat());
-        production.add(getTemplate().getProductionAtLevel(resource, getCurrentLevel()));
-        production.add(getModulesModifier(resource.getStat()));
-        production.add(getModulesBonus(resource.getStat()));
+        production.add(getTemplate().calcProductionAtLevel(resource, getCurrentLevel()));
+        production.add(calcModulesModifier(resource.getStat()));
+        production.add(calcModulesBonus(resource.getStat()));
         return production.toStatHolder();
     }
 
-    private StatHolder getModulesModifier(Stats stats) {
+    private StatHolder calcModulesModifier(Stats stats) {
         StatCalculator capacity = new StatCalculator(stats);
         capacity.add(1, StatOp.DIFF);
 
@@ -158,7 +158,7 @@ public class BuildingInstance {
         return capacity.toStatHolder(StatOp.PER);
     }
 
-    private StatHolder getModulesBonus(Stats stats) {
+    private StatHolder calcModulesBonus(Stats stats) {
         StatCalculator capacity = new StatCalculator(stats);
 
         for (Module module : getModules()) {

@@ -62,7 +62,7 @@ public abstract class Building implements IStat {
         return dto;
     }
 
-    public StatHolder getProductionAtLevel(Resource resource, int level) {
+    public StatHolder calcProductionAtLevel(Resource resource, int level) {
         StatCalculator production = new StatCalculator(resource.getStat());
 
         List<StatHolder> statFunctions = getStats().getStatFunctions().get(resource.getStat());
@@ -116,7 +116,7 @@ public abstract class Building implements IStat {
         return getAllStats().stream().filter(k -> k.getStat().equals(stats)).findFirst().orElse(null);
     }
 
-    public StatHolder getAvailableCapacity(Resource resource, int level) {
+    public StatHolder calcAvailableCapacity(Resource resource, int level) {
         // TODO add logic to check statByLevel (& globalStats ?)
         StatCalculator capacity = new StatCalculator(resource.getStatMax());
         List<StatHolder> statMax = getStats()

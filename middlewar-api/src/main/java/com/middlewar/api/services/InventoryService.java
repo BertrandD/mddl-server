@@ -77,7 +77,7 @@ public class InventoryService implements IInventoryService {
         final GameItem template = resource.getItem().getTemplate();
 
         // Capacity of -1 == INFINITY
-        final long capacity = resource.getAvailableCapacity();
+        final long capacity = resource.calcAvailableCapacity();
         if (capacity != -1 && capacity < template.getVolume() * amount) {
             amount = capacity / template.getVolume();
         }
@@ -130,7 +130,7 @@ public class InventoryService implements IInventoryService {
     public synchronized void refreshResources(final Resource resource) {
         final long now = TimeUtil.getCurrentTime();
         final long last = resource.getLastRefresh();
-        final double prodPerHour = resource.getProdPerHour();
+        final double prodPerHour = resource.calcProdPerHour();
         final ItemInstance item = resource.getItem();
         final GameItem template = item.getTemplate();
 

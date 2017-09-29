@@ -58,8 +58,8 @@ public class Resource {
         ResourceDTO dto = new ResourceDTO();
         dto.setLastRefresh(this.getLastRefresh());
         dto.setCount(this.getCount());
-        dto.setAvailableCapacity(this.getAvailableCapacity());
-        dto.setProdPerHour(this.getProdPerHour());
+        dto.setAvailableCapacity(this.calcAvailableCapacity());
+        dto.setProdPerHour(this.calcProdPerHour());
         return dto;
     }
 
@@ -80,11 +80,11 @@ public class Resource {
         return Stats.valueOf("MAX_" + item.getTemplateId().toUpperCase());
     }
 
-    public long getAvailableCapacity() {
-        return base.getResourceStorageAvailableCapacity(this);
+    public long calcAvailableCapacity() {
+        return base.calcResourceStorageAvailableCapacity(this);
     }
 
-    public double getProdPerHour() {
-        return base.getResourceProduction(this);
+    public double calcProdPerHour() {
+        return base.calcResourceProduction(this);
     }
 }

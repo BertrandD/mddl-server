@@ -30,7 +30,7 @@ public class BaseSerializer extends JsonSerializer<Base> {
             gen.writeStringField("templateId", resource.getItem().getTemplateId());
             gen.writeNumberField("count", resource.getCount());
             gen.writeNumberField("maxVolume", value.getBaseStat().getValue(Stats.valueOf("MAX_" + resource.getItem().getTemplateId().toUpperCase()))); // TODO: WARNING
-            gen.writeNumberField("production", resource.getProdPerHour());
+            gen.writeNumberField("production", resource.calcProdPerHour());
             gen.writeNumberField("lastRefresh", resource.getLastRefresh());
             gen.writeEndObject();
         });

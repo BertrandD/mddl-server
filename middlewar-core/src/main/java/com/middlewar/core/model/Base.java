@@ -120,24 +120,24 @@ public class Base extends Observable {
         }
     }
 
-    public long getResourceStorageAvailableCapacity(Resource resource) {
+    public long calcResourceStorageAvailableCapacity(Resource resource) {
         StatCalculator capacity = new StatCalculator(resource.getStatMax());
         capacity.add(getBaseStat().getValue(resource.getStatMax()));
 
         for (BuildingInstance buildingInstance : getBuildings()) {
-            capacity.add(buildingInstance.getAvailableCapacity(resource));
+            capacity.add(buildingInstance.calcAvailableCapacity(resource));
         }
 
         return ((Number) capacity.getValue()).longValue();
     }
 
-    public double getResourceProduction(Resource resource) {
+    public double calcResourceProduction(Resource resource) {
         // TODO : add logic to handle modules effects on production
         StatCalculator production = new StatCalculator(resource.getStat());
         production.add(getBaseStat().getValue(resource.getStat()));
 
         for (BuildingInstance building : getBuildings()) {
-            production.add(building.getProduction(resource));
+            production.add(building.calcProduction(resource));
         }
 
         return production.getValue();

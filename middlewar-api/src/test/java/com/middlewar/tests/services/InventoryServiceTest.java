@@ -185,7 +185,7 @@ public class InventoryServiceTest {
         buildingInstance.setCurrentLevel(1);
         _base.addBuilding(buildingInstance);
         Assertions.assertThat(_base.getBuildings().contains(buildingInstance)).isTrue();
-        Assertions.assertThat(resource.getAvailableCapacity()).isEqualTo(max + siloCapacity);
+        Assertions.assertThat(resource.calcAvailableCapacity()).isEqualTo(max + siloCapacity);
 
         boolean result = inventoryService.addResource(resource, amount);
         Assertions.assertThat(result).isTrue();
