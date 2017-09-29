@@ -137,7 +137,7 @@ public class RecipeManagerTest {
         components.add("engine_test");
         components.add("engine_test");
 
-        RecipeInstance recipe = recipeManager.create(_playerOwner, "newRecipe", "structure_test_may_slots", components);
+        RecipeInstance recipe = recipeManager.create(_playerOwner, "newRecipe", "structure_test_many_slots", components);
 
         Assertions.assertThat(recipe.calcDamage()).isEqualTo(500);
         Assertions.assertThat(recipe.calcCargo()).isEqualTo(500);

@@ -1,6 +1,5 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.RecipeNotFoundException;
 import com.middlewar.api.exceptions.ShipCreationFailedException;
@@ -28,7 +27,7 @@ public class ShipManager {
     @Autowired
     private ShipService shipService;
 
-    public Ship create(Base base, Long count, long recipeId) throws ItemNotFoundException, ItemRequirementMissingException, ShipCreationFailedException, RecipeNotFoundException {
+    public Ship create(Base base, Long count, long recipeId) throws ItemRequirementMissingException, ShipCreationFailedException, RecipeNotFoundException {
         RecipeInstance recipe = base.getOwner().getRecipes().stream().filter(k->k.getId() == recipeId).findFirst().orElse(null);
         if (recipe == null) {
             throw new RecipeNotFoundException();
@@ -40,6 +39,7 @@ public class ShipManager {
         final ItemInstance structuresInst = inventory.getItemsToMap().get(recipe.getStructure().getItemId());
         if (structuresInst == null || structuresInst.getCount() < count)
             throw new ItemRequirementMissingException();
+        collector.add(structuresInst);
 
         for (GameItem template : recipe.getComponents()) {
             final ItemInstance inst = inventory.getItemsToMap().get(template.getItemId());
@@ -48,7 +48,7 @@ public class ShipManager {
         }
 
         for (ItemInstance inst : collector)
-            inventoryService.consumeItem(inst, 1);
+            inventoryService.consumeItem(inst, count);
 
         final Ship ship = shipService.create(base, recipe.getStructure().getItemId(), count, recipe.getComponents().stream().map(GameItem::getItemId).collect(Collectors.toList()));
         if (ship == null) throw new ShipCreationFailedException();
