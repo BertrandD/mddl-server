@@ -76,7 +76,7 @@ public class FactoryManagerTest {
     private BuildingInstance _structureFactory;
 
     @Before
-    public void init() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() {
         WorldData.getInstance().reload();
         accountService.deleteAll();
         MockitoAnnotations.initMocks(this);
@@ -97,17 +97,17 @@ public class FactoryManagerTest {
      ---------------------------*/
 
     @Test(expected = ItemNotFoundException.class)
-    public void createModuleShouldCheckIfModuleExists() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createModuleShouldCheckIfModuleExists() {
         factoryManager.createModule(_base, _moduleFactory.getId(), "NotExistingModule");
     }
 
     @Test(expected = BuildingNotFoundException.class)
-    public void createModuleShouldCheckIfFactoryExists() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createModuleShouldCheckIfFactoryExists() {
         factoryManager.createModule(_base, 123, "module_silo_improve_1");
     }
 
     @Test(expected = BuildingNotFoundException.class)
-    public void createModuleShouldCheckIfFactoryIsModuleFactory() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createModuleShouldCheckIfFactoryIsModuleFactory() {
         factoryManager.createModule(_base, _structureFactory.getId(), "module_silo_improve_1");
     }
 
@@ -116,17 +116,17 @@ public class FactoryManagerTest {
      ---------------------------*/
 
     @Test(expected = ItemNotFoundException.class)
-    public void creatStructureShouldCheckIfStructureExists() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void creatStructureShouldCheckIfStructureExists() {
         factoryManager.createStructure(_base, _structureFactory.getId(), "NotExistingStructure");
     }
 
     @Test(expected = BuildingNotFoundException.class)
-    public void createStructureShouldCheckIfFactoryExists() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createStructureShouldCheckIfFactoryExists() {
         factoryManager.createStructure(_base, 123, "structure_test");
     }
 
     @Test(expected = BuildingNotFoundException.class)
-    public void createStructureShouldCheckIfFactoryIsStructureFactory() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createStructureShouldCheckIfFactoryIsStructureFactory() {
         factoryManager.createStructure(_base, _moduleFactory.getId(), "structure_test");
     }
 
@@ -135,18 +135,18 @@ public class FactoryManagerTest {
      ---------------------------*/
 
     @Test(expected = ItemNotUnlockedException.class)
-    public void createItemShouldCheckIfItemIsUnlocked() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createItemShouldCheckIfItemIsUnlocked() {
         factoryManager.createStructure(_base, _structureFactory.getId(), "structure_test");
     }
 
     @Test(expected = ItemRequirementMissingException.class)
-    public void createItemShouldCheckIfHasRequirements() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createItemShouldCheckIfHasRequirements() {
         _structureFactory.setCurrentLevel(2);
         factoryManager.createStructure(_base, _structureFactory.getId(), "structure_test");
     }
 
     @Test
-    public void createItemShouldConsumeResourceAndReturnItem() throws ItemCreationException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void createItemShouldConsumeResourceAndReturnItem() {
         _structureFactory.setCurrentLevel(2);
         Resource resource1 = inventoryService.createNewResource(_base, "resource_1");
         _base.getBaseStat().add(Stats.MAX_RESOURCE_1, 1000 - Config.BASE_INITIAL_MAX_RESOURCE_STORAGE);

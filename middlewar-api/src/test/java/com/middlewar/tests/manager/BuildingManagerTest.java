@@ -93,7 +93,7 @@ public class BuildingManagerTest {
     private Base _base;
 
     @Before
-    public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() {
         WorldData.getInstance().reload();
         accountService.deleteAll();
         TestUtils.init(buildingService, inventoryService);
@@ -110,23 +110,23 @@ public class BuildingManagerTest {
     }
 
     @Test(expected = BuildingTemplateNotFoundException.class)
-    public void createShouldCheckTemplateId() throws BuildingTemplateNotFoundException, BuildingAlreadyExistsException, ItemRequirementMissingException, BuildingCreationException, BuildingRequirementMissingException {
+    public void createShouldCheckTemplateId() {
         buildingManager.create(_base, "unknownTemplateId");
     }
 
     @Test(expected = ItemRequirementMissingException.class)
-    public void createShouldCheckResources() throws BuildingTemplateNotFoundException, BuildingAlreadyExistsException, ItemRequirementMissingException, BuildingCreationException, BuildingRequirementMissingException {
+    public void createShouldCheckResources() {
         buildingManager.create(_base, "shield");
     }
 
     @Test(expected = BuildingAlreadyExistsException.class)
-    public void createShouldCheckIfBuildingMaxReached() throws BuildingTemplateNotFoundException, BuildingAlreadyExistsException, ItemRequirementMissingException, BuildingCreationException, BuildingRequirementMissingException {
+    public void createShouldCheckIfBuildingMaxReached() {
         buildingManager.create(_base, "onlyone");
         buildingManager.create(_base, "onlyone");
     }
 
     @Test
-    public void createShouldConsumeResourceAndCreateBuilding() throws BuildingTemplateNotFoundException, BuildingAlreadyExistsException, ItemRequirementMissingException, BuildingCreationException, BuildingRequirementMissingException {
+    public void createShouldConsumeResourceAndCreateBuilding() {
         TestUtils.addResourceToBase(_base, "resource_1", 500);
 
         BuildingInstance building = buildingManager.create(_base, "shield");
@@ -144,12 +144,12 @@ public class BuildingManagerTest {
     }
 
     @Test(expected = BuildingNotFoundException.class)
-    public void getBuildingShouldCheckBuilding() throws BuildingNotFoundException {
+    public void getBuildingShouldCheckBuilding() {
         buildingManager.getBuilding(_base, 20);
     }
 
     @Test
-    public void getBuildingShouldReturnBuilding() throws BuildingNotFoundException {
+    public void getBuildingShouldReturnBuilding() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
 
         BuildingInstance buildingInstance1 = buildingManager.getBuilding(_base, buildingInstance.getId());
@@ -157,14 +157,14 @@ public class BuildingManagerTest {
     }
 
     @Test(expected = BuildingNotFoundException.class)
-    public void upgradeShouldCheckBuilding() throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void upgradeShouldCheckBuilding() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
 
         buildingManager.upgrade(_base, buildingInstance.getId() + 1);
     }
 
     @Test(expected = BuildingMaxLevelReachedException.class)
-    public void upgradeShouldCheckMaxLevel() throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void upgradeShouldCheckMaxLevel() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
         buildingInstance.setCurrentLevel(buildingInstance.getTemplate().getMaxLevel());
 
@@ -172,7 +172,7 @@ public class BuildingManagerTest {
     }
 
     @Test(expected = BuildingMaxLevelReachedException.class)
-    public void upgradeShouldCheckMaxLevelInQueue() throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException, InterruptedException {
+    public void upgradeShouldCheckMaxLevelInQueue() throws InterruptedException {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
         buildingInstance.setCurrentLevel(buildingInstance.getTemplate().getMaxLevel() - 1);
 
@@ -182,21 +182,21 @@ public class BuildingManagerTest {
     }
 
     @Test(expected = ItemRequirementMissingException.class)
-    public void upgradeShouldCheckItemRequirements() throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void upgradeShouldCheckItemRequirements() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo_req_item");
 
         buildingManager.upgrade(_base, buildingInstance.getId());
     }
 
     @Test(expected = BuildingRequirementMissingException.class)
-    public void upgradeShouldCheckBuildingRequirements() throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void upgradeShouldCheckBuildingRequirements() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo_req_building");
 
         buildingManager.upgrade(_base, buildingInstance.getId());
     }
 
     @Test(expected = BuildingRequirementMissingException.class)
-    public void upgradeShouldCheckBuildingRequirements2() throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void upgradeShouldCheckBuildingRequirements2() {
         BuildingInstance silo = TestUtils.addBuildingToBase(_base, "silo", 1);
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo_req_building");
 
@@ -208,7 +208,7 @@ public class BuildingManagerTest {
     }
 
     @Test
-    public void upgradeShouldConsumeResourceAndItem() throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public void upgradeShouldConsumeResourceAndItem() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo_req_item");
         ItemInstance item = TestUtils.addItemToBaseInventory(_base, "structure_test", 2);
         Resource resource = TestUtils.addResourceToBase(_base, "resource_1", 150);
@@ -221,28 +221,28 @@ public class BuildingManagerTest {
     }
 
     @Test(expected = BuildingNotFoundException.class)
-    public void attachModuleShouldCheckIfBuildingExists() throws BuildingNotFoundException, ModuleNotInInventoryException, ModuleNotAllowedHereException, MaximumModulesReachedException, NotEnoughModulesException, ItemNotFoundException {
+    public void attachModuleShouldCheckIfBuildingExists() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
 
         buildingManager.attachModule(_base, buildingInstance.getId() + 1, "module_silo_improve_1");
     }
 
     @Test(expected = ItemNotFoundException.class)
-    public void attachModuleShouldCheckIfModuleExists() throws BuildingNotFoundException, ModuleNotInInventoryException, ModuleNotAllowedHereException, MaximumModulesReachedException, NotEnoughModulesException, ItemNotFoundException {
+    public void attachModuleShouldCheckIfModuleExists() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
 
         buildingManager.attachModule(_base, buildingInstance.getId(), "NotExistingModule");
     }
 
     @Test(expected = ModuleNotInInventoryException.class)
-    public void attachModuleShouldCheckIfModuleIsInInventory() throws BuildingNotFoundException, ModuleNotInInventoryException, ModuleNotAllowedHereException, MaximumModulesReachedException, NotEnoughModulesException, ItemNotFoundException {
+    public void attachModuleShouldCheckIfModuleIsInInventory() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
 
         buildingManager.attachModule(_base, buildingInstance.getId(), "module_silo_improve_1");
     }
 
     @Test(expected = ModuleNotAllowedHereException.class)
-    public void attachModuleShouldCheckIfModuleCanBeAttached() throws BuildingNotFoundException, ModuleNotInInventoryException, ModuleNotAllowedHereException, MaximumModulesReachedException, NotEnoughModulesException, ItemNotFoundException {
+    public void attachModuleShouldCheckIfModuleCanBeAttached() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
         TestUtils.addItemToBaseInventory(_base, "module_silo_improve_2", 1);
 
@@ -250,7 +250,7 @@ public class BuildingManagerTest {
     }
 
     @Test
-    public void attachModuleShouldConsumeModuleAndAddItToBuilding() throws BuildingNotFoundException, ModuleNotInInventoryException, ModuleNotAllowedHereException, MaximumModulesReachedException, NotEnoughModulesException, ItemNotFoundException {
+    public void attachModuleShouldConsumeModuleAndAddItToBuilding() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
         TestUtils.addItemToBaseInventory(_base, "module_silo_improve_1", 2);
 
@@ -261,7 +261,7 @@ public class BuildingManagerTest {
     }
 
     @Test(expected = MaximumModulesReachedException.class)
-    public void attachModuleShouldCheckIfMaxModuleIsReached() throws BuildingNotFoundException, ModuleNotInInventoryException, ModuleNotAllowedHereException, MaximumModulesReachedException, NotEnoughModulesException, ItemNotFoundException {
+    public void attachModuleShouldCheckIfMaxModuleIsReached() {
         BuildingInstance buildingInstance = TestUtils.addBuildingToBase(_base, "silo");
         ItemInstance itemInstance = TestUtils.addItemToBaseInventory(_base, "module_silo_improve_1", 2);
 

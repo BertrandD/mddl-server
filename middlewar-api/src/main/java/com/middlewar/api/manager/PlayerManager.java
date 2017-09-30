@@ -35,7 +35,7 @@ public class PlayerManager {
      * @throws NoPlayerConnectedException if the account is guest
      * @throws PlayerNotFoundException    if the player of the account is not found
      */
-    public Player getCurrentPlayerForAccount(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
+    public Player getCurrentPlayerForAccount(Account account) {
         if (account.getCurrentPlayer() == 0) {
             throw new NoPlayerConnectedException();
         } else {
@@ -55,7 +55,7 @@ public class PlayerManager {
      * @return the player
      * @throws PlayerNotOwnedException if the player is not one of the account's players
      */
-    public Player getPlayerOfAccount(Account account, long id) throws PlayerNotOwnedException {
+    public Player getPlayerOfAccount(Account account, long id) {
         Player player = account.getPlayers().stream().filter(k -> k.getId() == (id)).findFirst().orElse(null);
         if (player == null) {
             throw new PlayerNotOwnedException();
@@ -75,7 +75,7 @@ public class PlayerManager {
      * @throws ForbiddenNameException            if the name is in the name blacklist
      * @throws PlayerCreationFailedException     if the player creation failed
      */
-    public Player createForAccount(Account account, String name) throws MaxPlayerCreationReachedException, UsernameAlreadyExistsException, ForbiddenNameException, PlayerCreationFailedException {
+    public Player createForAccount(Account account, String name) {
         Assert.notNull(name, SystemMessageId.INVALID_PARAMETERS);
 
         if (account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)

@@ -33,7 +33,7 @@ public class BaseTest {
     private Base _base;
 
     @Before
-    public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() {
         _base = new Base("base", new Player(new Account(), "toto"), new Planet());
     }
 

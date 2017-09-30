@@ -68,7 +68,7 @@ public class RecipeManagerTest {
     private Player _playerOwner;
 
     @Before
-    public void init() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() {
         WorldData.getInstance().reload();
         accountService.deleteAll();
         Account account = accountService.create("toto", "");
@@ -76,7 +76,7 @@ public class RecipeManagerTest {
     }
 
     @Test
-    public void shouldReturnCreatedRecipe() throws ItemNotFoundException, RecipeCreationFailedException, BadItemException, NotEnoughSlotsException {
+    public void shouldReturnCreatedRecipe() {
         ArrayList<String> components = new ArrayList<>();
 
         RecipeInstance recipe = recipeManager.create(_playerOwner, "newRecipe", "structure_test", components);
@@ -87,7 +87,7 @@ public class RecipeManagerTest {
     }
 
     @Test
-    public void shouldAddRecipeToOwner() throws ItemNotFoundException, RecipeCreationFailedException, BadItemException, NotEnoughSlotsException {
+    public void shouldAddRecipeToOwner() {
         ArrayList<String> components = new ArrayList<>();
 
         RecipeInstance recipe = recipeManager.create(_playerOwner, "newRecipe", "structure_test", components);
@@ -96,14 +96,14 @@ public class RecipeManagerTest {
     }
 
     @Test(expected = ItemNotFoundException.class)
-    public void shouldCheckIfStructureExists() throws ItemNotFoundException, RecipeCreationFailedException, BadItemException, NotEnoughSlotsException {
+    public void shouldCheckIfStructureExists() {
         ArrayList<String> components = new ArrayList<>();
 
         recipeManager.create(_playerOwner, "newRecipe", "lqksdjlqksjd", components);
     }
 
     @Test(expected = ItemNotFoundException.class)
-    public void shouldCheckIfComponentExists() throws ItemNotFoundException, RecipeCreationFailedException, BadItemException, NotEnoughSlotsException {
+    public void shouldCheckIfComponentExists() {
         ArrayList<String> components = new ArrayList<>();
         components.add("azlek");
 
@@ -111,7 +111,7 @@ public class RecipeManagerTest {
     }
 
     @Test(expected = BadItemException.class)
-    public void shouldCheckIfComponentIsASlotItem() throws ItemNotFoundException, RecipeCreationFailedException, BadItemException, NotEnoughSlotsException {
+    public void shouldCheckIfComponentIsASlotItem() {
         ArrayList<String> components = new ArrayList<>();
         components.add("structure_test");
 
@@ -119,7 +119,7 @@ public class RecipeManagerTest {
     }
 
     @Test(expected = NotEnoughSlotsException.class)
-    public void shouldCheckAvailableSlotsOnStructure() throws ItemNotFoundException, RecipeCreationFailedException, BadItemException, NotEnoughSlotsException {
+    public void shouldCheckAvailableSlotsOnStructure() {
         ArrayList<String> components = new ArrayList<>();
         components.add("weapon_test");
         components.add("cargo_test");
@@ -130,7 +130,7 @@ public class RecipeManagerTest {
     }
 
     @Test
-    public void shouldAddAndComputeStats() throws ItemNotFoundException, RecipeCreationFailedException, BadItemException, NotEnoughSlotsException {
+    public void shouldAddAndComputeStats() {
         ArrayList<String> components = new ArrayList<>();
         components.add("weapon_test");
         components.add("cargo_test");

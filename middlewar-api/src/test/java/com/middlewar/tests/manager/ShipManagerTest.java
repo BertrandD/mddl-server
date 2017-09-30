@@ -76,7 +76,7 @@ public class ShipManagerTest {
     private RecipeInstance _recipe;
 
     @Before
-    public void init() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException, ItemNotFoundException, NotEnoughSlotsException, RecipeCreationFailedException, BadItemException, BaseCreationException {
+    public void init() {
         WorldData.getInstance().reload();
         accountService.deleteAll();
         TestUtils.init(buildingService, inventoryService);
@@ -90,7 +90,7 @@ public class ShipManagerTest {
     }
 
     @Test
-    public void shouldReturnCreatedShip() throws ShipCreationFailedException, ItemRequirementMissingException, RecipeNotFoundException, ItemNotFoundException, NotEnoughSlotsException, RecipeCreationFailedException, BadItemException {
+    public void shouldReturnCreatedShip() {
         RecipeInstance recipe = recipeManager.create(_playerOwner, "newRecipe2", "structure_test", new ArrayList<>());
 
         TestUtils.addItemToBaseInventory(_base, "structure_test", 1);
@@ -103,35 +103,35 @@ public class ShipManagerTest {
     }
 
     @Test(expected = RecipeNotFoundException.class)
-    public void shouldcheckIfRecipeExists() throws ShipCreationFailedException, ItemRequirementMissingException, RecipeNotFoundException {
+    public void shouldcheckIfRecipeExists() {
         shipManager.create(_base, 1L, 10000);
     }
 
     @Test(expected = ItemRequirementMissingException.class)
-    public void shouldcheckIfEnoughStructures() throws ShipCreationFailedException, ItemRequirementMissingException, RecipeNotFoundException {
+    public void shouldcheckIfEnoughStructures() {
         shipManager.create(_base, 1L, _recipe.getId());
     }
 
     @Test(expected = ItemRequirementMissingException.class)
-    public void shouldcheckIfEnoughStructures2() throws ShipCreationFailedException, ItemRequirementMissingException, RecipeNotFoundException {
+    public void shouldcheckIfEnoughStructures2() {
         TestUtils.addItemToBaseInventory(_base, "structure_test_many_slots", 1);
         shipManager.create(_base, 2L, _recipe.getId());
     }
 
     @Test(expected = ItemRequirementMissingException.class)
-    public void shouldcheckIfEnoughItems() throws ShipCreationFailedException, ItemRequirementMissingException, RecipeNotFoundException {
+    public void shouldcheckIfEnoughItems() {
         TestUtils.addItemToBaseInventory(_base, "structure_test_many_slots", 1);
         shipManager.create(_base, 1L, _recipe.getId());
     }
 
     @Test(expected = ItemRequirementMissingException.class)
-    public void shouldcheckIfEnoughItems2() throws ShipCreationFailedException, ItemRequirementMissingException, RecipeNotFoundException {
+    public void shouldcheckIfEnoughItems2() {
         TestUtils.addItemToBaseInventory(_base, "structure_test_many_slots", 1);
         shipManager.create(_base, 1L, _recipe.getId());
     }
 
     @Test
-    public void shouldConsumeStructuresAndItems() throws ShipCreationFailedException, ItemRequirementMissingException, RecipeNotFoundException {
+    public void shouldConsumeStructuresAndItems() {
         ItemInstance structure_test = TestUtils.addItemToBaseInventory(_base, "structure_test_many_slots", 2);
         ItemInstance weapon_test = TestUtils.addItemToBaseInventory(_base, "weapon_test", 2);
         ItemInstance cargo_test = TestUtils.addItemToBaseInventory(_base, "cargo_test", 2);

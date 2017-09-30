@@ -103,7 +103,7 @@ public class AI {
         return account;
     }
 
-    private Player initPlayerIfNeeded(Account account) throws ApiException {
+    private Player initPlayerIfNeeded(Account account) {
         Player player;
         try {
             player = playerManager.getCurrentPlayerForAccount(account);
@@ -114,7 +114,7 @@ public class AI {
         return player;
     }
 
-    private Base initBaseIfNeeded(Account account, Player player) throws ApiException {
+    private Base initBaseIfNeeded(Account account, Player player) {
         Base base;
         try {
             base = baseManager.getCurrentBaseOfPlayer(player);

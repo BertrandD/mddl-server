@@ -28,7 +28,7 @@ public class ReportManager {
     @Autowired
     private SpyReportService spyReportService;
 
-    public List<Report> getAllReportsOfCurrentPlayer(Player player) throws NoPlayerConnectedException, PlayerNotFoundException {
+    public List<Report> getAllReportsOfCurrentPlayer(Player player) {
         player.getCurrentBase().getReports().sort(Collections.reverseOrder());
         return player.getCurrentBase().getReports();
     }
@@ -42,7 +42,7 @@ public class ReportManager {
      * @throws BaseNotOwnedException      if the source base is now owned by the given player
      * @throws SpyReportCreationException if something went wrong
      */
-    public SpyReport spy(Player player, int baseId, int target) throws BaseNotFoundException, BaseNotOwnedException, SpyReportCreationException {
+    public SpyReport spy(Player player, int baseId, int target) {
         final Base base = baseManager.getOwnedBase(baseId, player);
         final Base baseTarget = baseManager.getBase(target);
 

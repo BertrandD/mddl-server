@@ -94,7 +94,7 @@ public class SpyReportServiceTest {
     }
 
     @Test
-    public void testCreateSpyReport() throws ItemNotFoundException, NotEnoughSlotsException, RecipeCreationFailedException, BadItemException {
+    public void testCreateSpyReport() {
 
         _baseTarget.getShips().add(new Ship(_baseTarget, recipeManager.create(_player, "testRecipe", "structure_test_free", new ArrayList<>()), 5));
         final Resource resource = resourceService.create(_baseTarget, "resource_1");

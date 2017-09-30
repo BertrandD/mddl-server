@@ -27,7 +27,7 @@ public class ShipManager {
     @Autowired
     private ShipService shipService;
 
-    public Ship create(Base base, Long count, long recipeId) throws ItemRequirementMissingException, ShipCreationFailedException, RecipeNotFoundException {
+    public Ship create(Base base, Long count, long recipeId) {
         RecipeInstance recipe = base.getOwner().getRecipes().stream().filter(k->k.getId() == recipeId).findFirst().orElse(null);
         if (recipe == null) {
             throw new RecipeNotFoundException();

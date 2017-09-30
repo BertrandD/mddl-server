@@ -57,7 +57,7 @@ public class BaseManager {
      * @return the Base with the given id
      * @throws BaseNotFoundException if the base does not exists
      */
-    public Base getBase(int id) throws BaseNotFoundException {
+    public Base getBase(int id) {
         final Base base = baseService.findOne(id);
         inventoryService.refreshResources(base); // TODO : move this
         if (base == null) throw new BaseNotFoundException();
@@ -71,7 +71,7 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base boes not exists
      * @throws BaseNotOwnedException if the base is not owned by the given player
      */
-    public Base getOwnedBase(int id, Player player) throws BaseNotFoundException, BaseNotOwnedException {
+    public Base getOwnedBase(int id, Player player) {
         final Base base = getBase(id);
         if (base.getOwner().getId() != player.getId()) {
             throw new BaseNotOwnedException();
@@ -85,7 +85,7 @@ public class BaseManager {
      * @throws BaseNotFoundException if the base does not exists
      * @throws BaseNotOwnedException if the base does not exists
      */
-    public Base getCurrentBaseOfPlayer(Player player) throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+    public Base getCurrentBaseOfPlayer(Player player) {
         if (player.getCurrentBase() == null) {
             throw new PlayerHasNoBaseException();
         }
@@ -101,7 +101,7 @@ public class BaseManager {
      * @throws BaseNotFoundException      if the base boes not exists
      * @throws BaseNotOwnedException      if the base is not owned by the given player
      */
-    public Response<Base> getBaseWithBuildingQueue(Player player, int id) throws BaseNotFoundException, BaseNotOwnedException {
+    public Response<Base> getBaseWithBuildingQueue(Player player, int id) {
         final Base base = getOwnedBase(id, player);
         final Response<Base> response = new Response<>(base);
         ArrayList<BuildingTask> queue = new ArrayList<>();
@@ -128,7 +128,7 @@ public class BaseManager {
      * @throws PlayerNotFoundException    if the current player is not found
      * @throws BaseCreationException      if the Base creation failed
      */
-    public Base create(Player player, String name) throws BaseCreationException {
+    public Base create(Player player, String name) {
         final Planet planet = planetManager.pickRandom();
 
         // TODO: Base creation conditions.
@@ -147,7 +147,7 @@ public class BaseManager {
      * @throws BaseNotFoundException      if the base boes not exists
      * @throws BaseNotOwnedException      if the base is not owned by the given player
      */
-    public List<BuildingHolder> getBuildableBuildingsOfBase(Player player, int baseId) throws BaseNotFoundException, BaseNotOwnedException {
+    public List<BuildingHolder> getBuildableBuildingsOfBase(Player player, int baseId) {
         final Base base = getOwnedBase(baseId, player);
 
         final List<BuildingHolder> nextBuildings = new ArrayList<>();

@@ -30,7 +30,7 @@ public class RecipeManager {
     @Autowired
     private RecipeService recipeService;
 
-    public RecipeInstance create(Player owner, String name, String structureID, List<String> componentsIds) throws ItemNotFoundException, RecipeCreationFailedException, NotEnoughSlotsException, BadItemException {
+    public RecipeInstance create(Player owner, String name, String structureID, List<String> componentsIds) {
         Structure structure = ItemData.getInstance().getStructure(structureID);
         if (structure == null)
             throw new ItemNotFoundException();

@@ -57,17 +57,17 @@ public class BaseController {
     }
 
     @RequestMapping(value = Route.BASE_ONE, method = RequestMethod.GET)
-    public BaseDTO findOne(@AuthenticationPrincipal Account account, @PathVariable("id") int id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
+    public BaseDTO findOne(@AuthenticationPrincipal Account account, @PathVariable("id") int id) {
         return baseManager.getOwnedBase(id, playerManager.getCurrentPlayerForAccount(account)).toDTO();
     }
 
     @RequestMapping(value = Route.BASE_CREATE, method = RequestMethod.POST)
-    public BaseDTO create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) throws NoPlayerConnectedException, PlayerNotFoundException, BaseCreationException {
+    public BaseDTO create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
         return baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name).toDTO();
     }
 
     @RequestMapping(value = Route.BASE_BUILDABLE, method = RequestMethod.GET)
-    public List<BuildingHolderDTO> getBuildables(@AuthenticationPrincipal Account pAccount, @PathVariable("id") int id) throws NoPlayerConnectedException, PlayerNotFoundException, BaseNotFoundException, BaseNotOwnedException {
+    public List<BuildingHolderDTO> getBuildables(@AuthenticationPrincipal Account pAccount, @PathVariable("id") int id) {
         return baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id).stream().map(BuildingHolder::toDTO).collect(Collectors.toList());
     }
 

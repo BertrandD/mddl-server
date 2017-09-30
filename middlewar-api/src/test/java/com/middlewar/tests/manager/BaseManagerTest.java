@@ -65,7 +65,7 @@ public class BaseManagerTest {
     private Base _base2;
 
     @Before
-    public void init() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() {
         WorldData.getInstance().reload();
         accountService.deleteAll();
         _account = accountService.create("toto", "");
@@ -84,24 +84,24 @@ public class BaseManagerTest {
     }
 
     @Test
-    public void shouldReturnBase() throws BaseNotFoundException {
+    public void shouldReturnBase() {
         final Base base = baseManager.getBase(_base.getId());
         Assertions.assertThat(base).isNotNull();
         Assertions.assertThat(base).isEqualTo(_base);
     }
 
     @Test(expected = BaseNotFoundException.class)
-    public void shouldThrowExceptionIfBaseNotFound() throws BaseNotFoundException {
+    public void shouldThrowExceptionIfBaseNotFound() {
         baseManager.getBase(456321);
     }
 
     @Test(expected = BaseNotOwnedException.class)
-    public void shouldCheckOwner() throws BaseNotFoundException, BaseNotOwnedException {
+    public void shouldCheckOwner() {
         baseManager.getOwnedBase(_base.getId(), _playerNotOwner);
     }
 
     @Test
-    public void shouldReturnCurrentBase() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+    public void shouldReturnCurrentBase() {
         _playerOwner.setCurrentBase(_base);
         Base base = baseManager.getCurrentBaseOfPlayer(_playerOwner);
         Assertions.assertThat(base).isNotNull();
@@ -114,13 +114,13 @@ public class BaseManagerTest {
     }
 
     @Test(expected = PlayerHasNoBaseException.class)
-    public void shouldCheckCurrentBase() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+    public void shouldCheckCurrentBase() {
         _playerOwner.setCurrentBase(null);
         baseManager.getCurrentBaseOfPlayer(_playerOwner);
     }
 
     @Test
-    public void shouldReturnBaseWithBuildingQueu() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+    public void shouldReturnBaseWithBuildingQueu() {
         Response<Base> res = baseManager.getBaseWithBuildingQueue(_playerOwner, _base.getId());
 
         Assertions.assertThat(res.getPayload()).isNotNull();
@@ -131,7 +131,7 @@ public class BaseManagerTest {
     }
 
     @Test
-    public void shouldReturnCreatedBase() throws BaseCreationException {
+    public void shouldReturnCreatedBase() {
         Base base = baseManager.create(_playerOwner, "newBase");
 
         Assertions.assertThat(base.getName()).isEqualTo("newBase");
@@ -139,13 +139,13 @@ public class BaseManagerTest {
     }
 
     @Test(expected = BaseNotOwnedException.class)
-    public void shouldCheckOwner2() throws BaseNotFoundException, BaseNotOwnedException {
+    public void shouldCheckOwner2() {
         baseManager.getBuildableBuildingsOfBase(_playerNotOwner, _base.getId());
 
     }
 
     @Test
-    public void shouldReturnBuildableBuildings() throws BaseNotFoundException, BaseNotOwnedException {
+    public void shouldReturnBuildableBuildings() {
         List<BuildingHolder> buildings = baseManager.getBuildableBuildingsOfBase(_playerOwner, _base.getId());
 
         Assertions.assertThat(buildings).isNotNull();

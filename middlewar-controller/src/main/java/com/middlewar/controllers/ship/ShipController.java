@@ -45,7 +45,7 @@ public class ShipController {
     @RequestMapping(value = Route.SHIP_CREATE, method = RequestMethod.POST)
     public Ship create(@AuthenticationPrincipal Account pAccount,
                        @RequestParam(value = "count") Long count,
-                       @RequestParam(value = "recipeId") Long recipeId) throws NoPlayerConnectedException, PlayerNotFoundException, PlayerHasNoBaseException, BaseNotFoundException, BaseNotOwnedException, ItemRequirementMissingException, ItemNotFoundException, ShipCreationFailedException, RecipeNotFoundException {
+                       @RequestParam(value = "recipeId") Long recipeId) {
         return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, recipeId);
     }
 

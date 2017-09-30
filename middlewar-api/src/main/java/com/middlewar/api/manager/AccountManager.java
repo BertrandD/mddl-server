@@ -20,7 +20,7 @@ public class AccountManager {
     @Autowired
     private AccountService accountService;
 
-    public Account login(String username, String password) throws UsernameNotFoundException, IncorrectCredentialsException {
+    public Account login(String username, String password) {
         log.debug("Login attempt from " + username);
         final Account account = accountService.findByUsername(username);
         final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -39,7 +39,7 @@ public class AccountManager {
 
     }
 
-    public Account register(String username, String password) throws AccountAlreadyExistsException {
+    public Account register(String username, String password) {
         log.debug("Register attempt from " + username);
         final Account account = accountService.findByUsername(username);
         if (account != null) {

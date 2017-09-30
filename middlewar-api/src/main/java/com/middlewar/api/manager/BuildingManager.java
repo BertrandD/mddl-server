@@ -48,14 +48,14 @@ public class BuildingManager {
     @Autowired
     private BuildingTaskManager buildingTaskManager;
 
-    public BuildingInstance getBuilding(Base base, int id) throws BuildingNotFoundException {
+    public BuildingInstance getBuilding(Base base, int id) {
         final BuildingInstance building = base.getBuildings().stream().filter(k -> k.getId() == id).findFirst().orElse(null);
         if (building == null) throw new BuildingNotFoundException();
 
         return building;
     }
 
-    public BuildingInstance create(Base base, String templateId) throws BuildingTemplateNotFoundException, BuildingAlreadyExistsException, ItemRequirementMissingException, BuildingRequirementMissingException, BuildingCreationException {
+    public BuildingInstance create(Base base, String templateId) {
         base.initializeStats();
 
         final Building template = BuildingData.getInstance().getBuilding(templateId);
@@ -80,7 +80,7 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance upgrade(Base base, int id) throws BuildingNotFoundException, BuildingMaxLevelReachedException, ItemRequirementMissingException, BuildingRequirementMissingException {
+    public BuildingInstance upgrade(Base base, int id) {
         final BuildingInstance building = getBuilding(base, id);
 
         final BuildingTask lastInQueue = buildingTaskManager.findTaskInQueue(building);
@@ -101,7 +101,7 @@ public class BuildingManager {
         return building;
     }
 
-    public BuildingInstance attachModule(Base base, int buildingInstId, String moduleId) throws BuildingNotFoundException, ModuleNotInInventoryException, MaximumModulesReachedException, ModuleNotAllowedHereException, NotEnoughModulesException, ItemNotFoundException {
+    public BuildingInstance attachModule(Base base, int buildingInstId, String moduleId) {
         base.initializeStats();
 
         final BuildingInstance building = getBuilding(base, buildingInstId);

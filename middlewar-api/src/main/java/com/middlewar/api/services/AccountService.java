@@ -40,7 +40,7 @@ public class AccountService implements UserDetailsService, DefaultService<Accoun
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         final Account account = findByUsername(username);
         if (account == null) {
             throw new UsernameNotFoundException(username);
