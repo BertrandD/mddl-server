@@ -59,6 +59,8 @@ public abstract class Building implements IStat {
         dto.setMaxBuild(getMaxBuild());
         dto.setBuildTimes(getBuildTimes());
         dto.setUseEnergy(getUseEnergy());
+        dto.setRequirements(new HashMap<>());
+        requirements.forEach((k,v) -> dto.getRequirements().put(k, v.toDTO()));
         return dto;
     }
 

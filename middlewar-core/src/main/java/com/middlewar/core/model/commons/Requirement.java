@@ -2,10 +2,12 @@ package com.middlewar.core.model.commons;
 
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.ItemHolder;
+import com.middlewar.dto.commons.RequirementDTO;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -54,6 +56,14 @@ public class Requirement {
         setBuildings(new ArrayList<>());
 
         addItem(item);
+    }
+
+    public RequirementDTO toDTO() {
+        RequirementDTO dto = new RequirementDTO();
+        dto.setLevel(getLevel());
+        dto.setBuildings(getBuildings().stream().map(BuildingHolder::toDTO).collect(Collectors.toList()));
+        dto.setItems(getItems().stream().map(ItemHolder::toDTO).collect(Collectors.toList()));
+        return dto;
     }
 
     public void addItem(ItemHolder item) {
