@@ -49,7 +49,7 @@ public class BaseInventory extends Inventory {
     }
 
     public BaseInventoryDTO toDTO() {
-        BaseInventoryDTO dto = new BaseInventoryDTO();
+        BaseInventoryDTO dto = super.toDTO(new BaseInventoryDTO());
         dto.setAvailableCapacity(this.getAvailableCapacity());
         return dto;
     }

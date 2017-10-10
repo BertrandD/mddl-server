@@ -13,6 +13,7 @@ import com.middlewar.api.util.response.Response;
 import com.middlewar.client.Route;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Base;
 import com.middlewar.dto.BaseDTO;
 import com.middlewar.dto.holder.BuildingHolderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class BaseController {
     }
 
     @RequestMapping(value = Route.BASE_ALL, method = RequestMethod.GET)
-    public Response findAll(@AuthenticationPrincipal Account pAccount) {
-        return controllerManagerWrapper.wrap(() -> baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)));
+    public List<BaseDTO> findAll(@AuthenticationPrincipal Account pAccount) {
+        return baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)).stream().map(Base::toDTO).collect(Collectors.toList());
     }
 
     @RequestMapping(value = Route.BASE_ONE, method = RequestMethod.GET)

@@ -1,14 +1,5 @@
 package com.middlewar.controllers.instances;
 
-import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.BuildingAlreadyExistsException;
-import com.middlewar.api.exceptions.BuildingCreationException;
-import com.middlewar.api.exceptions.BuildingRequirementMissingException;
-import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
-import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.PlayerManager;
@@ -57,8 +48,8 @@ public class BuildingInstanceController {
     }
 
     @RequestMapping(value = Route.BUILDING_UPGRADE, method = RequestMethod.PUT)
-    public Response upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int id) {
-        return controllerManagerWrapper.wrap(() -> buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
+    public BuildingInstanceDTO upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int id) {
+        return buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id).toDTO();
     }
 
     @RequestMapping(value = Route.BUILDING_ATTACH_MODULE, method = RequestMethod.PUT)

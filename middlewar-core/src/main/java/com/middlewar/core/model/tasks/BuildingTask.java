@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.serializer.BuildingTaskSerializer;
+import com.middlewar.dto.BuildingTaskDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,6 +41,15 @@ public class BuildingTask implements Comparable<BuildingTask> {
         setBuilding(building);
         setEndsAt(endsAt);
         setLevel(level);
+    }
+
+    public BuildingTaskDTO toDTO() {
+        BuildingTaskDTO dto = new BuildingTaskDTO();
+        dto.setId(getId());
+        dto.setBuilding(building.toDTO());
+        dto.setEndsAt(getEndsAt());
+        dto.setLevel(getLevel());
+        return dto;
     }
 
     @Override

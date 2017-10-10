@@ -14,5 +14,6 @@ public class BuildingInstanceDTO {
     private int currentLevel;
     private long endsAt;
     private long startedAt;
+    private int baseId;
     private List<String> modules;
 }

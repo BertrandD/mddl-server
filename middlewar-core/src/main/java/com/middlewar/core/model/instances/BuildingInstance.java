@@ -72,6 +72,7 @@ public class BuildingInstance {
         dto.setEndsAt(this.getEndsAt());
         dto.setStartedAt(this.getStartedAt());
         dto.setModules(this.getModules().stream().map(GameItem::getItemId).collect(Collectors.toList()));
+        dto.setBaseId(this.getBase().getId());
         return dto;
     }
 

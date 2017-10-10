@@ -120,15 +120,16 @@ public class BuildingTaskManager {
             BuildingTask buildingTask = queue.poll();
             final BuildingInstance building = buildingTask.getBuilding();
             log.info("End of upgrade for " + buildingTask.getBuilding().getBuildingId());
+            buildingTask.setEndsAt(-1);
 
             if (building.getTemplate().getType().equals(BuildingCategory.SILO))
                 inventoryService.refreshResources(building.getBase());
 
-            building.setCurrentLevel(getCurrentTask().getLevel());
+            building.setCurrentLevel(buildingTask.getLevel());
             if (building.getCurrentLevel() == 1) {
                 building.getBase().addBuilding(building);
-                building.getBase().getBuildingTasks().remove(buildingTask);
             }
+            building.getBase().getBuildingTasks().remove(buildingTask);
 
             final BuildingTask lastInQueue = findTaskInQueue(building);
 

@@ -10,4 +10,6 @@ public class ResourceDTO {
     private double count;
     private long availableCapacity;
     private double prodPerHour;
+    private String templateId;
+    private String maxVolume;
 }

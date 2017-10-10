@@ -60,6 +60,7 @@ public class Resource {
         dto.setCount(this.getCount());
         dto.setAvailableCapacity(this.calcAvailableCapacity());
         dto.setProdPerHour(this.calcProdPerHour());
+        dto.setTemplateId(this.getItem().getTemplateId());
         return dto;
     }
 

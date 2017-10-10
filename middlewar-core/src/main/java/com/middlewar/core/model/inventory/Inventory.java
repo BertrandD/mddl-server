@@ -2,6 +2,7 @@ package com.middlewar.core.model.inventory;
 
 import com.middlewar.core.interfaces.IInventory;
 import com.middlewar.core.model.instances.ItemInstance;
+import com.middlewar.dto.inventory.InventoryDTO;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -31,6 +33,13 @@ public abstract class Inventory implements IInventory {
 
     protected Inventory() {
         setItems(new ArrayList<>());
+    }
+
+    public abstract InventoryDTO toDTO();
+
+    protected  <T extends InventoryDTO> T toDTO(T dto) {
+        dto.setItems(items.stream().map(ItemInstance::toDTO).collect(Collectors.toList()));
+        return dto;
     }
 
     /**

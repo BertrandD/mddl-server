@@ -3,6 +3,7 @@ package com.middlewar.core.model.inventory;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.vehicles.Fleet;
+import com.middlewar.dto.inventory.InventoryDTO;
 import lombok.Data;
 
 import javax.persistence.OneToOne;
@@ -18,6 +19,11 @@ public final class FleetInventory extends Inventory {
 
     public FleetInventory() {
         super();
+    }
+
+    @Override
+    public InventoryDTO toDTO() {
+        return super.toDTO(new InventoryDTO());
     }
 
     public FleetInventory(Fleet fleet) {

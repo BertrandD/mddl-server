@@ -107,9 +107,12 @@ public class Base extends Observable {
         dto.setId(this.getId());
         dto.setName(this.getName());
         dto.setBuildings(this.getBuildings().stream().map(BuildingInstance::toDTO).collect(Collectors.toList()));
-        dto.setBaseInventory(this.getBaseInventory().toDTO());
+        getBuildingTasks().stream().filter(k->k.getLevel() == 1).forEach(k->dto.getBuildings().add(k.getBuilding().toDTO()));
+        dto.setInventory(this.getBaseInventory().toDTO());
         dto.setResources(this.getResources().stream().map(Resource::toDTO).collect(Collectors.toList()));
         dto.setPlanet(this.getPlanet().toDTO());
+        dto.setQueue(this.getBuildingTasks().stream().map(BuildingTask::toDTO).collect(Collectors.toList()));
+        dto.setBaseStat(this.getBaseStat().toDTO());
         return dto;
     }
 

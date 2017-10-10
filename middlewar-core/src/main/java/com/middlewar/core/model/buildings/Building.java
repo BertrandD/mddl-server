@@ -49,8 +49,9 @@ public abstract class Building implements IStat {
         setRequirements(new HashMap<>());
     }
 
-    public BuildingDTO toDTO() {
-        BuildingDTO dto = new BuildingDTO();
+    public abstract BuildingDTO toDTO();
+
+    protected <T extends BuildingDTO> T toDTO(T dto) {
         dto.setId(getId());
         dto.setName(getName());
         dto.setDescription(getDescription());
