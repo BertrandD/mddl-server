@@ -1,6 +1,5 @@
 package com.middlewar.core.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.inventory.BaseInventory;
 import com.middlewar.core.model.inventory.Resource;
@@ -10,8 +9,9 @@ import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
-import com.middlewar.core.serializer.BaseSerializer;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Singular;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -29,10 +29,11 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-@Data
-@JsonSerialize(using = BaseSerializer.class)
+@Getter
+@Setter
 @Entity
 public class Base {
+
     @Id
     @GeneratedValue
     private long id;
@@ -44,21 +45,26 @@ public class Base {
     @Transient
     private ObjectStat baseStat;
 
+    @Singular
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ship> ships;
 
+    @Singular
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fleet> fleets;
 
+    @Singular
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BuildingInstance> buildings;
 
     @OneToOne(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private BaseInventory baseInventory;
 
+    @Singular
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Resource> resources;
 
+    @Singular
     @OneToMany(mappedBy = "baseSrc", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Report> reports;
 
@@ -66,12 +72,10 @@ public class Base {
     private Planet planet;
 
     public Base() {
-        setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
         setShips(new ArrayList<>());
-        setResources(new ArrayList<>());
-        setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
+        setBuildings(new ArrayList<>());
         setResources(new ArrayList<>());
         setReports(new ArrayList<>());
     }

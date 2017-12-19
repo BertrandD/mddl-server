@@ -1,15 +1,12 @@
 package com.middlewar.core.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.Lang;
-import com.middlewar.core.serializer.AccountSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,7 +29,6 @@ import java.util.TreeSet;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonSerialize(using = AccountSerializer.class)
 public class Account implements UserDetails {
     @Id
     @GeneratedValue
@@ -45,7 +41,6 @@ public class Account implements UserDetails {
     private String token;
     private String password;
     private String username;
-    @ElementCollection
     private Set<GrantedAuthority> authorities;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
