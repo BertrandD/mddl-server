@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * TODO: TO BE DELETED
  * @author Bertrand
  */
 public class CorsInterceptor extends HandlerInterceptorAdapter {
@@ -17,7 +18,7 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
     public static final String MAX_AGE_NAME = "Access-Control-Max-Age";
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         response.setHeader(CREDENTIALS_NAME, "true");
         response.setHeader(ORIGIN_NAME, "*");
         response.setHeader(METHODS_NAME, "GET, OPTIONS, POST, PUT, DELETE");

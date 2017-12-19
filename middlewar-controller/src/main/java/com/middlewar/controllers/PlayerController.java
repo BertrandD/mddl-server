@@ -1,5 +1,6 @@
 package com.middlewar.controllers;
 
+import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.ControllerManagerWrapper;
@@ -7,7 +8,6 @@ import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,31 +20,27 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author LEBOC Philippe
  */
-@Api(value = "players", produces = "application/json")
+@User
 @RestController
-@PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(produces = "application/json")
+@Api(value = "players", produces = "application/json")
+@RequestMapping(consumes = "application/json", produces = "application/json")
 public class PlayerController {
 
-    private final PlayerService playerService;
-
-    private final PlayerManager playerManager;
-
-    private final ControllerManagerWrapper controllerManagerWrapper;
+    @Autowired
+    private PlayerService playerService;
 
     @Autowired
-    public PlayerController(PlayerService playerService, PlayerManager playerManager, ControllerManagerWrapper controllerManagerWrapper) {
-        this.playerService = playerService;
-        this.playerManager = playerManager;
-        this.controllerManagerWrapper = controllerManagerWrapper;
-    }
+    private PlayerManager playerManager;
+
+    @Autowired
+    private ControllerManagerWrapper controllerManagerWrapper;
 
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
     public Response players(@AuthenticationPrincipal Account pAccount) {
         return controllerManagerWrapper.wrap(() -> playerManager.getAllPlayersForAccount(pAccount));
     }
 
-    @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN", response = Response.class)
+    @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN")
     @RequestMapping(value = "/players", method = RequestMethod.GET)
     public Response showAllPlayers() {
         // TODO: used for tests. Remove when administration will be done

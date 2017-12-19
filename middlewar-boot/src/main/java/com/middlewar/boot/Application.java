@@ -13,11 +13,15 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.Executor;
 
+@EnableScheduling
+@EnableAsync
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableJpaRepositories("com.middlewar.api.dao")
@@ -26,7 +30,6 @@ import java.util.concurrent.Executor;
 public class Application extends AsyncConfigurerSupport {
 
     public static void main(String[] args) {
-        // Spring
         SpringApplication.run(Application.class, args);
     }
 

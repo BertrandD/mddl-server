@@ -23,18 +23,16 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    AuthenticationTokenProcessingFilter authenticationTokenProcessingFilter;
+    private AuthenticationTokenProcessingFilter authenticationTokenProcessingFilter;
+
     @Autowired
     private AccountService accountService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // The authentication provider below uses MongoDB to store SHA1 hashed passwords
-        // To see how to configure users for the example below, please see the README file
         auth
-                .userDetailsService(accountService)
-                .passwordEncoder(new BCryptPasswordEncoder());
-        //.passwordEncoder(new ShaPasswordEncoder());
+            .userDetailsService(accountService)
+            .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -42,25 +40,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // This is here to ensure that the static content (JavaScript, CSS, etc)
         // is accessible from the login page without authentication
         web
-                .ignoring()
-                .antMatchers("/v2/api-docs", "**/configuration/ui/**", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/console/*")
-                .antMatchers("/static/**");
+            .ignoring()
+            .antMatchers("/v2/api-docs", "**/configuration/ui/**", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/console/*")
+            .antMatchers("/static/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(authenticationTokenProcessingFilter, BasicAuthenticationFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET, "/login**").permitAll()
-                .antMatchers(HttpMethod.POST, "/login", "/logout", "/", "/register").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic().and().csrf().disable();
+        http
+            .addFilterBefore(authenticationTokenProcessingFilter, BasicAuthenticationFilter.class)
+            .exceptionHandling()
+            .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+            .and()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/").permitAll()
+            .antMatchers(HttpMethod.GET, "/login**").permitAll()
+            .antMatchers(HttpMethod.POST, "/login", "/logout", "/", "/register").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .httpBasic().and().csrf().disable();
     }
 
     @Autowired
@@ -73,3 +72,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return accountService;
     }
 }
+

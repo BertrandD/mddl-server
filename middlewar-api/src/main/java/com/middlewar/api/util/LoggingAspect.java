@@ -1,6 +1,6 @@
 package com.middlewar.api.util;
 
-import com.middlewar.api.annotations.Dev;
+import com.middlewar.api.annotations.spring.profiles.Dev;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;

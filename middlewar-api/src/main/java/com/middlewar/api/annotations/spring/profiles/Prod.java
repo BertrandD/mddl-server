@@ -1,4 +1,4 @@
-package com.middlewar.api.annotations;
+package com.middlewar.api.annotations.spring.profiles;
 
 import org.springframework.context.annotation.Profile;
 
@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Profile("dev")
-public @interface Dev {
+@Profile("prod")
+public @interface Prod {
 }
