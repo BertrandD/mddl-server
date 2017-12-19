@@ -17,17 +17,14 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <springboot.version>1.5.4.RELEASE</springboot.version>
-        <spring-security-core.version>4.2.2.RELEASE</spring-security-core.version>
+        <springboot.version>1.5.9.RELEASE</springboot.version>
         <spring-aspects.version>4.3.7.RELEASE</spring-aspects.version>
-        <spring-webmvc.version>4.3.7.RELEASE</spring-webmvc.version>
         <spring-data-mongodb.version>1.10.1.RELEASE</spring-data-mongodb.version>
         <spring-data-commons.version>1.13.1.RELEASE</spring-data-commons.version>
         <swagger2.version>2.6.1</swagger2.version>
         <swagger2-ui.version>2.6.1</swagger2-ui.version>
-        <jackson-2-version>2.9.0.pr4</jackson-2-version>
-        <lombok.version>1.16.16</lombok.version>
-        <log4j.version>1.2.17</log4j.version>
+        <lombok.version>1.16.18</lombok.version>
+        <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
     <modules>
@@ -42,10 +39,36 @@
 
     <dependencies>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <version>${springboot.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <version>${springboot.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
