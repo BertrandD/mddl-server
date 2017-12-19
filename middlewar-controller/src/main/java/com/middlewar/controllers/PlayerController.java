@@ -1,7 +1,7 @@
 package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.manager.impl.PlayerManagerImpl;
+import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
@@ -28,7 +28,7 @@ public class PlayerController {
     private PlayerService playerService;
 
     @Autowired
-    private PlayerManagerImpl playerManager;
+    private PlayerManager playerManager;
 
     @RequestMapping(value = "/me/player", method = RequestMethod.GET)
     public Response players(@AuthenticationPrincipal Account pAccount) {

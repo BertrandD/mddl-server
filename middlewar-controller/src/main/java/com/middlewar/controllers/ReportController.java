@@ -1,8 +1,8 @@
 package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.manager.impl.PlayerManagerImpl;
-import com.middlewar.api.manager.impl.ReportManagerImpl;
+import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportController {
 
     @Autowired
-    private ReportManagerImpl reportManager;
+    private ReportManager reportManager;
 
     @Autowired
-    private PlayerManagerImpl playerManager;
+    private PlayerManager playerManager;
 
     @RequestMapping(value = "/reports", method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount) {

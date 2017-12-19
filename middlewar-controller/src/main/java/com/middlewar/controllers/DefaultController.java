@@ -1,7 +1,7 @@
 package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.manager.impl.AccountManagerImpl;
+import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.util.response.MetaHolder;
@@ -41,7 +41,7 @@ public class DefaultController implements ErrorController {
     private AccountService accountService;
 
     @Autowired
-    private AccountManagerImpl accountManagerImpl;
+    private AccountManager accountManager;
 
     @Autowired
     private AstralObjectService astralObjectService;
@@ -81,7 +81,7 @@ public class DefaultController implements ErrorController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
-        return new Response(accountManagerImpl.login(username, password));
+        return new Response(accountManager.login(username, password));
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
@@ -93,7 +93,7 @@ public class DefaultController implements ErrorController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Response register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        return new Response(accountManagerImpl.register(username, password));
+        return new Response(accountManager.register(username, password));
     }
 
     @User

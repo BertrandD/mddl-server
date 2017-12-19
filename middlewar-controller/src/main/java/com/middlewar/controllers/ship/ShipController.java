@@ -1,9 +1,9 @@
 package com.middlewar.controllers.ship;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.manager.impl.BaseManagerImpl;
-import com.middlewar.api.manager.impl.PlayerManagerImpl;
-import com.middlewar.api.manager.impl.ShipManagerImpl;
+import com.middlewar.api.manager.BaseManager;
+import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.manager.ShipManager;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +24,20 @@ import java.util.List;
 public class ShipController {
 
     @Autowired
-    ShipManagerImpl shipManager;
+    private ShipManager shipManager;
 
     @Autowired
-    private PlayerManagerImpl playerManager;
+    private PlayerManager playerManager;
 
     @Autowired
-    private BaseManagerImpl baseManagerImpl;
+    private BaseManager baseManager;
 
     @RequestMapping(method = RequestMethod.POST)
     public Ship create(@AuthenticationPrincipal Account pAccount,
                        @RequestParam(value = "count") Long count,
                        @RequestParam(value = "structureId") String structure,
                        @RequestParam(value = "attachments") List<String> ids) {
-        return shipManager.create(baseManagerImpl.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, structure, ids);
+        return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, structure, ids);
     }
 
 }
