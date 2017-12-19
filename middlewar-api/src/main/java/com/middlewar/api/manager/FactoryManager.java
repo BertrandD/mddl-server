@@ -6,32 +6,13 @@ import com.middlewar.api.exceptions.ItemCreationException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemNotUnlockedException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.impl.InventoryService;
-import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
-import com.middlewar.core.model.buildings.ItemFactory;
-import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.items.Item;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 /**
- * @author Bertrand
+ * @author Leboc Philippe.
  */
-@Service
-public class FactoryManager {
-    private static final String MODULE_FACTORY = "module_factory";
-    private static final String STRUCTURE_FACTORY = "structure_factory";
-
-    @Autowired
-    private InventoryService inventoryService;
-
-    @Autowired
-    private ValidatorService validator;
+public interface FactoryManager {
 
     /**
      * @param base      the base where the module factory is builded
@@ -44,12 +25,7 @@ public class FactoryManager {
      * @throws ItemNotUnlockedException            if the module is not yet unlocked in the factory
      * @throws ItemCreationException               if something went wrong
      */
-    public ItemInstance createModule(Base base, Long factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
-        final Item item = ItemData.getInstance().getModule(itemId);
-        if (item == null) throw new ItemNotFoundException();
-
-        return createItem(base, factoryId, MODULE_FACTORY, item);
-    }
+    ItemInstance createModule(Base base, Long factoryId, String itemId);
 
     /**
      * @param base      the base where the structure factory is builded
@@ -62,30 +38,6 @@ public class FactoryManager {
      * @throws ItemNotUnlockedException            if the structure is not yet unlocked in the factory
      * @throws ItemCreationException               if something went wrong
      */
-    public ItemInstance createStructure(Base base, Long factoryId, String itemId) throws ItemRequirementMissingException, BuildingRequirementMissingException, ItemNotFoundException, BuildingNotFoundException, ItemNotUnlockedException, ItemCreationException {
-        final Item item = ItemData.getInstance().getStructure(itemId);
-        if (item == null) throw new ItemNotFoundException();
+    ItemInstance createStructure(Base base, Long factoryId, String itemId);
 
-        return createItem(base, factoryId, STRUCTURE_FACTORY, item);
-    }
-
-    private ItemInstance createItem(Base base, Long factoryId, String factoryType, Item item) throws BuildingNotFoundException, ItemNotUnlockedException, ItemRequirementMissingException, BuildingRequirementMissingException, ItemCreationException {
-        base.initializeStats();
-        final BuildingInstance factory = base.getBuildings().stream().filter(k -> k.getId() == factoryId).findFirst().orElse(null);
-        if (factory == null) throw new BuildingNotFoundException();
-        if (!factory.getBuildingId().equals(factoryType)) throw new BuildingNotFoundException();
-
-        final ItemFactory factoryTemplate = (ItemFactory) factory.getTemplate();
-        if (!factoryTemplate.hasItem(factory.getCurrentLevel(), item.getItemId())) throw new ItemNotUnlockedException();
-
-        final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        validator.validateItemRequirements(base, item, collector);
-
-        collector.forEach(inventoryService::consumeItem);
-
-        final ItemInstance itemInstance = inventoryService.addItem(base.getBaseInventory(), item.getItemId(), 1);
-        if (itemInstance == null) throw new ItemCreationException();
-
-        return itemInstance;
-    }
 }

@@ -1,7 +1,7 @@
 package com.middlewar.tests.services;
 
 
-import com.middlewar.api.manager.PlanetManager;
+import com.middlewar.api.manager.impl.PlanetManagerImpl;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
@@ -39,7 +39,7 @@ public class BaseServiceTest {
     private PlayerService playerService;
 
     @Autowired
-    private PlanetManager planetManager;
+    private PlanetManagerImpl planetManager;
 
     @Autowired
     private BaseService baseService;

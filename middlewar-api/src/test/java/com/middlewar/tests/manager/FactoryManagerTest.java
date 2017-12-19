@@ -10,9 +10,9 @@ import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
 import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
-import com.middlewar.api.manager.FactoryManager;
-import com.middlewar.api.manager.PlanetManager;
-import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.manager.impl.FactoryManagerImpl;
+import com.middlewar.api.manager.impl.PlanetManagerImpl;
+import com.middlewar.api.manager.impl.PlayerManagerImpl;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
@@ -51,19 +51,19 @@ import javax.transaction.Transactional;
 public class FactoryManagerTest {
 
     @Autowired
-    private FactoryManager factoryManager;
+    private FactoryManagerImpl factoryManager;
 
     @Autowired
     private BaseService baseService;
 
     @Autowired
-    private PlayerManager playerManager;
+    private PlayerManagerImpl playerManager;
 
     @Autowired
     private AccountService accountService;
 
     @Autowired
-    private PlanetManager planetManager;
+    private PlanetManagerImpl planetManager;
 
     @Autowired
     private BuildingService buildingService;

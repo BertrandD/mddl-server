@@ -6,9 +6,9 @@ import com.middlewar.api.exceptions.IncorrectCredentialsException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.exceptions.UsernameNotFoundException;
-import com.middlewar.api.manager.AccountManager;
-import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.manager.impl.AccountManagerImpl;
+import com.middlewar.api.manager.impl.BaseManagerImpl;
+import com.middlewar.api.manager.impl.PlayerManagerImpl;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
@@ -20,7 +20,6 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,9 +34,9 @@ public class AI {
     final String AI_PASSWD = "test";
 
     @Autowired
-    private AccountManager accountManager;
+    private AccountManagerImpl accountManagerImpl;
     @Autowired
-    private PlayerManager playerManager;
+    private PlayerManagerImpl playerManager;
     @Autowired
     private PlayerService playerService;
     @Autowired
@@ -45,7 +44,7 @@ public class AI {
     @Autowired
     private BaseService baseService;
     @Autowired
-    private BaseManager baseManager;
+    private BaseManagerImpl baseManagerImpl;
     @Autowired
     private FriendRequestService friendRequestService;
     @Autowired
@@ -71,8 +70,8 @@ public class AI {
             System.out.println("The base is " + base.getName());
 
             Player player1 = playerManager.createForAccount(account, "qldskj");
-            baseManager.create(player1, "f");
-            baseManager.create(player1, "f2");
+            baseManagerImpl.create(player1, "f");
+            baseManagerImpl.create(player1, "f2");
 
 //            Planet planet = WorldData.getInstance().getRandomPlanet();
 //            PlanetScanReport report = planetScanReportService.create(player, base, planet);
@@ -94,11 +93,11 @@ public class AI {
     private Account logOrRegister() {
         Account account = null;
         try {
-            account = accountManager.login(AI_NAME, AI_PASSWD);
+            account = accountManagerImpl.login(AI_NAME, AI_PASSWD);
         } catch (UsernameNotFoundException e) {
             System.out.println("Account does not exists ! Let's register !");
             try {
-                account = accountManager.register(AI_NAME, AI_PASSWD);
+                account = accountManagerImpl.register(AI_NAME, AI_PASSWD);
             } catch (AccountAlreadyExistsException e1) {
                 e1.printStackTrace();
             }
@@ -122,10 +121,10 @@ public class AI {
     private Base initBaseIfNeeded(Account account, Player player) throws ApiException {
         Base base;
         try {
-            base = baseManager.getCurrentBaseOfPlayer(player);
+            base = baseManagerImpl.getCurrentBaseOfPlayer(player);
         } catch (PlayerHasNoBaseException e) {
             System.out.println("Player " + player.getName() + " has no base. Let's create it !");
-            base = baseManager.create(player, AI_BASE_NAME);
+            base = baseManagerImpl.create(player, AI_BASE_NAME);
         }
         return base;
     }

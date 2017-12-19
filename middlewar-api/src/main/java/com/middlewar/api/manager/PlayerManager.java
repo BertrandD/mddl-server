@@ -7,27 +7,15 @@ import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.PlayerNotOwnedException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
-import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
 /**
- * @author Bertrand
+ * @author Leboc Philippe.
  */
-@Service
-@Slf4j
-public class PlayerManager {
-
-    @Autowired
-    private PlayerService playerService;
+public interface PlayerManager {
 
     /**
      * @param account Connected account
@@ -35,17 +23,7 @@ public class PlayerManager {
      * @throws NoPlayerConnectedException if the account is guest
      * @throws PlayerNotFoundException    if the player of the account is not found
      */
-    public Player getCurrentPlayerForAccount(Account account) throws NoPlayerConnectedException, PlayerNotFoundException {
-        if (account.getCurrentPlayer() == 0) {
-            throw new NoPlayerConnectedException();
-        } else {
-            final Player player = playerService.findOne(account.getCurrentPlayer());
-            if (player == null) {
-                throw new PlayerNotFoundException();
-            }
-            return player;
-        }
-    }
+    Player getCurrentPlayerForAccount(Account account);
 
     /**
      * Get the player with the given id and check if it is matching the given account
@@ -55,14 +33,7 @@ public class PlayerManager {
      * @return the player
      * @throws PlayerNotOwnedException if the player is not one of the account's players
      */
-    public Player getPlayerOfAccount(Account account, long id) throws PlayerNotOwnedException {
-        Player player = account.getPlayers().stream().filter(k -> k.getId() == (id)).findFirst().orElse(null);
-        if (player == null) {
-            throw new PlayerNotOwnedException();
-        }
-        return player;
-    }
-
+    Player getPlayerOfAccount(Account account, long id);
 
     /**
      * Create a Player for the given account with the given name
@@ -75,38 +46,11 @@ public class PlayerManager {
      * @throws ForbiddenNameException            if the name is in the name blacklist
      * @throws PlayerCreationFailedException     if the player creation failed
      */
-    public Player createForAccount(Account account, String name) throws MaxPlayerCreationReachedException, UsernameAlreadyExistsException, ForbiddenNameException, PlayerCreationFailedException {
-        Assert.notNull(name, SystemMessageId.INVALID_PARAMETERS);
-
-        if (account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
-            throw new MaxPlayerCreationReachedException();
-
-        if (playerService.findByName(name) != null) throw new UsernameAlreadyExistsException();
-
-        // Check if name is forbidden (Like 'fuck', 'admin', ...)
-        if (Config.FORBIDDEN_NAMES.length > 1) {
-            for (String st : Config.FORBIDDEN_NAMES) {
-                if (name.toLowerCase().contains(st.toLowerCase())) {
-                    log.info("Player creation failed for account [ " + account.getUsername() + " ] : Forbidden name.");
-                    throw new ForbiddenNameException();
-                }
-            }
-        }
-
-        // Create player
-        final Player player = playerService.create(account, name);
-        if (player == null) throw new PlayerCreationFailedException();
-
-        log.info("Player creation success : " + player.getName() + ".");
-
-        return player;
-    }
+    Player createForAccount(Account account, String name);
 
     /**
      * @param account the account we want the players
      * @return the list of Player of the given account
      */
-    public List<Player> getAllPlayersForAccount(Account account) {
-        return playerService.findByAccount(account);
-    }
+    List<Player> getAllPlayersForAccount(Account account);
 }

@@ -1,10 +1,9 @@
 package com.middlewar.controllers;
 
-import com.middlewar.api.manager.AccountManager;
+import com.middlewar.api.annotations.authentication.User;
+import com.middlewar.api.manager.impl.AccountManagerImpl;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
-import com.middlewar.api.util.response.ControllerManagerWrapper;
-import com.middlewar.api.util.response.JsonResponseType;
 import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.BuildingData;
@@ -14,7 +13,6 @@ import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,20 +41,17 @@ public class DefaultController implements ErrorController {
     private AccountService accountService;
 
     @Autowired
-    private AccountManager accountManager;
+    private AccountManagerImpl accountManagerImpl;
 
     @Autowired
     private AstralObjectService astralObjectService;
 
-    @Autowired
-    private ControllerManagerWrapper controllerManagerWrapper;
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public Response index() {
-        return new Response<>(JsonResponseType.SUCCESS);
+        return new Response();
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @User
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public Response resetDatabase(@AuthenticationPrincipal Account pAccount) {
         //updateService.resetDatabase(); // TODO: CLEANUP ME
@@ -67,48 +62,48 @@ public class DefaultController implements ErrorController {
         account.setCurrentPlayer(0);
         accountService.update(account);
         astralObjectService.saveUniverse();
-        return new Response<>(JsonResponseType.SUCCESS);
+        return new Response();
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @User
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
-    public Response resetWorld(@AuthenticationPrincipal Account pAccount) {
+    public Response resetWorld() {
         astralObjectService.saveUniverse();
-        return new Response<>(JsonResponseType.SUCCESS);
+        return new Response();
     }
 
     @RequestMapping(value = "/reload", method = RequestMethod.GET)
     public Response reload() {
         BuildingData.getInstance().load();
         ItemData.getInstance().load();
-        return new Response<>(JsonResponseType.SUCCESS);
+        return new Response();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
-        return controllerManagerWrapper.wrap(() -> accountManager.login(username, password));
+        return new Response(accountManagerImpl.login(username, password));
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
     public Response logout(@AuthenticationPrincipal Account account) {
         account.setToken(UUID.randomUUID().toString());
         accountService.update(account);
-        return new Response<>(JsonResponseType.SUCCESS);
+        return new Response();
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Response register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        return controllerManagerWrapper.wrap(() -> accountManager.register(username, password));
+        return new Response(accountManagerImpl.register(username, password));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @User
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     public Response aboutMe(@AuthenticationPrincipal Account account) {
         final Account reqAccount = accountService.findOne(account.getId());
-        return new Response<>(reqAccount);
+        return new Response(reqAccount);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @User
     @RequestMapping(value = "/lang", method = RequestMethod.POST)
     public Response changeLanguage(@AuthenticationPrincipal Account account, @RequestParam(value = "lang") String lang) {
         final Lang newLang = Lang.valueOf(lang.toUpperCase()); // TODO: Exception
@@ -116,19 +111,19 @@ public class DefaultController implements ErrorController {
         account.setLang(newLang);
         currentAccount.setLang(newLang);
         accountService.update(currentAccount);
-        return new Response<>(JsonResponseType.SUCCESS);
+        return new Response();
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @User
     @RequestMapping(value = "/time", method = RequestMethod.GET)
     public Response getTime() {
-        return new Response<>(JsonResponseType.SUCCESS, new MetaHolder("time", System.currentTimeMillis()));
+        return new Response(new MetaHolder("time", System.currentTimeMillis()));
     }
 
     @RequestMapping(value = ERROR_PATH)
     public Response error(HttpServletRequest request) {
         final RequestAttributes requestAttributes = new ServletRequestAttributes(request);
-        return new Response<>(JsonResponseType.ERROR, errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
+        return new Response(errorAttributes.getErrorAttributes(requestAttributes, false).get("message").toString());
     }
 
     @Override
