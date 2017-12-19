@@ -1,8 +1,6 @@
 package com.middlewar.core.model.space;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.AstralStat;
-import com.middlewar.core.serializer.AstralObjectSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +26,6 @@ import java.util.Map;
  * @author bertrand Darbond
  */
 @Data
-@JsonSerialize(using = AstralObjectSerializer.class)
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

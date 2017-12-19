@@ -1,9 +1,7 @@
 package com.middlewar.core.model.social;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.serializer.PrivateMessageSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +17,6 @@ import javax.persistence.ManyToOne;
 @Data
 @NoArgsConstructor
 @Entity
-@JsonSerialize(using = PrivateMessageSerializer.class)
 public class PrivateMessage {
 
     @Id

@@ -1,6 +1,5 @@
 package com.middlewar.core.model.items;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.enums.Lang;
@@ -8,7 +7,6 @@ import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.interfaces.IStat;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.stats.ObjectStat;
-import com.middlewar.core.serializer.GameItemSerializer;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Data
-@JsonSerialize(using = GameItemSerializer.class)
 public abstract class GameItem implements IStat {
 
     private String itemId;

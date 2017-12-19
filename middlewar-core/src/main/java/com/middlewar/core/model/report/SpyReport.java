@@ -1,11 +1,9 @@
 package com.middlewar.core.model.report;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.ReportStatus;
 import com.middlewar.core.enums.ReportType;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.serializer.SpyReportSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +13,6 @@ import javax.persistence.ManyToOne;
 /**
  * @author bertrand.
  */
-@JsonSerialize(using = SpyReportSerializer.class)
 @Data
 @NoArgsConstructor
 @Entity

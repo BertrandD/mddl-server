@@ -1,9 +1,7 @@
 package com.middlewar.core.model.tasks;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
-import com.middlewar.core.serializer.BuildingTaskSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +17,6 @@ import javax.persistence.OneToOne;
 @Data
 @NoArgsConstructor
 @Entity
-@JsonSerialize(using = BuildingTaskSerializer.class)
 public class BuildingTask {
 
     @Id

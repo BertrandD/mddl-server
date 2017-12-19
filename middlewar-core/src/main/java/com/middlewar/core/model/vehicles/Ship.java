@@ -1,6 +1,5 @@
 package com.middlewar.core.model.vehicles;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.VehicleState;
 import com.middlewar.core.model.Base;
@@ -9,7 +8,6 @@ import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
-import com.middlewar.core.serializer.ShipSerializer;
 import lombok.Data;
 
 import javax.persistence.ElementCollection;
@@ -22,7 +20,6 @@ import java.util.List;
  */
 @Data
 @Entity
-@JsonSerialize(using = ShipSerializer.class)
 public class Ship extends Vehicle {
 
     private String structureId;

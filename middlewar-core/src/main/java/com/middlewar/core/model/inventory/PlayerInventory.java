@@ -1,9 +1,7 @@
 package com.middlewar.core.model.inventory;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.serializer.PlayerInventorySerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +14,6 @@ import javax.persistence.OneToOne;
 @Data
 @Entity
 @NoArgsConstructor
-@JsonSerialize(using = PlayerInventorySerializer.class)
 public class PlayerInventory extends Inventory {
 
     @OneToOne

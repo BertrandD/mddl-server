@@ -1,6 +1,5 @@
 package com.middlewar.core.model.instances;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
@@ -12,7 +11,6 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.core.serializer.BuildingInstanceSerializer;
 import lombok.Data;
 
 import javax.persistence.ElementCollection;
@@ -30,7 +28,6 @@ import java.util.stream.Collectors;
  */
 @Data
 @Entity
-@JsonSerialize(using = BuildingInstanceSerializer.class)
 public class BuildingInstance {
 
     @Id

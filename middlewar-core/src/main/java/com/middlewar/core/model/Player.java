@@ -1,12 +1,10 @@
 package com.middlewar.core.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
-import com.middlewar.core.serializer.PlayerSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 
@@ -30,7 +28,6 @@ import java.util.Map;
  */
 @Data
 @Entity
-@JsonSerialize(using = PlayerSerializer.class)
 public class Player {
 
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

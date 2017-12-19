@@ -1,11 +1,9 @@
 package com.middlewar.core.model.instances;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.items.GameItem;
-import com.middlewar.core.serializer.ItemInstanceSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +18,6 @@ import javax.persistence.ManyToOne;
 @Data
 @NoArgsConstructor
 @Entity
-@JsonSerialize(using = ItemInstanceSerializer.class)
 public class ItemInstance {
 
     @Id

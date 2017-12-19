@@ -1,9 +1,7 @@
 package com.middlewar.core.model.stats;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.StatHolder;
-import com.middlewar.core.serializer.ObjectStatSerializer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ import java.util.Map;
 /**
  * @author LEBOC Philippe
  */
-@JsonSerialize(using = ObjectStatSerializer.class)
 @Slf4j
 public class ObjectStat {
 

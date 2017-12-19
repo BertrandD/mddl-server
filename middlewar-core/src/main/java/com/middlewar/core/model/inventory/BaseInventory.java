@@ -1,11 +1,9 @@
 package com.middlewar.core.model.inventory;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.core.serializer.BaseInventorySerializer;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -17,7 +15,6 @@ import javax.persistence.OneToOne;
  */
 @Data
 @Entity
-@JsonSerialize(using = BaseInventorySerializer.class)
 public class BaseInventory extends Inventory {
 
     @OneToOne(fetch = FetchType.LAZY)

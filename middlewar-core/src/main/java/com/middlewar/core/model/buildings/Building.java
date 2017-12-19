@@ -1,6 +1,5 @@
 package com.middlewar.core.model.buildings;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.enums.Lang;
@@ -12,7 +11,6 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.core.serializer.BuildingSerializer;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -22,7 +20,6 @@ import java.util.List;
  * @author LEBOC Philippe
  */
 @Data
-@JsonSerialize(using = BuildingSerializer.class)
 public abstract class Building implements IStat {
 
     private String id;

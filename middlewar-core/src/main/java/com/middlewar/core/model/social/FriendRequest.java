@@ -1,8 +1,6 @@
 package com.middlewar.core.model.social;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.serializer.FriendRequestSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +16,6 @@ import javax.persistence.ManyToOne;
 @Data
 @Entity
 @NoArgsConstructor
-@JsonSerialize(using = FriendRequestSerializer.class)
 public class FriendRequest {
 
     @Id

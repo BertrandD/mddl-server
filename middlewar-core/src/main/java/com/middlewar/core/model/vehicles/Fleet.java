@@ -1,12 +1,10 @@
 package com.middlewar.core.model.vehicles;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.enums.VehicleMission;
 import com.middlewar.core.model.commons.Coordinates;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.core.serializer.FleetSerializer;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
@@ -23,7 +21,6 @@ import java.util.List;
  */
 @Data
 @Entity
-@JsonSerialize(using = FleetSerializer.class)
 public class Fleet {
 
     @Id

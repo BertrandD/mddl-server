@@ -1,10 +1,8 @@
 package com.middlewar.core.model.inventory;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.core.serializer.ResourceSerializer;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +27,6 @@ import javax.persistence.OneToOne;
 @ToString
 @Entity
 @NoArgsConstructor
-@JsonSerialize(using = ResourceSerializer.class)
 public class Resource {
 
     @Id
