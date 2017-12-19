@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author LEBOC Philippe
@@ -30,9 +31,8 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount) {
-        final HashMap<String, List<? extends GameItem>> all = new HashMap();
-
-        ItemData itemData = ItemData.getInstance();
+        final Map<String, List<? extends GameItem>> all = new HashMap<>();
+        final ItemData itemData = ItemData.getInstance();
 
         all.put("COMMON", itemData.getCommonItems(pAccount.getLang()));
         all.put("CARGO", itemData.getCargos(pAccount.getLang()));
