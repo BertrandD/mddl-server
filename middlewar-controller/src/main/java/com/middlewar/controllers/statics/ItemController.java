@@ -1,5 +1,6 @@
 package com.middlewar.controllers.statics;
 
+import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Account;
@@ -10,7 +11,6 @@ import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,20 +19,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author LEBOC Philippe
  */
+@User
 @RestController
-@PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping(value = "/item_static", produces = "application/json")
 public class ItemController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Response findAll(@AuthenticationPrincipal Account pAccount) {
-        final HashMap<String, List<? extends GameItem>> all = new HashMap<>();
-
-        ItemData itemData = ItemData.getInstance();
+        final Map<String, List<? extends GameItem>> all = new HashMap<>();
+        final ItemData itemData = ItemData.getInstance();
 
         all.put("COMMON", itemData.getCommonItems(pAccount.getLang()));
         all.put("CARGO", itemData.getCargos(pAccount.getLang()));
@@ -42,7 +42,7 @@ public class ItemController {
         all.put("STRUCTURE", itemData.getStructures(pAccount.getLang()));
         all.put("WEAPON", itemData.getWeapons(pAccount.getLang()));
 
-        return new Response<>(all);
+        return new Response(all);
     }
 
     @RequestMapping(value = "/common", method = RequestMethod.GET)

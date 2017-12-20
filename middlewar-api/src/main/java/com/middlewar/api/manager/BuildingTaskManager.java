@@ -26,12 +26,16 @@ public class BuildingTaskManager {
 
     private static final String BUILDING_MINE_ID = "mine";
     private static final String BUILDING_PUMP_ID = "pump";
+
     @Autowired
     private BuildingTaskService buildingTaskService;
+
     @Autowired
     private BuildingService buildingService;
+
     @Autowired
     private InventoryService inventoryService;
+
     private ScheduledFuture<?> scheduledFuture;
     private BuildingTask currentTask;
 

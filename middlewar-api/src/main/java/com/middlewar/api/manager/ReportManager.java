@@ -2,36 +2,24 @@ package com.middlewar.api.manager;
 
 import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.SpyReportCreationException;
-import com.middlewar.api.services.SpyReportService;
-import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.report.SpyReport;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Bertrand
+ * @author Leboc Philippe.
  */
-@Service
-public class ReportManager {
+public interface ReportManager {
 
-    @Autowired
-    private BaseManager baseManager;
-
-    @Autowired
-    private SpyReportService spyReportService;
-
-    public List<Report> getAllReportsOfCurrentPlayer(Player player) throws NoPlayerConnectedException, PlayerNotFoundException {
-        player.getCurrentBase().getReports().sort(Collections.reverseOrder());
-        return player.getCurrentBase().getReports();
-    }
+    /**
+     *
+     * @param player
+     * @return
+     */
+    List<Report> getAllReportsOfCurrentPlayer(Player player);
 
     /**
      * @param player owner of the spy report
@@ -42,13 +30,5 @@ public class ReportManager {
      * @throws BaseNotOwnedException      if the source base is now owned by the given player
      * @throws SpyReportCreationException if something went wrong
      */
-    public SpyReport spy(Player player, long baseId, long target) throws BaseNotFoundException, BaseNotOwnedException, SpyReportCreationException {
-        final Base base = baseManager.getOwnedBase(baseId, player);
-        final Base baseTarget = baseManager.getBase(target);
-
-        final SpyReport report = spyReportService.create(player, base, baseTarget);
-        if (report == null) throw new SpyReportCreationException();
-
-        return report;
-    }
+    SpyReport spy(Player player, long baseId, long target);
 }

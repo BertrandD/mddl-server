@@ -19,11 +19,11 @@ import com.middlewar.api.exceptions.NotEnoughModulesException;
 import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
-import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.manager.BuildingManager;
+import com.middlewar.api.manager.impl.BaseManagerImpl;
+import com.middlewar.api.manager.impl.BuildingManagerImpl;
 import com.middlewar.api.manager.BuildingTaskManager;
-import com.middlewar.api.manager.PlanetManager;
-import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.manager.impl.PlanetManagerImpl;
+import com.middlewar.api.manager.impl.PlayerManagerImpl;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
@@ -65,25 +65,25 @@ import java.util.concurrent.TimeUnit;
 public class BuildingManagerTest {
 
     @Autowired
-    private BaseManager baseManager;
+    private BaseManagerImpl baseManagerImpl;
 
     @Autowired
     private BaseService baseService;
 
     @Autowired
-    private PlayerManager playerManager;
+    private PlayerManagerImpl playerManager;
 
     @Autowired
     private AccountService accountService;
 
     @Autowired
-    private PlanetManager planetManager;
+    private PlanetManagerImpl planetManager;
 
     @Autowired
     private AstralObjectService astralObjectService;
 
     @Autowired
-    private BuildingManager buildingManager;
+    private BuildingManagerImpl buildingManager;
 
     @Autowired
     private InventoryService inventoryService;
@@ -139,9 +139,9 @@ public class BuildingManagerTest {
         Assertions.assertThat(_base.getResources().get(0).getCount()).isEqualTo(400);
         Assertions.assertThat(_base.getBuildings().size()).isEqualTo(0);
 
-        List<BuildingTask> buildQueue = baseManager.getBaseBuildingQueue(_base);
+        List<BuildingTask> buildQueue = baseManagerImpl.getBaseBuildingQueue(_base);
         Assertions.assertThat(buildQueue.size()).isEqualTo(1);
-        BuildingTask buildingInstanceInQueue = baseManager.getBaseBuildingQueue(_base).get(0);
+        BuildingTask buildingInstanceInQueue = baseManagerImpl.getBaseBuildingQueue(_base).get(0);
         Assertions.assertThat(buildingInstanceInQueue.getBase()).isEqualTo(_base);
         Assertions.assertThat(buildingInstanceInQueue.getBuilding().getBuildingId()).isEqualTo("shield");
         Assertions.assertThat(buildingInstanceInQueue.getBuilding().getCurrentLevel()).isEqualTo(0);

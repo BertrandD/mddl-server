@@ -2,7 +2,7 @@ package com.middlewar.tests.services;
 
 
 import com.middlewar.api.dao.ResourceDao;
-import com.middlewar.api.manager.PlanetManager;
+import com.middlewar.api.manager.impl.PlanetManagerImpl;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
@@ -57,7 +57,7 @@ public class InventoryServiceTest {
     @Autowired
     private InventoryService inventoryService;
     @Autowired
-    private PlanetManager planetManager;
+    private PlanetManagerImpl planetManager;
     @Autowired
     private ResourceDao resourceDao;
     private Account _account;

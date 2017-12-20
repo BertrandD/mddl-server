@@ -1,13 +1,12 @@
 package com.middlewar.controllers.instances;
 
+import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.util.response.ControllerManagerWrapper;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,13 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author LEBOC Philippe
  */
+@User
 @RestController
-@PreAuthorize("hasRole('ROLE_USER')")
-@RequestMapping(produces = "application/json")
+@RequestMapping(value = "/me/base/{baseId}/building", produces = "application/json")
 public class BuildingInstanceController {
-
-    @Autowired
-    private ControllerManagerWrapper controllerManagerWrapper;
 
     @Autowired
     private PlayerManager playerManager;
@@ -35,23 +31,23 @@ public class BuildingInstanceController {
     @Autowired
     private BuildingManager buildingManager;
 
-    @RequestMapping(value = "/me/base/{baseId}/building/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long id) {
-        return controllerManagerWrapper.wrap(() -> buildingManager.getBuilding(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
+        return new Response(buildingManager.getBuilding(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(value = "/me/base/{baseId}/building", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public Response create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @RequestParam(value = "building") String templateId) {
-        return controllerManagerWrapper.wrap(() -> buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId));
+        return new Response(buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId));
     }
 
-    @RequestMapping(value = "/me/base/{baseId}/building/{id}/upgrade", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.PUT)
     public Response upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long id) {
-        return controllerManagerWrapper.wrap(() -> buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
+        return new Response(buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(value = "/me/base/{baseId}/building/{id}/attach/module/{module}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/attach/module/{module}", method = RequestMethod.PUT)
     public Response attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long buildingInstId, @PathVariable("module") String moduleId) {
-        return controllerManagerWrapper.wrap(() -> buildingManager.attachModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), buildingInstId, moduleId));
+        return new Response(buildingManager.attachModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), buildingInstId, moduleId));
     }
 }

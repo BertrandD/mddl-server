@@ -9,7 +9,7 @@ import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.PlayerNotOwnedException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
-import com.middlewar.api.manager.PlayerManager;
+import com.middlewar.api.manager.impl.PlayerManagerImpl;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
@@ -39,7 +39,7 @@ import java.util.List;
 public class PlayerManagerTest {
 
     @Autowired
-    private PlayerManager playerManager;
+    private PlayerManagerImpl playerManager;
 
     @Autowired
     private PlayerService playerService;
