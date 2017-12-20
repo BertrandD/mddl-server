@@ -54,8 +54,9 @@ public class PlayerManagerTest {
     private int MAX_PLAYER_IN_ACCOUNT;
 
     @Before
-    public void init() throws NoPlayerConnectedException, PlayerNotFoundException {
+    public void init() {
         MAX_PLAYER_IN_ACCOUNT = Config.MAX_PLAYER_IN_ACCOUNT;
+        accountService.deleteAll();
         _account = accountService.create("tt", "tt");
         _account2 = accountService.create("tt2", "tt");
         _player = playerService.create(_account, "yoloo");
@@ -68,7 +69,7 @@ public class PlayerManagerTest {
     }
 
     @Test
-    public void shouldReturnPlayer() throws BaseNotFoundException, NoPlayerConnectedException, PlayerNotFoundException {
+    public void shouldReturnPlayer() {
         _account.setCurrentPlayer(_player.getId());
         final Player player = playerManager.getCurrentPlayerForAccount(_account);
         Assertions.assertThat(player).isNotNull();
@@ -76,53 +77,53 @@ public class PlayerManagerTest {
     }
 
     @Test(expected = NoPlayerConnectedException.class)
-    public void shouldThrowExceptionIfNoPlayerSelected() throws NoPlayerConnectedException, PlayerNotFoundException {
+    public void shouldThrowExceptionIfNoPlayerSelected() {
         _account.setCurrentPlayer(0);
         final Player player = playerManager.getCurrentPlayerForAccount(_account);
     }
 
     @Test(expected = PlayerNotFoundException.class)
-    public void shouldThrowExceptionIfNoPlayerNotFound() throws NoPlayerConnectedException, PlayerNotFoundException {
+    public void shouldThrowExceptionIfNoPlayerNotFound() {
         _account.setCurrentPlayer(1123546);
         final Player player = playerManager.getCurrentPlayerForAccount(_account);
     }
 
     @Test(expected = MaxPlayerCreationReachedException.class)
-    public void shouldCheckMaxPlayer() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void shouldCheckMaxPlayer() {
         Config.MAX_PLAYER_IN_ACCOUNT = 1;
         playerManager.createForAccount(_account, "toto");
     }
 
     @Test(expected = UsernameAlreadyExistsException.class)
-    public void shouldCheckExistingUsername() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void shouldCheckExistingUsername() {
         playerManager.createForAccount(_account, "yoloo");
     }
 
     @Test(expected = ForbiddenNameException.class)
-    public void shouldCheckForbiddentNames() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void shouldCheckForbiddentNames() {
         Config.FORBIDDEN_NAMES = "sbouf,sgni,forbiddenName".split(",");
         playerManager.createForAccount(_account, "forbiddenName");
     }
 
 //    @Test(expected = PlayerCreationFailedException.class)
-//    public void shouldThrowExceptionIfFailed() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+//    public void shouldThrowExceptionIfFailed() {
 //        playerManager.createForAccount(_account, "toto");
 //    }
 
     @Test
-    public void shouldReturnCreatedPlayer() throws MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void shouldReturnCreatedPlayer() {
         final Player player3 = playerManager.createForAccount(_account, "toto3");
         Assertions.assertThat(player3).isNotNull();
         Assertions.assertThat(player3.getName()).isEqualTo("toto3");
     }
 
     @Test(expected = PlayerNotOwnedException.class)
-    public void shouldCheckOwnerAndThrowException() throws PlayerNotOwnedException {
+    public void shouldCheckOwnerAndThrowException() {
         playerManager.getPlayerOfAccount(_account, _player2.getId());
     }
 
     @Test
-    public void shouldCheckOwneAndReturnPlayer() throws PlayerNotOwnedException {
+    public void shouldCheckOwneAndReturnPlayer() {
         Player player = playerManager.getPlayerOfAccount(_account, _player.getId());
         Assertions.assertThat(player).isEqualTo(_player);
     }

@@ -4,6 +4,7 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.utils.TimeUtil;
+import com.middlewar.dto.inventory.ResourceDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -50,6 +51,16 @@ public class Resource {
         setLastRefresh(TimeUtil.getCurrentTime());
     }
 
+    public ResourceDTO toDTO() {
+        ResourceDTO dto = new ResourceDTO();
+        dto.setLastRefresh(this.getLastRefresh());
+        dto.setCount(this.getCount());
+        dto.setAvailableCapacity(this.calcAvailableCapacity());
+        dto.setProdPerHour(this.calcProdPerHour());
+        dto.setTemplateId(this.getItem().getTemplateId());
+        return dto;
+    }
+
     /**
      * Shortcut for getItem().getCount()
      *
@@ -67,11 +78,11 @@ public class Resource {
         return Stats.valueOf("MAX_" + item.getTemplateId().toUpperCase());
     }
 
-    public long getAvailableCapacity() {
-        return base.getResourceStorageAvailableCapacity(this);
+    public long calcAvailableCapacity() {
+        return base.calcResourceStorageAvailableCapacity(this);
     }
 
-    public double getProdPerHour() {
-        return base.getResourceProduction(this);
+    public double calcProdPerHour() {
+        return base.calcResourceProduction(this);
     }
 }

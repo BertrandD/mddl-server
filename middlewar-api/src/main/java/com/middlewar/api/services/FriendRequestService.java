@@ -1,16 +1,38 @@
 package com.middlewar.api.services;
 
-import com.middlewar.api.dao.FriendRequestDao;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
-
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
- * @author Leboc Philippe.
+ * @author LEBOC Philippe
  */
-public interface FriendRequestService extends DefaultService<FriendRequest, FriendRequestDao> {
-    FriendRequest create(Player requester, Player requested, String message);
+@Service
+public class FriendRequestService implements DefaultService<FriendRequest> {
+    private int nextId = 0;
 
-    List<FriendRequest> findPlayerRequest(long playerId);
+    public FriendRequest create(Player requester, Player requested, String message) {
+
+        final FriendRequest request = new FriendRequest(requester, requested, message);
+        request.setId(nextId());
+        requested.addRequest(request); // to be able to abort request
+        requester.addRequest(request); // to be able to accept/refuse request
+
+        return request;
+    }
+
+    @Override
+    public void delete(FriendRequest o) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public FriendRequest findOne(int id) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int nextId() {
+        return ++nextId;
+    }
 }

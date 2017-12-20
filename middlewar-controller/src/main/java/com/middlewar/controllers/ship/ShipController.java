@@ -4,6 +4,7 @@ import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ShipManager;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.vehicles.Ship;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,11 @@ public class ShipController {
     @Autowired
     private BaseManager baseManager;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = Route.SHIP_CREATE, method = RequestMethod.POST)
     public Ship create(@AuthenticationPrincipal Account pAccount,
                        @RequestParam(value = "count") Long count,
-                       @RequestParam(value = "structureId") String structure,
-                       @RequestParam(value = "attachments") List<String> ids) {
-        return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, structure, ids);
+                       @RequestParam(value = "recipeId") Long recipeId) {
+        return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, recipeId);
     }
 
 }

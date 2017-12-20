@@ -2,7 +2,7 @@
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/items.xsd">
     <item id="weapon_test" nameId="weapon_test_n" type="WEAPON" descriptionId="weapon_test_d" volume="5">
         <properties>
-            <set name="damage" value="500" />
+            <set name="damage" value="500"/>
         </properties>
     </item>
 </list>

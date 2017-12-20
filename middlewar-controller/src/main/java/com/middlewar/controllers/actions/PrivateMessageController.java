@@ -5,6 +5,7 @@ import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.PrivateMessageService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.PrivateMessage;
@@ -31,7 +32,7 @@ public class PrivateMessageController {
     @Autowired
     private PlayerService playerService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = Route.PM_ALL, method = RequestMethod.GET)
     public Response showAll(@AuthenticationPrincipal Account pAccount) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
@@ -39,8 +40,8 @@ public class PrivateMessageController {
         return new Response("TODO: implement me");
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") Long pmId) {
+    @RequestMapping(value = Route.PM_ONE, method = RequestMethod.GET)
+    public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") int pmId) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
 
@@ -56,8 +57,8 @@ public class PrivateMessageController {
         return new Response(pm);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") Long receiverId, @RequestParam("message") String message) {
+    @RequestMapping(value = Route.PM_SEND, method = RequestMethod.POST)
+    public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") int receiverId, @RequestParam("message") String message) {
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
 

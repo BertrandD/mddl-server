@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author bertrand.
@@ -27,6 +28,8 @@ public class WorldData {
     private final List<AstralObject> _astralObjects = new ArrayList<>();
 
     private AstralObject _blackHole;
+    private Map<String, Star> stars = new HashMap<>();
+    private Map<String, Planet> planets = new HashMap<>();
 
     protected WorldData() {
         reload();
@@ -66,10 +69,12 @@ public class WorldData {
             case "Planet":
                 astralObject = new Planet(name, parent);
                 _astralObjects.add(astralObject);
+                planets.put(astralObject.getName(), (Planet) astralObject);
                 break;
             case "Star":
                 astralObject = new Star(name, parent);
                 _astralObjects.add(astralObject);
+                stars.put(astralObject.getName(), (Star) astralObject);
                 break;
             case "Moon":
                 astralObject = new Moon(name, parent);
@@ -125,6 +130,14 @@ public class WorldData {
         }
 
         return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt - 1));
+    }
+
+    public Star getStar(String id) {
+        return stars.get(id);
+    }
+
+    public Planet getPlanet(String id) {
+        return planets.get(id);
     }
 
     private static class SingletonHolder {

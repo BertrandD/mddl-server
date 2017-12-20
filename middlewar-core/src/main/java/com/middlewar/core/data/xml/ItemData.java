@@ -185,7 +185,7 @@ public class ItemData implements IXmlReader {
         }
 
         if (item != null) {
-            item.setStats(stats);
+            item.addStats(stats);
             _all.put(id, item);
         }
     }

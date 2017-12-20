@@ -5,8 +5,12 @@ import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
+import com.middlewar.core.utils.Observable;
 import com.middlewar.core.utils.TimeUtil;
+import com.middlewar.dto.PlayerDTO;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,23 +26,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
  */
 @Data
 @Entity
-public class Player {
+public class Player extends Observable {
 
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     protected PlayerInventory inventory;
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     @Column(unique = true)
     private String name;
     @ManyToOne
     private Account account;
+    @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Base> bases;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -54,6 +60,9 @@ public class Player {
 
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Map<Long, PlanetScan> planetScans;
+    private boolean deleted;
+
+    private List<RecipeInstance> recipes;
 
     public Player() {
         setBases(new ArrayList<>());
@@ -61,6 +70,7 @@ public class Player {
         setEmittedFriendRequests(new ArrayList<>());
         setReceivedFriendRequests(new ArrayList<>());
         setPlanetScans(new HashMap<>());
+        setRecipes(new ArrayList<>());
     }
 
     public Player(Account account, String name) {
@@ -71,6 +81,18 @@ public class Player {
         setEmittedFriendRequests(new ArrayList<>());
         setReceivedFriendRequests(new ArrayList<>());
         setPlanetScans(new HashMap<>());
+        setInventory(new PlayerInventory(this));
+        setRecipes(new ArrayList<>());
+    }
+
+    public PlayerDTO toDTO() {
+        PlayerDTO dto = new PlayerDTO();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setBases(this.getBases().stream().map(Base::getId).collect(Collectors.toList()));
+        if (this.getCurrentBase() != null)
+            dto.setCurrentBase(this.getCurrentBase().getId());
+        return dto;
     }
 
     public void addBase(Base base) {
@@ -116,5 +138,21 @@ public class Player {
             if (player.getId() == this.getId()) return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "inventory=" + inventory +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", bases=" + bases +
+                ", currentBase=" + currentBase +
+                ", friends=" + friends +
+                ", emittedFriendRequests=" + emittedFriendRequests +
+                ", receivedFriendRequests=" + receivedFriendRequests +
+                ", planetScans=" + planetScans +
+                ", deleted=" + deleted +
+                '}';
     }
 }

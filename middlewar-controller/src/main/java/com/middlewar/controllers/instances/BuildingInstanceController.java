@@ -5,7 +5,9 @@ import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.instances.BuildingInstanceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,23 +33,23 @@ public class BuildingInstanceController {
     @Autowired
     private BuildingManager buildingManager;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long id) {
+    @RequestMapping(value = Route.BUILDING_ONE, method = RequestMethod.GET)
+    public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int id) {
         return new Response(buildingManager.getBuilding(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Response create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @RequestParam(value = "building") String templateId) {
-        return new Response(buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId));
+    @RequestMapping(value = Route.BUILDING_CREATE, method = RequestMethod.POST)
+    public BuildingInstanceDTO create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @RequestParam(value = "building") String templateId) {
+        return buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId).toDTO();
     }
 
-    @RequestMapping(value = "/{id}/upgrade", method = RequestMethod.PUT)
-    public Response upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long id) {
-        return new Response(buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
+    @RequestMapping(value = Route.BUILDING_UPGRADE, method = RequestMethod.PUT)
+    public BuildingInstanceDTO upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int id) {
+        return buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id).toDTO();
     }
 
-    @RequestMapping(value = "/{id}/attach/module/{module}", method = RequestMethod.PUT)
-    public Response attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") Long baseId, @PathVariable("id") Long buildingInstId, @PathVariable("module") String moduleId) {
+    @RequestMapping(value = Route.BUILDING_ATTACH_MODULE, method = RequestMethod.PUT)
+    public Response attachModule(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int buildingInstId, @PathVariable("module") String moduleId) {
         return new Response(buildingManager.attachModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), buildingInstId, moduleId));
     }
 }

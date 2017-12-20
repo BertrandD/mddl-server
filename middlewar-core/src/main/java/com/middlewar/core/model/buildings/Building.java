@@ -45,8 +45,23 @@ public abstract class Building implements IStat {
         setRequirements(new HashMap<>());
     }
 
+    public abstract BuildingDTO toDTO();
 
-    public StatHolder getProductionAtLevel(Resource resource, int level) {
+    protected <T extends BuildingDTO> T toDTO(T dto) {
+        dto.setId(getId());
+        dto.setName(getName());
+        dto.setDescription(getDescription());
+        dto.setType(getType().name());
+        dto.setMaxLevel(getMaxLevel());
+        dto.setMaxBuild(getMaxBuild());
+        dto.setBuildTimes(getBuildTimes());
+        dto.setUseEnergy(getUseEnergy());
+        dto.setRequirements(new HashMap<>());
+        requirements.forEach((k,v) -> dto.getRequirements().put(k, v.toDTO()));
+        return dto;
+    }
+
+    public StatHolder calcProductionAtLevel(Resource resource, int level) {
         StatCalculator production = new StatCalculator(resource.getStat());
 
         List<StatHolder> statFunctions = getStats().getStatFunctions().get(resource.getStat());
@@ -100,7 +115,7 @@ public abstract class Building implements IStat {
         return getAllStats().stream().filter(k -> k.getStat().equals(stats)).findFirst().orElse(null);
     }
 
-    public StatHolder getAvailableCapacity(Resource resource, int level) {
+    public StatHolder calcAvailableCapacity(Resource resource, int level) {
         // TODO add logic to check statByLevel (& globalStats ?)
         StatCalculator capacity = new StatCalculator(resource.getStatMax());
         List<StatHolder> statMax = getStats()

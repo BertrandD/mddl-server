@@ -4,7 +4,9 @@ import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.PlayerDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class PlayerController {
     @Autowired
     private PlayerManager playerManager;
 
-    @RequestMapping(value = "/me/player", method = RequestMethod.GET)
+    @RequestMapping(value = Route.PLAYER_ALL_OWNED, method = RequestMethod.GET)
     public Response players(@AuthenticationPrincipal Account pAccount) {
         return new Response(playerManager.getAllPlayersForAccount(pAccount));
     }
@@ -41,15 +43,16 @@ public class PlayerController {
         // TODO: used for tests. Remove when administration will be done
         return new Response(playerService.findAll());
     }
+*/
 
-    @RequestMapping(value = "/me/player/{id}", method = RequestMethod.GET)
-    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
-        return new Response(playerManager.getPlayerOfAccount(account, id));
+    @RequestMapping(value = Route.PLAYER_ONE, method = RequestMethod.GET)
+    public PlayerDTO player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
+        return playerManager.getPlayerOfAccount(account, id).toDTO();
     }
 
-    @RequestMapping(value = "/player", method = RequestMethod.POST)
-    public Response create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
-        return new Response(playerManager.createForAccount(account, name));
+    @RequestMapping(value = Route.PLAYER_CREATE, method = RequestMethod.POST)
+    public PlayerDTO create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
+        return playerManager.createForAccount(account, name).toDTO();
 
     }
 }

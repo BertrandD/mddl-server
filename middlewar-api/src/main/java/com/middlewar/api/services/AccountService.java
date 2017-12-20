@@ -1,8 +1,12 @@
 package com.middlewar.api.services;
 
-import com.middlewar.api.dao.AccountDao;
+import com.middlewar.api.dao.AccountDAO;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
+import com.middlewar.core.model.Player;
+import com.middlewar.core.utils.Observable;
+import com.middlewar.core.utils.Observer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,14 +25,23 @@ import java.util.UUID;
  * @author LEBOC Philippe
  */
 @Service
-public class AccountService implements UserDetailsService {
+@Slf4j
+public class AccountService implements UserDetailsService, DefaultService<Account>, Observer {
 
     @Autowired
-    private AccountDao accountDao;
+    AccountDAO accountDAO;
+
+    @Autowired
+    BaseService baseService;
+    @Autowired
+    PlayerService playerService;
+    @Autowired
+    PrivateMessageService privateMessageService;
+
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final Account account = accountDao.findByUsername(username);
+    public UserDetails loadUserByUsername(String username) {
+        final Account account = findByUsername(username);
         if (account == null) {
             throw new UsernameNotFoundException(username);
         } else {
@@ -36,16 +49,32 @@ public class AccountService implements UserDetailsService {
         }
     }
 
-    public Account findOne(Long id) {
-        return accountDao.findOne(id);
+    @Override
+    public void delete(Account o) {
+        accountDAO.remove(o);
+        clear(o);
+    }
+
+    private void clear(Account o) {
+        o.setDeleted(true);
+        o.setEnabled(false);
+        o.setAccountNonLocked(false);
+        o.setAccountNonExpired(false);
+        o.setCredentialsNonExpired(false);
+        o.notifyObservers();
+    }
+
+    public Account findOne(int id) {
+        return accountDAO.getById(id);
+    }
+
+    @Override
+    public int nextId() {
+        return accountDAO.count() + 1;
     }
 
     public Account findByUsername(String username) {
-        return accountDao.findByUsername(username);
-    }
-
-    public List<Account> findAll() {
-        return accountDao.findAll();
+        return accountDAO.findByUsername(username);
     }
 
     public Account create(String username, String password) {
@@ -54,9 +83,15 @@ public class AccountService implements UserDetailsService {
         roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         Account account = new Account(username, passwordEncoder.encode(password), roles, Lang.EN, UUID.randomUUID().toString());
-        account = accountDao.save(account);
+        account.setId(nextId());
+        accountDAO.add(account);
 
-        if (account == null) return null;
+        account.addObserver(playerService);
+        account.setEnabled(true);
+        account.setAccountNonLocked(true);
+        account.setAccountNonExpired(true);
+        account.setCredentialsNonExpired(true);
+        log.info("New account : " + username);
         // Slack.sendInfo("New account : "+username); // TODO: Add AccountServiceTestImpl
         return account;
     }
@@ -66,14 +101,26 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account getUserFromToken(String token) {
-        return accountDao.findByToken(token);
-    }
-
-    public void update(Account account) {
-        accountDao.save(account);
+        return accountDAO.getUserFromToken(token);
     }
 
     public void deleteAll() {
-        accountDao.deleteAll();
+        accountDAO.getAll().forEach(this::clear);
+        accountDAO.deleteAll();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof Player) {
+            if (((Player) o).isDeleted()) {
+                if (((Player) o).getAccount().isDeleted()) {
+                    return;
+                }
+                ((Player) o).getAccount().getPlayers().remove(o);
+                if (((Player) o).getAccount().getCurrentPlayer() == ((Player) o).getId()) {
+                    ((Player) o).getAccount().setCurrentPlayer(0);
+                }
+            }
+        }
     }
 }

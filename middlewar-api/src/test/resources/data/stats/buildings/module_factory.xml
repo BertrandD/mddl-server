@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xsd/buildings.xsd">
-    <building id="module_factory" class="ModuleFactory" nameId="building_module_factory_n" maxLevel="25" descriptionId="building_module_factory_d">
+    <building id="module_factory" class="ModuleFactory" nameId="building_module_factory_n" maxLevel="25"
+              descriptionId="building_module_factory_d">
         <buildTime>
-            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10" />
+            <set fromLevel="1" function="Math.pow($level,1.4)*1000*10"/>
         </buildTime>
         <propertiesByLevel>
             <properties level="1">
                 <list name="unlock_modules">
-                    <set name="module" value="module_silo_improve_1" />
-                    <set name="module" value="module_silo_improve_2" />
+                    <set name="module" value="module_silo_improve_1"/>
+                    <set name="module" value="module_silo_improve_2"/>
                 </list>
             </properties>
             <properties level="2">
                 <list name="unlock_modules">
-                    <set name="module" value="module_silo_improve_3" />
-                    <set name="module" value="module_silo_improve_4" />
-                    <set name="module" value="module_silo_improve_5" />
-                    <set name="module" value="module_optimizer_1" />
+                    <set name="module" value="module_silo_improve_3"/>
+                    <set name="module" value="module_silo_improve_4"/>
+                    <set name="module" value="module_silo_improve_5"/>
+                    <set name="module" value="module_optimizer_1"/>
                 </list>
             </properties>
             <properties level="3">
                 <list name="unlock_modules">
-                    <set name="module" value="module_optimizer_2" />
+                    <set name="module" value="module_optimizer_2"/>
                 </list>
             </properties>
             <properties level="5">
                 <list name="unlock_modules">
-                    <set name="module" value="module_optimizer_4" />
-                    <set name="module" value="module_optimizer_3" />
+                    <set name="module" value="module_optimizer_4"/>
+                    <set name="module" value="module_optimizer_3"/>
                 </list>
             </properties>
             <properties level="7">
                 <list name="unlock_modules">
-                    <set name="module" value="module_optimizer_5" />
+                    <set name="module" value="module_optimizer_5"/>
                 </list>
             </properties>
         </propertiesByLevel>
@@ -41,8 +42,8 @@
                 <function fromLevel="2" itemId="resource_1" value="0,2*Math.pow($level,4)"/>
             </functions>
             <requirement level="5">
-                <building id="mine" level="2" />
-                <building id="storage" level="2" />
+                <building id="mine" level="2"/>
+                <building id="storage" level="2"/>
             </requirement>
         </requirements>
     </building>

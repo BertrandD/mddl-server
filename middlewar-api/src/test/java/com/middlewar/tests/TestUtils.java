@@ -1,7 +1,7 @@
 package com.middlewar.tests;
 
 import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;

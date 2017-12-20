@@ -10,7 +10,6 @@ import com.middlewar.api.manager.impl.AccountManagerImpl;
 import com.middlewar.api.manager.impl.BaseManagerImpl;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.FriendRequestService;
 import com.middlewar.api.services.PlanetScanReportService;
@@ -48,14 +47,11 @@ public class AI {
     @Autowired
     private FriendRequestService friendRequestService;
     @Autowired
-    private AstralObjectService astralObjectService;
-    @Autowired
     private PlanetScanReportService planetScanReportService;
 
     //    @PostConstruct
     public void init() {
         Config.load();
-        astralObjectService.saveUniverse();
         System.out.println("Yolooo");
         try {
             Account account = logOrRegister();
@@ -79,7 +75,7 @@ public class AI {
             System.out.println("Cleaning...");
 //            planetScanReportService.remove(report);
             baseService.deleteAll();
-            astralObjectService.deleteAll();
+//            astralObjectService.deleteAll();
             accountService.deleteAll();
 //            playerService.remove(player);
             System.out.println("Cleaning... OK");
@@ -107,7 +103,7 @@ public class AI {
         return account;
     }
 
-    private Player initPlayerIfNeeded(Account account) throws ApiException {
+    private Player initPlayerIfNeeded(Account account) {
         Player player;
         try {
             player = playerManager.getCurrentPlayerForAccount(account);
@@ -118,7 +114,7 @@ public class AI {
         return player;
     }
 
-    private Base initBaseIfNeeded(Account account, Player player) throws ApiException {
+    private Base initBaseIfNeeded(Account account, Player player) {
         Base base;
         try {
             base = baseManagerImpl.getCurrentBaseOfPlayer(player);

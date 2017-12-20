@@ -1,19 +1,14 @@
 package com.middlewar.core.model.instances;
 
-import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.model.items.Cargo;
-import com.middlewar.core.model.items.Engine;
-import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.items.Item;
+import com.middlewar.core.model.items.SlotItem;
 import com.middlewar.core.model.items.Structure;
-import com.middlewar.core.model.items.Weapon;
+import com.middlewar.core.model.stats.StatCalculator;
+import com.middlewar.core.model.stats.Stats;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,76 +17,45 @@ import java.util.List;
  */
 @Data
 @Entity
-@NoArgsConstructor
 public class RecipeInstance {
 
-    @Id
     private long id;
     private String name;
-
-    @ManyToOne
     private Player owner;
-    private String structureId;
-    @ElementCollection
-    private List<String> cargos;
-    @ElementCollection
-    private List<String> engines;
-    @ElementCollection
-    private List<String> modules;
-    @ElementCollection
-    private List<String> weapons;
+    private Structure structure;
+    private List<SlotItem> components;
 
-    public RecipeInstance(String name, Player owner, String structureId, List<String> cargos, List<String> engines, List<String> modules, List<String> technologies, List<String> weapons) {
-        setName(name);
-        setOwner(owner);
-        setStructureId(structureId);
-        setCargos(cargos);
-        setEngines(engines);
-        setModules(modules);
-        setWeapons(weapons);
+    public RecipeInstance() {
+        setComponents(new ArrayList<>());
     }
 
-    public Structure getStructure() {
-        return ItemData.getInstance().getStructure(structureId);
+    public RecipeInstance(long id, String name, Player owner, Structure structure, List<SlotItem> components) {
+        this.id = id;
+        this.name = name;
+        this.owner = owner;
+        this.structure = structure;
+        this.components = components;
     }
 
-    public ArrayList<Cargo> getCargos() {
-        final ArrayList<Cargo> res = new ArrayList<>();
-        cargos.forEach(k -> res.add(ItemData.getInstance().getCargo(k)));
-        return res;
+    private double calcStat(Stats stats) {
+        StatCalculator damage = new StatCalculator(stats);
+
+        for (Item item : components) {
+            damage.add(item.getStats().get(stats));
+        }
+
+        return damage.getValue();
     }
 
-    public void setCargos(List<String> cargos) {
-        this.cargos = cargos;
+    public double calcPower() {
+        return calcStat(Stats.POWER);
     }
 
-    public ArrayList<Engine> getEngines() {
-        final ArrayList<Engine> res = new ArrayList<>();
-        engines.forEach(k -> res.add(ItemData.getInstance().getEngine(k)));
-        return res;
+    public double calcDamage() {
+        return calcStat(Stats.DAMAGE);
     }
 
-    public void setEngines(List<String> engines) {
-        this.engines = engines;
-    }
-
-    public ArrayList<Module> getModules() {
-        final ArrayList<Module> res = new ArrayList<>();
-        modules.forEach(k -> res.add(ItemData.getInstance().getModule(k)));
-        return res;
-    }
-
-    public void setModules(List<String> modules) {
-        this.modules = modules;
-    }
-
-    public ArrayList<Weapon> getWeapons() {
-        final ArrayList<Weapon> res = new ArrayList<>();
-        weapons.forEach(k -> res.add(ItemData.getInstance().getWeapon(k)));
-        return res;
-    }
-
-    public void setWeapons(List<String> weapons) {
-        this.weapons = weapons;
+    public double calcCargo() {
+        return calcStat(Stats.CARGO);
     }
 }

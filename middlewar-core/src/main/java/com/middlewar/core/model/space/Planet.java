@@ -29,4 +29,12 @@ public class Planet extends AstralObject {
     public void addBase(Base base) {
         if (!getBases().contains(base)) getBases().add(base);
     }
+
+    @Override
+    public String toString() {
+        return "Planet{" +
+                "baseCount=" + bases.size() +
+                "," + super.toString() +
+                '}';
+    }
 }

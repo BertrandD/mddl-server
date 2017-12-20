@@ -7,11 +7,15 @@ import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.StatCalculator;
+import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
+import com.middlewar.core.utils.Observable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Singular;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -25,6 +29,8 @@ import javax.persistence.PreRemove;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -32,11 +38,11 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Base {
+public class Base extends Observable {
 
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     private String name;
 
     @ManyToOne
@@ -58,18 +64,22 @@ public class Base {
     private List<BuildingInstance> buildings;
 
     @OneToOne(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.JOIN)
     private BaseInventory baseInventory;
 
+    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
     @Singular
-    @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Resource> resources;
 
     @Singular
     @OneToMany(mappedBy = "baseSrc", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Report> reports;
 
-    @ManyToOne
+    private PriorityQueue<BuildingTask> buildingTasks;
+
     private Planet planet;
+    private boolean deleted;
 
     public Base() {
         setBaseStat(new ObjectStat());
@@ -78,6 +88,7 @@ public class Base {
         setBuildings(new ArrayList<>());
         setResources(new ArrayList<>());
         setReports(new ArrayList<>());
+        setBuildingTasks(new PriorityQueue<>());
     }
 
     public Base(String name, Player owner, Planet planet) {
@@ -85,11 +96,27 @@ public class Base {
         setOwner(owner);
         setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
+        setBaseInventory(new BaseInventory(this));
         setResources(new ArrayList<>());
         setShips(new ArrayList<>());
         setFleets(new ArrayList<>());
         setReports(new ArrayList<>());
         setPlanet(planet);
+        setBuildingTasks(new PriorityQueue<>());
+    }
+
+    public BaseDTO toDTO() {
+        BaseDTO dto = new BaseDTO();
+        dto.setId(this.getId());
+        dto.setName(this.getName());
+        dto.setBuildings(this.getBuildings().stream().map(BuildingInstance::toDTO).collect(Collectors.toList()));
+        getBuildingTasks().stream().filter(k->k.getLevel() == 1).forEach(k->dto.getBuildings().add(k.getBuilding().toDTO()));
+        dto.setInventory(this.getBaseInventory().toDTO());
+        dto.setResources(this.getResources().stream().map(Resource::toDTO).collect(Collectors.toList()));
+        dto.setPlanet(this.getPlanet().toDTO());
+        dto.setQueue(this.getBuildingTasks().stream().map(BuildingTask::toDTO).collect(Collectors.toList()));
+        dto.setBaseStat(this.getBaseStat().toDTO());
+        return dto;
     }
 
     @PreRemove
@@ -99,24 +126,24 @@ public class Base {
         }
     }
 
-    public long getResourceStorageAvailableCapacity(Resource resource) {
+    public long calcResourceStorageAvailableCapacity(Resource resource) {
         StatCalculator capacity = new StatCalculator(resource.getStatMax());
         capacity.add(getBaseStat().getValue(resource.getStatMax()));
 
         for (BuildingInstance buildingInstance : getBuildings()) {
-            capacity.add(buildingInstance.getAvailableCapacity(resource));
+            capacity.add(buildingInstance.calcAvailableCapacity(resource));
         }
 
         return ((Number) capacity.getValue()).longValue();
     }
 
-    public double getResourceProduction(Resource resource) {
+    public double calcResourceProduction(Resource resource) {
         // TODO : add logic to handle modules effects on production
         StatCalculator production = new StatCalculator(resource.getStat());
         production.add(getBaseStat().getValue(resource.getStat()));
 
         for (BuildingInstance building : getBuildings()) {
-            production.add(building.getProduction(resource));
+            production.add(building.calcProduction(resource));
         }
 
         return production.getValue();
@@ -182,5 +209,24 @@ public class Base {
 
     public void addResource(Resource resource) {
         resources.add(resource);
+    }
+
+    @Override
+    public String toString() {
+        return "Base{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", owner='" + owner.getId() + '\'' +
+                ", baseStat=" + baseStat +
+                ", ships=" + ships +
+                ", fleets=" + fleets +
+                ", buildings=" + buildings +
+                ", baseInventory=" + baseInventory +
+                ", resources=" + resources +
+                ", reports=" + reports +
+                ", buildingTasks=" + buildingTasks +
+                ", planet=" + planet +
+                ", deleted=" + deleted +
+                '}';
     }
 }

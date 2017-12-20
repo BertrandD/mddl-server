@@ -44,6 +44,7 @@ public class FriendRequestServiceTest {
     @Before
     public void init() {
         final Account account = accountService.create("AccountTest", "no-password");
+        accountService.deleteAll();
         _requester = playerService.create(account, "PlayerTest");
         _requested1 = playerService.create(account, "PlayerTest1");
         _requested2 = playerService.create(account, "PlayerTest2");

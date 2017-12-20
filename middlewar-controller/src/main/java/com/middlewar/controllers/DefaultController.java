@@ -6,17 +6,21 @@ import com.middlewar.api.services.AccountService;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.AccountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -60,15 +64,12 @@ public class DefaultController implements ErrorController {
         Account account = accountService.findOne(pAccount.getId());
         account.getPlayers().clear();
         account.setCurrentPlayer(0);
-        accountService.update(account);
-        astralObjectService.saveUniverse();
         return new Response();
     }
 
     @User
     @RequestMapping(value = "/resetworld", method = RequestMethod.GET)
-    public Response resetWorld() {
-        astralObjectService.saveUniverse();
+    public Response resetWorld(@AuthenticationPrincipal Account pAccount) {
         return new Response();
     }
 
@@ -79,21 +80,20 @@ public class DefaultController implements ErrorController {
         return new Response();
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Response login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
-        return new Response(accountManager.login(username, password));
+    @RequestMapping(value = Route.LOGIN, method = RequestMethod.POST)
+    public AccountDTO login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
+        return accountManager.login(username, password).toDTO();
     }
 
     @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
     public Response logout(@AuthenticationPrincipal Account account) {
         account.setToken(UUID.randomUUID().toString());
-        accountService.update(account);
         return new Response();
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public Response register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        return new Response(accountManager.register(username, password));
+    @RequestMapping(value = Route.REGISTER, method = RequestMethod.POST)
+    public AccountDTO register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+        return accountManager.register(username, password).toDTO();
     }
 
     @User
@@ -110,8 +110,7 @@ public class DefaultController implements ErrorController {
         final Account currentAccount = accountService.findOne(account.getId());
         account.setLang(newLang);
         currentAccount.setLang(newLang);
-        accountService.update(currentAccount);
-        return new Response();
+        return new Response(JsonResponseType.SUCCESS);
     }
 
     @User

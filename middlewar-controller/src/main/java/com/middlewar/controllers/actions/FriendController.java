@@ -5,6 +5,7 @@ import com.middlewar.api.services.FriendRequestService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author LEBOC Philippe
@@ -32,18 +31,10 @@ public class FriendController {
     @Autowired
     private FriendRequestService friendRequestService;
 
-    @RequestMapping(value = "/request", method = RequestMethod.GET)
-    public Response showFriendRequest(@AuthenticationPrincipal Account pAccount) {
-
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
-        if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
-
-        final List<FriendRequest> requests = friendRequestService.findPlayerRequest(player.getId());
-        return new Response(requests);
-    }
-
-    @RequestMapping(value = "/request", method = RequestMethod.POST)
-    public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") Long friendId, @RequestParam(value = "message") String message) {
+    @RequestMapping(value = Route.REQUEST_CREATE, method = RequestMethod.POST)
+    public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") int friendId, @RequestParam(value = "message") String message) {
+//        Assert.hasLength(friendId, "Invalid parameter friendId.");
+        Assert.hasLength(message, "Empty message.");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
@@ -71,12 +62,13 @@ public class FriendController {
             return new Response("You have already sent a friend request to " + friend.getName());
 
         final FriendRequest request = friendRequestService.create(player, friend, message);
-        if (request == null) return new Response(SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
+        if (request == null)
+            return new Response<>(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
 
         return new Response(player); // TODO: send only the new friendrequest instead of Player !
     }
 
-    @RequestMapping(value = "/accept/{requestId}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.REQUEST_ACCEPT, method = RequestMethod.GET)
     public Response acceptFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") Long requestId) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
@@ -96,14 +88,10 @@ public class FriendController {
         friend.getEmittedFriendRequests().remove(request);
         player.getReceivedFriendRequests().remove(request);
 
-        playerService.update(friend);
-        playerService.update(player);
-        friendRequestService.delete(request);
-
-        return new Response(player);
+        return new Response<>(player);
     }
 
-    @RequestMapping(value = "/refuse/{requestId}", method = RequestMethod.GET)
+    @RequestMapping(value = Route.REQUEST_REFUSE, method = RequestMethod.GET)
     public Response refuseFriend(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "requestId") Long requestId) {
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
@@ -118,10 +106,6 @@ public class FriendController {
         friend.getEmittedFriendRequests().remove(request);
         player.getEmittedFriendRequests().remove(request);
 
-        friendRequestService.delete(request);
-        playerService.update(friend);
-        playerService.update(player);
-
-        return new Response(player); // TODO: SysMsg
+        return new Response<>(player); // TODO: SysMsg
     }
 }

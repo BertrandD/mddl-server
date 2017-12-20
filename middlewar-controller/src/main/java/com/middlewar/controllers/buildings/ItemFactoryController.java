@@ -4,8 +4,9 @@ import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.FactoryManager;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.util.response.Response;
+import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
+import com.middlewar.dto.inventory.ItemInstanceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,19 +31,22 @@ public class ItemFactoryController {
     @Autowired
     private FactoryManager factoryManager;
 
-    @RequestMapping(value = "/module/create/{id}", method = RequestMethod.POST)
-    public Response createModule(@AuthenticationPrincipal Account pAccount,
-                                 @PathVariable(value = "baseId") Long baseId,
-                                 @PathVariable(value = "factoryId") Long factoryId,
-                                 @PathVariable(value = "id") String itemId) {
-        return new Response(factoryManager.createModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId));
+    @Autowired
+    private ControllerManagerWrapper controllerManagerWrapper;
+
+    @RequestMapping(value = Route.ITEM_FACTORY_CREATE_MODULE, method = RequestMethod.POST)
+    public ItemInstanceDTO createModule(@AuthenticationPrincipal Account pAccount,
+                                        @PathVariable(value = "baseId") int baseId,
+                                        @PathVariable(value = "factoryId") int factoryId,
+                                        @PathVariable(value = "id") String itemId) {
+        return factoryManager.createModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId).toDTO();
     }
 
-    @RequestMapping(value = "/structure/create/{id}", method = RequestMethod.POST)
-    public Response createStructure(@AuthenticationPrincipal Account pAccount,
-                                    @PathVariable(value = "baseId") Long baseId,
-                                    @PathVariable(value = "factoryId") Long factoryId,
-                                    @PathVariable(value = "id") String itemId) {
-        return new Response(factoryManager.createStructure(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId));
+    @RequestMapping(value = Route.ITEM_FACTORY_CREATE_STRUCTURE, method = RequestMethod.POST)
+    public ItemInstanceDTO createStructure(@AuthenticationPrincipal Account pAccount,
+                                           @PathVariable(value = "baseId") int baseId,
+                                           @PathVariable(value = "factoryId") int factoryId,
+                                           @PathVariable(value = "id") String itemId) {
+        return factoryManager.createStructure(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId).toDTO();
     }
 }

@@ -2,6 +2,7 @@ package com.middlewar.core.holders;
 
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.stats.Stats;
+import com.middlewar.dto.holder.StatHolderDTO;
 import lombok.Data;
 
 /**
@@ -18,6 +19,14 @@ public class StatHolder {
         setStat(stats);
         setOp(op);
         setValue(value);
+    }
+
+    public StatHolderDTO toDTO() {
+        StatHolderDTO dto = new StatHolderDTO();
+        dto.setStat(stat.name());
+        dto.setOp(op.name());
+        dto.setValue(value);
+        return dto;
     }
 
 }

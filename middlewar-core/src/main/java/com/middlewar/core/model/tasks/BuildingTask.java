@@ -39,6 +39,15 @@ public class BuildingTask {
         setLevel(level);
     }
 
+    public BuildingTaskDTO toDTO() {
+        BuildingTaskDTO dto = new BuildingTaskDTO();
+        dto.setId(getId());
+        dto.setBuilding(building.toDTO());
+        dto.setEndsAt(getEndsAt());
+        dto.setLevel(getLevel());
+        return dto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof BuildingTask) {
@@ -46,5 +55,12 @@ public class BuildingTask {
             return (this.id == task.id);
         }
         return false;
+    }
+
+
+    @Override
+    public int compareTo(BuildingTask o) {
+        if (equals(o)) return 0;
+        return this.endsAt < o.getEndsAt() ? -1 : 1;
     }
 }

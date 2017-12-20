@@ -3,6 +3,8 @@ package com.middlewar.core.model;
 import com.middlewar.core.enums.Lang;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -33,21 +36,23 @@ import java.util.TreeSet;
 public class Account implements UserDetails {
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
     private Lang lang;
 
     @OneToMany(mappedBy = "account", orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Player> players;
-    private long currentPlayer;
+    private List<Player> players = new ArrayList<>();
+    private int currentPlayer;
     private String token;
     private String password;
     private String username;
+    @Fetch(FetchMode.JOIN)
     @ElementCollection
-    private Set<GrantedAuthority> authorities;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+    private Set<GrantedAuthority> authorities = new HashSet<>();
+    private boolean accountNonExpired = true;
+    private boolean accountNonLocked = true;
+    private boolean credentialsNonExpired = true;
+    private boolean enabled = true;
+    private boolean deleted;
 
     public Account(String username, String password, Collection<? extends GrantedAuthority> authorities, Lang lang, String token) {
         setUsername(username);
@@ -57,6 +62,17 @@ public class Account implements UserDetails {
         setPlayers(players == null ? new ArrayList<>() : players);
         setCurrentPlayer(currentPlayer);
         setToken(token);
+    }
+
+    public AccountDTO toDTO() {
+        AccountDTO dto = new AccountDTO();
+        dto.setId(this.getId());
+        dto.setLang(this.getLang().getName());
+        dto.setPlayers(this.getPlayers().stream().map(Player::getId).collect(Collectors.toList()));
+        dto.setCurrentPlayer(this.getCurrentPlayer());
+        dto.setToken(this.getToken());
+        dto.setUsername(this.getUsername());
+        return dto;
     }
 
     private static SortedSet<GrantedAuthority> sortAuthorities(Collection<? extends GrantedAuthority> authorities) {

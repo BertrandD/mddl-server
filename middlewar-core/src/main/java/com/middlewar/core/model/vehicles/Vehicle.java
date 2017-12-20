@@ -1,10 +1,13 @@
 package com.middlewar.core.model.vehicles;
 
+import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.enums.VehicleState;
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.items.Cargo;
 import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
+import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import lombok.Data;
 
@@ -12,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -31,14 +36,42 @@ public abstract class Vehicle implements IShip {
 
     private VehicleState state;
 
-    @Override
-    public double getDamage() {
-        return getWeapons().stream().mapToDouble(Weapon::getDamage).sum() * getCount();
+    private RecipeInstance recipeInstance;
+
+    public Vehicle(Base base, RecipeInstance recipeInstance, long count) {
+        this.base = base;
+        this.recipeInstance = recipeInstance;
+        this.count = count;
     }
 
     @Override
-    public double getShield() {
-        return 0;
+    public Structure getStructure() {
+        return recipeInstance.getStructure();
+    }
+
+    @Override
+    public List<Cargo> getCargos() {
+        return recipeInstance.getComponents().stream().filter(k->k.getType().equals(ItemType.CARGO)).map(k->(Cargo)k).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Engine> getEngines() {
+        return recipeInstance.getComponents().stream().filter(k->k.getType().equals(ItemType.ENGINE)).map(k->(Engine)k).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Module> getModules() {
+        return recipeInstance.getComponents().stream().filter(k->k.getType().equals(ItemType.MODULE)).map(k->(Module)k).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Weapon> getWeapons() {
+        return recipeInstance.getComponents().stream().filter(k->k.getType().equals(ItemType.WEAPON)).map(k->(Weapon)k).collect(Collectors.toList());
+    }
+
+    @Override
+    public double getDamage() {
+        return recipeInstance.calcDamage();
     }
 
     @Override
@@ -48,25 +81,6 @@ public abstract class Vehicle implements IShip {
 
     @Override
     public double getVolume() {
-        return getStructure().getVolume() * getCount();
-    }
-
-    @Override
-    public double getWeight() {
-        return (getStructure().getWeight() +
-                getEngines().stream().mapToDouble(Engine::getWeight).sum() +
-                getModules().stream().mapToDouble(Module::getWeight).sum() +
-                getWeapons().stream().mapToDouble(Weapon::getWeight).sum() +
-                getCargos().stream().mapToDouble(Cargo::getWeight).sum()) * getCount();
-    }
-
-    @Override
-    public double getMaxStorableVolume() {
-        return getCargos().stream().mapToDouble(Cargo::getCapacity).sum() * getCount(); // TODO: change this shit
-    }
-
-    @Override
-    public double getMaxStorableWeight() {
-        return getCargos().stream().mapToDouble(Cargo::getCapacity).sum() * getCount(); // TODO: change this shit
+        throw new UnsupportedOperationException();
     }
 }

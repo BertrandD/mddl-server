@@ -4,6 +4,8 @@ import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.items.GameItem;
+import com.middlewar.core.serializer.ItemInstanceSerializer;
+import com.middlewar.dto.inventory.ItemInstanceDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,6 +43,15 @@ public class ItemInstance {
         setType(getTemplate().getType());
         setCount(count);
         setInventory(inventory);
+    }
+
+    public ItemInstanceDTO toDTO() {
+        ItemInstanceDTO dto = new ItemInstanceDTO();
+        dto.setId(getId());
+        dto.setCount(getCount());
+        dto.setTemplateId(getTemplateId());
+        dto.setType(getType().name());
+        return dto;
     }
 
     public GameItem getTemplate() {
@@ -94,5 +105,15 @@ public class ItemInstance {
             if (item.getId() == this.getId()) return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemInstance{" +
+                "id=" + id +
+                ", templateId='" + templateId + '\'' +
+                ", count=" + count +
+                ", type=" + type +
+                '}';
     }
 }

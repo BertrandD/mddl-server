@@ -1,8 +1,6 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.BuildingTaskService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.model.Base;
@@ -11,17 +9,20 @@ import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.core.utils.TimeUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
+import java.util.PriorityQueue;
 import java.util.concurrent.ScheduledFuture;
 
 /**
  * @author LEBOC Philippe
  */
 @Service
+@Slf4j
 public class BuildingTaskManager {
 
     private static final String BUILDING_MINE_ID = "mine";
@@ -38,6 +39,8 @@ public class BuildingTaskManager {
 
     private ScheduledFuture<?> scheduledFuture;
     private BuildingTask currentTask;
+
+    private PriorityQueue<BuildingTask> queue = new PriorityQueue<>();
 
     @PostConstruct
     private void load() {
@@ -56,11 +59,10 @@ public class BuildingTaskManager {
 
     public void start() {
         if (scheduledFuture == null) {
-            final BuildingTask task = buildingTaskService.findFirstByOrderByEndsAtAsc();
+            final BuildingTask task = queue.peek();
             if (task == null) return;
 
             task.getBuilding().setEndsAt(task.getEndsAt());
-            buildingService.update(task.getBuilding());
 
             scheduledFuture = ThreadPoolManager.getInstance().schedule(new Upgrade(), new Date(task.getEndsAt()));
 
@@ -82,10 +84,20 @@ public class BuildingTaskManager {
         start();
     }
 
+    public BuildingTask findTaskInQueue(BuildingInstance buildingInstance) {
+        PriorityQueue<BuildingTask> queue = buildingInstance.getBase().getBuildingTasks();
+
+        for (BuildingTask b : queue) {
+            if (b.getBuilding().equals(buildingInstance))
+                return b;
+        }
+        return null;
+    }
+
     public void ScheduleUpgrade(BuildingInstance building) {
         final BuildingTask newTask;
         final long now = TimeUtil.getCurrentTime();
-        final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
+        final BuildingTask lastInQueue = findTaskInQueue(building);
 
         long buildTime = (long) (building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION, Config.BUILDTIME_MODIFIER));
         long endupgrade = now + buildTime;
@@ -93,13 +105,16 @@ public class BuildingTaskManager {
         if (lastInQueue == null) {
             building.setStartedAt(now); // This value is a false startedAt value ! Difference of ~30 millis
             building.setEndsAt(endupgrade);
-            buildingService.update(building);
-            newTask = buildingTaskService.create(building, endupgrade, building.getCurrentLevel() + 1);
+            newTask = new BuildingTask(building.getBase(), building, endupgrade, building.getCurrentLevel() + 1);
         } else {
             endupgrade = lastInQueue.getEndsAt() + (long) (building.getBuildTime() * Config.BUILDTIME_MODIFIER);
-            newTask = buildingTaskService.create(building, endupgrade, lastInQueue.getLevel() + 1);
+            newTask = new BuildingTask(building.getBase(), building, endupgrade, lastInQueue.getLevel() + 1);
         }
 
+        building.getBase().getBuildingTasks().offer(newTask);
+        queue.offer(newTask);
+
+        log.info("Scheduling upgrade of " + newTask.getBuilding().getBuildingId() + " to level " + newTask.getLevel());
         notifyNewTask(newTask);
     }
 
@@ -110,24 +125,28 @@ public class BuildingTaskManager {
     private class Upgrade implements Runnable {
         @Override
         public synchronized void run() {
-            final BuildingInstance building = getCurrentTask().getBuilding();
+            BuildingTask buildingTask = queue.poll();
+            final BuildingInstance building = buildingTask.getBuilding();
+            log.info("End of upgrade for " + buildingTask.getBuilding().getBuildingId());
+            buildingTask.setEndsAt(-1);
 
             if (building.getTemplate().getType().equals(BuildingCategory.SILO))
                 inventoryService.refreshResources(building.getBase());
 
-            building.setCurrentLevel(getCurrentTask().getLevel());
-            buildingTaskService.delete(getCurrentTask());
+            building.setCurrentLevel(buildingTask.getLevel());
+            if (building.getCurrentLevel() == 1) {
+                building.getBase().addBuilding(building);
+            }
+            building.getBase().getBuildingTasks().remove(buildingTask);
 
-            if (buildingTaskService.findByBuilding(building.getId()).isEmpty()) {
+            final BuildingTask lastInQueue = findTaskInQueue(building);
+
+            if (lastInQueue == null) {
                 building.setEndsAt(-1);
                 building.setStartedAt(-1);
             } else {
-                final BuildingTask bTask = buildingTaskService.findFirstByBuildingOrderByEndsAtAsc(building.getId());
-                bTask.getBuilding().setStartedAt(TimeUtil.getCurrentTime());
-                buildingService.update(bTask.getBuilding());
+                lastInQueue.getBuilding().setStartedAt(TimeUtil.getCurrentTime());
             }
-
-            buildingService.update(building);
 
             if (building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1) {
                 final Base base = building.getBase();

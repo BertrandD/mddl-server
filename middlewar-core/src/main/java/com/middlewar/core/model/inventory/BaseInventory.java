@@ -38,4 +38,9 @@ public class BaseInventory extends Inventory {
     public ItemInstance getItem(String id) {
         return getItemsToMap().getOrDefault(id, null);
     }
+
+    @Override
+    public String toString() {
+        return "BaseInventory{" + super.toString() + "}";
+    }
 }

@@ -41,5 +41,17 @@ public enum Stats {
     FLEET_CARGO,
 
     // Univers
-    BUILD_COOLDOWN_REDUCTION
+    BUILD_COOLDOWN_REDUCTION,
+
+    // Strucutres
+    SLOT_CARGO,
+    SLOT_ENGINE,
+    SLOT_MODULE,
+    SLOT_TECHNOLOGY,
+    SLOT_WEAPON,
+
+    // Ships + Recipe
+    DAMAGE,
+    POWER,
+    CARGO
 }

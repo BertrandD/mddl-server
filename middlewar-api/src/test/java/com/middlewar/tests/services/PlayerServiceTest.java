@@ -36,6 +36,7 @@ public class PlayerServiceTest {
 
     @Before
     public void init() {
+        accountService.deleteAll();
         account = accountService.create("PlayerTest", "password");
     }
 

@@ -33,7 +33,7 @@ public class BaseTest {
     private Base _base;
 
     @Before
-    public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() {
         _base = new Base("base", new Player(new Account(), "toto"), new Planet());
     }
 
@@ -46,7 +46,7 @@ public class BaseTest {
         buildingInstance.addModule("module_silo_improve_1_2");
         buildingInstance.addModule("module_silo_improve_1_2");
         _base.addBuilding(buildingInstance);
-        Assertions.assertThat(_base.getResourceStorageAvailableCapacity(resource)).isEqualTo(2050);
+        Assertions.assertThat(_base.calcResourceStorageAvailableCapacity(resource)).isEqualTo(2050);
     }
 
 
@@ -59,6 +59,6 @@ public class BaseTest {
         buildingInstance.addModule("module_optimizer_1");
         buildingInstance.addModule("module_optimizer_1_2");
         _base.addBuilding(buildingInstance);
-        Assertions.assertThat(_base.getResourceProduction(resource)).isEqualTo(2050);
+        Assertions.assertThat(_base.calcResourceProduction(resource)).isEqualTo(2050);
     }
 }

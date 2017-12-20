@@ -1,14 +1,12 @@
 package com.middlewar.tests.services;
 
 
-import com.middlewar.api.dao.ResourceDao;
-import com.middlewar.api.manager.impl.PlanetManagerImpl;
+import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.services.impl.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
@@ -49,17 +47,13 @@ public class InventoryServiceTest {
     @Autowired
     private PlayerService playerService;
     @Autowired
-    private AstralObjectService astralObjectService;
-    @Autowired
     private AccountService accountService;
     @Autowired
     private BaseService baseService;
     @Autowired
     private InventoryService inventoryService;
     @Autowired
-    private PlanetManagerImpl planetManager;
-    @Autowired
-    private ResourceDao resourceDao;
+    private PlanetManager planetManager;
     private Account _account;
     private Player _player;
     private Planet _planet;
@@ -68,7 +62,7 @@ public class InventoryServiceTest {
     @Before
     public void init() {
         WorldData.getInstance().reload();
-        astralObjectService.saveUniverse();
+        accountService.deleteAll();
 
         _account = accountService.create("AccountTest", "no-password");
         _player = playerService.create(_account, "PlayerTest");
@@ -163,7 +157,6 @@ public class InventoryServiceTest {
         final long amount = 100;
         Resource resource = initResource(amount, amount + 1);
 
-        resource = resourceDao.findOne(resource.getId());
         Assertions.assertThat(resource).isNotNull();
         Assertions.assertThat(resource.getItem()).isNotNull();
         Assertions.assertThat(resource.getCount()).isEqualTo(amount);
@@ -175,7 +168,6 @@ public class InventoryServiceTest {
         final long amount = max + 10000;
         Resource resource = initResource(amount, max);
 
-        resource = resourceDao.findOne(resource.getId());
         Assertions.assertThat(resource).isNotNull();
         Assertions.assertThat(resource.getItem()).isNotNull();
         Assertions.assertThat(resource.getCount()).isEqualTo(max);
@@ -193,7 +185,7 @@ public class InventoryServiceTest {
         buildingInstance.setCurrentLevel(1);
         _base.addBuilding(buildingInstance);
         Assertions.assertThat(_base.getBuildings().contains(buildingInstance)).isTrue();
-        Assertions.assertThat(resource.getAvailableCapacity()).isEqualTo(max + siloCapacity);
+        Assertions.assertThat(resource.calcAvailableCapacity()).isEqualTo(max + siloCapacity);
 
         boolean result = inventoryService.addResource(resource, amount);
         Assertions.assertThat(result).isTrue();

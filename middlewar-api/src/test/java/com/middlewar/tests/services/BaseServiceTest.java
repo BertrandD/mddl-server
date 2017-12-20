@@ -3,7 +3,6 @@ package com.middlewar.tests.services;
 
 import com.middlewar.api.manager.impl.PlanetManagerImpl;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.data.json.WorldData;
@@ -44,9 +43,6 @@ public class BaseServiceTest {
     @Autowired
     private BaseService baseService;
 
-    @Autowired
-    private AstralObjectService astralObjectService;
-
     private Account _account;
     private Player _player;
     private Planet _planet;
@@ -54,7 +50,7 @@ public class BaseServiceTest {
     @Before
     public void init() {
         WorldData.getInstance().reload();
-        astralObjectService.saveUniverse();
+        accountService.deleteAll();
 
         _account = accountService.create("AccountTest", "no-password");
         _player = playerService.create(_account, "PlayerTest");

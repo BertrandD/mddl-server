@@ -34,7 +34,17 @@ public class PlayerInventory extends Inventory {
     }
 
     @Override
+    public InventoryDTO toDTO() {
+        return super.toDTO(new InventoryDTO());
+    }
+
+    @Override
     public long getAvailableCapacity() {
         return -1; // Unlimited
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerInventory{" + super.toString() + "}";
     }
 }

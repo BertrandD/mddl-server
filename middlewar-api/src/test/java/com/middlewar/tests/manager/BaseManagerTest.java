@@ -6,16 +6,13 @@ import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.exceptions.BaseNotOwnedException;
 import com.middlewar.api.exceptions.ForbiddenNameException;
 import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
 import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
-import com.middlewar.api.manager.impl.BaseManagerImpl;
-import com.middlewar.api.manager.impl.PlanetManagerImpl;
-import com.middlewar.api.manager.impl.PlayerManagerImpl;
+import com.middlewar.api.manager.BaseManager;
+import com.middlewar.api.manager.PlanetManager;
+import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.json.WorldData;
@@ -30,7 +27,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -49,22 +45,19 @@ import java.util.List;
 public class BaseManagerTest {
 
     @Autowired
-    private BaseManagerImpl baseManagerImpl;
+    private BaseManager baseManager;
 
     @Autowired
     private BaseService baseService;
 
     @Autowired
-    private PlayerManagerImpl playerManager;
+    private PlayerManager playerManager;
 
     @Autowired
     private AccountService accountService;
 
     @Autowired
-    private PlanetManagerImpl planetManager;
-
-    @Autowired
-    private AstralObjectService astralObjectService;
+    private PlanetManager planetManager;
 
     private Account _account;
     private Player _playerOwner;
@@ -73,10 +66,9 @@ public class BaseManagerTest {
     private Base _base2;
 
     @Before
-    public void init() throws NoPlayerConnectedException, PlayerNotFoundException, MaxPlayerCreationReachedException, ForbiddenNameException, PlayerCreationFailedException, UsernameAlreadyExistsException {
+    public void init() {
         WorldData.getInstance().reload();
-        astralObjectService.saveUniverse();
-        MockitoAnnotations.initMocks(this);
+        accountService.deleteAll();
         _account = accountService.create("toto", "");
         _playerOwner = playerManager.createForAccount(_account, "owner");
         _playerNotOwner = playerManager.createForAccount(_account, "notOwner");
@@ -86,52 +78,52 @@ public class BaseManagerTest {
     }
 
     @Test
-    public void shouldReturnAllBases() throws BaseNotFoundException, NoPlayerConnectedException, PlayerNotFoundException {
-        final List<Base> bases = baseManagerImpl.findAllBaseOfPlayer(_playerOwner);
+    public void shouldReturnAllBases() {
+        final List<Base> bases = baseManager.findAllBaseOfPlayer(_playerOwner);
         Assertions.assertThat(bases).isNotNull();
         Assertions.assertThat(bases.size()).isEqualTo(2);
     }
 
     @Test
-    public void shouldReturnBase() throws BaseNotFoundException {
-        final Base base = baseManagerImpl.getBase(_base.getId());
+    public void shouldReturnBase() {
+        final Base base = baseManager.getBase(_base.getId());
         Assertions.assertThat(base).isNotNull();
         Assertions.assertThat(base).isEqualTo(_base);
     }
 
     @Test(expected = BaseNotFoundException.class)
-    public void shouldThrowExceptionIfBaseNotFound() throws BaseNotFoundException {
-        baseManagerImpl.getBase(456321);
+    public void shouldThrowExceptionIfBaseNotFound() {
+        baseManager.getBase(456321);
     }
 
     @Test(expected = BaseNotOwnedException.class)
-    public void shouldCheckOwner() throws BaseNotFoundException, BaseNotOwnedException {
-        baseManagerImpl.getOwnedBase(_base.getId(), _playerNotOwner);
+    public void shouldCheckOwner() {
+        baseManager.getOwnedBase(_base.getId(), _playerNotOwner);
     }
 
     @Test
-    public void shouldReturnCurrentBase() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+    public void shouldReturnCurrentBase() {
         _playerOwner.setCurrentBase(_base);
-        Base base = baseManagerImpl.getCurrentBaseOfPlayer(_playerOwner);
+        Base base = baseManager.getCurrentBaseOfPlayer(_playerOwner);
         Assertions.assertThat(base).isNotNull();
         Assertions.assertThat(base).isEqualTo(_base);
 
         _playerOwner.setCurrentBase(_base2);
-        base = baseManagerImpl.getCurrentBaseOfPlayer(_playerOwner);
+        base = baseManager.getCurrentBaseOfPlayer(_playerOwner);
         Assertions.assertThat(base).isNotNull();
         Assertions.assertThat(base).isEqualTo(_base2);
     }
 
     @Test(expected = PlayerHasNoBaseException.class)
-    public void shouldCheckCurrentBase() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
+    public void shouldCheckCurrentBase() {
         _playerOwner.setCurrentBase(null);
-        baseManagerImpl.getCurrentBaseOfPlayer(_playerOwner);
+        baseManager.getCurrentBaseOfPlayer(_playerOwner);
     }
 
     @Test
     @Ignore
-    public void shouldReturnBaseWithBuildingQueue() throws BaseNotFoundException, BaseNotOwnedException, PlayerHasNoBaseException {
-        /*Response res = baseManagerImpl.getBaseWithBuildingQueue(_playerOwner, _base.getId());
+    public void shouldReturnBaseWithBuildingQueu() {
+        /*Response<Base> res = baseManager.getBaseWithBuildingQueue(_playerOwner, _base.getId());
 
         Assertions.assertThat(res.getPayload()).isNotNull();
         Assertions.assertThat(res.getPayload()).isInstanceOf(Base.class);
@@ -141,22 +133,22 @@ public class BaseManagerTest {
     }
 
     @Test
-    public void shouldReturnCreatedBase() throws BaseCreationException {
-        Base base = baseManagerImpl.create(_playerOwner, "newBase");
+    public void shouldReturnCreatedBase() {
+        Base base = baseManager.create(_playerOwner, "newBase");
 
         Assertions.assertThat(base.getName()).isEqualTo("newBase");
         Assertions.assertThat(base.getOwner()).isEqualTo(_playerOwner);
     }
 
     @Test(expected = BaseNotOwnedException.class)
-    public void shouldCheckOwner2() throws BaseNotFoundException, BaseNotOwnedException {
-        baseManagerImpl.getBuildableBuildingsOfBase(_playerNotOwner, _base.getId());
+    public void shouldCheckOwner2() {
+        baseManager.getBuildableBuildingsOfBase(_playerNotOwner, _base.getId());
 
     }
 
     @Test
-    public void shouldReturnBuildableBuildings() throws BaseNotFoundException, BaseNotOwnedException {
-        List<BuildingHolder> buildings = baseManagerImpl.getBuildableBuildingsOfBase(_playerOwner, _base.getId());
+    public void shouldReturnBuildableBuildings() {
+        List<BuildingHolder> buildings = baseManager.getBuildableBuildingsOfBase(_playerOwner, _base.getId());
 
         Assertions.assertThat(buildings).isNotNull();
         Assertions.assertThat(buildings.size()).isGreaterThan(0);
