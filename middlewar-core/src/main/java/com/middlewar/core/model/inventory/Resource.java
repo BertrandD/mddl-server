@@ -6,8 +6,9 @@ import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.utils.TimeUtil;
 import com.middlewar.dto.inventory.ResourceDTO;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,8 +25,8 @@ import javax.persistence.OneToOne;
  * - When a Resource Object must be transfered to a Ship, it will be converted to a regular ItemInstance because
  * the Resource object does not need to be updated during flying.
  */
-@Data
-@ToString
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class Resource {
@@ -42,8 +43,8 @@ public class Resource {
 
     private long lastRefresh;
 
-//    @Enumerated(EnumType.STRING)
-//    private Stats stat;
+    //@Enumerated(EnumType.STRING)
+    //private Stats stat;
 
     public Resource(Base base, ItemInstance item) {
         setBase(base);
@@ -51,21 +52,6 @@ public class Resource {
         setLastRefresh(TimeUtil.getCurrentTime());
     }
 
-    public ResourceDTO toDTO() {
-        ResourceDTO dto = new ResourceDTO();
-        dto.setLastRefresh(this.getLastRefresh());
-        dto.setCount(this.getCount());
-        dto.setAvailableCapacity(this.calcAvailableCapacity());
-        dto.setProdPerHour(this.calcProdPerHour());
-        dto.setTemplateId(this.getItem().getTemplateId());
-        return dto;
-    }
-
-    /**
-     * Shortcut for getItem().getCount()
-     *
-     * @return item count
-     */
     public double getCount() {
         return getItem().getCount();
     }
@@ -84,5 +70,10 @@ public class Resource {
 
     public double calcProdPerHour() {
         return base.calcResourceProduction(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o instanceof Resource && ((Resource) o).getId() == getId();
     }
 }

@@ -1,7 +1,8 @@
 package com.middlewar.core.model.report;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 
@@ -9,7 +10,8 @@ import javax.persistence.Entity;
  * @author bertrand.
  */
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class ResourcesReportEntry extends ReportEntry {
 

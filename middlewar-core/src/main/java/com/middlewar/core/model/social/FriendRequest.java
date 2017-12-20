@@ -2,8 +2,9 @@ package com.middlewar.core.model.social;
 
 import com.middlewar.core.model.Player;
 import com.middlewar.core.utils.TimeUtil;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,8 @@ import javax.persistence.ManyToOne;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class FriendRequest {
@@ -21,11 +23,15 @@ public class FriendRequest {
     @Id
     @GeneratedValue
     private long id;
+
     @ManyToOne
     private Player requester;
+
     @ManyToOne
     private Player requested;
+
     private String message;
+
     private long requestDate;
 
     public FriendRequest(Player requester, Player requested, String message) {
@@ -33,5 +39,10 @@ public class FriendRequest {
         setRequested(requested);
         setMessage(message);
         setRequestDate(TimeUtil.getCurrentTime());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o instanceof FriendRequest && ((FriendRequest) o).getId() == getId();
     }
 }

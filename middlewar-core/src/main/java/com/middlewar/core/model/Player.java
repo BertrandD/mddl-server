@@ -1,5 +1,6 @@
 package com.middlewar.core.model;
 
+import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.inventory.PlayerInventory;
 import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.model.social.FriendRequest;
@@ -7,8 +8,8 @@ import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.utils.Observable;
 import com.middlewar.core.utils.TimeUtil;
-import com.middlewar.dto.PlayerDTO;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -26,29 +27,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
 public class Player extends Observable {
 
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     protected PlayerInventory inventory;
+
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
+
     @Column(unique = true)
     private String name;
+
     @ManyToOne
     private Account account;
+
     @Fetch(FetchMode.JOIN)
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Base> bases;
+
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Base currentBase;
+
     @ManyToMany
     private List<Player> friends;
 
@@ -60,6 +67,7 @@ public class Player extends Observable {
 
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     private Map<Long, PlanetScan> planetScans;
+
     private boolean deleted;
 
     private List<RecipeInstance> recipes;
@@ -83,16 +91,6 @@ public class Player extends Observable {
         setPlanetScans(new HashMap<>());
         setInventory(new PlayerInventory(this));
         setRecipes(new ArrayList<>());
-    }
-
-    public PlayerDTO toDTO() {
-        PlayerDTO dto = new PlayerDTO();
-        dto.setId(this.getId());
-        dto.setName(this.getName());
-        dto.setBases(this.getBases().stream().map(Base::getId).collect(Collectors.toList()));
-        if (this.getCurrentBase() != null)
-            dto.setCurrentBase(this.getCurrentBase().getId());
-        return dto;
     }
 
     public void addBase(Base base) {
@@ -133,26 +131,6 @@ public class Player extends Observable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Player) {
-            final Player player = (Player) o;
-            if (player.getId() == this.getId()) return true;
-        }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "inventory=" + inventory +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", bases=" + bases +
-                ", currentBase=" + currentBase +
-                ", friends=" + friends +
-                ", emittedFriendRequests=" + emittedFriendRequests +
-                ", receivedFriendRequests=" + receivedFriendRequests +
-                ", planetScans=" + planetScans +
-                ", deleted=" + deleted +
-                '}';
+        return o != null && o instanceof Player && ((Player) o).getId() == getId();
     }
 }

@@ -8,11 +8,10 @@ import com.middlewar.core.interfaces.IStat;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.stats.ObjectStat;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.core.serializer.GameItemSerializer;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,8 @@ import java.util.Map;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 public abstract class GameItem implements IStat {
 
     private String itemId;
@@ -43,18 +43,6 @@ public abstract class GameItem implements IStat {
         setStats(new HashMap<>());
     }
 
-    public String getName() {
-        final String name = SystemMessageData.getInstance().getMessage(getLang(), getNameId());
-        if (name == null) return "Unamed item [" + getItemId() + "]";
-        return name;
-    }
-
-    public String getDescription() {
-        final String descr = SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
-        if (descr == null) return "No description for item [" + getItemId() + "]";
-        return descr;
-    }
-
     public void addStats(List<StatHolder> statHolders) {
         statHolders.forEach(k->stats.put(k.getStat(), k));
     }
@@ -71,10 +59,6 @@ public abstract class GameItem implements IStat {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof GameItem) {
-            final GameItem item = (GameItem) o;
-            if (item.getItemId().equalsIgnoreCase(this.getItemId())) return true;
-        }
-        return false;
+        return o != null && o instanceof GameItem && ((GameItem) o).itemId.equalsIgnoreCase(itemId);
     }
 }

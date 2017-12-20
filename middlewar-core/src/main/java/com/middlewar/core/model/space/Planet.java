@@ -1,8 +1,9 @@
 package com.middlewar.core.model.space;
 
 import com.middlewar.core.model.Base;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +14,10 @@ import java.util.List;
 /**
  * @author bertrand.
  */
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class Planet extends AstralObject {
 
     @OneToMany(mappedBy = "planet", orphanRemoval = true, fetch = FetchType.EAGER)
@@ -28,13 +30,5 @@ public class Planet extends AstralObject {
 
     public void addBase(Base base) {
         if (!getBases().contains(base)) getBases().add(base);
-    }
-
-    @Override
-    public String toString() {
-        return "Planet{" +
-                "baseCount=" + bases.size() +
-                "," + super.toString() +
-                '}';
     }
 }

@@ -2,9 +2,9 @@ package com.middlewar.core.model.space;
 
 import com.middlewar.core.enums.AstralStat;
 import com.middlewar.core.utils.TimeUtil;
-import com.middlewar.dto.space.AstralObjectDTO;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,14 +22,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author bertrand Darbond
+ * @author LEBOC Philippe
  */
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AstralObject {
 
@@ -64,25 +65,12 @@ public abstract class AstralObject {
         this.parent = parent;
     }
 
-    public AstralObjectDTO toDTO() {
-        AstralObjectDTO dto = new AstralObjectDTO();
-        dto.setId(this.getId());
-        dto.setName(this.getName());
-        dto.setRevolution(this.getRevolution());
-        dto.setOrbit(this.getOrbit());
-        dto.setSize(this.getSize());
-        dto.setSatellites(this.getSatellites().stream().map(AstralObject::toDTO).collect(Collectors.toList()));
-        return dto;
-    }
-
     public double getAngle() {
         return ((2 * Math.PI) / (revolution)) * TimeUtil.getCurrentTime() / (6000)/* + theta0 */;
     }
 
-    public String toString() {
-        if (parent == null) {
-            return name;
-        }
-        return parent.toString() + " - " + name;
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o instanceof AstralObject && ((AstralObject) o).getId() == getId();
     }
 }

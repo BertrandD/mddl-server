@@ -1,11 +1,10 @@
 package com.middlewar.core.model.vehicles;
 
-import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.enums.VehicleMission;
 import com.middlewar.core.model.commons.Coordinates;
 import com.middlewar.core.model.stats.ObjectStat;
-import com.middlewar.core.model.stats.Stats;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,7 +18,8 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
 public class Fleet {
 

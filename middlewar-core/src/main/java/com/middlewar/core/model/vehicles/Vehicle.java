@@ -10,6 +10,8 @@ import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,7 +23,8 @@ import java.util.stream.Collectors;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class Vehicle implements IShip {
 

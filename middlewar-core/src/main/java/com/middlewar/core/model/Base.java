@@ -105,20 +105,6 @@ public class Base extends Observable {
         setBuildingTasks(new PriorityQueue<>());
     }
 
-    public BaseDTO toDTO() {
-        BaseDTO dto = new BaseDTO();
-        dto.setId(this.getId());
-        dto.setName(this.getName());
-        dto.setBuildings(this.getBuildings().stream().map(BuildingInstance::toDTO).collect(Collectors.toList()));
-        getBuildingTasks().stream().filter(k->k.getLevel() == 1).forEach(k->dto.getBuildings().add(k.getBuilding().toDTO()));
-        dto.setInventory(this.getBaseInventory().toDTO());
-        dto.setResources(this.getResources().stream().map(Resource::toDTO).collect(Collectors.toList()));
-        dto.setPlanet(this.getPlanet().toDTO());
-        dto.setQueue(this.getBuildingTasks().stream().map(BuildingTask::toDTO).collect(Collectors.toList()));
-        dto.setBaseStat(this.getBaseStat().toDTO());
-        return dto;
-    }
-
     @PreRemove
     private void cleanCurrentBase() {
         if (this.getOwner().getCurrentBase().getId() == this.getId()) {
@@ -209,24 +195,5 @@ public class Base extends Observable {
 
     public void addResource(Resource resource) {
         resources.add(resource);
-    }
-
-    @Override
-    public String toString() {
-        return "Base{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", owner='" + owner.getId() + '\'' +
-                ", baseStat=" + baseStat +
-                ", ships=" + ships +
-                ", fleets=" + fleets +
-                ", buildings=" + buildings +
-                ", baseInventory=" + baseInventory +
-                ", resources=" + resources +
-                ", reports=" + reports +
-                ", buildingTasks=" + buildingTasks +
-                ", planet=" + planet +
-                ", deleted=" + deleted +
-                '}';
     }
 }

@@ -3,8 +3,9 @@ package com.middlewar.core.model.social;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.utils.TimeUtil;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,20 +15,26 @@ import javax.persistence.ManyToOne;
 /**
  * @author LEBOC Philippe
  */
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class PrivateMessage {
 
     @Id
     @GeneratedValue
     private long id;
+
     @ManyToOne
     private Player author;
+
     @ManyToOne
     private Player receiver;
+
     private long date;
+
     private String message;
+
     private boolean isRead;
 
     @JsonIgnore
@@ -44,10 +51,6 @@ public class PrivateMessage {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof PrivateMessage) {
-            final PrivateMessage pm = (PrivateMessage) o;
-            if (pm.getId() == this.getId()) return true;
-        }
-        return false;
+        return o != null && o instanceof PrivateMessage && ((PrivateMessage) o).getId() == getId();
     }
 }

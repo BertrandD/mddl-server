@@ -7,14 +7,11 @@ import com.middlewar.api.exceptions.RecipeCreationFailedException;
 import com.middlewar.api.services.InventoryService;
 import com.middlewar.api.services.RecipeService;
 import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.enums.Slot;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.items.GameItem;
-import com.middlewar.core.model.items.Item;
 import com.middlewar.core.model.items.SlotItem;
 import com.middlewar.core.model.items.Structure;
-import com.middlewar.core.model.stats.Stats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +44,7 @@ public class RecipeManager {
                 throw new BadItemException();
             }
 
-            if (structure.getAvailablesSlotForItem((SlotItem) component) <= 0) {
+            if (structure.getAvailablesSlot((SlotItem) component) <= 0) {
                 throw new NotEnoughSlotsException();
             }
 

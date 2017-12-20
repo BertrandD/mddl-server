@@ -2,8 +2,9 @@ package com.middlewar.core.model.space;
 
 import com.middlewar.core.model.projections.BasePlanetScanProjection;
 import com.middlewar.core.utils.TimeUtil;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,7 +18,8 @@ import java.util.Map;
 /**
  * @author bertrand.
  */
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class PlanetScan {
@@ -38,5 +40,10 @@ public class PlanetScan {
         this.date = TimeUtil.getCurrentTime();
         this.planet = planet;
         this.baseScanned = new HashMap<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o instanceof PlanetScan && ((PlanetScan) o).getId() == getId();
     }
 }

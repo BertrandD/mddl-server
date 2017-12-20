@@ -1,15 +1,21 @@
 package com.middlewar.core.model.shop;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 public class ShopItem {
+
     private String itemId;
+
     private long count;
+
     private long price;
+
     private boolean disabled;
 
     public ShopItem(String itemId, long count, long price, boolean disabled) {
@@ -17,10 +23,5 @@ public class ShopItem {
         setCount(count);
         setPrice(price);
         setDisabled(disabled);
-    }
-
-    @Override
-    public String toString() {
-        return "[ShopItem] " + itemId + " x" + count + " for " + price + "$";
     }
 }

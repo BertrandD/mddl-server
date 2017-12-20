@@ -4,7 +4,9 @@ import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,16 +15,14 @@ import javax.persistence.OneToOne;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class BaseInventory extends Inventory {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Base base;
-
-    public BaseInventory() {
-        super();
-    }
 
     public BaseInventory(Base base) {
         super();
@@ -37,10 +37,5 @@ public class BaseInventory extends Inventory {
     @Override
     public ItemInstance getItem(String id) {
         return getItemsToMap().getOrDefault(id, null);
-    }
-
-    @Override
-    public String toString() {
-        return "BaseInventory{" + super.toString() + "}";
     }
 }

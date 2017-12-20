@@ -27,10 +27,10 @@ import java.util.Map;
  * @author bertrand.
  */
 @Data
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Report implements Comparable<Report> {
+public abstract class Report {
 
     @Id
     @GeneratedValue
@@ -62,15 +62,5 @@ public abstract class Report implements Comparable<Report> {
             entries.put(category, new ReportEntryList());
         }
         entries.get(category).add(reportEntry);
-    }
-
-    @Override
-    public int compareTo(Report o) {
-        if (getDate() < o.getDate()) {
-            return -1;
-        } else if (getDate() == o.getDate()) {
-            return 0;
-        }
-        return -1;
     }
 }

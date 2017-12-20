@@ -2,8 +2,9 @@ package com.middlewar.core.model.inventory;
 
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -11,7 +12,8 @@ import javax.persistence.OneToOne;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class PlayerInventory extends Inventory {
@@ -34,17 +36,12 @@ public class PlayerInventory extends Inventory {
     }
 
     @Override
-    public InventoryDTO toDTO() {
-        return super.toDTO(new InventoryDTO());
-    }
-
-    @Override
     public long getAvailableCapacity() {
         return -1; // Unlimited
     }
 
     @Override
-    public String toString() {
-        return "PlayerInventory{" + super.toString() + "}";
+    public boolean equals(Object o) {
+        return o != null && o instanceof PlayerInventory && ((PlayerInventory) o).getId() == getId();
     }
 }

@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 /**
  * @author bertrand.
  */
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Moon extends AstralObject {
     public Moon(String name, AstralObject parent) {
         super(name, parent);

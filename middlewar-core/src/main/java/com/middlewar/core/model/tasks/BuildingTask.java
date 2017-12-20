@@ -15,8 +15,8 @@ import javax.persistence.OneToOne;
  * @author LEBOC Philippe
  */
 @Data
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class BuildingTask {
 
     @Id
@@ -30,6 +30,7 @@ public class BuildingTask {
     private BuildingInstance building;
 
     private long endsAt;
+
     private int level;
 
     public BuildingTask(Base base, BuildingInstance building, long endsAt, int level) {
@@ -39,28 +40,8 @@ public class BuildingTask {
         setLevel(level);
     }
 
-    public BuildingTaskDTO toDTO() {
-        BuildingTaskDTO dto = new BuildingTaskDTO();
-        dto.setId(getId());
-        dto.setBuilding(building.toDTO());
-        dto.setEndsAt(getEndsAt());
-        dto.setLevel(getLevel());
-        return dto;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (o instanceof BuildingTask) {
-            final BuildingTask task = (BuildingTask) o;
-            return (this.id == task.id);
-        }
-        return false;
-    }
-
-
-    @Override
-    public int compareTo(BuildingTask o) {
-        if (equals(o)) return 0;
-        return this.endsAt < o.getEndsAt() ? -1 : 1;
+        return o != null && o instanceof BuildingTask && ((BuildingTask) o).getId() == getId();
     }
 }

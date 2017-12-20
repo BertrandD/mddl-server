@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
@@ -20,13 +19,6 @@ public class ObjectStat {
 
     public ObjectStat() {
         stats = new HashMap<>();
-    }
-
-    public ObjectStatDTO toDTO() {
-        ObjectStatDTO dto = new ObjectStatDTO();
-        dto.setStats(new HashMap<>());
-        stats.forEach((k,v) -> dto.getStats().put(k.name(), v.stream().map(StatHolder::toDTO).collect(Collectors.toList())));
-        return dto;
     }
 
     public void unlock(final Stats stat) {

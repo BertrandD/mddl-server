@@ -4,10 +4,10 @@ import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.model.inventory.Inventory;
 import com.middlewar.core.model.items.GameItem;
-import com.middlewar.core.serializer.ItemInstanceSerializer;
 import com.middlewar.dto.inventory.ItemInstanceDTO;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,16 +17,20 @@ import javax.persistence.ManyToOne;
 /**
  * @author LEBOC Philippe
  */
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class ItemInstance {
 
     @Id
     @GeneratedValue
     private long id;
+
     private String templateId;
+
     private double count;
+
     private ItemType type;
 
     @ManyToOne
@@ -100,20 +104,6 @@ public class ItemInstance {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof ItemInstance) {
-            final ItemInstance item = (ItemInstance) o;
-            if (item.getId() == this.getId()) return true;
-        }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return "ItemInstance{" +
-                "id=" + id +
-                ", templateId='" + templateId + '\'' +
-                ", count=" + count +
-                ", type=" + type +
-                '}';
+        return o != null && o instanceof ItemInstance && ((ItemInstance) o).getId() == getId();
     }
 }

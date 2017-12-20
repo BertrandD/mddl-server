@@ -3,6 +3,8 @@ package com.middlewar.core.model.inventory;
 import com.middlewar.core.interfaces.IInventory;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.dto.inventory.InventoryDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,12 +17,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author LEBOC Philippe
  */
 @Entity
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Inventory implements IInventory {
 
@@ -35,16 +38,6 @@ public abstract class Inventory implements IInventory {
         setItems(new ArrayList<>());
     }
 
-    public abstract InventoryDTO toDTO();
-
-    protected  <T extends InventoryDTO> T toDTO(T dto) {
-        dto.setItems(items.stream().map(ItemInstance::toDTO).collect(Collectors.toList()));
-        return dto;
-    }
-
-    /**
-     * @return an HashMap<TemplateId, ItemInstance>
-     */
     public Map<String, ItemInstance> getItemsToMap() {
         final Map<String, ItemInstance> inventoryItems = new HashMap<>();
         items.forEach(itemInstance -> inventoryItems.put(itemInstance.getTemplateId(), itemInstance));
@@ -57,25 +50,5 @@ public abstract class Inventory implements IInventory {
     @Override
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public List<ItemInstance> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ItemInstance> items) {
-        this.items = items;
-    }
-
-    @Override
-    public String toString() {
-        return "Inventory{" +
-                "id=" + id +
-                ", items=" + items +
-                '}';
     }
 }

@@ -6,7 +6,8 @@ import com.middlewar.core.model.items.SlotItem;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
 public class RecipeInstance {
 
@@ -40,9 +42,7 @@ public class RecipeInstance {
     private double calcStat(Stats stats) {
         StatCalculator damage = new StatCalculator(stats);
 
-        for (Item item : components) {
-            damage.add(item.getStats().get(stats));
-        }
+        for (Item item : components) damage.add(item.getStats().get(stats));
 
         return damage.getValue();
     }
@@ -57,5 +57,10 @@ public class RecipeInstance {
 
     public double calcCargo() {
         return calcStat(Stats.CARGO);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o instanceof RecipeInstance && ((RecipeInstance) o).id == id;
     }
 }

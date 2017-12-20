@@ -2,8 +2,9 @@ package com.middlewar.core.model.report;
 
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.projections.BaseReportProjection;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,7 +14,8 @@ import javax.persistence.OneToOne;
  * @author bertrand.
  */
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class BaseReportEntry extends ReportEntry {
 
@@ -24,5 +26,4 @@ public class BaseReportEntry extends ReportEntry {
         super(base.getName());
         setBase(new BaseReportProjection(base));
     }
-
 }

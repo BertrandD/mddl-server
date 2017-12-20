@@ -8,7 +8,6 @@ import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.inventory.Resource;
-import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
@@ -45,9 +44,6 @@ public class BuildingInstance {
     @ElementCollection
     private List<String> modules;
 
-    @Transient
-    private Lang lang = Lang.EN;
-
     public BuildingInstance() {
         setModules(new ArrayList<>());
     }
@@ -60,28 +56,10 @@ public class BuildingInstance {
         setModules(new ArrayList<>());
     }
 
-    public BuildingInstanceDTO toDTO() {
-        BuildingInstanceDTO dto = new BuildingInstanceDTO();
-        dto.setId(this.getId());
-        dto.setBuildingId(this.getBuildingId());
-        dto.setCurrentLevel(this.getCurrentLevel());
-        dto.setEndsAt(this.getEndsAt());
-        dto.setStartedAt(this.getStartedAt());
-        dto.setModules(this.getModules().stream().map(GameItem::getItemId).collect(Collectors.toList()));
-        dto.setBaseId(this.getBase().getId());
-        return dto;
-    }
-
     public Building getTemplate() {
-        final Building building = BuildingData.getInstance().getBuilding(buildingId);
-        if (building != null)
-            building.setLang(getLang());
-        return building;
+        return BuildingData.getInstance().getBuilding(buildingId);
     }
 
-    /**
-     * @return build time (in millis from functions) to get the next level
-     */
     public long getBuildTime() {
         return getTemplate().getBuildTimeAtLevel(getCurrentLevel() + 1);
     }
@@ -97,15 +75,6 @@ public class BuildingInstance {
 
     public void addModule(String module) {
         modules.add(module);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof BuildingInstance) {
-            final BuildingInstance building = (BuildingInstance) o;
-            return (this.id == building.id);
-        }
-        return false;
     }
 
     public StatHolder calcAvailableCapacity(Resource resource) {
@@ -172,5 +141,10 @@ public class BuildingInstance {
         }
 
         return capacity.toStatHolder(StatOp.DIFF);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o instanceof BuildingInstance && ((BuildingInstance) o).getId() == getId();
     }
 }
