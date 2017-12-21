@@ -18,8 +18,8 @@ class APIClient {
 
     private static void handleErrror(Exception e) {
         if (e instanceof  RestClientResponseException) {
-            log.debug("Error : " + ((RestClientResponseException)e).getRawStatusCode());
-            log.debug(((RestClientResponseException)e).getResponseBodyAsString());
+            log.error("Error : " + ((RestClientResponseException)e).getRawStatusCode());
+            log.error(((RestClientResponseException)e).getResponseBodyAsString());
         } else {
             e.printStackTrace();
         }
