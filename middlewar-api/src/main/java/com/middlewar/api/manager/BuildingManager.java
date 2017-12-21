@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.middlewar.api.manager.TaskManager.findTaskInQueue;
+
 /**
  * @author Bertrand
  */
@@ -80,7 +82,7 @@ public class BuildingManager {
     public BuildingInstance upgrade(Base base, int id) {
         final BuildingInstance building = getBuilding(base, id);
 
-        final BuildingTask lastInQueue = taskManager.findTaskInQueue(building);
+        final BuildingTask lastInQueue = findTaskInQueue(building);
         final Building template = building.getTemplate();
         if (building.getCurrentLevel() >= template.getMaxLevel() ||
                 (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())) {
