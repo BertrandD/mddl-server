@@ -9,6 +9,7 @@ import com.middlewar.cli.commands.LoadCommand;
 import com.middlewar.cli.commands.LoginCommand;
 import com.middlewar.cli.commands.RegisterCommand;
 import com.middlewar.cli.commands.SaveCommand;
+import com.middlewar.cli.commands.WaitCommand;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 
@@ -48,6 +49,7 @@ public class CommandHandler {
         COMMANDS.put("save", new SaveCommand());
         COMMANDS.put("load", new LoadCommand());
         COMMANDS.put("build", new BuildCommand());
+        COMMANDS.put("wait", new WaitCommand());
 
         ALIASES.put("b", "build");
         ALIASES.put("i", "info");

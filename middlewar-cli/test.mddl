@@ -6,3 +6,9 @@ r test test
 create player toto
 create base home
 build silo
+build silo
+wait 11000
+build mine
+info base
+wait 10000
+info base
