@@ -21,7 +21,7 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @Entity
 @JsonSerialize(using = BuildingTaskSerializer.class)
-public class BuildingTask implements Comparable<BuildingTask> {
+public class BuildingTask implements Comparable<BuildingTask>, Task {
 
     @Id
     @GeneratedValue

@@ -16,6 +16,7 @@ public class ThreadPoolManager implements TaskScheduler {
 
     protected ThreadPoolManager() {
         threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(100);
         threadPoolTaskScheduler.initialize();
     }
 

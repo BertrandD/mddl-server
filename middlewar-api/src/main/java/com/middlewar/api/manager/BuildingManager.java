@@ -4,14 +4,11 @@ import com.middlewar.api.exceptions.BuildingAlreadyExistsException;
 import com.middlewar.api.exceptions.BuildingCreationException;
 import com.middlewar.api.exceptions.BuildingMaxLevelReachedException;
 import com.middlewar.api.exceptions.BuildingNotFoundException;
-import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.MaximumModulesReachedException;
 import com.middlewar.api.exceptions.ModuleNotAllowedHereException;
 import com.middlewar.api.exceptions.ModuleNotInInventoryException;
-import com.middlewar.api.exceptions.NotEnoughModulesException;
 import com.middlewar.api.services.BuildingService;
 import com.middlewar.api.services.InventoryService;
 import com.middlewar.api.services.ValidatorService;
@@ -46,7 +43,7 @@ public class BuildingManager {
     private ValidatorService validator;
 
     @Autowired
-    private BuildingTaskManager buildingTaskManager;
+    private TaskManager taskManager;
 
     public BuildingInstance getBuilding(Base base, int id) {
         final BuildingInstance building = base.getBuildings().stream().filter(k -> k.getId() == id).findFirst().orElse(null);
@@ -75,7 +72,7 @@ public class BuildingManager {
 
         collector.forEach(inventoryService::consumeItem);
 
-        buildingTaskManager.ScheduleUpgrade(building);
+        taskManager.scheduleUpgrade(building);
 
         return building;
     }
@@ -83,7 +80,7 @@ public class BuildingManager {
     public BuildingInstance upgrade(Base base, int id) {
         final BuildingInstance building = getBuilding(base, id);
 
-        final BuildingTask lastInQueue = buildingTaskManager.findTaskInQueue(building);
+        final BuildingTask lastInQueue = taskManager.findTaskInQueue(building);
         final Building template = building.getTemplate();
         if (building.getCurrentLevel() >= template.getMaxLevel() ||
                 (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())) {
@@ -97,7 +94,7 @@ public class BuildingManager {
 
         base.initializeStats();
 
-        buildingTaskManager.ScheduleUpgrade(building);
+        taskManager.scheduleUpgrade(building);
         return building;
     }
 

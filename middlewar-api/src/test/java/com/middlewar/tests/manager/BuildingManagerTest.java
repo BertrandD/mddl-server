@@ -2,26 +2,17 @@ package com.middlewar.tests.manager;
 
 
 import com.middlewar.api.exceptions.BuildingAlreadyExistsException;
-import com.middlewar.api.exceptions.BuildingCreationException;
 import com.middlewar.api.exceptions.BuildingMaxLevelReachedException;
 import com.middlewar.api.exceptions.BuildingNotFoundException;
 import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
-import com.middlewar.api.exceptions.ForbiddenNameException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
 import com.middlewar.api.exceptions.MaximumModulesReachedException;
 import com.middlewar.api.exceptions.ModuleNotAllowedHereException;
 import com.middlewar.api.exceptions.ModuleNotInInventoryException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.NotEnoughModulesException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.BuildingManager;
-import com.middlewar.api.manager.BuildingTaskManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.AccountService;
@@ -40,7 +31,6 @@ import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.tests.ApplicationTest;
 import com.middlewar.tests.TestUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,9 +75,6 @@ public class BuildingManagerTest {
     private InventoryService inventoryService;
 
     @Autowired
-    private BuildingTaskManager buildingTaskManager;
-
-    @Autowired
     private BuildingService buildingService;
 
     private Base _base;
@@ -102,11 +89,6 @@ public class BuildingManagerTest {
         Player _player = playerManager.createForAccount(_account, "owner");
         Planet planet = planetManager.pickRandom();
         _base = baseService.create("base1", _player, planet);
-    }
-
-    @After
-    public void clear() {
-        buildingTaskManager.restart(true);
     }
 
     @Test(expected = BuildingTemplateNotFoundException.class)
