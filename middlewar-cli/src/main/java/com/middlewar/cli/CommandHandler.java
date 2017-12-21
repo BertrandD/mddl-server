@@ -74,6 +74,10 @@ public class CommandHandler {
 
         Command com = COMMANDS.get(command);
         com.setInput(parts);
-        com.exec();
+        try {
+            com.exec();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
