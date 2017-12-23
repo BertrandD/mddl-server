@@ -7,7 +7,7 @@ import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
-import com.middlewar.dto.instances.BuildingInstanceDTO;
+import com.middlewar.dto.instances.BuildingInstanceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,12 +39,12 @@ public class BuildingInstanceController {
     }
 
     @RequestMapping(value = Route.BUILDING_CREATE, method = RequestMethod.POST)
-    public BuildingInstanceDTO create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @RequestParam(value = "building") String templateId) {
+    public BuildingInstanceDto create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @RequestParam(value = "building") String templateId) {
         return buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId).toDTO();
     }
 
     @RequestMapping(value = Route.BUILDING_UPGRADE, method = RequestMethod.PUT)
-    public BuildingInstanceDTO upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int id) {
+    public BuildingInstanceDto upgrade(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int id) {
         return buildingManager.upgrade(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id).toDTO();
     }
 

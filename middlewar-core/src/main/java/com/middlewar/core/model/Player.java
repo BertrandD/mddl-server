@@ -41,7 +41,7 @@ public class Player extends Observable {
 
     @Id
     @GeneratedValue
-    private long id;
+    private int id;
 
     @Column(unique = true)
     private String name;

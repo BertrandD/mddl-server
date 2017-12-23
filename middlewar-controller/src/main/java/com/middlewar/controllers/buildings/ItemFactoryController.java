@@ -6,7 +6,7 @@ import com.middlewar.api.manager.FactoryManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
-import com.middlewar.dto.inventory.ItemInstanceDTO;
+import com.middlewar.dto.inventory.ItemInstanceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +35,7 @@ public class ItemFactoryController {
     private ControllerManagerWrapper controllerManagerWrapper;
 
     @RequestMapping(value = Route.ITEM_FACTORY_CREATE_MODULE, method = RequestMethod.POST)
-    public ItemInstanceDTO createModule(@AuthenticationPrincipal Account pAccount,
+    public ItemInstanceDto createModule(@AuthenticationPrincipal Account pAccount,
                                         @PathVariable(value = "baseId") int baseId,
                                         @PathVariable(value = "factoryId") int factoryId,
                                         @PathVariable(value = "id") String itemId) {
@@ -43,7 +43,7 @@ public class ItemFactoryController {
     }
 
     @RequestMapping(value = Route.ITEM_FACTORY_CREATE_STRUCTURE, method = RequestMethod.POST)
-    public ItemInstanceDTO createStructure(@AuthenticationPrincipal Account pAccount,
+    public ItemInstanceDto createStructure(@AuthenticationPrincipal Account pAccount,
                                            @PathVariable(value = "baseId") int baseId,
                                            @PathVariable(value = "factoryId") int factoryId,
                                            @PathVariable(value = "id") String itemId) {

@@ -2,7 +2,7 @@ package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.data.xml.ItemData;

@@ -21,12 +21,4 @@ public class StatHolder {
         setValue(value);
     }
 
-    public StatHolderDTO toDTO() {
-        StatHolderDTO dto = new StatHolderDTO();
-        dto.setStat(stat.name());
-        dto.setOp(op.name());
-        dto.setValue(value);
-        return dto;
-    }
-
 }

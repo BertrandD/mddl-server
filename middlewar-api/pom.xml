@@ -53,7 +53,6 @@
             <groupId>com.middlewar</groupId>
             <artifactId>middlewar-core</artifactId>
             <version>0.11-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <!-- Tests -->
         <dependency>
@@ -61,13 +60,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${springboot.version}</version>
             <scope>test</scope>
-        </dependency>
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
         </dependency>
         <!-- Database -->
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->

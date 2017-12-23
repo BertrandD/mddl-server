@@ -33,8 +33,6 @@ public class FriendController {
 
     @RequestMapping(value = Route.REQUEST_CREATE, method = RequestMethod.POST)
     public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") int friendId, @RequestParam(value = "message") String message) {
-//        Assert.hasLength(friendId, "Invalid parameter friendId.");
-        Assert.hasLength(message, "Empty message.");
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
@@ -62,8 +60,7 @@ public class FriendController {
             return new Response("You have already sent a friend request to " + friend.getName());
 
         final FriendRequest request = friendRequestService.create(player, friend, message);
-        if (request == null)
-            return new Response<>(JsonResponseType.ERROR, SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
+        if (request == null) return new Response(SystemMessageId.FAILED_TO_SEND_FRIEND_REQUEST);
 
         return new Response(player); // TODO: send only the new friendrequest instead of Player !
     }
@@ -88,7 +85,7 @@ public class FriendController {
         friend.getEmittedFriendRequests().remove(request);
         player.getReceivedFriendRequests().remove(request);
 
-        return new Response<>(player);
+        return new Response(player);
     }
 
     @RequestMapping(value = Route.REQUEST_REFUSE, method = RequestMethod.GET)
@@ -106,6 +103,6 @@ public class FriendController {
         friend.getEmittedFriendRequests().remove(request);
         player.getEmittedFriendRequests().remove(request);
 
-        return new Response<>(player); // TODO: SysMsg
+        return new Response(player); // TODO: SysMsg
     }
 }

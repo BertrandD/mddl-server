@@ -1,10 +1,5 @@
 package com.middlewar.controllers;
 
-import com.middlewar.api.exceptions.BaseCreationException;
-import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
@@ -13,8 +8,7 @@ import com.middlewar.api.util.response.Response;
 import com.middlewar.client.Route;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.model.Account;
-import com.middlewar.core.model.Base;
-import com.middlewar.dto.BaseDTO;
+import com.middlewar.dto.BaseDto;
 import com.middlewar.dto.holder.BuildingHolderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -45,17 +39,17 @@ public class BaseController {
     private ReportManager reportManager;
 
     @RequestMapping(value = Route.BASE_ALL, method = RequestMethod.GET)
-    public List<BaseDTO> findAll(@AuthenticationPrincipal Account pAccount) {
-        return baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)).stream().map(Base::toDTO).collect(Collectors.toList());
+    public List<BaseDto> findAll(@AuthenticationPrincipal Account pAccount) {
+        return baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)).stream().map(BaseDto::new).collect(Collectors.toList());
     }
 
     @RequestMapping(value = Route.BASE_ONE, method = RequestMethod.GET)
-    public BaseDTO findOne(@AuthenticationPrincipal Account account, @PathVariable("id") int id) {
+    public BaseDto findOne(@AuthenticationPrincipal Account account, @PathVariable("id") int id) {
         return baseManager.getOwnedBase(id, playerManager.getCurrentPlayerForAccount(account)).toDTO();
     }
 
     @RequestMapping(value = Route.BASE_CREATE, method = RequestMethod.POST)
-    public BaseDTO create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
+    public BaseDto create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
         return baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name).toDTO();
     }
 

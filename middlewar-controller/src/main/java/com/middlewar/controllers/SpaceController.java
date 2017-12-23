@@ -1,7 +1,6 @@
 package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.services.PlanetScanReportService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.Response;
@@ -42,12 +41,12 @@ public class SpaceController {
 
         Star star = (Star) player.getCurrentBase().getPlanet().getParent();
 
-        return new Response<>(star);
+        return new Response(star);
     }
 
     @RequestMapping(value = Route.SPACE_SYSTEM_ONE, method = RequestMethod.GET)
     public Response findSystem(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
-        if (pAccount.getCurrentPlayer() == 0) return new Response<>(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
+        if (pAccount.getCurrentPlayer() == 0) return new Response(SystemMessageId.CHOOSE_PLAYER);
 
         Star star = (Star) WorldData.getInstance().getStar(id);
 
@@ -56,7 +55,7 @@ public class SpaceController {
 
     @RequestMapping(value = Route.SPACE_SYSTEM_SCAN, method = RequestMethod.GET)
     public Response scanAstralObject(@AuthenticationPrincipal Account pAccount, @PathVariable("id") String id) {
-        if (pAccount.getCurrentPlayer() == 0) return new Response<>(pAccount.getLang(), SystemMessageId.CHOOSE_PLAYER);
+        if (pAccount.getCurrentPlayer() == 0) return new Response(SystemMessageId.CHOOSE_PLAYER);
 
         final Player player = playerService.findOne(pAccount.getCurrentPlayer());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
@@ -64,10 +63,10 @@ public class SpaceController {
         Planet planet = WorldData.getInstance().getPlanet(id);
 
         if (planet == null) {
-            return new Response<>(JsonResponseType.ERROR, "Planet not found");
+            return new Response("Planet not found");
         }
 
-        PlanetScanReport report = planetScanReportService.create(player, player.getCurrentBase(), (Planet) planet);
+        PlanetScanReport report = planetScanReportService.create(player, player.getCurrentBase(), planet);
         Response response = new Response(report);
         response.getMetadata().put("player", player);
         return response;

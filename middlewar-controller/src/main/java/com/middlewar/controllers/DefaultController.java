@@ -11,16 +11,14 @@ import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
-import com.middlewar.dto.AccountDTO;
+import com.middlewar.dto.AccountDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -81,7 +79,7 @@ public class DefaultController implements ErrorController {
     }
 
     @RequestMapping(value = Route.LOGIN, method = RequestMethod.POST)
-    public AccountDTO login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
+    public AccountDto login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
         return accountManager.login(username, password).toDTO();
     }
 
@@ -92,7 +90,7 @@ public class DefaultController implements ErrorController {
     }
 
     @RequestMapping(value = Route.REGISTER, method = RequestMethod.POST)
-    public AccountDTO register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+    public AccountDto register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
         return accountManager.register(username, password).toDTO();
     }
 

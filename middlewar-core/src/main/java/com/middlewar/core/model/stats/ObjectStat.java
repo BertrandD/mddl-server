@@ -2,6 +2,7 @@ package com.middlewar.core.model.stats;
 
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.StatHolder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @author LEBOC Philippe
  */
 @Slf4j
+@Getter
 public class ObjectStat {
 
     private Map<Stats, List<StatHolder>> stats;

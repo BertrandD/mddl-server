@@ -14,6 +14,7 @@
     <name>Middlewar :: Boot</name>
     <artifactId>middlewar-boot</artifactId>
     <version>0.11-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

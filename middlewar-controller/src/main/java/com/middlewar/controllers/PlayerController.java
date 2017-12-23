@@ -6,7 +6,7 @@ import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
-import com.middlewar.dto.PlayerDTO;
+import com.middlewar.dto.PlayerDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +46,12 @@ public class PlayerController {
 */
 
     @RequestMapping(value = Route.PLAYER_ONE, method = RequestMethod.GET)
-    public PlayerDTO player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
+    public PlayerDto player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
         return playerManager.getPlayerOfAccount(account, id).toDTO();
     }
 
     @RequestMapping(value = Route.PLAYER_CREATE, method = RequestMethod.POST)
-    public PlayerDTO create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
+    public PlayerDto create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
         return playerManager.createForAccount(account, name).toDTO();
 
     }
