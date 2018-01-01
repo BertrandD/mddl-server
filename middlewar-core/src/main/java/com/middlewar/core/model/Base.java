@@ -10,12 +10,11 @@ import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
-import com.middlewar.core.utils.Observable;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Singular;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,11 +25,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
+import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
 
 /**
  * @author LEBOC Philippe
@@ -38,28 +40,32 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
-public class Base extends Observable {
+@Table(name = "bases")
+public class Base {
 
     @Id
     @GeneratedValue
     private int id;
+
+    @NotEmpty
+    @Size(min = 3, max = 16)
     private String name;
 
     @ManyToOne
     private Player owner;
 
+    @NotNull
+    private Planet planet;
+
     @Transient
     private ObjectStat baseStat;
 
-    @Singular
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ship> ships;
 
-    @Singular
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Fleet> fleets;
 
-    @Singular
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BuildingInstance> buildings;
 
@@ -69,38 +75,33 @@ public class Base extends Observable {
 
     @OneToMany(mappedBy = "base", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
-    @Singular
     private List<Resource> resources;
 
-    @Singular
     @OneToMany(mappedBy = "baseSrc", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Report> reports;
 
     private PriorityQueue<BuildingTask> buildingTasks;
 
-    private Planet planet;
-    private boolean deleted;
-
     public Base() {
         setBaseStat(new ObjectStat());
-        setShips(new ArrayList<>());
-        setFleets(new ArrayList<>());
-        setBuildings(new ArrayList<>());
-        setResources(new ArrayList<>());
-        setReports(new ArrayList<>());
+        setShips(emptyList());
+        setFleets(emptyList());
+        setBuildings(emptyList());
+        setResources(emptyList());
+        setReports(emptyList());
         setBuildingTasks(new PriorityQueue<>());
     }
 
     public Base(String name, Player owner, Planet planet) {
         setName(name);
         setOwner(owner);
-        setBuildings(new ArrayList<>());
+        setBuildings(emptyList());
         setBaseStat(new ObjectStat());
         setBaseInventory(new BaseInventory(this));
-        setResources(new ArrayList<>());
-        setShips(new ArrayList<>());
-        setFleets(new ArrayList<>());
-        setReports(new ArrayList<>());
+        setResources(emptyList());
+        setShips(emptyList());
+        setFleets(emptyList());
+        setReports(emptyList());
         setPlanet(planet);
         setBuildingTasks(new PriorityQueue<>());
     }
