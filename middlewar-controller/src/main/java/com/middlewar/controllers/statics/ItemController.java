@@ -2,7 +2,6 @@ package com.middlewar.controllers.statics;
 
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.client.Route;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.items.Cargo;
@@ -35,13 +34,13 @@ public class ItemController {
         final Map<String, List<? extends GameItem>> all = new HashMap<>();
         final ItemData itemData = ItemData.getInstance();
 
-        all.put("COMMON", itemData.getCommonItems(pAccount.getLang()));
-        all.put("CARGO", itemData.getCargos(pAccount.getLang()));
-        all.put("ENGINE", itemData.getEngines(pAccount.getLang()));
-        all.put("MODULE", itemData.getModules(pAccount.getLang()));
-        all.put("RESOURCE", itemData.getResources(pAccount.getLang()));
-        all.put("STRUCTURE", itemData.getStructures(pAccount.getLang()));
-        all.put("WEAPON", itemData.getWeapons(pAccount.getLang()));
+        all.put("COMMON", itemData.getCommonItems());
+        all.put("CARGO", itemData.getCargos());
+        all.put("ENGINE", itemData.getEngines());
+        all.put("MODULE", itemData.getModules());
+        all.put("RESOURCE", itemData.getResources());
+        all.put("STRUCTURE", itemData.getStructures());
+        all.put("WEAPON", itemData.getWeapons());
 
         return new Response(all);
     }

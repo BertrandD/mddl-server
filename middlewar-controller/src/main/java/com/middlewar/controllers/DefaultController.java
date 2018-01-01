@@ -3,13 +3,10 @@ package com.middlewar.controllers;
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.services.impl.AccountServiceImpl;
-import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.client.Route;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.enums.Lang;
 import com.middlewar.core.model.Account;
 import com.middlewar.dto.AccountDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 
 /**
  * @author LEBOC Philippe
@@ -57,11 +53,11 @@ public class DefaultController implements ErrorController {
     @RequestMapping(value = "/reset", method = RequestMethod.GET)
     public Response resetDatabase(@AuthenticationPrincipal Account pAccount) {
         //updateService.resetDatabase(); // TODO: CLEANUP ME
-        pAccount.setCurrentPlayer(0);
+        pAccount.setCurrentPlayerId(0);
         pAccount.getPlayers().clear();
-        Account account = accountService.findOne(pAccount.getId());
+        Account account = accountService.find(pAccount.getId());
         account.getPlayers().clear();
-        account.setCurrentPlayer(0);
+        account.setCurrentPlayerId(0);
         return new Response();
     }
 
@@ -80,35 +76,19 @@ public class DefaultController implements ErrorController {
 
     @RequestMapping(value = Route.LOGIN, method = RequestMethod.POST)
     public AccountDto login(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, HttpServletResponse response) {
-        return accountManager.login(username, password).toDTO();
-    }
-
-    @RequestMapping(value = "/invalidate", method = RequestMethod.GET)
-    public Response logout(@AuthenticationPrincipal Account account) {
-        account.setToken(UUID.randomUUID().toString());
-        return new Response();
+        return accountManager.login(username, password);
     }
 
     @RequestMapping(value = Route.REGISTER, method = RequestMethod.POST)
     public AccountDto register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        return accountManager.register(username, password).toDTO();
+        return accountManager.register(username, password);
     }
 
     @User
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     public Response aboutMe(@AuthenticationPrincipal Account account) {
-        final Account reqAccount = accountService.findOne(account.getId());
+        final Account reqAccount = accountService.find(account.getId());
         return new Response(reqAccount);
-    }
-
-    @User
-    @RequestMapping(value = "/lang", method = RequestMethod.POST)
-    public Response changeLanguage(@AuthenticationPrincipal Account account, @RequestParam(value = "lang") String lang) {
-        final Lang newLang = Lang.valueOf(lang.toUpperCase()); // TODO: Exception
-        final Account currentAccount = accountService.findOne(account.getId());
-        account.setLang(newLang);
-        currentAccount.setLang(newLang);
-        return new Response(JsonResponseType.SUCCESS);
     }
 
     @User

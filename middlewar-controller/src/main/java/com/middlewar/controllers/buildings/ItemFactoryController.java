@@ -4,7 +4,6 @@ import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.FactoryManager;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.dto.inventory.ItemInstanceDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class ItemFactoryController {
                                         @PathVariable(value = "baseId") int baseId,
                                         @PathVariable(value = "factoryId") int factoryId,
                                         @PathVariable(value = "id") String itemId) {
-        return factoryManager.createModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId).toDTO();
+        return factoryManager.createModule(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId);
     }
 
     @RequestMapping(value = Route.ITEM_FACTORY_CREATE_STRUCTURE, method = RequestMethod.POST)
@@ -47,6 +46,6 @@ public class ItemFactoryController {
                                            @PathVariable(value = "baseId") int baseId,
                                            @PathVariable(value = "factoryId") int factoryId,
                                            @PathVariable(value = "id") String itemId) {
-        return factoryManager.createStructure(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId).toDTO();
+        return factoryManager.createStructure(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), factoryId, itemId);
     }
 }

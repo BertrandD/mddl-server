@@ -4,7 +4,6 @@ import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -5,7 +5,6 @@ import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.dto.instances.BuildingInstanceDto;
 import org.springframework.beans.factory.annotation.Autowired;

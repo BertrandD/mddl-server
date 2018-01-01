@@ -4,9 +4,7 @@ import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
-import com.middlewar.dto.PlayerDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @User
 @RestController
 @Api(value = "players", produces = "application/json")
-@RequestMapping(consumes = "application/json", produces = "application/json")
+@RequestMapping(name = "/player", consumes = "application/json", produces = "application/json")
 public class PlayerController {
 
     @Autowired
@@ -32,27 +30,26 @@ public class PlayerController {
     @Autowired
     private PlayerManager playerManager;
 
-    @RequestMapping(value = Route.PLAYER_ALL_OWNED, method = RequestMethod.GET)
+    @RequestMapping(value = "/me", method = RequestMethod.GET)
     public Response players(@AuthenticationPrincipal Account pAccount) {
         return new Response(playerManager.getAllPlayersForAccount(pAccount));
     }
 
     @ApiOperation(value = "Return all players", notes = "This method must be turned off and used as ROLE_ADMIN")
-    @RequestMapping(value = "/players", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public Response showAllPlayers() {
         // TODO: used for tests. Remove when administration will be done
         return new Response(playerService.findAll());
     }
-*/
 
-    @RequestMapping(value = Route.PLAYER_ONE, method = RequestMethod.GET)
-    public PlayerDto player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
-        return playerManager.getPlayerOfAccount(account, id).toDTO();
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") Long id) {
+        return new Response(playerManager.getPlayerOfAccount(account, id));
     }
 
-    @RequestMapping(value = Route.PLAYER_CREATE, method = RequestMethod.POST)
-    public PlayerDto create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
-        return playerManager.createForAccount(account, name).toDTO();
+    @RequestMapping(method = RequestMethod.POST)
+    public Response create(@AuthenticationPrincipal Account account, @RequestParam(value = "name") String name) {
+        return new Response(playerManager.createForAccount(account, name));
 
     }
 }

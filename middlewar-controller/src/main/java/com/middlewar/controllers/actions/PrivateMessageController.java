@@ -1,11 +1,11 @@
 package com.middlewar.controllers.actions;
 
 import com.middlewar.api.annotations.authentication.User;
+import com.middlewar.api.services.PlayerService;
 import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.services.PrivateMessageService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
-import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.PrivateMessage;
@@ -30,11 +30,11 @@ public class PrivateMessageController {
     private PrivateMessageService service;
 
     @Autowired
-    private PlayerServiceImpl playerService;
+    private PlayerService playerService;
 
     @RequestMapping(value = Route.PM_ALL, method = RequestMethod.GET)
     public Response showAll(@AuthenticationPrincipal Account pAccount) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        final Player player = playerService.find(pAccount.getCurrentPlayerId());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
         //service.findByBaseAndId(new Sort(Sort.Direction.DESC, "date"), Criteria.where("author._id").is(new ObjectId(player.getId())).orOperator(Criteria.where("receiver._id").is(new ObjectId(player.getId()))));
         return new Response("TODO: implement me");
@@ -42,10 +42,10 @@ public class PrivateMessageController {
 
     @RequestMapping(value = Route.PM_ONE, method = RequestMethod.GET)
     public Response show(@AuthenticationPrincipal Account pAccount, @PathVariable(value = "id") int pmId) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        final Player player = playerService.find(pAccount.getCurrentPlayerId());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
 
-        final PrivateMessage pm = service.findOne(pmId);
+        final PrivateMessage pm = service.find(pmId);
         if (pm.getAuthor().getId() != (player.getId()) && pm.getReceiver().getId() != (player.getId()))
             return new Response("Invalid request");
 
@@ -59,10 +59,10 @@ public class PrivateMessageController {
 
     @RequestMapping(value = Route.PM_SEND, method = RequestMethod.POST)
     public Response send(@AuthenticationPrincipal Account pAccount, @RequestParam("receiver") int receiverId, @RequestParam("message") String message) {
-        final Player player = playerService.findOne(pAccount.getCurrentPlayer());
+        final Player player = playerService.find(pAccount.getCurrentPlayerId());
         if (player == null) return new Response(SystemMessageId.PLAYER_NOT_FOUND);
 
-        final Player receiver = playerService.findOne(receiverId);
+        final Player receiver = playerService.find(receiverId);
         if (receiver == null) return new Response("Invalid receiver. Player not found");
 
         // TODO: Check sender != receiver
