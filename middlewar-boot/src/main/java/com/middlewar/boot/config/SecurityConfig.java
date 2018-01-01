@@ -60,6 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and()
             .httpBasic().and().csrf().disable();
+
+        // H2 need
+        http.headers().frameOptions().disable();
     }
 
     @Autowired
