@@ -25,16 +25,15 @@
         <swagger2-ui.version>2.6.1</swagger2-ui.version>
         <lombok.version>1.16.18</lombok.version>
         <slf4j.version>1.7.25</slf4j.version>
+        <h2.version>1.4.196</h2.version>
     </properties>
 
     <modules>
-        <module>middlewar-ai</module>
         <module>middlewar-api</module>
         <module>middlewar-boot</module>
         <module>middlewar-cli</module>
         <module>middlewar-controller</module>
         <module>middlewar-core</module>
-        <module>middlewar-front</module>
         <module>middlewar-web</module>
     </modules>
 
