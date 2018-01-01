@@ -1,8 +1,8 @@
 package com.middlewar.tests.services;
 
 
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.tests.ApplicationTest;
@@ -27,10 +27,10 @@ import javax.transaction.Transactional;
 public class PlayerServiceTest {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     private Account account;
 

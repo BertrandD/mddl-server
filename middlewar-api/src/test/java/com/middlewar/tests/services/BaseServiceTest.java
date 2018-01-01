@@ -2,9 +2,9 @@ package com.middlewar.tests.services;
 
 
 import com.middlewar.api.manager.impl.PlanetManagerImpl;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -32,16 +32,16 @@ import javax.transaction.Transactional;
 public class BaseServiceTest {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Autowired
     private PlanetManagerImpl planetManager;
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     private Account _account;
     private Player _player;

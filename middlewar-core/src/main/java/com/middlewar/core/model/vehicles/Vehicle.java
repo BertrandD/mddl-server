@@ -9,7 +9,6 @@ import com.middlewar.core.model.items.Engine;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.items.Structure;
 import com.middlewar.core.model.items.Weapon;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,11 +33,13 @@ public abstract class Vehicle implements IShip {
     @GeneratedValue
     private long id;
 
+    @Min(0)
     private long count;
 
     @ManyToOne
     private Base base;
 
+    @NotNull
     private VehicleState state;
 
     private RecipeInstance recipeInstance;

@@ -1,25 +1,15 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.BadItemException;
-import com.middlewar.api.exceptions.BaseCreationException;
-import com.middlewar.api.exceptions.ForbiddenNameException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.api.exceptions.NotEnoughSlotsException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
-import com.middlewar.api.exceptions.RecipeCreationFailedException;
 import com.middlewar.api.exceptions.RecipeNotFoundException;
-import com.middlewar.api.exceptions.ShipCreationFailedException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.RecipeManager;
 import com.middlewar.api.manager.ShipManager;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BuildingServiceImpl;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -57,16 +47,16 @@ public class ShipManagerTest {
     private PlayerManager playerManager;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
     private RecipeManager recipeManager;
 
     @Autowired
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     @Autowired
     private ShipManager shipManager;

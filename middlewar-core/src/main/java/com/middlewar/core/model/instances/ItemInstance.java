@@ -7,11 +7,14 @@ import com.middlewar.core.model.items.GameItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author LEBOC Philippe
@@ -26,10 +29,13 @@ public class ItemInstance {
     @GeneratedValue
     private long id;
 
+    @NotEmpty
     private String templateId;
 
+    @Min(0)
     private double count;
 
+    @NotNull
     private ItemType type;
 
     @ManyToOne

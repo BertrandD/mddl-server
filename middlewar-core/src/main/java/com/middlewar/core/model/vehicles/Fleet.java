@@ -8,12 +8,16 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * @author LEBOC Philippe
@@ -21,14 +25,22 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "fleets")
 public class Fleet {
 
     @Id
+    @GeneratedValue
     private long id;
+
+    @NotNull
     @ManyToOne
     private Coordinates departure;
+
+    @NotNull
     @ManyToOne
     private Coordinates arrival;
+
+    @NotNull
     private VehicleMission mission;
 
     @Transient
@@ -38,12 +50,12 @@ public class Fleet {
     private List<Ship> ships;
 
     public Fleet() {
-        setShips(new ArrayList<>());
+        setShips(emptyList());
         setStats(new ObjectStat());
     }
 
     public Fleet(Coordinates arrival, Coordinates departure, VehicleMission mission) {
-        setShips(new ArrayList<>());
+        setShips(emptyList());
         setStats(new ObjectStat());
         setDeparture(departure);
         setArrival(arrival);
@@ -75,8 +87,4 @@ public class Fleet {
 
     }
 */
-
-    public long getShipCount() {
-        return getShips().stream().mapToLong(Ship::getCount).sum();
-    }
 }

@@ -1,7 +1,8 @@
 package com.middlewar.core.model.commons;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,9 +14,10 @@ import javax.persistence.Id;
  * Maximum value : [99:999:99]
  * (Exemple: 01:65:621:6)
  */
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class Coordinates {
 
     @Id

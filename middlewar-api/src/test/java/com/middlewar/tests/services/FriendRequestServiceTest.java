@@ -1,9 +1,9 @@
 package com.middlewar.tests.services;
 
 
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.FriendRequestService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.FriendRequestServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
@@ -29,13 +29,13 @@ import javax.transaction.Transactional;
 public class FriendRequestServiceTest {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Autowired
-    private FriendRequestService friendRequestService;
+    private FriendRequestServiceImpl friendRequestService;
 
     private Player _requester;
     private Player _requested1;

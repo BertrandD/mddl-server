@@ -2,7 +2,7 @@ package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.client.Route;
 import com.middlewar.core.model.Account;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlayerController {
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Autowired
     private PlayerManager playerManager;

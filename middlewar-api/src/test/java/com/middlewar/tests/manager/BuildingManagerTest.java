@@ -2,32 +2,24 @@ package com.middlewar.tests.manager;
 
 
 import com.middlewar.api.exceptions.BuildingAlreadyExistsException;
-import com.middlewar.api.exceptions.BuildingCreationException;
 import com.middlewar.api.exceptions.BuildingMaxLevelReachedException;
 import com.middlewar.api.exceptions.BuildingNotFoundException;
 import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
-import com.middlewar.api.exceptions.ForbiddenNameException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
 import com.middlewar.api.exceptions.MaximumModulesReachedException;
 import com.middlewar.api.exceptions.ModuleNotAllowedHereException;
 import com.middlewar.api.exceptions.ModuleNotInInventoryException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.NotEnoughModulesException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.impl.BaseManagerImpl;
 import com.middlewar.api.manager.impl.BuildingManagerImpl;
 import com.middlewar.api.manager.BuildingTaskManager;
 import com.middlewar.api.manager.impl.PlanetManagerImpl;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.services.impl.BuildingServiceImpl;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
@@ -67,13 +59,13 @@ public class BuildingManagerTest {
     private BaseManagerImpl baseManager;
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     @Autowired
     private PlayerManagerImpl playerManager;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
     private PlanetManagerImpl planetManager;
@@ -82,13 +74,13 @@ public class BuildingManagerTest {
     private BuildingManagerImpl buildingManager;
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     @Autowired
     private BuildingTaskManager buildingTaskManager;
 
     @Autowired
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
 
     private Base _base;
 
@@ -139,7 +131,7 @@ public class BuildingManagerTest {
         Assertions.assertThat(buildQueue.size()).isEqualTo(1);
         BuildingTask buildingInstanceInQueue = baseManager.getBaseBuildingQueue(_base).peek();
         Assertions.assertThat(buildingInstanceInQueue.getBase()).isEqualTo(_base);
-        Assertions.assertThat(buildingInstanceInQueue.getBuilding().getBuildingId()).isEqualTo("shield");
+        Assertions.assertThat(buildingInstanceInQueue.getBuilding().getTemplateId()).isEqualTo("shield");
         Assertions.assertThat(buildingInstanceInQueue.getBuilding().getCurrentLevel()).isEqualTo(0);
     }
 

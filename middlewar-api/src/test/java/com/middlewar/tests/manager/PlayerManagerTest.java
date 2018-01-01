@@ -1,17 +1,15 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.exceptions.ForbiddenNameException;
 import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
 import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.PlayerNotOwnedException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
@@ -42,10 +40,10 @@ public class PlayerManagerTest {
     private PlayerManagerImpl playerManager;
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     private Player _player;
     private Player _player2;

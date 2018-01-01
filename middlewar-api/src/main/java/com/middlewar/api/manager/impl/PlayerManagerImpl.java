@@ -8,7 +8,7 @@ import com.middlewar.api.exceptions.PlayerNotFoundException;
 import com.middlewar.api.exceptions.PlayerNotOwnedException;
 import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
@@ -20,6 +20,8 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 /**
  * @author Bertrand
  */
@@ -28,13 +30,13 @@ import java.util.List;
 public class PlayerManagerImpl implements PlayerManager {
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     public Player getCurrentPlayerForAccount(Account account) {
-        if (account.getCurrentPlayer() == 0) {
+        if (account.getCurrentPlayerId() == 0) {
             throw new NoPlayerConnectedException();
         } else {
-            final Player player = playerService.findOne(account.getCurrentPlayer());
+            final Player player = playerService.find(account.getCurrentPlayerId());
             if (player == null) {
                 throw new PlayerNotFoundException();
             }
@@ -56,7 +58,7 @@ public class PlayerManagerImpl implements PlayerManager {
         if (account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
             throw new MaxPlayerCreationReachedException();
 
-        if (playerService.findByName(name) != null) throw new UsernameAlreadyExistsException();
+        //if (playerService.findByName(name) != null) throw new UsernameAlreadyExistsException(); TODO
 
         // Check if name is forbidden (Like 'fuck', 'admin', ...)
         if (Config.FORBIDDEN_NAMES.length > 1) {
@@ -78,6 +80,6 @@ public class PlayerManagerImpl implements PlayerManager {
     }
 
     public List<Player> getAllPlayersForAccount(Account account) {
-        return playerService.findByAccount(account);
+        return emptyList(); //playerService.findByAccount(account);
     }
 }

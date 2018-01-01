@@ -1,16 +1,12 @@
 package com.middlewar.tests.services;
 
 
-import com.middlewar.api.exceptions.BadItemException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.NotEnoughSlotsException;
-import com.middlewar.api.exceptions.RecipeCreationFailedException;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.RecipeManager;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.ItemService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.services.impl.ItemServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.services.ResourceService;
 import com.middlewar.api.services.SpyReportService;
 import com.middlewar.core.data.json.WorldData;
@@ -45,19 +41,19 @@ import java.util.ArrayList;
 public class SpyReportServiceTest {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     @Autowired
     private PlanetManager planetManager;
 
     @Autowired
-    private ItemService itemService;
+    private ItemServiceImpl itemService;
 
     @Autowired
     private ResourceService resourceService;

@@ -2,6 +2,7 @@ package com.middlewar.api.services;
 
 import com.middlewar.api.exceptions.BuildingRequirementMissingException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.holders.BuildingHolder;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 public class ValidatorService {
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     /**
      * Used to validate a building construction / upgrade
@@ -68,7 +69,7 @@ public class ValidatorService {
         boolean meetRequirements = true;
         while (meetRequirements && i < requirements.getBuildings().size()) {
             final BuildingHolder holder = requirements.getBuildings().get(i);
-            final BuildingInstance bInst = base.getBuildings().stream().filter(k -> k.getBuildingId().equals(holder.getTemplateId())).findFirst().orElse(null);
+            final BuildingInstance bInst = base.getBuildings().stream().filter(k -> k.getTemplateId().equals(holder.getTemplateId())).findFirst().orElse(null);
             if (bInst == null || bInst.getCurrentLevel() < holder.getLevel()) {
                 meetRequirements = false;
             }
@@ -94,7 +95,7 @@ public class ValidatorService {
                 else
                     collector.put(rInventory.getItem(), holder.getCount());
             } else {
-                final ItemInstance iInst = bInventory.getItemsToMap().get(holder.getId());
+                final ItemInstance iInst = bInventory.getItems().stream().filter(k -> k.getTemplateId().equals(holder.getId())).findFirst().orElse(null);
                 if (iInst == null || iInst.getCount() < holder.getCount())
                     meetRequirements = false;
                 else

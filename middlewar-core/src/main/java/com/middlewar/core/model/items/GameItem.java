@@ -1,6 +1,5 @@
 package com.middlewar.core.model.items;
 
-import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.holders.StatHolder;

@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
  * @author bertrand.
  */
 @Service
-public class SpyReportService implements DefaultService<SpyReport> {
-
-    private int nextId = 0;
+public class SpyReportService {
 
     public SpyReport create(Player owner, Base baseSrc, Base baseTarget) {
 
@@ -39,20 +37,5 @@ public class SpyReportService implements DefaultService<SpyReport> {
         }
 
         return report;
-    }
-
-    @Override
-    public void delete(SpyReport o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public SpyReport findOne(int id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int nextId() {
-        return ++nextId;
     }
 }

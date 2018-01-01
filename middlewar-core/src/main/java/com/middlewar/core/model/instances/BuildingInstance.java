@@ -2,7 +2,6 @@ package com.middlewar.core.model.instances;
 
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
-import com.middlewar.core.enums.Lang;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.model.Base;
@@ -11,53 +10,67 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-import java.util.ArrayList;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
+@Table(name = "buildings")
 public class BuildingInstance {
 
     @Id
     @GeneratedValue
     private int id;
 
+    @NotNull
     @ManyToOne
     private Base base;
-    private String buildingId;
+
+    @NotEmpty
+    private String templateId;
+
+    @Min(0)
     private int currentLevel;
+
     private long endsAt;
+
     private long startedAt;
 
     @ElementCollection
     private List<String> modules;
 
     public BuildingInstance() {
-        setModules(new ArrayList<>());
+        setModules(emptyList());
     }
 
     public BuildingInstance(Base base, String templateId) {
         setBase(base);
-        setBuildingId(templateId);
+        setTemplateId(templateId);
         setCurrentLevel(0);
         setStartedAt(-1);
-        setModules(new ArrayList<>());
+        setModules(emptyList());
     }
 
     public Building getTemplate() {
-        return BuildingData.getInstance().getBuilding(buildingId);
+        return BuildingData.getInstance().getBuilding(templateId);
     }
 
     public long getBuildTime() {
@@ -65,12 +78,7 @@ public class BuildingInstance {
     }
 
     public List<Module> getModules() {
-        final List<Module> all = new ArrayList<>();
-        for (String module : modules) {
-            Module m = ItemData.getInstance().getModule(module);
-            if (m != null) all.add(m);
-        }
-        return all;
+        return modules.stream().map(ItemData.getInstance()::getModule).collect(toList());
     }
 
     public void addModule(String module) {
@@ -112,10 +120,8 @@ public class BuildingInstance {
             List<StatHolder> statHolders = module
                     .getAllStats()
                     .stream()
-                    .filter(
-                            k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.PER)
-                    )
-                    .collect(Collectors.toList());
+                    .filter(k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.PER))
+                    .collect(toList());
             for (StatHolder stat : statHolders) {
                 capacity.add(stat.getValue() - 1, StatOp.DIFF);
             }
@@ -131,10 +137,8 @@ public class BuildingInstance {
             List<StatHolder> statHolders = module
                     .getAllStats()
                     .stream()
-                    .filter(
-                            k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.DIFF)
-                    )
-                    .collect(Collectors.toList());
+                    .filter(k -> k.getStat().equals(stats) && k.getOp().equals(StatOp.DIFF))
+                    .collect(toList());
             for (StatHolder stat : statHolders) {
                 capacity.add(stat);
             }

@@ -1,6 +1,6 @@
 package com.middlewar.boot.config;
 
-import com.middlewar.api.services.AccountService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationTokenProcessingFilter authenticationTokenProcessingFilter;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

@@ -11,6 +11,8 @@ import org.w3c.dom.Node;
 import java.io.File;
 import java.util.HashMap;
 
+import static com.middlewar.core.enums.Lang.FR;
+
 /**
  * @author LEBOC Philippe
  */
@@ -18,7 +20,6 @@ import java.util.HashMap;
 public class SystemMessageData implements IXmlReader {
 
     private final HashMap<String, String> _english = new HashMap<>();
-    private final HashMap<String, String> _french = new HashMap<>();
 
     protected SystemMessageData() {
         load();
@@ -31,10 +32,8 @@ public class SystemMessageData implements IXmlReader {
     @Override
     public synchronized void load() {
         _english.clear();
-        _french.clear();
         parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "messages"), false);
         log.info("Loaded " + _english.size() + " English System Messages.");
-        log.info("Loaded " + _french.size() + " French System Messages.");
     }
 
     @Override
@@ -45,13 +44,14 @@ public class SystemMessageData implements IXmlReader {
                     if ("messages".equalsIgnoreCase(b.getNodeName())) {
                         NamedNodeMap attrs = b.getAttributes();
                         final Lang lang = parseEnum(attrs, Lang.class, "lang");
-                        final HashMap<String, String> current = getMessages(lang);
+                        if(lang == FR) continue;
+
                         for (Node c = b.getFirstChild(); c != null; c = c.getNextSibling()) {
                             if ("message".equalsIgnoreCase(c.getNodeName())) {
                                 attrs = c.getAttributes();
                                 final String id = parseString(attrs, "id");
                                 final String text = parseString(attrs, "text", null);
-                                current.put(id, text);
+                                _english.put(id, text);
                             }
                         }
                     }
@@ -60,25 +60,13 @@ public class SystemMessageData implements IXmlReader {
         }
     }
 
-    public String getMessage(Lang lang, String id) {
-        String msg = getMessages(lang).get(id);
+    public String getMessage(String id) {
+        String msg = _english.get(id);
         if (msg == null) {
-            //Slack.sendWarning("Missing " + lang.getName() + " translation for key `" + id + "` !");
-            log.info("Missing " + lang.getName() + " translation for key `" + id + "` !");
+            log.info("Missing  translation for key `" + id + "` !");
             return "%" + id + "%";
         }
         return msg;
-    }
-
-    public HashMap<String, String> getMessages(Lang lang) {
-        switch (lang) {
-            case EN:
-                return _english;
-            case FR:
-                return _french;
-            default:
-                return _english;
-        }
     }
 
     private static class SingletonHolder {

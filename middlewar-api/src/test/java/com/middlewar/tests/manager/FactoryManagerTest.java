@@ -1,22 +1,16 @@
 package com.middlewar.tests.manager;
 
 import com.middlewar.api.exceptions.BuildingNotFoundException;
-import com.middlewar.api.exceptions.BuildingRequirementMissingException;
-import com.middlewar.api.exceptions.ForbiddenNameException;
-import com.middlewar.api.exceptions.ItemCreationException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemNotUnlockedException;
 import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.impl.FactoryManagerImpl;
 import com.middlewar.api.manager.impl.PlanetManagerImpl;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.services.impl.BuildingServiceImpl;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
@@ -53,22 +47,22 @@ public class FactoryManagerTest {
     private FactoryManagerImpl factoryManager;
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     @Autowired
     private PlayerManagerImpl playerManager;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
     private PlanetManagerImpl planetManager;
 
     @Autowired
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     private Player _playerOwner;
     private Base _base;

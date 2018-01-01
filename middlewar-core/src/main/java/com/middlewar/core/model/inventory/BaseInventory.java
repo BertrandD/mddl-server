@@ -36,6 +36,9 @@ public class BaseInventory extends Inventory {
 
     @Override
     public ItemInstance getItem(String id) {
-        return getItemsToMap().getOrDefault(id, null);
+        return getItems()
+                .stream()
+                .filter(i -> i.getTemplateId().equals(id))
+                .findFirst().orElse(null);
     }
 }

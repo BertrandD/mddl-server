@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ResourceService implements DefaultService<Resource> {
-
-    private int nextId = 0;
+public class ResourceService {
 
     @Autowired
     private ItemService itemService;
@@ -19,7 +17,6 @@ public class ResourceService implements DefaultService<Resource> {
     public Resource create(Base base, String itemId) {
         final ItemInstance item = itemService.create(base.getBaseInventory(), itemId, 0);
         final Resource resource = new Resource(base, item);
-        resource.setId(nextId());
         base.addResource(resource);
         // original production = 0
         base.getBaseStat().unlock(resource.getStat());
@@ -27,20 +24,5 @@ public class ResourceService implements DefaultService<Resource> {
         base.getBaseStat().unlock(resource.getStatMax(), Config.BASE_INITIAL_MAX_RESOURCE_STORAGE, StatOp.DIFF);
 
         return resource;
-    }
-
-    @Override
-    public void delete(Resource o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Resource findOne(int id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int nextId() {
-        return ++nextId;
     }
 }

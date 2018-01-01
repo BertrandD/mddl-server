@@ -33,7 +33,7 @@ public class BuildingInstanceDto {
     public BuildingInstanceDto(final BuildingInstance instance) {
         this(
             instance.getId(),
-            instance.getBuildingId(),
+            instance.getTemplateId(),
             instance.getCurrentLevel(),
             instance.getEndsAt(),
             instance.getStartedAt(),

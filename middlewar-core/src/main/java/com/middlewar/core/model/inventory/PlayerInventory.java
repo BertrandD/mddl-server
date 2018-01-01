@@ -37,7 +37,7 @@ public class PlayerInventory extends Inventory {
 
     @Override
     public long getAvailableCapacity() {
-        return -1; // Unlimited
+        return -1; // TODO change my logic
     }
 
     @Override

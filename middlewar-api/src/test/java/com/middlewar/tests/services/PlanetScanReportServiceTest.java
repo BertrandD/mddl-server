@@ -2,10 +2,10 @@ package com.middlewar.tests.services;
 
 
 import com.middlewar.api.manager.impl.PlanetManagerImpl;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.PlanetScanReportService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.services.impl.PlanetScanReportServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Account;
@@ -36,16 +36,16 @@ import javax.transaction.Transactional;
 public class PlanetScanReportServiceTest {
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     @Autowired
-    private PlanetScanReportService planetScanReportService;
+    private PlanetScanReportServiceImpl planetScanReportService;
 
     @Autowired
     private PlanetManagerImpl planetManager;
@@ -85,12 +85,10 @@ public class PlanetScanReportServiceTest {
         Assertions.assertThat(_player.getPlanetScans().get(_planet.getId()).getDate()).isNotNull();
         Assertions.assertThat(_player
                 .getPlanetScans()
-                .get(_planet
-                        .getId())
+                .get(_planet.getId())
                 .getPlanet()
                 .getName())
-                .isEqualTo(_planet
-                        .getName());
+                .isEqualTo(_planet.getName());
         Assertions.assertThat(_player.getPlanetScans().get(_planet.getId()).getBaseScanned()).isNotNull();
         Assertions.assertThat(_player.getPlanetScans().get(_planet.getId()).getBaseScanned().size()).isEqualTo(1);
         Assertions.assertThat(_player.getPlanetScans().get(_planet.getId()).getBaseScanned().get(_base.getId()).getBaseName()).isEqualTo(_base.getName());

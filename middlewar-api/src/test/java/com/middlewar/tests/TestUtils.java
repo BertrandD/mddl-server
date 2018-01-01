@@ -1,7 +1,7 @@
 package com.middlewar.tests;
 
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.BuildingServiceImpl;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
@@ -15,10 +15,10 @@ import org.assertj.core.api.Assertions;
  */
 public class TestUtils {
 
-    private static BuildingService buildingService;
-    private static InventoryService inventoryService;
+    private static BuildingServiceImpl buildingService;
+    private static InventoryServiceImpl inventoryService;
 
-    public static void init(BuildingService buildingService, InventoryService inventoryService) {
+    public static void init(BuildingServiceImpl buildingService, InventoryServiceImpl inventoryService) {
         TestUtils.buildingService = buildingService;
         TestUtils.inventoryService = inventoryService;
     }

@@ -5,7 +5,7 @@ import com.middlewar.api.exceptions.ItemCreationException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemNotUnlockedException;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.ItemFactory;
@@ -27,7 +27,7 @@ public class FactoryManagerImpl {
     private static final String STRUCTURE_FACTORY = "structure_factory";
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     @Autowired
     private ValidatorService validator;
@@ -50,7 +50,7 @@ public class FactoryManagerImpl {
         base.initializeStats();
         final BuildingInstance factory = base.getBuildings().stream().filter(k -> k.getId() == factoryId).findFirst().orElse(null);
         if (factory == null) throw new BuildingNotFoundException();
-        if (!factory.getBuildingId().equals(factoryType)) throw new BuildingNotFoundException();
+        if (!factory.getTemplateId().equals(factoryType)) throw new BuildingNotFoundException();
 
         final ItemFactory factoryTemplate = (ItemFactory) factory.getTemplate();
         if (!factoryTemplate.hasItem(factory.getCurrentLevel(), item.getItemId())) throw new ItemNotUnlockedException();

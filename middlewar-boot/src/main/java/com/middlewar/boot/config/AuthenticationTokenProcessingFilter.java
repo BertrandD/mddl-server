@@ -1,6 +1,6 @@
 package com.middlewar.boot.config;
 
-import com.middlewar.api.services.AccountService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +31,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     private AuthenticationManager authManager;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,

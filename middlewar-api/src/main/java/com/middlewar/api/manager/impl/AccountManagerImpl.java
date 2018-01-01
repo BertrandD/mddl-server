@@ -4,7 +4,7 @@ import com.middlewar.api.exceptions.AccountAlreadyExistsException;
 import com.middlewar.api.exceptions.IncorrectCredentialsException;
 import com.middlewar.api.exceptions.UsernameNotFoundException;
 import com.middlewar.api.manager.AccountManager;
-import com.middlewar.api.services.AccountService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
 import com.middlewar.core.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class AccountManagerImpl implements AccountManager {
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     public Account login(String username, String password) {
         final Account account = accountService.findByUsername(username);

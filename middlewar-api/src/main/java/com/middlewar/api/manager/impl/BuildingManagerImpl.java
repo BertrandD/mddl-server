@@ -7,14 +7,13 @@ import com.middlewar.api.exceptions.BuildingNotFoundException;
 import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.MaximumModulesReachedException;
-import com.middlewar.api.exceptions.ModuleNotAllowedHereException;
 import com.middlewar.api.exceptions.ModuleNotInInventoryException;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.BuildingTaskManager;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.BuildingService;
+import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.services.impl.BuildingServiceImpl;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
@@ -22,7 +21,6 @@ import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.core.model.items.Module;
 import com.middlewar.core.model.tasks.BuildingTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +35,13 @@ import java.util.List;
 public class BuildingManagerImpl implements BuildingManager {
 
     @Autowired
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     @Autowired
     private ValidatorService validator;
@@ -116,7 +114,7 @@ public class BuildingManagerImpl implements BuildingManager {
 
         if (ItemData.getInstance().getModule(moduleId) == null) throw new ItemNotFoundException();
 
-        final ItemInstance module = base.getBaseInventory().getItemsToMap().get(moduleId);
+        final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId)).findFirst().orElse(null);
         if (module == null) throw new ModuleNotInInventoryException();
 
         //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new Response(JsonResponseType.ERROR, "Module already attached !"); // TODO System message

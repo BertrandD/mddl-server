@@ -2,7 +2,7 @@ package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.AccountManager;
-import com.middlewar.api.services.AccountService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
 import com.middlewar.api.services.AstralObjectService;
 import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;
@@ -40,7 +40,7 @@ public class DefaultController implements ErrorController {
     private ErrorAttributes errorAttributes;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
     private AccountManager accountManager;

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author LEBOC Philippe
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @Entity
+@Table(name = "ships")
 public class Ship extends Vehicle {
     public Ship(Base base, RecipeInstance recipeInstance, long count) {
         super(base, recipeInstance, count);

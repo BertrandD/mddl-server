@@ -1,20 +1,14 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.BaseCreationException;
 import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.ForbiddenNameException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.util.response.Response;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BaseServiceImpl;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.model.Account;
@@ -48,13 +42,13 @@ public class BaseManagerTest {
     private BaseManager baseManager;
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     @Autowired
     private PlayerManager playerManager;
 
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
 
     @Autowired
     private PlanetManager planetManager;

@@ -164,7 +164,7 @@ public class Base {
 //        // Applying module that's unlock stats.
 //        final List<BuildingInstance> silos = getBuildings()
 //                .stream()
-//                .filter(r -> r.getBuildingId().equalsIgnoreCase("silo"))
+//                .filter(r -> r.getTemplateId().equalsIgnoreCase("silo"))
 //                .collect(Collectors.toList());
 //
 //        if (silos != null && !silos.isEmpty()) {

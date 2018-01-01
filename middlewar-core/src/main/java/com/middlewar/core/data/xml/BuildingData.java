@@ -2,7 +2,6 @@ package com.middlewar.core.data.xml;
 
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
-import com.middlewar.core.enums.Lang;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.ItemHolder;
@@ -247,14 +246,12 @@ public class BuildingData implements IXmlReader {
                         final Building building;
                         try {
                             building = makeBuilding(set);
-                            if (building != null) {
-                                building.setUseEnergy(energies);
-                                building.setBuildTimes(buildTimes);
-                                building.setRequirements(requirements);
-                                building.setStats(stats);
-                                if (!modules.isEmpty()) ((ModulableBuilding) building).setAuthorizedModules(modules);
-                                _buildings.put(set.getString("id"), building);
-                            }
+                            building.setUseEnergy(energies);
+                            building.setBuildTimes(buildTimes);
+                            building.setRequirements(requirements);
+                            building.setStats(stats);
+                            if (!modules.isEmpty()) ((ModulableBuilding) building).setAuthorizedModules(modules);
+                            _buildings.put(set.getString("id"), building);
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
                         }
@@ -283,12 +280,6 @@ public class BuildingData implements IXmlReader {
 
     public List<Building> getBuildings() {
         return new ArrayList<>(_buildings.values());
-    }
-
-    public List<Building> getBuildings(Lang lang) {
-        final List<Building> buildings = new ArrayList<>(_buildings.values());
-        buildings.forEach(k -> k.setLang(lang));
-        return buildings;
     }
 
     private static class SingletonHolder {

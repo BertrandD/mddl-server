@@ -27,12 +27,18 @@ public final class FleetInventory extends Inventory {
 
     @Override
     public ItemInstance getItem(String id) {
-        return getItemsToMap().getOrDefault(id, null);
+        return getItems()
+                .stream()
+                .filter(i -> i.getTemplateId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public long getAvailableCapacity() {
         // Sum of all Cargo of all Ships
-        return getFleet().getShips().stream().mapToLong(ship -> ship.getCargos().stream().mapToLong(Cargo::getCapacity).sum()).sum();
+        return getFleet().getShips().stream()
+                .mapToLong(ship -> ship.getCargos().stream().mapToLong(Cargo::getCapacity).sum())
+                .sum();
     }
 }

@@ -2,20 +2,25 @@ package com.middlewar.core.model.tasks;
 
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 @Entity
+@Table(name = "buildingtasks")
 @NoArgsConstructor
 public class BuildingTask {
 
@@ -23,9 +28,11 @@ public class BuildingTask {
     @GeneratedValue
     private long id;
 
+    @NotNull
     @ManyToOne
     private Base base;
 
+    @NotNull
     @OneToOne
     private BuildingInstance building;
 

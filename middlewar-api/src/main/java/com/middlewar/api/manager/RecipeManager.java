@@ -4,7 +4,7 @@ import com.middlewar.api.exceptions.BadItemException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.NotEnoughSlotsException;
 import com.middlewar.api.exceptions.RecipeCreationFailedException;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.api.services.RecipeService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Player;
@@ -22,7 +22,7 @@ import java.util.List;
 public class RecipeManager {
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     @Autowired
     private RecipeService recipeService;

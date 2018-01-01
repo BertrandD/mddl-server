@@ -2,11 +2,11 @@ package com.middlewar.tests.services;
 
 
 import com.middlewar.api.manager.PlanetManager;
-import com.middlewar.api.services.AccountService;
-import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.InventoryService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.AccountServiceImpl;
+import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.services.impl.BuildingServiceImpl;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.model.Account;
@@ -43,15 +43,15 @@ public class InventoryServiceTest {
 
     private static final String _itemTemplate = "resource_1";
     @Autowired
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
     @Autowired
-    private AccountService accountService;
+    private AccountServiceImpl accountService;
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
     @Autowired
     private PlanetManager planetManager;
     private Account _account;

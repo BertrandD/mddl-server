@@ -1,7 +1,7 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.impl.BuildingServiceImpl;
+import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.model.Base;
@@ -33,10 +33,10 @@ public class BuildingTaskManager {
     //private BuildingTaskService buildingTaskService;
 
     @Autowired
-    private BuildingService buildingService;
+    private BuildingServiceImpl buildingService;
 
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryServiceImpl inventoryService;
 
     private ScheduledFuture<?> scheduledFuture;
     private BuildingTask currentTask;
@@ -115,7 +115,7 @@ public class BuildingTaskManager {
         building.getBase().getBuildingTasks().offer(newTask);
         queue.offer(newTask);
 
-        log.info("Scheduling upgrade of " + newTask.getBuilding().getBuildingId() + " to level " + newTask.getLevel());
+        log.info("Scheduling upgrade of " + newTask.getBuilding().getTemplateId() + " to level " + newTask.getLevel());
         notifyNewTask(newTask);
     }
 
@@ -128,7 +128,7 @@ public class BuildingTaskManager {
         public synchronized void run() {
             BuildingTask buildingTask = queue.poll();
             final BuildingInstance building = buildingTask.getBuilding();
-            log.info("End of upgrade for " + buildingTask.getBuilding().getBuildingId());
+            log.info("End of upgrade for " + buildingTask.getBuilding().getTemplateId());
             buildingTask.setEndsAt(-1);
 
             if (building.getTemplate().getType().equals(BuildingCategory.SILO))
@@ -149,13 +149,13 @@ public class BuildingTaskManager {
                 lastInQueue.getBuilding().setStartedAt(TimeUtil.getCurrentTime());
             }
 
-            if (building.getBuildingId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1) {
+            if (building.getTemplateId().equals(BUILDING_MINE_ID) && building.getCurrentLevel() == 1) {
                 final Base base = building.getBase();
                 final ModulableBuilding mine = (ModulableBuilding) building.getTemplate();
                 mine.getStats().getStatFunctions().forEach((k, v) -> inventoryService.createNewResource(base, k.name().toLowerCase()));
             }
 
-            if (building.getBuildingId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1) {
+            if (building.getTemplateId().equals(BUILDING_PUMP_ID) && building.getCurrentLevel() == 1) {
                 final Base base = building.getBase();
                 final ModulableBuilding pump = (ModulableBuilding) building.getTemplate();
                 pump.getStats().getStatFunctions().forEach((k, v) -> inventoryService.createNewResource(base, k.name().toLowerCase()));

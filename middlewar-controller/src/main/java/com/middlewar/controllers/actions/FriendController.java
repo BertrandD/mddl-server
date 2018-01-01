@@ -1,8 +1,8 @@
 package com.middlewar.controllers.actions;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.services.FriendRequestService;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.FriendRequestServiceImpl;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.client.Route;
@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class FriendController {
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @Autowired
-    private FriendRequestService friendRequestService;
+    private FriendRequestServiceImpl friendRequestService;
 
     @RequestMapping(value = Route.REQUEST_CREATE, method = RequestMethod.POST)
     public Response sendFriendRequest(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "friendId") int friendId, @RequestParam(value = "message") String message) {

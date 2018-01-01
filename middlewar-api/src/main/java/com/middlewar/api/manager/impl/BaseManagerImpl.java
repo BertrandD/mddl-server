@@ -5,7 +5,7 @@ import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.exceptions.BaseNotOwnedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.impl.BaseServiceImpl;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.BuildingInstanceHolder;
@@ -32,7 +32,7 @@ import static java.util.Collections.emptyList;
 public class BaseManagerImpl implements BaseManager {
 
     @Autowired
-    private BaseService baseService;
+    private BaseServiceImpl baseService;
 
     //@Autowired
     //private BuildingTaskService buildingTaskService;
@@ -47,7 +47,7 @@ public class BaseManagerImpl implements BaseManager {
     }
 
     public Base getBase(long id) {
-        final Base base = baseService.findOne((int)id);
+        final Base base = baseService.find((int)id);
         if (base == null) throw new BaseNotFoundException();
         return base;
     }
@@ -96,7 +96,7 @@ public class BaseManagerImpl implements BaseManager {
         BuildingData.getInstance().getBuildings().forEach(building ->
         {
             final List<BuildingInstance> myBuildings = base.getBuildings().stream()
-                    .filter(k -> k.getBuildingId().equals(building.getId()))
+                    .filter(k -> k.getTemplateId().equals(building.getId()))
                     .collect(Collectors.toList());
 
             myBuildings.stream().filter(k -> k.getCurrentLevel() < building.getMaxLevel()).forEach(myBuilding ->
@@ -124,7 +124,7 @@ public class BaseManagerImpl implements BaseManager {
             while (hasRequirement && i < requirement.getBuildings().size()) {
                 final BuildingHolder holder = requirement.getBuildings().get(i);
                 final BuildingInstance instOfReqBuilding = base.getBuildings().stream()
-                        .filter(k -> k.getBuildingId().equals(holder.getTemplateId()) &&
+                        .filter(k -> k.getTemplateId().equals(holder.getTemplateId()) &&
                                 k.getCurrentLevel() >= holder.getLevel()
                         ).findFirst().orElse(null);
 

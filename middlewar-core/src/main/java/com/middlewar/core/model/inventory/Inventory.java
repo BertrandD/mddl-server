@@ -12,10 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static java.util.Collections.emptyList;
 
 /**
  * @author LEBOC Philippe
@@ -34,13 +33,7 @@ public abstract class Inventory implements IInventory {
     private List<ItemInstance> items;
 
     protected Inventory() {
-        setItems(new ArrayList<>());
-    }
-
-    public Map<String, ItemInstance> getItemsToMap() {
-        final Map<String, ItemInstance> inventoryItems = new HashMap<>();
-        items.forEach(itemInstance -> inventoryItems.put(itemInstance.getTemplateId(), itemInstance));
-        return inventoryItems;
+        setItems(emptyList());
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.middlewar.core.model.buildings;
 
 import com.middlewar.core.data.xml.SystemMessageData;
 import com.middlewar.core.enums.BuildingCategory;
-import com.middlewar.core.enums.Lang;
 import com.middlewar.core.holders.StatHolder;
 import com.middlewar.core.interfaces.IStat;
 import com.middlewar.core.model.commons.Requirement;
@@ -11,7 +10,8 @@ import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.stats.Stats;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +19,8 @@ import java.util.List;
 /**
  * @author LEBOC Philippe
  */
-@Data
+@Getter
+@Setter
 public abstract class Building implements IStat {
 
     private String id;
@@ -32,13 +33,12 @@ public abstract class Building implements IStat {
     private long[] useEnergy;
     private BuildingStats stats;
     private HashMap<Integer, Requirement> requirements;
-    private Lang lang = Lang.EN;
 
     public Building(StatsSet set) {
         setId(set.getString("id"));
         setNameId(set.getString("nameId"));
-        setType(set.getEnum("type", BuildingCategory.class));
         setDescriptionId(set.getString("descriptionId"));
+        setType(set.getEnum("type", BuildingCategory.class));
         setMaxLevel(set.getInt("maxLevel", 1));
         setMaxBuild(set.getInt("maxBuild", 1));
 
@@ -74,16 +74,16 @@ public abstract class Building implements IStat {
         else return 0;
     }
 
-//    public void handleEffect(final ObjectStat stats, int level) {
-//        this.getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
-//    }
+    //    public void handleEffect(final ObjectStat stats, int level) {
+    //        this.getAllStats().forEach(stat -> stats.add(stat.getStat(), stat.getValue(level), stat.getOp()));
+    //    }
 
     public String getName() {
-        return SystemMessageData.getInstance().getMessage(getLang(), getNameId());
+        return SystemMessageData.getInstance().getMessage(getNameId());
     }
 
     public String getDescription() {
-        return SystemMessageData.getInstance().getMessage(getLang(), getDescriptionId());
+        return SystemMessageData.getInstance().getMessage(getDescriptionId());
     }
 
 
@@ -113,10 +113,6 @@ public abstract class Building implements IStat {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Building) {
-            final Building building = (Building) o;
-            if (building.getId() == this.getId()) return true;
-        }
-        return false;
+        return o != null & o instanceof Building && ((Building) o).getId().equals(id);
     }
 }

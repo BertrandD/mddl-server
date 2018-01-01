@@ -1,7 +1,7 @@
 package com.middlewar.controllers.actions;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.services.PlayerService;
+import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.services.PrivateMessageService;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -30,7 +30,7 @@ public class PrivateMessageController {
     private PrivateMessageService service;
 
     @Autowired
-    private PlayerService playerService;
+    private PlayerServiceImpl playerService;
 
     @RequestMapping(value = Route.PM_ALL, method = RequestMethod.GET)
     public Response showAll(@AuthenticationPrincipal Account pAccount) {

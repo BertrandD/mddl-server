@@ -63,10 +63,10 @@ public class Account implements UserDetails {
     @ElementCollection
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
-    public Account(String username, String password, Set<GrantedAuthority> authorities) {
+    public Account(String username, String password, List<GrantedAuthority> authorities) {
         setUsername(username);
         setPassword(password);
-        setAuthorities(authorities);
+        setAuthorities(new HashSet<>(authorities));
         setPlayers(emptyList());
         setCurrentPlayerId(-1);
     }
