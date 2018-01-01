@@ -45,22 +45,6 @@ public abstract class Building implements IStat {
         setRequirements(new HashMap<>());
     }
 
-    public abstract BuildingDTO toDTO();
-
-    protected <T extends BuildingDTO> T toDTO(T dto) {
-        dto.setId(getId());
-        dto.setName(getName());
-        dto.setDescription(getDescription());
-        dto.setType(getType().name());
-        dto.setMaxLevel(getMaxLevel());
-        dto.setMaxBuild(getMaxBuild());
-        dto.setBuildTimes(getBuildTimes());
-        dto.setUseEnergy(getUseEnergy());
-        dto.setRequirements(new HashMap<>());
-        requirements.forEach((k,v) -> dto.getRequirements().put(k, v.toDTO()));
-        return dto;
-    }
-
     public StatHolder calcProductionAtLevel(Resource resource, int level) {
         StatCalculator production = new StatCalculator(resource.getStat());
 

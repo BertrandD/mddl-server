@@ -1,5 +1,6 @@
 package com.middlewar.api.manager;
 
+import com.middlewar.api.services.BuildingService;
 import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
@@ -28,8 +29,8 @@ public class BuildingTaskManager {
     private static final String BUILDING_MINE_ID = "mine";
     private static final String BUILDING_PUMP_ID = "pump";
 
-    @Autowired
-    private BuildingTaskService buildingTaskService;
+    //@Autowired
+    //private BuildingTaskService buildingTaskService;
 
     @Autowired
     private BuildingService buildingService;

@@ -6,16 +6,12 @@ import com.middlewar.core.holders.PropertyHolder;
 import com.middlewar.core.holders.PropertyListHolder;
 import com.middlewar.core.model.commons.StatsSet;
 import com.middlewar.core.model.items.Item;
-import com.middlewar.dto.BuildingDTO;
-import com.middlewar.dto.buildings.ItemFactoryDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 
 @Slf4j
 public abstract class ItemFactory<T extends Item> extends Building {
@@ -25,14 +21,6 @@ public abstract class ItemFactory<T extends Item> extends Building {
     public ItemFactory(StatsSet set) {
         super(set);
         initialize(set.getObject("propertiesByLevel", PropertiesHolder.class));
-    }
-
-    @Override
-    public BuildingDTO toDTO() {
-        ItemFactoryDTO dto = super.toDTO(new ItemFactoryDTO());
-        dto.setItemsByLevel(new HashMap<>());
-        itemsByLevel.forEach((k,v) -> dto.getItemsByLevel().put(k, v.stream().map(Item::getItemId).collect(Collectors.toList())));
-        return dto;
     }
 
     private void initialize(final PropertiesHolder properties) {

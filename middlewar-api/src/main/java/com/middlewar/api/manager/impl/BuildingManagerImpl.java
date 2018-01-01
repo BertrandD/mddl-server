@@ -13,9 +13,8 @@ import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.BuildingTaskManager;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.BuildingService;
-import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
@@ -52,11 +51,11 @@ public class BuildingManagerImpl implements BuildingManager {
     @Autowired
     private BuildingTaskManager buildingTaskManager;
 
-    @Autowired
-    private BuildingTaskService buildingTaskService;
+    //@Autowired
+    //private BuildingTaskService buildingTaskService;
 
     public BuildingInstance getBuilding(Base base, long id) {
-        final BuildingInstance building = buildingService.findByBaseAndId(base, id);
+        final BuildingInstance building = null; //buildingService.findByBaseAndId(base, id);
         if (building == null) throw new BuildingNotFoundException();
 
         return building;
@@ -82,7 +81,7 @@ public class BuildingManagerImpl implements BuildingManager {
 
         collector.forEach(inventoryService::consumeItem);
 
-        baseService.update(base); // TODO : do not update a base given in parameter (security)
+        //baseService.update(base); // TODO : do not update a base given in parameter (security)
 
         buildingTaskManager.ScheduleUpgrade(building);
 
@@ -92,7 +91,7 @@ public class BuildingManagerImpl implements BuildingManager {
     public BuildingInstance upgrade(Base base, long id) {
         final BuildingInstance building = getBuilding(base, id);
 
-        final BuildingTask lastInQueue = buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
+        final BuildingTask lastInQueue = null; //buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
         final Building template = building.getTemplate();
         if (building.getCurrentLevel() >= template.getMaxLevel() ||
                 (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())) {
@@ -124,7 +123,7 @@ public class BuildingManagerImpl implements BuildingManager {
 
         if (building.getModules().size() >= ((ModulableBuilding) building.getTemplate()).getMaxModules())
             throw new MaximumModulesReachedException();
-
+/*
         // TODO: MAKE A TEST !!!!
         if (!((ModulableBuilding) building.getTemplate()).getModules().contains((Module) module.getTemplate()))
             throw new ModuleNotAllowedHereException();
@@ -133,7 +132,7 @@ public class BuildingManagerImpl implements BuildingManager {
 
         building.addModule(module.getTemplateId());
         buildingService.update(building);
-
+*/
         return building;
     }
 }

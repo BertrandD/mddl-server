@@ -5,7 +5,7 @@ import com.middlewar.api.exceptions.ItemCreationException;
 import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.ItemNotUnlockedException;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.ItemFactory;

@@ -2,7 +2,6 @@ package com.middlewar.core.holders;
 
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.stats.Stats;
-import com.middlewar.dto.holder.StatHolderDTO;
 import lombok.Data;
 
 /**

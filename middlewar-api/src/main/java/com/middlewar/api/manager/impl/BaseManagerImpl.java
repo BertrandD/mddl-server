@@ -6,7 +6,6 @@ import com.middlewar.api.exceptions.BaseNotOwnedException;
 import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.services.BaseService;
-import com.middlewar.api.services.BuildingTaskService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.BuildingInstanceHolder;
@@ -24,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
+
 /**
  * @author Bertrand
  */
@@ -33,8 +34,8 @@ public class BaseManagerImpl implements BaseManager {
     @Autowired
     private BaseService baseService;
 
-    @Autowired
-    private BuildingTaskService buildingTaskService;
+    //@Autowired
+    //private BuildingTaskService buildingTaskService;
 
     @Autowired
     private PlanetManagerImpl planetManager;
@@ -46,7 +47,7 @@ public class BaseManagerImpl implements BaseManager {
     }
 
     public Base getBase(long id) {
-        final Base base = baseService.findOne(id);
+        final Base base = baseService.findOne((int)id);
         if (base == null) throw new BaseNotFoundException();
         return base;
     }
@@ -73,7 +74,8 @@ public class BaseManagerImpl implements BaseManager {
     }
 
     public List<BuildingTask> getBaseBuildingQueue(Base base) {
-        return buildingTaskService.findByBaseOrderByEndsAtAsc(base);
+        //return buildingTaskService.findByBaseOrderByEndsAtAsc(base);
+        return emptyList();
     }
 
     public Base create(Player player, String name) {

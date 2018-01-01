@@ -61,7 +61,6 @@ public class AccountService implements UserDetailsService, DefaultService<Accoun
         o.setAccountNonLocked(false);
         o.setAccountNonExpired(false);
         o.setCredentialsNonExpired(false);
-        o.notifyObservers();
     }
 
     public Account findOne(int id) {
@@ -86,7 +85,6 @@ public class AccountService implements UserDetailsService, DefaultService<Accoun
         account.setId(nextId());
         accountDAO.add(account);
 
-        account.addObserver(playerService);
         account.setEnabled(true);
         account.setAccountNonLocked(true);
         account.setAccountNonExpired(true);

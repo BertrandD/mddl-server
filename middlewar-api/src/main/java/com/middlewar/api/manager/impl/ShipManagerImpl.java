@@ -5,7 +5,7 @@ import com.middlewar.api.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.exceptions.ShipCreationFailedException;
 import com.middlewar.api.manager.ShipManager;
 import com.middlewar.api.services.ShipService;
-import com.middlewar.api.services.impl.InventoryService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -50,7 +50,7 @@ public class ShipManagerImpl implements ShipManager {
         for (ItemInstance inst : collector)
             inventoryService.consumeItem(inst, 1);
 
-        final Ship ship = shipService.create(base, structure, count, ids);
+        final Ship ship = null; //shipService.create(base, structure, count, ids);
         if (ship == null) throw new ShipCreationFailedException();
         return ship;
     }

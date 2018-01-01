@@ -2,7 +2,6 @@ package com.middlewar.core.model.inventory;
 
 import com.middlewar.core.interfaces.IInventory;
 import com.middlewar.core.model.instances.ItemInstance;
-import com.middlewar.dto.inventory.InventoryDTO;
 import lombok.Getter;
 import lombok.Setter;
 
