@@ -1,9 +1,9 @@
 package com.middlewar.tests.manager;
 
-import com.middlewar.api.exceptions.BuildingNotFoundException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.ItemNotUnlockedException;
-import com.middlewar.api.exceptions.ItemRequirementMissingException;
+import com.middlewar.core.exceptions.BuildingNotFoundException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.ItemNotUnlockedException;
+import com.middlewar.core.exceptions.ItemRequirementMissingException;
 import com.middlewar.api.manager.impl.FactoryManagerImpl;
 import com.middlewar.api.manager.impl.PlanetManagerImpl;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;
@@ -17,7 +17,6 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.BuildingInstance;
-import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.stats.Stats;
@@ -75,7 +74,7 @@ public class FactoryManagerTest {
         accountService.deleteAll();
         MockitoAnnotations.initMocks(this);
         Account _account = accountService.create("toto", "");
-        _playerOwner = playerManager.createForAccount(_account, "owner");
+        _playerOwner = playerManager.create(_account, "owner");
         Planet planet = planetManager.pickRandom();
         _base = baseService.create("base1", _playerOwner, planet);
         _moduleFactory = buildingService.create(_base, "module_factory");

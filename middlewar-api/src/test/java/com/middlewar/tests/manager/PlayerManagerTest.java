@@ -1,12 +1,12 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.ForbiddenNameException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
-import com.middlewar.api.exceptions.PlayerNotOwnedException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
+import com.middlewar.core.exceptions.ForbiddenNameException;
+import com.middlewar.core.exceptions.MaxPlayerCreationReachedException;
+import com.middlewar.core.exceptions.NoPlayerConnectedException;
+import com.middlewar.core.exceptions.PlayerNotFoundException;
+import com.middlewar.core.exceptions.PlayerNotOwnedException;
+import com.middlewar.core.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;
 import com.middlewar.api.services.impl.AccountServiceImpl;
 import com.middlewar.api.services.impl.PlayerServiceImpl;
@@ -89,28 +89,28 @@ public class PlayerManagerTest {
     @Test(expected = MaxPlayerCreationReachedException.class)
     public void shouldCheckMaxPlayer() {
         Config.MAX_PLAYER_IN_ACCOUNT = 1;
-        playerManager.createForAccount(_account, "toto");
+        playerManager.create(_account, "toto");
     }
 
     @Test(expected = UsernameAlreadyExistsException.class)
     public void shouldCheckExistingUsername() {
-        playerManager.createForAccount(_account, "yoloo");
+        playerManager.create(_account, "yoloo");
     }
 
     @Test(expected = ForbiddenNameException.class)
     public void shouldCheckForbiddentNames() {
         Config.FORBIDDEN_NAMES = "sbouf,sgni,forbiddenName".split(",");
-        playerManager.createForAccount(_account, "forbiddenName");
+        playerManager.create(_account, "forbiddenName");
     }
 
 //    @Test(expected = PlayerCreationFailedException.class)
 //    public void shouldThrowExceptionIfFailed() {
-//        playerManager.createForAccount(_account, "toto");
+//        playerManager.create(_account, "toto");
 //    }
 
     @Test
     public void shouldReturnCreatedPlayer() {
-        final Player player3 = playerManager.createForAccount(_account, "toto3");
+        final Player player3 = playerManager.create(_account, "toto3");
         Assertions.assertThat(player3).isNotNull();
         Assertions.assertThat(player3.getName()).isEqualTo("toto3");
     }
@@ -128,7 +128,7 @@ public class PlayerManagerTest {
 
     @Test
     public void shouldReturnAllPlayers() {
-        List<Player> players = playerManager.getAllPlayersForAccount(_account);
+        List<Player> players = playerManager.findAll(_account);
         Assertions.assertThat(players.size()).isEqualTo(1);
         Assertions.assertThat(players.get(0)).isEqualTo(_player);
     }

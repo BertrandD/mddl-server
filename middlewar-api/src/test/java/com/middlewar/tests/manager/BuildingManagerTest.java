@@ -1,16 +1,16 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.BuildingAlreadyExistsException;
-import com.middlewar.api.exceptions.BuildingMaxLevelReachedException;
-import com.middlewar.api.exceptions.BuildingNotFoundException;
-import com.middlewar.api.exceptions.BuildingRequirementMissingException;
-import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.MaximumModulesReachedException;
-import com.middlewar.api.exceptions.ModuleNotAllowedHereException;
-import com.middlewar.api.exceptions.ModuleNotInInventoryException;
+import com.middlewar.core.exceptions.BuildingAlreadyExistsException;
+import com.middlewar.core.exceptions.BuildingMaxLevelReachedException;
+import com.middlewar.core.exceptions.BuildingNotFoundException;
+import com.middlewar.core.exceptions.BuildingRequirementMissingException;
+import com.middlewar.core.exceptions.BuildingTemplateNotFoundException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.ItemRequirementMissingException;
+import com.middlewar.core.exceptions.MaximumModulesReachedException;
+import com.middlewar.core.exceptions.ModuleNotAllowedHereException;
+import com.middlewar.core.exceptions.ModuleNotInInventoryException;
 import com.middlewar.api.manager.impl.BaseManagerImpl;
 import com.middlewar.api.manager.impl.BuildingManagerImpl;
 import com.middlewar.api.manager.BuildingTaskManager;
@@ -28,7 +28,6 @@ import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.inventory.Resource;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.tests.ApplicationTest;
 import com.middlewar.tests.TestUtils;
 import org.assertj.core.api.Assertions;
@@ -43,7 +42,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.PriorityQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -91,7 +89,7 @@ public class BuildingManagerTest {
         TestUtils.init(buildingService, inventoryService);
         MockitoAnnotations.initMocks(this);
         Account _account = accountService.create("toto", "");
-        Player _player = playerManager.createForAccount(_account, "owner");
+        Player _player = playerManager.create(_account, "owner");
         Planet planet = planetManager.pickRandom();
         _base = baseService.create("base1", _player, planet);
     }

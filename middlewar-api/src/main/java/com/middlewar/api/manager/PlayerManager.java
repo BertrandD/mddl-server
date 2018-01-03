@@ -1,12 +1,12 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.exceptions.ForbiddenNameException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
-import com.middlewar.api.exceptions.PlayerNotOwnedException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
+import com.middlewar.core.exceptions.ForbiddenNameException;
+import com.middlewar.core.exceptions.MaxPlayerCreationReachedException;
+import com.middlewar.core.exceptions.NoPlayerConnectedException;
+import com.middlewar.core.exceptions.PlayerCreationFailedException;
+import com.middlewar.core.exceptions.PlayerNotFoundException;
+import com.middlewar.core.exceptions.PlayerNotOwnedException;
+import com.middlewar.core.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 
@@ -46,11 +46,11 @@ public interface PlayerManager {
      * @throws ForbiddenNameException            if the name is in the name blacklist
      * @throws PlayerCreationFailedException     if the player creation failed
      */
-    Player createForAccount(Account account, String name);
+    Player create(Account account, String name);
 
     /**
      * @param account the account we want the players
      * @return the list of Player of the given account
      */
-    List<Player> getAllPlayersForAccount(Account account);
+    List<Player> findAll(Account account);
 }

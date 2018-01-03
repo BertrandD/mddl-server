@@ -1,9 +1,9 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.BadItemException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.NotEnoughSlotsException;
+import com.middlewar.core.exceptions.BadItemException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.NotEnoughSlotsException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.RecipeManager;
@@ -53,7 +53,7 @@ public class RecipeManagerTest {
         WorldData.getInstance().reload();
         accountService.deleteAll();
         Account account = accountService.create("toto", "");
-        _playerOwner = playerManager.createForAccount(account, "owner");
+        _playerOwner = playerManager.create(account, "owner");
     }
 
     @Test

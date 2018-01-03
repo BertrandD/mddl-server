@@ -1,8 +1,8 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.RecipeNotFoundException;
+import com.middlewar.core.exceptions.ItemRequirementMissingException;
+import com.middlewar.core.exceptions.RecipeNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.RecipeManager;
@@ -16,10 +16,8 @@ import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.instances.RecipeInstance;
-import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.tests.ApplicationTest;
 import com.middlewar.tests.TestUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,7 +69,7 @@ public class ShipManagerTest {
         accountService.deleteAll();
         TestUtils.init(buildingService, inventoryService);
         Account account = accountService.create("toto", "");
-        _playerOwner = playerManager.createForAccount(account, "owner");
+        _playerOwner = playerManager.create(account, "owner");
         _base = baseManager.create(_playerOwner, "owner");
         ArrayList<String> components = new ArrayList<>();
         components.add("weapon_test");

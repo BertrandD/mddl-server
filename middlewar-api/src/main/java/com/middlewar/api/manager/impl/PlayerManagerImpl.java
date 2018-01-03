@@ -1,12 +1,12 @@
 package com.middlewar.api.manager.impl;
 
-import com.middlewar.api.exceptions.ForbiddenNameException;
-import com.middlewar.api.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.api.exceptions.NoPlayerConnectedException;
-import com.middlewar.api.exceptions.PlayerCreationFailedException;
-import com.middlewar.api.exceptions.PlayerNotFoundException;
-import com.middlewar.api.exceptions.PlayerNotOwnedException;
-import com.middlewar.api.exceptions.UsernameAlreadyExistsException;
+import com.middlewar.core.exceptions.ForbiddenNameException;
+import com.middlewar.core.exceptions.MaxPlayerCreationReachedException;
+import com.middlewar.core.exceptions.NoPlayerConnectedException;
+import com.middlewar.core.exceptions.PlayerCreationFailedException;
+import com.middlewar.core.exceptions.PlayerNotFoundException;
+import com.middlewar.core.exceptions.PlayerNotOwnedException;
+import com.middlewar.core.exceptions.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.util.response.SystemMessageId;
@@ -52,7 +52,7 @@ public class PlayerManagerImpl implements PlayerManager {
         return player;
     }
 
-    public Player createForAccount(Account account, String name) {
+    public Player create(Account account, String name) {
         Assert.notNull(name, SystemMessageId.INVALID_PARAMETERS);
 
         if (account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
@@ -79,7 +79,7 @@ public class PlayerManagerImpl implements PlayerManager {
         return player;
     }
 
-    public List<Player> getAllPlayersForAccount(Account account) {
+    public List<Player> findAll(Account account) {
         return emptyList(); //playerService.findByAccount(account);
     }
 }

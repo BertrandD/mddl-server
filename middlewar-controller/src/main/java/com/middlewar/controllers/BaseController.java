@@ -2,64 +2,55 @@ package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.client.Route;
-import com.middlewar.core.holders.BuildingHolder;
+import com.middlewar.core.exceptions.BaseNotFoundException;
 import com.middlewar.core.model.Account;
-import com.middlewar.dto.BaseDto;
-import com.middlewar.dto.holder.BuildingHolderDTO;
+import com.middlewar.request.BaseCreationRequest;
+import com.middlewar.request.BaseSpyRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.middlewar.core.predicate.BasePredicate.hasId;
 
 /**
  * @author LEBOC Philippe
  */
 @User
+@Validated
 @RestController
-@RequestMapping(produces = "application/json")
+@RequestMapping(value = "/base", produces = "application/json")
 public class BaseController {
 
     @Autowired
     private BaseManager baseManager;
 
     @Autowired
-    private PlayerManager playerManager;
-
-    @Autowired
     private ReportManager reportManager;
 
-    @RequestMapping(value = Route.BASE_ALL, method = RequestMethod.GET)
-    public List<BaseDto> findAll(@AuthenticationPrincipal Account pAccount) {
-        return baseManager.findAllBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)).stream().map(BaseDto::new).collect(Collectors.toList());
+    @RequestMapping(method = RequestMethod.GET)
+    public Response findAll(@AuthenticationPrincipal Account account) {
+        return new Response(account.getCurrentPlayer().getBases());
     }
 
-    @RequestMapping(value = Route.BASE_ONE, method = RequestMethod.GET)
-    public BaseDto findOne(@AuthenticationPrincipal Account account, @PathVariable("id") int id) {
-        return baseManager.getOwnedBase(id, playerManager.getCurrentPlayerForAccount(account)).toDTO();
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public Response findOne(@AuthenticationPrincipal Account account, @PathVariable("id") int id) {
+        return new Response(account.getCurrentPlayer().getBases().stream().filter(hasId(id)).findFirst().orElseThrow(BaseNotFoundException::new));
     }
 
-    @RequestMapping(value = Route.BASE_CREATE, method = RequestMethod.POST)
-    public BaseDto create(@AuthenticationPrincipal Account pAccount, @RequestParam(value = "name") String name) {
-        return baseManager.create(playerManager.getCurrentPlayerForAccount(pAccount), name).toDTO();
+    @RequestMapping(method = RequestMethod.POST)
+    public Response create(@AuthenticationPrincipal Account account, @RequestBody BaseCreationRequest request) {
+        return new Response(baseManager.create(account.getCurrentPlayer(), request.getName()));
     }
 
-    @RequestMapping(value = Route.BASE_BUILDABLE, method = RequestMethod.GET)
-    public List<BuildingHolderDTO> getBuildables(@AuthenticationPrincipal Account pAccount, @PathVariable("id") int id) {
-        return baseManager.getBuildableBuildingsOfBase(playerManager.getCurrentPlayerForAccount(pAccount), id).stream().map(BuildingHolder::toDTO).collect(Collectors.toList());
-    }
-
-    @RequestMapping(value = Route.BASE_SPY, method = RequestMethod.GET)
-    public Response spy(@AuthenticationPrincipal Account pAccount, @PathVariable("id") int id, @PathVariable("id") int target) {
-        return new Response(reportManager.spy(playerManager.getCurrentPlayerForAccount(pAccount), id, target));
+    @RequestMapping(value = "/spy", method = RequestMethod.GET)
+    public Response executeSpy(@AuthenticationPrincipal Account account, @RequestBody BaseSpyRequest request) {
+        return new Response(reportManager.spy(account.getCurrentPlayer(), request.getSourceId(), request.getTargetId()));
     }
 }

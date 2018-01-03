@@ -1,6 +1,8 @@
 package com.middlewar.api.manager.impl;
 
-import com.middlewar.api.exceptions.SpyReportCreationException;
+import com.middlewar.api.services.BaseService;
+import com.middlewar.core.exceptions.BaseNotFoundException;
+import com.middlewar.core.exceptions.SpyReportCreationException;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.core.model.Base;
@@ -9,18 +11,23 @@ import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.report.SpyReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
+
+import static com.middlewar.core.predicate.BasePredicate.hasId;
 
 /**
  * @author Bertrand
  */
 @Service
+@Validated
 public class ReportManagerImpl implements ReportManager {
 
     @Autowired
-    private BaseManagerImpl baseManagerImpl;
+    private BaseService baseService;
 
     @Autowired
     private SpyReportServiceImpl spyReportService;
@@ -30,9 +37,10 @@ public class ReportManagerImpl implements ReportManager {
         return player.getCurrentBase().getReports();
     }
 
-    public SpyReport spy(Player player, long baseId, long target) {
-        final Base base = baseManagerImpl.getOwnedBase(baseId, player);
-        final Base baseTarget = baseManagerImpl.getBase(target);
+    @Override
+    public SpyReport spy(@NotNull Player player, int sourceId, int targetId) {
+        final Base base = player.getBases().stream().filter(hasId(sourceId)).findFirst().orElseThrow(BaseNotFoundException::new);
+        final Base baseTarget = baseService.find(targetId);
 
         final SpyReport report = spyReportService.create(player, base, baseTarget);
         if (report == null) throw new SpyReportCreationException();

@@ -1,8 +1,8 @@
 package com.middlewar.api.manager.impl;
 
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.ItemRequirementMissingException;
-import com.middlewar.api.exceptions.ShipCreationFailedException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.ItemRequirementMissingException;
+import com.middlewar.core.exceptions.ShipCreationFailedException;
 import com.middlewar.api.manager.ShipManager;
 import com.middlewar.api.services.impl.ShipServiceImpl;
 import com.middlewar.api.services.impl.InventoryServiceImpl;

@@ -1,6 +1,6 @@
 package com.middlewar.api.services.impl;
 
-import com.middlewar.api.exceptions.AccountAlreadyExistsException;
+import com.middlewar.core.exceptions.AccountAlreadyExistsException;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.core.annotations.Password;
 import com.middlewar.core.model.Account;

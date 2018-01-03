@@ -1,6 +1,6 @@
 package com.middlewar.api.services.impl;
 
-import com.middlewar.api.exceptions.BaseNotFoundException;
+import com.middlewar.core.exceptions.BaseNotFoundException;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.model.Base;

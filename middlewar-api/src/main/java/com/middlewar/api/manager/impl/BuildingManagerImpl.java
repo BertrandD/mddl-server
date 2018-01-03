@@ -1,16 +1,15 @@
 package com.middlewar.api.manager.impl;
 
-import com.middlewar.api.exceptions.BuildingAlreadyExistsException;
-import com.middlewar.api.exceptions.BuildingCreationException;
-import com.middlewar.api.exceptions.BuildingMaxLevelReachedException;
-import com.middlewar.api.exceptions.BuildingNotFoundException;
-import com.middlewar.api.exceptions.BuildingTemplateNotFoundException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.MaximumModulesReachedException;
-import com.middlewar.api.exceptions.ModuleNotInInventoryException;
+import com.middlewar.core.exceptions.BuildingAlreadyExistsException;
+import com.middlewar.core.exceptions.BuildingCreationException;
+import com.middlewar.core.exceptions.BuildingMaxLevelReachedException;
+import com.middlewar.core.exceptions.BuildingNotFoundException;
+import com.middlewar.core.exceptions.BuildingTemplateNotFoundException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.MaximumModulesReachedException;
+import com.middlewar.core.exceptions.ModuleNotInInventoryException;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.BuildingTaskManager;
-import com.middlewar.api.services.impl.BaseServiceImpl;
 import com.middlewar.api.services.impl.BuildingServiceImpl;
 import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.services.impl.InventoryServiceImpl;
@@ -31,7 +30,7 @@ import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.middlewar.api.predicate.BuildingInstancePredicate.hasId;
+import static com.middlewar.core.predicate.BuildingInstancePredicate.hasId;
 
 /**
  * @author Bertrand

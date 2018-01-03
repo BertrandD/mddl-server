@@ -1,9 +1,9 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.exceptions.BadItemException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.NotEnoughSlotsException;
-import com.middlewar.api.exceptions.RecipeCreationFailedException;
+import com.middlewar.core.exceptions.BadItemException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.NotEnoughSlotsException;
+import com.middlewar.core.exceptions.RecipeCreationFailedException;
 import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.api.services.impl.RecipeServiceImpl;
 import com.middlewar.core.data.xml.ItemData;

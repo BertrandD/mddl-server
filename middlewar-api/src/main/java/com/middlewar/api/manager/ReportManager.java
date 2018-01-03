@@ -1,12 +1,13 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.SpyReportCreationException;
+import com.middlewar.core.exceptions.BaseNotFoundException;
+import com.middlewar.core.exceptions.BaseNotOwnedException;
+import com.middlewar.core.exceptions.SpyReportCreationException;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.Report;
 import com.middlewar.core.model.report.SpyReport;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -14,11 +15,7 @@ import java.util.List;
  */
 public interface ReportManager {
 
-    /**
-     *
-     * @param player
-     * @return
-     */
+
     List<Report> getAllReportsOfCurrentPlayer(Player player);
 
     /**
@@ -30,5 +27,5 @@ public interface ReportManager {
      * @throws BaseNotOwnedException      if the source base is now owned by the given player
      * @throws SpyReportCreationException if something went wrong
      */
-    SpyReport spy(Player player, long baseId, long target);
+    SpyReport spy(@NotNull Player player, int baseId, int target);
 }

@@ -1,6 +1,7 @@
 package com.middlewar.core.model;
 
 import com.middlewar.core.annotations.Password;
+import com.middlewar.core.exceptions.PlayerNotFoundException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.middlewar.core.predicate.PlayerPredicate.hasId;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -76,6 +78,10 @@ public class Account implements UserDetails {
             players.add(player);
         else
             log.warn("Cannot add Player " + player.getName() + " to account because of null or already added");
+    }
+
+    public Player getCurrentPlayer() {
+        return this.players.stream().filter(hasId(this.currentPlayerId)).findFirst().orElseThrow(PlayerNotFoundException::new);
     }
 
     @Override

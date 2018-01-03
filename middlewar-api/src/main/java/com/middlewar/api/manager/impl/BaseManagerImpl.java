@@ -1,8 +1,8 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.annotations.model.BaseName;
-import com.middlewar.api.exceptions.BaseCreationException;
-import com.middlewar.api.exceptions.BaseNotFoundException;
+import com.middlewar.core.exceptions.BaseCreationException;
+import com.middlewar.core.exceptions.BaseNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.BaseService;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.middlewar.api.predicate.BasePredicate.hasId;
+import static com.middlewar.core.predicate.BasePredicate.hasId;
 
 /**
  * @author Bertrand

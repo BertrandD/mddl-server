@@ -1,9 +1,9 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.PlayerHasNoBaseException;
+import com.middlewar.core.exceptions.BaseNotFoundException;
+import com.middlewar.core.exceptions.BaseNotOwnedException;
+import com.middlewar.core.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.manager.PlayerManager;
@@ -64,8 +64,8 @@ public class BaseManagerTest {
         WorldData.getInstance().reload();
         accountService.deleteAll();
         _account = accountService.create("toto", "");
-        _playerOwner = playerManager.createForAccount(_account, "owner");
-        _playerNotOwner = playerManager.createForAccount(_account, "notOwner");
+        _playerOwner = playerManager.create(_account, "owner");
+        _playerNotOwner = playerManager.create(_account, "notOwner");
         Planet planet = planetManager.pickRandom();
         _base = baseService.create("base1", _playerOwner, planet);
         _base2 = baseService.create("base2", _playerOwner, planet);

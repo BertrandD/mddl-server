@@ -1,9 +1,9 @@
 package com.middlewar.api.manager.impl;
 
-import com.middlewar.api.exceptions.BuildingNotFoundException;
-import com.middlewar.api.exceptions.ItemCreationException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.ItemNotUnlockedException;
+import com.middlewar.core.exceptions.BuildingNotFoundException;
+import com.middlewar.core.exceptions.ItemCreationException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.ItemNotUnlockedException;
 import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.ItemData;

@@ -1,11 +1,11 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.exceptions.BuildingNotFoundException;
-import com.middlewar.api.exceptions.BuildingRequirementMissingException;
-import com.middlewar.api.exceptions.ItemCreationException;
-import com.middlewar.api.exceptions.ItemNotFoundException;
-import com.middlewar.api.exceptions.ItemNotUnlockedException;
-import com.middlewar.api.exceptions.ItemRequirementMissingException;
+import com.middlewar.core.exceptions.BuildingNotFoundException;
+import com.middlewar.core.exceptions.BuildingRequirementMissingException;
+import com.middlewar.core.exceptions.ItemCreationException;
+import com.middlewar.core.exceptions.ItemNotFoundException;
+import com.middlewar.core.exceptions.ItemNotUnlockedException;
+import com.middlewar.core.exceptions.ItemRequirementMissingException;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 
