@@ -3,6 +3,7 @@ package com.middlewar.core.model.vehicles;
 import com.middlewar.core.enums.VehicleMission;
 import com.middlewar.core.model.commons.Coordinates;
 import com.middlewar.core.model.stats.ObjectStat;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ import static java.util.Collections.emptyList;
 @Setter
 @Entity
 @Table(name = "fleets")
+@AllArgsConstructor
 public class Fleet {
 
     @Id
@@ -49,17 +51,8 @@ public class Fleet {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ship> ships;
 
-    public Fleet() {
-        setShips(emptyList());
-        setStats(new ObjectStat());
-    }
-
     public Fleet(Coordinates arrival, Coordinates departure, VehicleMission mission) {
-        setShips(emptyList());
-        setStats(new ObjectStat());
-        setDeparture(departure);
-        setArrival(arrival);
-        setMission(mission);
+        this(-1, departure, arrival, mission, new ObjectStat(), emptyList());
     }
 
 /*

@@ -48,6 +48,7 @@ public abstract class Vehicle implements IShip {
         this.base = base;
         this.recipeInstance = recipeInstance;
         this.count = count;
+        this.state = VehicleState.BASED;
     }
 
     @Override
