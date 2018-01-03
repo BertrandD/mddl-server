@@ -23,7 +23,7 @@ public class BaseInventoryServiceTest {
     public void testCreate() {
         /*final Base base = new Base();
 
-        final BaseInventory baseInventory = baseInventoryService.create(base);
+        final BaseInventory baseInventory = baseInventoryService.createFriendRequest(base);
 
         Assertions.assertThat(baseInventory).isNotNull();
         Assertions.assertThat(baseInventory.getCurrentBaseOfPlayer()).isEqualTo(base);*/

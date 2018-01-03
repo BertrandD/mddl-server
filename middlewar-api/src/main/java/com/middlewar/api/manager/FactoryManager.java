@@ -6,8 +6,11 @@ import com.middlewar.core.exceptions.ItemCreationException;
 import com.middlewar.core.exceptions.ItemNotFoundException;
 import com.middlewar.core.exceptions.ItemNotUnlockedException;
 import com.middlewar.core.exceptions.ItemRequirementMissingException;
-import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Leboc Philippe.
@@ -15,9 +18,10 @@ import com.middlewar.core.model.instances.ItemInstance;
 public interface FactoryManager {
 
     /**
-     * @param base      the base where the module factory is builded
+     * @param player    the player who is handling this action
+     * @param baseId    the base identifier where the module factory is builded
      * @param factoryId the id of the module factory used
-     * @param itemId    the template id of the module we want to create  @return the created module
+     * @param itemId    the template id of the module we want to createFriendRequest  @return the created module
      * @throws ItemRequirementMissingException     if some item requiremments are missing in inventory
      * @throws BuildingRequirementMissingException if some building requiremments are missing
      * @throws ItemNotFoundException               if the given itemId does not match a game item of type module
@@ -25,12 +29,12 @@ public interface FactoryManager {
      * @throws ItemNotUnlockedException            if the module is not yet unlocked in the factory
      * @throws ItemCreationException               if something went wrong
      */
-    ItemInstance createModule(Base base, Long factoryId, String itemId);
+    ItemInstance createModule(@NotNull Player player, int baseId, int factoryId, @NotEmpty String itemId);
 
     /**
      * @param base      the base where the structure factory is builded
      * @param factoryId the id of the module factory used
-     * @param itemId    the template id of the structure we want to create  @return the created structure
+     * @param itemId    the template id of the structure we want to createFriendRequest  @return the created structure
      * @throws ItemRequirementMissingException     if some item requiremments are missing in inventory
      * @throws BuildingRequirementMissingException if some building requiremments are missing
      * @throws ItemNotFoundException               if the given itemId does not match a game item of type structure
@@ -38,6 +42,6 @@ public interface FactoryManager {
      * @throws ItemNotUnlockedException            if the structure is not yet unlocked in the factory
      * @throws ItemCreationException               if something went wrong
      */
-    ItemInstance createStructure(Base base, Long factoryId, String itemId);
+    ItemInstance createStructure(@NotNull Player player, int baseId, int factoryId, @NotEmpty String itemId);
 
 }

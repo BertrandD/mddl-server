@@ -53,7 +53,7 @@ public class AccountServiceImpl extends CrudServiceImpl<Account, Integer, Accoun
 
         final Account account = save(new Account(username, passwordEncoder.encode(password), singletonList(new SimpleGrantedAuthority(DEFAULT_ACCOUNT_ROLE))));
         if(account == null)
-            throw new RuntimeException(); // TODO: create specific exception
+            throw new RuntimeException(); // TODO: createFriendRequest specific exception
 
         log.info("New account : " + account.getUsername() + " with identifier [" + account.getId() + "]");
         return account;

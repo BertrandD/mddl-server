@@ -70,7 +70,7 @@ public class PlanetScanReportServiceTest {
     public void testCreatePlanetScanReport() {
 /*
         _planet.addBase(_base);
-        PlanetScanReport report = planetScanReportService.create(_player, _base, _planet);
+        PlanetScanReport report = planetScanReportService.createFriendRequest(_player, _base, _planet);
 
         Assertions.assertThat(report).isNotNull();
         Assertions.assertThat(report.getBaseSrc()).isEqualTo(_base);

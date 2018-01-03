@@ -25,7 +25,7 @@ public class RecipeServiceImpl extends CrudServiceImpl<RecipeInstance, Integer, 
         final RecipeInstance recipeInstance = repository.save(new RecipeInstance(-1, name, owner, structure, components));
 
         if(recipeInstance == null)
-            throw new RuntimeException(); // TODO: create exception
+            throw new RuntimeException(); // TODO: createFriendRequest exception
 
         owner.getRecipes().add(recipeInstance); // TODO: move me
 

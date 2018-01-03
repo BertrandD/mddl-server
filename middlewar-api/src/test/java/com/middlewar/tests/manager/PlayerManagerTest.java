@@ -105,7 +105,7 @@ public class PlayerManagerTest {
 
 //    @Test(expected = PlayerCreationFailedException.class)
 //    public void shouldThrowExceptionIfFailed() {
-//        playerManager.create(_account, "toto");
+//        playerManager.createFriendRequest(_account, "toto");
 //    }
 
     @Test

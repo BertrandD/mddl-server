@@ -50,7 +50,7 @@ public class ShipManagerImpl implements ShipManager {
         for (ItemInstance inst : collector)
             inventoryService.consumeItem(inst, 1);
 
-        final Ship ship = null; //shipService.create(base, structure, count, ids);
+        final Ship ship = null; //shipService.createFriendRequest(base, structure, count, ids);
         if (ship == null) throw new ShipCreationFailedException();
         return ship;*/
         return null;

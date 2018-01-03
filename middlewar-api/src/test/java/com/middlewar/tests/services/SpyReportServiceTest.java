@@ -86,12 +86,12 @@ public class SpyReportServiceTest {
     @Test
     public void testCreateSpyReport() {
 /*
-        _baseTarget.getShips().add(new Ship(_baseTarget, recipeManager.create(_player, "testRecipe", "structure_test_free", new ArrayList<>()), 5));
-        final Resource resource = resourceService.create(_baseTarget, "resource_1");
+        _baseTarget.getShips().add(new Ship(_baseTarget, recipeManager.createFriendRequest(_player, "testRecipe", "structure_test_free", new ArrayList<>()), 5));
+        final Resource resource = resourceService.createFriendRequest(_baseTarget, "resource_1");
         resource.getItem().addCount(100);
         _baseTarget.getResources().add(resource);
 
-        SpyReport report = spyReportService.create(_player, _baseSrc, _baseTarget);
+        SpyReport report = spyReportService.createFriendRequest(_player, _baseSrc, _baseTarget);
         Assertions.assertThat(report).isNotNull();
         Assertions.assertThat(report.getBaseSrc()).isEqualTo(_baseSrc);
         Assertions.assertThat(report.getBaseTarget()).isEqualTo(_baseTarget);
