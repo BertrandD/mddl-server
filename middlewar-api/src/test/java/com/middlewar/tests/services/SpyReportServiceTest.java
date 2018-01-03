@@ -8,18 +8,13 @@ import com.middlewar.api.services.impl.BaseServiceImpl;
 import com.middlewar.api.services.impl.ItemServiceImpl;
 import com.middlewar.api.services.impl.PlayerServiceImpl;
 import com.middlewar.api.services.ResourceService;
-import com.middlewar.api.services.SpyReportService;
+import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.core.data.json.WorldData;
-import com.middlewar.core.enums.ReportCategory;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
-import com.middlewar.core.model.inventory.Resource;
-import com.middlewar.core.model.report.SpyReport;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.model.vehicles.Ship;
 import com.middlewar.tests.ApplicationTest;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +24,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 
 /**
  * @author Leboc Philippe.
@@ -59,7 +53,7 @@ public class SpyReportServiceTest {
     private ResourceService resourceService;
 
     @Autowired
-    private SpyReportService spyReportService;
+    private SpyReportServiceImpl spyReportService;
 
     @Autowired
     private RecipeManager recipeManager;

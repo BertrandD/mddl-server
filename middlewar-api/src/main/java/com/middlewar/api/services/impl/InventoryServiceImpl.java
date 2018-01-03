@@ -12,14 +12,20 @@ import com.middlewar.core.model.items.GameItem;
 import com.middlewar.core.repository.InventoryRepository;
 import com.middlewar.core.utils.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author LEBOC Philippe
  */
 @Slf4j
 @Service
+@Validated
 public class InventoryServiceImpl extends CrudServiceImpl<Inventory, Integer, InventoryRepository> implements InventoryService {
 
     @Autowired
@@ -29,23 +35,18 @@ public class InventoryServiceImpl extends CrudServiceImpl<Inventory, Integer, In
     private ResourceService resourceService;
 
     @Override
-    public synchronized Resource createNewResource(final Base base, final String templateId) {
+    public synchronized Resource createNewResource(@NotNull final Base base, @NotEmpty final String templateId) {
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
         if (template == null) return null;
         return resourceService.create(base, templateId);
     }
 
     @Override
-    public synchronized ItemInstance addItem(final Inventory inventory, final String templateId, final long amount) {
+    public synchronized ItemInstance addItem(@NotNull final Inventory inventory, @NotEmpty final String templateId, @Min(1) final long amount) {
 
         final GameItem template = ItemData.getInstance().getTemplate(templateId);
         if (template == null) {
             log.info("Template " + templateId + " nod found");
-            return null;
-        }
-
-        if (amount <= 0) {
-            log.info("Not allowed to add a null or negative amount of " + templateId + ". Given " + amount);
             return null;
         }
 
@@ -72,9 +73,7 @@ public class InventoryServiceImpl extends CrudServiceImpl<Inventory, Integer, In
     }
 
     @Override
-    public synchronized boolean addResource(Resource resource, double amount) {
-
-        if (amount <= 0) return false;
+    public synchronized boolean addResource(@NotNull Resource resource, @Min(1) double amount) {
 
         final GameItem template = resource.getItem().getTemplate();
 
@@ -92,7 +91,7 @@ public class InventoryServiceImpl extends CrudServiceImpl<Inventory, Integer, In
     }
 
     @Override
-    public synchronized boolean consumeItem(ItemInstance item, final long amount) {
+    public synchronized boolean consumeItem(@NotNull ItemInstance item, @Min(1) final long amount) {
 
         if (item.getCount() - amount < 0) return false;
 

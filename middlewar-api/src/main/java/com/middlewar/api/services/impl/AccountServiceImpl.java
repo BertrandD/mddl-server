@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Validated
 public class AccountServiceImpl extends CrudServiceImpl<Account, Integer, AccountRepository> implements UserDetailsService, AccountService {
 
     @Autowired

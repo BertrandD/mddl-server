@@ -2,7 +2,7 @@ package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.exceptions.SpyReportCreationException;
 import com.middlewar.api.manager.ReportManager;
-import com.middlewar.api.services.SpyReportService;
+import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.Report;
@@ -23,7 +23,7 @@ public class ReportManagerImpl implements ReportManager {
     private BaseManagerImpl baseManagerImpl;
 
     @Autowired
-    private SpyReportService spyReportService;
+    private SpyReportServiceImpl spyReportService;
 
     public List<Report> getAllReportsOfCurrentPlayer(Player player) {
         player.getCurrentBase().getReports().sort(Collections.reverseOrder());

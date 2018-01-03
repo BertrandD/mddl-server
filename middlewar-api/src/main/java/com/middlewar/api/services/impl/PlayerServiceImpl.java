@@ -8,19 +8,21 @@ import com.middlewar.core.repository.PlayerRepository;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-
 
 /**
  * @author LEBOC Philippe
  */
 @Service
+@Validated
 public class PlayerServiceImpl extends CrudServiceImpl<Player, Integer, PlayerRepository> implements PlayerService {
 
     @Autowired
     private AccountService accountService;
 
+    @Override
     public Player create(@NotNull Account account, @NotEmpty String name) {
 
         final Player player = repository.save(new Player(account, name));

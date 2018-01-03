@@ -5,7 +5,7 @@ import com.middlewar.api.exceptions.ItemNotFoundException;
 import com.middlewar.api.exceptions.NotEnoughSlotsException;
 import com.middlewar.api.exceptions.RecipeCreationFailedException;
 import com.middlewar.api.services.impl.InventoryServiceImpl;
-import com.middlewar.api.services.RecipeService;
+import com.middlewar.api.services.impl.RecipeServiceImpl;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.RecipeInstance;
@@ -25,7 +25,7 @@ public class RecipeManager {
     private InventoryServiceImpl inventoryService;
 
     @Autowired
-    private RecipeService recipeService;
+    private RecipeServiceImpl recipeService;
 
     public RecipeInstance create(Player owner, String name, String structureID, List<String> componentsIds) {
         Structure structure = ItemData.getInstance().getStructure(structureID);

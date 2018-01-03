@@ -2,8 +2,7 @@ package com.middlewar.controllers.actions;
 
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.api.services.impl.PlayerServiceImpl;
-import com.middlewar.api.services.PrivateMessageService;
+import com.middlewar.api.services.impl.PrivateMessageServiceImpl;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.api.util.response.SystemMessageId;
 import com.middlewar.core.model.Account;
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PrivateMessageController {
 
     @Autowired
-    private PrivateMessageService service;
+    private PrivateMessageServiceImpl service;
 
     @Autowired
     private PlayerService playerService;

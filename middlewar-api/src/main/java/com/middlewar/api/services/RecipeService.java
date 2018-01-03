@@ -4,19 +4,14 @@ import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.RecipeInstance;
 import com.middlewar.core.model.items.SlotItem;
 import com.middlewar.core.model.items.Structure;
-import org.springframework.stereotype.Service;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
  * @author LEBOC Philippe
  */
-@Service
-public class RecipeService {
-
-    public RecipeInstance create(String name, Player owner, Structure structure, List<SlotItem> components) {
-        final RecipeInstance recipeInstance = new RecipeInstance(-1, name, owner, structure, components);
-        owner.getRecipes().add(recipeInstance);
-        return recipeInstance;
-    }
+public interface RecipeService extends CrudService<RecipeInstance, Integer> {
+    RecipeInstance create(@NotEmpty String name, @NotNull Player owner, @NotNull Structure structure, @NotEmpty List<SlotItem> components);
 }

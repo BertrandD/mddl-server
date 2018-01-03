@@ -4,7 +4,10 @@ import com.middlewar.api.services.FriendRequestService;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.repository.FriendRequestRepository;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Service;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author LEBOC Philippe
@@ -12,7 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class FriendRequestServiceImpl extends CrudServiceImpl<FriendRequest, Integer, FriendRequestRepository> implements FriendRequestService {
 
-    public FriendRequest create(Player requester, Player requested, String message) {
+    @Override
+    public FriendRequest create(@NotNull Player requester, @NotNull Player requested, @NotEmpty String message) {
 
         final FriendRequest request = repository.save(new FriendRequest(requester, requested, message));
         if(request == null)
