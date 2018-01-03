@@ -31,10 +31,8 @@
     <modules>
         <module>middlewar-api</module>
         <module>middlewar-boot</module>
-        <module>middlewar-cli</module>
         <module>middlewar-controller</module>
         <module>middlewar-core</module>
-        <module>middlewar-web</module>
     </modules>
 
     <dependencies>
