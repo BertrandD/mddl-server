@@ -22,23 +22,26 @@ import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.tasks.BuildingTask;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.middlewar.api.predicate.BuildingInstancePredicate.hasId;
 
 /**
  * @author Bertrand
  */
 @Service
+@Validated
 public class BuildingManagerImpl implements BuildingManager {
 
     @Autowired
     private BuildingServiceImpl buildingService;
-
-    @Autowired
-    private BaseServiceImpl baseService;
 
     @Autowired
     private InventoryServiceImpl inventoryService;
@@ -49,17 +52,7 @@ public class BuildingManagerImpl implements BuildingManager {
     @Autowired
     private BuildingTaskManager buildingTaskManager;
 
-    //@Autowired
-    //private BuildingTaskService buildingTaskService;
-
-    public BuildingInstance getBuilding(Base base, long id) {
-        final BuildingInstance building = null; //buildingService.findByBaseAndId(base, id);
-        if (building == null) throw new BuildingNotFoundException();
-
-        return building;
-    }
-
-    public BuildingInstance create(Base base, String templateId) {
+    public BuildingInstance create(@NotNull Base base, @NotEmpty String templateId) {
         base.initializeStats();
 
         final Building template = BuildingData.getInstance().getBuilding(templateId);
@@ -86,8 +79,10 @@ public class BuildingManagerImpl implements BuildingManager {
         return building;
     }
 
+    @Override
     public BuildingInstance upgrade(Base base, long id) {
-        final BuildingInstance building = getBuilding(base, id);
+        // TODO: better selecting by templateId instead of id ?
+        final BuildingInstance building = base.getBuildings().stream().filter(hasId(id)).findFirst().orElseThrow(BuildingNotFoundException::new);
 
         final BuildingTask lastInQueue = null; //buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
         final Building template = building.getTemplate();
@@ -110,12 +105,15 @@ public class BuildingManagerImpl implements BuildingManager {
     public BuildingInstance attachModule(Base base, long buildingInstId, String moduleId) {
         base.initializeStats();
 
-        final BuildingInstance building = getBuilding(base, buildingInstId);
+        final BuildingInstance building = base.getBuildings().stream()
+                .filter(hasId(buildingInstId))
+                .findFirst().orElseThrow(BuildingNotFoundException::new);
 
         if (ItemData.getInstance().getModule(moduleId) == null) throw new ItemNotFoundException();
 
-        final ItemInstance module = base.getBaseInventory().getItems().stream().filter(k -> k.getTemplateId().equals(moduleId)).findFirst().orElse(null);
-        if (module == null) throw new ModuleNotInInventoryException();
+        final ItemInstance module = base.getBaseInventory().getItems().stream()
+                .filter(k -> k.getTemplateId().equals(moduleId))
+                .findFirst().orElseThrow(ModuleNotInInventoryException::new);
 
         //if(building.getModules().stream().filter(k->k.getItemId().equals(moduleId)).findFirst().orElse(null) != null) return new Response(JsonResponseType.ERROR, "Module already attached !"); // TODO System message
 

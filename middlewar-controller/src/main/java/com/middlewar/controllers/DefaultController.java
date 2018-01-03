@@ -1,7 +1,6 @@
 package com.middlewar.controllers;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.manager.AccountManager;
 import com.middlewar.api.services.impl.AccountServiceImpl;
 import com.middlewar.api.util.response.MetaHolder;
 import com.middlewar.api.util.response.Response;

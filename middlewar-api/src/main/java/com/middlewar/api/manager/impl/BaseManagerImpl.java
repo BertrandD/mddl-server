@@ -1,11 +1,11 @@
 package com.middlewar.api.manager.impl;
 
+import com.middlewar.api.annotations.model.BaseName;
 import com.middlewar.api.exceptions.BaseCreationException;
 import com.middlewar.api.exceptions.BaseNotFoundException;
-import com.middlewar.api.exceptions.BaseNotOwnedException;
-import com.middlewar.api.exceptions.PlayerHasNoBaseException;
 import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.services.impl.BaseServiceImpl;
+import com.middlewar.api.manager.PlanetManager;
+import com.middlewar.api.services.BaseService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.BuildingInstanceHolder;
@@ -15,70 +15,33 @@ import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.commons.Requirement;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.space.Planet;
-import com.middlewar.core.model.tasks.BuildingTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
+import static com.middlewar.api.predicate.BasePredicate.hasId;
 
 /**
  * @author Bertrand
+ * @author LEBOC Philippe
  */
 @Service
+@Validated
 public class BaseManagerImpl implements BaseManager {
 
     @Autowired
-    private BaseServiceImpl baseService;
-
-    //@Autowired
-    //private BuildingTaskService buildingTaskService;
+    private BaseService baseService;
 
     @Autowired
-    private PlanetManagerImpl planetManager;
+    private PlanetManager planetManager;
 
-    public List<Base> findAllBaseOfPlayer(Player player) {
-        final List<Base> bases = player.getBases();
-        bases.forEach(Base::initializeStats);
-        return bases;
-    }
-
-    public Base getBase(long id) {
-        final Base base = baseService.find((int)id);
-        if (base == null) throw new BaseNotFoundException();
-        return base;
-    }
-
-    public Base getOwnedBase(long id, Player player) {
-        final Base base = getBase(id);
-        if (base.getOwner().getId() != player.getId()) {
-            throw new BaseNotOwnedException();
-        }
-        return base;
-    }
-
-    public Base getCurrentBaseOfPlayer(Player player) {
-        if (player.getCurrentBase() == null) {
-            throw new PlayerHasNoBaseException();
-        }
-        return getOwnedBase(player.getCurrentBase().getId(), player);
-    }
-
-    public Base getBaseWithBuildingQueue(Player player, long id) {
-        final Base base = getOwnedBase(id, player);
-        // TODO: add base building queue
-        return base;
-    }
-
-    public List<BuildingTask> getBaseBuildingQueue(Base base) {
-        //return buildingTaskService.findByBaseOrderByEndsAtAsc(base);
-        return emptyList();
-    }
-
-    public Base create(Player player, String name) {
+    @Override
+    public Base create(@NotNull Player player, @BaseName String name) {
         final Planet planet = planetManager.pickRandom();
 
         // TODO: Base creation conditions.
@@ -88,8 +51,9 @@ public class BaseManagerImpl implements BaseManager {
         return base;
     }
 
-    public List<BuildingHolder> getBuildableBuildingsOfBase(Player player, long baseId) {
-        final Base base = getOwnedBase(baseId, player);
+    @Override
+    public List<BuildingHolder> getBuildableBuildingsOfBase(@NotNull Player player, long baseId) {
+        final Base base = player.getBases().stream().filter(hasId(baseId)).findFirst().orElseThrow(BaseNotFoundException::new);
 
         final List<BuildingHolder> nextBuildings = new ArrayList<>();
 

@@ -12,4 +12,5 @@ import javax.validation.constraints.NotNull;
  */
 public interface BaseService extends CrudService<Base, Integer> {
     Base create(@NotEmpty String name, @NotNull Player player, @NotNull Planet planet);
+    Base find(Integer integer);
 }

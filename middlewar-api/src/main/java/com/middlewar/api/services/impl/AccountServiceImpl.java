@@ -1,5 +1,6 @@
 package com.middlewar.api.services.impl;
 
+import com.middlewar.api.exceptions.AccountAlreadyExistsException;
 import com.middlewar.api.services.AccountService;
 import com.middlewar.core.annotations.Password;
 import com.middlewar.core.model.Account;
@@ -7,7 +8,6 @@ import com.middlewar.core.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,8 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
-import java.util.List;
+import static java.util.Collections.singletonList;
 
 /**
  * @author LEBOC Philippe
@@ -26,6 +25,8 @@ import java.util.List;
 @Service
 @Validated
 public class AccountServiceImpl extends CrudServiceImpl<Account, Integer, AccountRepository> implements UserDetailsService, AccountService {
+
+    private static final String DEFAULT_ACCOUNT_ROLE = "ROLE_USER";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -45,10 +46,14 @@ public class AccountServiceImpl extends CrudServiceImpl<Account, Integer, Accoun
 
     @Override
     public Account create(@NotEmpty String username, @Password String password) {
-        final List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        final Account account = save(new Account(username, passwordEncoder.encode(password), roles));
+        if(repository.findByUsername(username) != null) {
+            throw new AccountAlreadyExistsException();
+        }
+
+        final Account account = save(new Account(username, passwordEncoder.encode(password), singletonList(new SimpleGrantedAuthority(DEFAULT_ACCOUNT_ROLE))));
+        if(account == null)
+            throw new RuntimeException(); // TODO: create specific exception
 
         log.info("New account : " + account.getUsername() + " with identifier [" + account.getId() + "]");
         return account;

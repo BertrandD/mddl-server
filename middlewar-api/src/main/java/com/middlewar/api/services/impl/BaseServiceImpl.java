@@ -1,5 +1,6 @@
 package com.middlewar.api.services.impl;
 
+import com.middlewar.api.exceptions.BaseNotFoundException;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.model.Base;
@@ -20,6 +21,7 @@ public class BaseServiceImpl extends CrudServiceImpl<Base, Integer, BaseReposito
     @Autowired
     private PlayerService playerService;
 
+    @Override
     public Base create(@NotEmpty String name, @NotNull Player player, @NotNull Planet planet) {
 
         final Base base = repository.save(new Base(name, player, planet));
@@ -31,6 +33,13 @@ public class BaseServiceImpl extends CrudServiceImpl<Base, Integer, BaseReposito
             playerService.update(player);
         }
 
+        return base;
+    }
+
+    @Override
+    public Base find(Integer integer) {
+        final Base base = repository.findOne(integer);
+        if (base == null) throw new BaseNotFoundException();
         return base;
     }
 }
