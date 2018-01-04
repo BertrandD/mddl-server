@@ -11,4 +11,5 @@ import javax.validation.constraints.Size;
  */
 public interface SocialActionManager {
     FriendRequest createFriendRequest(@NotNull Player player, int friendId, @NotNull @Size(max = 500) String message);
+    void updateFriendRequest(@NotNull Player player, int requestId, boolean accept);
 }
