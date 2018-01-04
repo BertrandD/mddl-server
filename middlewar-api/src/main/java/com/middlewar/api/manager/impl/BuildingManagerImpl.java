@@ -1,10 +1,10 @@
 package com.middlewar.api.manager.impl;
 
+import com.middlewar.api.services.BaseService;
+import com.middlewar.core.exceptions.BaseNotOwnedException;
 import com.middlewar.core.exceptions.BuildingAlreadyExistsException;
-import com.middlewar.core.exceptions.BuildingCreationException;
 import com.middlewar.core.exceptions.BuildingMaxLevelReachedException;
 import com.middlewar.core.exceptions.BuildingNotFoundException;
-import com.middlewar.core.exceptions.BuildingTemplateNotFoundException;
 import com.middlewar.core.exceptions.ItemNotFoundException;
 import com.middlewar.core.exceptions.MaximumModulesReachedException;
 import com.middlewar.core.exceptions.ModuleNotInInventoryException;
@@ -16,6 +16,7 @@ import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
+import com.middlewar.core.model.Player;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.instances.BuildingInstance;
@@ -28,9 +29,9 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
-import java.util.List;
 
-import static com.middlewar.core.predicate.BuildingInstancePredicate.hasId;
+import static com.middlewar.core.predicate.BasePredicate.hasId;
+import static com.middlewar.core.predicate.BuildingInstancePredicate.hasTemplateId;
 
 /**
  * @author Bertrand
@@ -46,33 +47,32 @@ public class BuildingManagerImpl implements BuildingManager {
     private InventoryServiceImpl inventoryService;
 
     @Autowired
+    private BaseService baseService;
+
+    @Autowired
     private ValidatorService validator;
 
     @Autowired
     private BuildingTaskManager buildingTaskManager;
 
-    public BuildingInstance create(@NotNull Base base, @NotEmpty String templateId) {
+    public BuildingInstance create(@NotNull Player player, int baseId, @NotEmpty String templateId) {
+
+        final Base base = player.getBases().stream().filter(hasId(baseId)).findFirst().orElseThrow(BaseNotOwnedException::new);
         base.initializeStats();
 
         final Building template = BuildingData.getInstance().getBuilding(templateId);
-        if (template == null) throw new BuildingTemplateNotFoundException();
 
-        final List<BuildingInstance> existingBuildings = buildingService.findByBaseAndBuildingId(base, templateId);
-        if (existingBuildings != null && existingBuildings.size() >= template.getMaxBuild())
-            throw new BuildingAlreadyExistsException(); // TODO: SysMsg MAX REACHED !
+        final BuildingInstance existBuilding = base.getBuildings().stream().filter(hasTemplateId(templateId)).findFirst().orElse(null);
+        if(existBuilding != null) throw new BuildingAlreadyExistsException();
 
-        final BuildingInstance tempBuilding = new BuildingInstance(base, templateId);
-
-        final HashMap<ItemInstance, Long> collector = new HashMap<>();
-        validator.validateBuildingRequirements(base, tempBuilding, collector);
+        // TODO: validate template requirements !
+        // List<ItemInstanceHolder> collector = requirementUtil.isValid();
+        // collector.forEach(inventoryService::consumeItem);
 
         final BuildingInstance building = buildingService.create(base, templateId);
-        if (building == null) throw new BuildingCreationException();
+        base.addBuilding(building);
 
-        collector.forEach(inventoryService::consumeItem);
-
-        //baseService.update(base); // TODO : do not update a base given in parameter (security)
-
+        baseService.updateAsync(base);
         buildingTaskManager.ScheduleUpgrade(building);
 
         return building;

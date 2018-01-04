@@ -19,4 +19,8 @@ public final class BuildingInstancePredicate {
     public static Predicate<BuildingInstance> hasId(final long id) {
         return instance -> instance != null && instance.getId() == id;
     }
+
+    public static Predicate<BuildingInstance> hasTemplateId(String id) {
+        return instance -> instance != null && instance.getTemplateId().equals(id);
+    }
 }

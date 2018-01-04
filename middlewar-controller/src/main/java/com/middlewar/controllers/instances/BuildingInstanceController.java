@@ -7,9 +7,11 @@ import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
 import com.middlewar.dto.instances.BuildingInstanceDto;
+import com.middlewar.request.BuildingCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @User
 @RestController
-@RequestMapping(value = "/me/base/{baseId}/building", produces = "application/json")
+@RequestMapping(value = "/building", produces = "application/json")
 public class BuildingInstanceController {
 
     @Autowired
@@ -32,12 +34,12 @@ public class BuildingInstanceController {
     @Autowired
     private BuildingManager buildingManager;
 
-    @RequestMapping(value = Route.BUILDING_ONE, method = RequestMethod.GET)
-    public Response getBuilding(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @PathVariable("id") int id) {
-        return new Response(buildingManager.getBuilding(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), id));
+    @RequestMapping(method = RequestMethod.GET)
+    public Response getBuilding(@AuthenticationPrincipal Account account, @RequestBody BuildingCreationRequest request) {
+        return new Response(buildingManager.create(account.getCurrentPlayer(), request.getBaseId(), request.getTemplateId()));
     }
 
-    @RequestMapping(value = Route.BUILDING_CREATE, method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public BuildingInstanceDto create(@AuthenticationPrincipal Account pAccount, @PathVariable("baseId") int baseId, @RequestParam(value = "building") String templateId) {
         return buildingManager.create(baseManager.getOwnedBase(baseId, playerManager.getCurrentPlayerForAccount(pAccount)), templateId).toDTO();
     }

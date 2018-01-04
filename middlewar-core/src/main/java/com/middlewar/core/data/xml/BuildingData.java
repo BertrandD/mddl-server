@@ -3,6 +3,7 @@ package com.middlewar.core.data.xml;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.enums.StatOp;
+import com.middlewar.core.exceptions.BuildingTemplateNotFoundException;
 import com.middlewar.core.holders.BuildingHolder;
 import com.middlewar.core.holders.ItemHolder;
 import com.middlewar.core.holders.PropertiesHolder;
@@ -271,7 +272,9 @@ public class BuildingData implements IXmlReader {
     }
 
     public Building getBuilding(String id) {
-        return _buildings.get(id);
+        final Building building = _buildings.get(id);
+        if (building == null) throw new BuildingTemplateNotFoundException();
+        return building;
     }
 
     public List<Building> getBuildings(BuildingCategory type) {
