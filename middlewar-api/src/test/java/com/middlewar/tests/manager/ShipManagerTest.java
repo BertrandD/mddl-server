@@ -6,7 +6,6 @@ import com.middlewar.core.exceptions.RecipeNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.RecipeManager;
-import com.middlewar.api.manager.ShipManager;
 import com.middlewar.api.services.impl.AccountServiceImpl;
 import com.middlewar.api.services.impl.BuildingServiceImpl;
 import com.middlewar.api.services.impl.InventoryServiceImpl;

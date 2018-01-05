@@ -15,8 +15,7 @@ import java.util.List;
  */
 public interface ReportManager {
 
-
-    List<Report> getAllReportsOfCurrentPlayer(Player player);
+    List<Report> getAllReportsOfCurrentPlayer(@NotNull Player player);
 
     /**
      * @param player owner of the spy report

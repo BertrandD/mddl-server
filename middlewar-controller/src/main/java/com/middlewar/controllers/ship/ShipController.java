@@ -1,20 +1,15 @@
 package com.middlewar.controllers.ship;
 
 import com.middlewar.api.annotations.authentication.User;
-import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.manager.ShipManager;
-import com.middlewar.client.Route;
+import com.middlewar.api.util.response.Response;
 import com.middlewar.core.model.Account;
-import com.middlewar.core.model.vehicles.Ship;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.middlewar.request.ShipCreationRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * @author LEBOC Philippe
@@ -24,20 +19,8 @@ import java.util.List;
 @RequestMapping(value = "/ship", produces = "application/json")
 public class ShipController {
 
-    @Autowired
-    private ShipManager shipManager;
-
-    @Autowired
-    private PlayerManager playerManager;
-
-    @Autowired
-    private BaseManager baseManager;
-
-    @RequestMapping(value = Route.SHIP_CREATE, method = RequestMethod.POST)
-    public Ship create(@AuthenticationPrincipal Account pAccount,
-                       @RequestParam(value = "count") Long count,
-                       @RequestParam(value = "recipeId") Long recipeId) {
-        return shipManager.create(baseManager.getCurrentBaseOfPlayer(playerManager.getCurrentPlayerForAccount(pAccount)), count, recipeId);
+    @RequestMapping(method = POST)
+    public Response create(@AuthenticationPrincipal Account account, @RequestBody ShipCreationRequest request) {
+        return new Response();
     }
-
 }

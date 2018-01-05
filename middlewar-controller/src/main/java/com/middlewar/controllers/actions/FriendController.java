@@ -11,8 +11,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * @author LEBOC Philippe
@@ -25,19 +27,19 @@ public class FriendController {
     @Autowired
     private SocialActionManager socialActionManager;
 
-    @RequestMapping(value = "/request", method = RequestMethod.POST)
+    @RequestMapping(value = "/request", method = POST)
     public Response sendFriendRequest(@AuthenticationPrincipal Account account, @RequestBody FriendRequestCreationRequest request) {
         final Player player = account.getCurrentPlayer();
         return new Response(socialActionManager.createFriendRequest(player, request.getFriendId(), request.getMessage()));
     }
 
-    @RequestMapping(value = "/{id}/accept", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/accept", method = GET)
     public Response acceptFriendRequest(@AuthenticationPrincipal Account account, @PathVariable(value = "id") int id) {
         socialActionManager.updateFriendRequest(account.getCurrentPlayer(), id, true);
         return new Response();
     }
 
-    @RequestMapping(value = "/{id}/refuse", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/refuse", method = GET)
     public Response refuseFriendRequest(@AuthenticationPrincipal Account account, @PathVariable(value = "id") int id) {
         socialActionManager.updateFriendRequest(account.getCurrentPlayer(), id, false);
         return new Response();

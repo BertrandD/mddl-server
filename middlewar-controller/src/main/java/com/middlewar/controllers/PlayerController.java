@@ -13,10 +13,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.middlewar.core.predicate.PlayerPredicate.hasId;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
@@ -31,17 +32,17 @@ public class PlayerController {
     @Autowired
     private PlayerManager playerManager;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = GET)
     public Response players(@AuthenticationPrincipal Account account) {
         return new Response(account.getPlayers());
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = GET)
     public Response player(@AuthenticationPrincipal Account account, @PathVariable("id") int id) {
         return new Response(account.getPlayers().stream().filter(hasId(id)).findFirst().orElseThrow(PlayerNotFoundException::new));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = POST)
     public Response create(@AuthenticationPrincipal Account account, @RequestBody PlayerCreationRequest request) {
         return new Response(playerManager.create(account, request.getName()));
     }

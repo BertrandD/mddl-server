@@ -32,7 +32,7 @@ public class ReportManagerImpl implements ReportManager {
     @Autowired
     private SpyReportServiceImpl spyReportService;
 
-    public List<Report> getAllReportsOfCurrentPlayer(Player player) {
+    public List<Report> getAllReportsOfCurrentPlayer(@NotNull Player player) {
         player.getCurrentBase().getReports().sort(Collections.reverseOrder());
         return player.getCurrentBase().getReports();
     }
