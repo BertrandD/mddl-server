@@ -57,7 +57,6 @@ public class Account implements UserDetails {
     @Size(min = 4, max = 16)
     private String username;
 
-    @NotEmpty
     @Password
     private String password;
 

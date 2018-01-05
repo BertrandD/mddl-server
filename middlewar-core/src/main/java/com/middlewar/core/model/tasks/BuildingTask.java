@@ -2,6 +2,7 @@ package com.middlewar.core.model.tasks;
 
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.BuildingInstance;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "buildingtasks")
 @NoArgsConstructor
+@AllArgsConstructor
 public class BuildingTask {
 
     @Id
@@ -41,10 +43,7 @@ public class BuildingTask {
     private int level;
 
     public BuildingTask(Base base, BuildingInstance building, long endsAt, int level) {
-        setBase(base);
-        setBuilding(building);
-        setEndsAt(endsAt);
-        setLevel(level);
+        this(-1, base, building, endsAt, level);
     }
 
     @Override

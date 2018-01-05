@@ -5,6 +5,7 @@ import com.middlewar.core.exceptions.BaseNotOwnedException;
 import com.middlewar.core.exceptions.BuildingAlreadyExistsException;
 import com.middlewar.core.exceptions.BuildingMaxLevelReachedException;
 import com.middlewar.core.exceptions.BuildingNotFoundException;
+import com.middlewar.core.exceptions.BuildingNotOwnedException;
 import com.middlewar.core.exceptions.ItemNotFoundException;
 import com.middlewar.core.exceptions.MaximumModulesReachedException;
 import com.middlewar.core.exceptions.ModuleNotInInventoryException;
@@ -22,6 +23,9 @@ import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.instances.BuildingInstance;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.tasks.BuildingTask;
+import com.middlewar.core.predicate.BasePredicate;
+import com.middlewar.core.predicate.BuildingInstancePredicate;
+import com.middlewar.core.predicate.BuildingTaskPredicate;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +34,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 
-import static com.middlewar.core.predicate.BasePredicate.hasId;
+import static com.middlewar.core.predicate.BuildingInstancePredicate.hasId;
 import static com.middlewar.core.predicate.BuildingInstancePredicate.hasTemplateId;
+import static java.util.Comparator.comparing;
 
 /**
  * @author Bertrand
@@ -57,7 +62,7 @@ public class BuildingManagerImpl implements BuildingManager {
 
     public BuildingInstance create(@NotNull Player player, int baseId, @NotEmpty String templateId) {
 
-        final Base base = player.getBases().stream().filter(hasId(baseId)).findFirst().orElseThrow(BaseNotOwnedException::new);
+        final Base base = player.getBases().stream().filter(BasePredicate.hasId(baseId)).findFirst().orElseThrow(BaseNotOwnedException::new);
         base.initializeStats();
 
         final Building template = BuildingData.getInstance().getBuilding(templateId);
@@ -79,14 +84,19 @@ public class BuildingManagerImpl implements BuildingManager {
     }
 
     @Override
-    public BuildingInstance upgrade(Base base, long id) {
-        // TODO: better selecting by templateId instead of id ?
-        final BuildingInstance building = base.getBuildings().stream().filter(hasId(id)).findFirst().orElseThrow(BuildingNotFoundException::new);
+    public BuildingInstance upgrade(@NotNull Player player, int baseId, int buildingId) {
 
-        final BuildingTask lastInQueue = null; //buildingTaskService.findFirstByBuildingOrderByEndsAtDesc(building.getId());
+        final Base base = player.getBases().stream().filter(BasePredicate.hasId(baseId)).findFirst().orElseThrow(BaseNotOwnedException::new);
+        final BuildingInstance building = base.getBuildings().stream().filter(hasId(buildingId)).findFirst().orElseThrow(BuildingNotOwnedException::new);
         final Building template = building.getTemplate();
+
+        final BuildingTask lastInQueue = base.getBuildingTasks().stream()
+                .filter(BuildingTaskPredicate.hasId(building.getId()))
+                .min(comparing(BuildingTask::getEndsAt))
+                .orElse(null);
+
         if (building.getCurrentLevel() >= template.getMaxLevel() ||
-                (lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel())) {
+            lastInQueue != null && lastInQueue.getLevel() + 1 >= template.getMaxLevel()) {
             throw new BuildingMaxLevelReachedException();
         }
 
@@ -101,15 +111,18 @@ public class BuildingManagerImpl implements BuildingManager {
         return building;
     }
 
-    public BuildingInstance attachModule(Base base, long buildingInstId, String moduleId) {
+    public BuildingInstance attachModule(@NotNull Player player, int baseId, int buildingId, @NotEmpty String moduleId) {
+
+        final Base base = player.getBases().stream().filter(BasePredicate.hasId(baseId)).findFirst().orElseThrow(BaseNotOwnedException::new);
         base.initializeStats();
 
         final BuildingInstance building = base.getBuildings().stream()
-                .filter(hasId(buildingInstId))
+                .filter(BuildingInstancePredicate.hasId(buildingId))
                 .findFirst().orElseThrow(BuildingNotFoundException::new);
 
         if (ItemData.getInstance().getModule(moduleId) == null) throw new ItemNotFoundException();
 
+        // TODO: cleanup required from here
         final ItemInstance module = base.getBaseInventory().getItems().stream()
                 .filter(k -> k.getTemplateId().equals(moduleId))
                 .findFirst().orElseThrow(ModuleNotInInventoryException::new);
@@ -118,16 +131,12 @@ public class BuildingManagerImpl implements BuildingManager {
 
         if (building.getModules().size() >= ((ModulableBuilding) building.getTemplate()).getMaxModules())
             throw new MaximumModulesReachedException();
-/*
-        // TODO: MAKE A TEST !!!!
-        if (!((ModulableBuilding) building.getTemplate()).getModules().contains((Module) module.getTemplate()))
-            throw new ModuleNotAllowedHereException();
-
+        /*
+        if (!((ModulableBuilding) building.getTemplate()).getModules().contains((Module) module.getTemplate())) throw new ModuleNotAllowedHereException();
         inventoryService.consumeItem(module, 1);
-
         building.addModule(module.getTemplateId());
         buildingService.update(building);
-*/
+        */
         return building;
     }
 }
