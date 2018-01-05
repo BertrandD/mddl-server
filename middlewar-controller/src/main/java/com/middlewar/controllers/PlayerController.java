@@ -3,7 +3,7 @@ package com.middlewar.controllers;
 import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.core.exceptions.PlayerNotFoundException;
+import com.middlewar.core.exception.PlayerNotFoundException;
 import com.middlewar.core.model.Account;
 import com.middlewar.request.PlayerCreationRequest;
 import com.middlewar.request.PlayerUpdateRequest;

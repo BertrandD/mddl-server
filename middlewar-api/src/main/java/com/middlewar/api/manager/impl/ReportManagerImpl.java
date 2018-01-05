@@ -1,8 +1,8 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.services.BaseService;
-import com.middlewar.core.exceptions.BaseNotFoundException;
-import com.middlewar.core.exceptions.SpyReportCreationException;
+import com.middlewar.core.exception.BaseNotFoundException;
+import com.middlewar.core.exception.SpyReportCreationException;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.core.model.Base;

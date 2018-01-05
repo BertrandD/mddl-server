@@ -1,12 +1,12 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.core.exceptions.ForbiddenNameException;
-import com.middlewar.core.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.core.exceptions.NoPlayerConnectedException;
-import com.middlewar.core.exceptions.PlayerNotFoundException;
-import com.middlewar.core.exceptions.PlayerNotOwnedException;
-import com.middlewar.core.exceptions.UsernameAlreadyExistsException;
+import com.middlewar.core.exception.ForbiddenNameException;
+import com.middlewar.core.exception.MaxPlayerCreationReachedException;
+import com.middlewar.core.exception.NoPlayerConnectedException;
+import com.middlewar.core.exception.PlayerNotFoundException;
+import com.middlewar.core.exception.PlayerNotOwnedException;
+import com.middlewar.core.exception.UsernameAlreadyExistsException;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;
 import com.middlewar.api.services.impl.AccountServiceImpl;
 import com.middlewar.api.services.impl.PlayerServiceImpl;

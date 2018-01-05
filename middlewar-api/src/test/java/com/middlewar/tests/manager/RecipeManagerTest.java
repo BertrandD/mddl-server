@@ -1,9 +1,9 @@
 package com.middlewar.tests.manager;
 
 
-import com.middlewar.core.exceptions.BadItemException;
-import com.middlewar.core.exceptions.ItemNotFoundException;
-import com.middlewar.core.exceptions.NotEnoughSlotsException;
+import com.middlewar.core.exception.BadItemException;
+import com.middlewar.core.exception.ItemNotFoundException;
+import com.middlewar.core.exception.NotEnoughSlotsException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.manager.RecipeManager;

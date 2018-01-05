@@ -1,7 +1,7 @@
 package com.middlewar.core.model;
 
 import com.middlewar.core.annotations.Password;
-import com.middlewar.core.exceptions.PlayerNotFoundException;
+import com.middlewar.core.exception.PlayerNotFoundException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

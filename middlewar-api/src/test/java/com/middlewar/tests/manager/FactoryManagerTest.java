@@ -1,9 +1,9 @@
 package com.middlewar.tests.manager;
 
-import com.middlewar.core.exceptions.BuildingNotFoundException;
-import com.middlewar.core.exceptions.ItemNotFoundException;
-import com.middlewar.core.exceptions.ItemNotUnlockedException;
-import com.middlewar.core.exceptions.ItemRequirementMissingException;
+import com.middlewar.core.exception.BuildingNotFoundException;
+import com.middlewar.core.exception.ItemNotFoundException;
+import com.middlewar.core.exception.ItemNotUnlockedException;
+import com.middlewar.core.exception.ItemRequirementMissingException;
 import com.middlewar.api.manager.impl.FactoryManagerImpl;
 import com.middlewar.api.manager.impl.PlanetManagerImpl;
 import com.middlewar.api.manager.impl.PlayerManagerImpl;

@@ -1,14 +1,14 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.services.BaseService;
-import com.middlewar.core.exceptions.BaseNotOwnedException;
-import com.middlewar.core.exceptions.BuildingAlreadyExistsException;
-import com.middlewar.core.exceptions.BuildingMaxLevelReachedException;
-import com.middlewar.core.exceptions.BuildingNotFoundException;
-import com.middlewar.core.exceptions.BuildingNotOwnedException;
-import com.middlewar.core.exceptions.ItemNotFoundException;
-import com.middlewar.core.exceptions.MaximumModulesReachedException;
-import com.middlewar.core.exceptions.ModuleNotInInventoryException;
+import com.middlewar.core.exception.BaseNotOwnedException;
+import com.middlewar.core.exception.BuildingAlreadyExistsException;
+import com.middlewar.core.exception.BuildingMaxLevelReachedException;
+import com.middlewar.core.exception.BuildingNotFoundException;
+import com.middlewar.core.exception.BuildingNotOwnedException;
+import com.middlewar.core.exception.ItemNotFoundException;
+import com.middlewar.core.exception.MaximumModulesReachedException;
+import com.middlewar.core.exception.ModuleNotInInventoryException;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.BuildingTaskManager;
 import com.middlewar.api.services.impl.BuildingServiceImpl;

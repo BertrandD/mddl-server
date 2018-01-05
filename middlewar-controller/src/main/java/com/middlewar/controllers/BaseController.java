@@ -4,7 +4,7 @@ import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.ReportManager;
 import com.middlewar.api.util.response.Response;
-import com.middlewar.core.exceptions.BaseNotFoundException;
+import com.middlewar.core.exception.BaseNotFoundException;
 import com.middlewar.core.model.Account;
 import com.middlewar.request.BaseCreationRequest;
 import com.middlewar.request.BaseSpyRequest;

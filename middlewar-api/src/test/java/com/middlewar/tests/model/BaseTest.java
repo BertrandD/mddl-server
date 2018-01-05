@@ -1,11 +1,11 @@
 package com.middlewar.tests.model;
 
-import com.middlewar.core.exceptions.ForbiddenNameException;
-import com.middlewar.core.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.core.exceptions.NoPlayerConnectedException;
-import com.middlewar.core.exceptions.PlayerCreationFailedException;
-import com.middlewar.core.exceptions.PlayerNotFoundException;
-import com.middlewar.core.exceptions.UsernameAlreadyExistsException;
+import com.middlewar.core.exception.ForbiddenNameException;
+import com.middlewar.core.exception.MaxPlayerCreationReachedException;
+import com.middlewar.core.exception.NoPlayerConnectedException;
+import com.middlewar.core.exception.PlayerCreationFailedException;
+import com.middlewar.core.exception.PlayerNotFoundException;
+import com.middlewar.core.exception.UsernameAlreadyExistsException;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;

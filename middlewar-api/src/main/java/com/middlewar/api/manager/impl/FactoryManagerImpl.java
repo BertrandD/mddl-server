@@ -1,11 +1,11 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.manager.FactoryManager;
-import com.middlewar.core.exceptions.BaseNotOwnedException;
-import com.middlewar.core.exceptions.BuildingNotFoundException;
-import com.middlewar.core.exceptions.ItemCreationException;
-import com.middlewar.core.exceptions.ItemNotFoundException;
-import com.middlewar.core.exceptions.ItemNotUnlockedException;
+import com.middlewar.core.exception.BaseNotOwnedException;
+import com.middlewar.core.exception.BuildingNotFoundException;
+import com.middlewar.core.exception.ItemCreationException;
+import com.middlewar.core.exception.ItemNotFoundException;
+import com.middlewar.core.exception.ItemNotUnlockedException;
 import com.middlewar.api.services.ValidatorService;
 import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.ItemData;
