@@ -9,7 +9,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 /**
  * @author LEBOC Philippe
@@ -24,10 +24,10 @@ public class FriendRequest {
     @GeneratedValue
     private long id;
 
-    @OneToMany
+    @ManyToOne
     private Player requester;
 
-    @OneToMany
+    @ManyToOne
     private Player requested;
 
     private String message;

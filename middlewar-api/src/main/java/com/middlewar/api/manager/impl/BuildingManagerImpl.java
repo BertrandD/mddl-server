@@ -1,6 +1,8 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.BuildingService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.exception.BaseNotOwnedException;
 import com.middlewar.core.exception.BuildingAlreadyExistsException;
 import com.middlewar.core.exception.BuildingMaxLevelReachedException;
@@ -11,9 +13,7 @@ import com.middlewar.core.exception.MaximumModulesReachedException;
 import com.middlewar.core.exception.ModuleNotInInventoryException;
 import com.middlewar.api.manager.BuildingManager;
 import com.middlewar.api.manager.BuildingTaskManager;
-import com.middlewar.api.services.impl.BuildingServiceImpl;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
@@ -46,10 +46,10 @@ import static java.util.Comparator.comparing;
 public class BuildingManagerImpl implements BuildingManager {
 
     @Autowired
-    private BuildingServiceImpl buildingService;
+    private BuildingService buildingService;
 
     @Autowired
-    private InventoryServiceImpl inventoryService;
+    private InventoryService inventoryService;
 
     @Autowired
     private BaseService baseService;

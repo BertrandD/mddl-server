@@ -74,7 +74,7 @@ public class ItemController {
         return ItemData.getInstance().getWeapons();
     }
 
-    @RequestMapping(value = "/common", method = GET)
+    @RequestMapping(value = "/common/{id}", method = GET)
     public CommonItem findCommonItem(@PathVariable("id") String id) {
         return ItemData.getInstance().getCommonItem(id);
     }

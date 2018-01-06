@@ -15,9 +15,12 @@ public class PlanetManagerImpl implements PlanetManager {
     //@Autowired
     //private AstralObjectService astralObjectService;
 
+    @Autowired
+    private WorldData worldData;
+
     public Planet pickRandom() {
         // Pick a random planet from universe
-        final Planet jsonPlanet = WorldData.getInstance().getRandomPlanet();
+        final Planet jsonPlanet = worldData.getRandomPlanet();
 
         //return (Planet) astralObjectService.findOneByName(jsonPlanet.getName());
         return null; // TODO

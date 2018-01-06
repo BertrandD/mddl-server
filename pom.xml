@@ -19,8 +19,6 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <springboot.version>1.5.9.RELEASE</springboot.version>
         <spring-aspects.version>4.3.7.RELEASE</spring-aspects.version>
-        <spring-data-mongodb.version>1.10.1.RELEASE</spring-data-mongodb.version>
-        <spring-data-commons.version>1.13.1.RELEASE</spring-data-commons.version>
         <swagger2.version>2.6.1</swagger2.version>
         <swagger2-ui.version>2.6.1</swagger2-ui.version>
         <lombok.version>1.16.18</lombok.version>

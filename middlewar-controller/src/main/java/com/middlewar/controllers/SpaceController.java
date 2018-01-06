@@ -25,6 +25,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class SpaceController {
 
     @Autowired
+    private WorldData world;
+
+    @Autowired
     private PlanetScanReportService planetScanReportService;
 
     @RequestMapping(value = "/system", method = GET)
@@ -36,7 +39,7 @@ public class SpaceController {
 
     @RequestMapping(value = "/system/{id}", method = GET)
     public Response findSystem(@AuthenticationPrincipal Account account, @PathVariable("id") String id) {
-        final Star star = WorldData.getInstance().getStar(id);
+        final Star star = world.getStar(id);
         return new Response(star);
     }
 
@@ -44,7 +47,7 @@ public class SpaceController {
     public Response scanAstralObject(@AuthenticationPrincipal Account account, @PathVariable("id") String id) {
         final Player player = account.getCurrentPlayer();
 
-        final Planet planet = WorldData.getInstance().getPlanet(id);
+        final Planet planet = world.getPlanet(id);
         if (planet == null) {
             return new Response("Planet not found");
         }

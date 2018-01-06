@@ -38,7 +38,7 @@ public class PlayerManagerImpl implements PlayerManager {
 
         if(player == null) throw new PlayerCreationFailedException();
 
-        account.addPlayer(player);
+        account.getPlayers().add(player);
         account.setCurrentPlayerId(player.getId());
         accountService.update(account);
 

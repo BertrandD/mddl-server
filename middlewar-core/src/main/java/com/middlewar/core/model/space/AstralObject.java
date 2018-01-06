@@ -19,11 +19,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Collections.emptyList;
 
 /**
  * @author bertrand Darbond
@@ -64,7 +63,7 @@ public abstract class AstralObject {
     public AstralObject(String name, AstralObject parent) {
         this.name = name;
         this.stats = new EnumMap<>(AstralStat.class);
-        this.satellites = emptyList();
+        this.satellites = new ArrayList<>();
         this.parent = parent;
     }
 

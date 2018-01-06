@@ -9,7 +9,12 @@ import com.middlewar.core.model.stats.Stats;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +26,19 @@ import java.util.List;
 @Entity
 public class RecipeInstance {
 
+    @Id
+    @GeneratedValue
     private long id;
+
     private String name;
+
+    @ManyToOne
     private Player owner;
+
+    @Transient
     private Structure structure;
+
+    @Transient
     private List<SlotItem> components;
 
     public RecipeInstance() {

@@ -20,7 +20,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,13 +69,6 @@ public class Account implements UserDetails {
         setAuthorities(new HashSet<>(authorities));
         setPlayers(emptyList());
         setCurrentPlayerId(-1);
-    }
-
-    public void addPlayer(@NotNull Player player) {
-        if(players != null && !players.contains(player))
-            players.add(player);
-        else
-            log.warn("Cannot add Player " + player.getName() + " to account because of null or already added");
     }
 
     public Player getCurrentPlayer() {

@@ -32,7 +32,7 @@ public class SystemMessageData implements IXmlReader {
     @Override
     public synchronized void load() {
         _english.clear();
-        parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "messages"), false);
+        parseDirectory(new File("classpath:/data/messages"), false);
         log.info("Loaded " + _english.size() + " English System Messages.");
     }
 

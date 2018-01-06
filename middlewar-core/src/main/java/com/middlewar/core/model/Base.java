@@ -24,7 +24,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -55,6 +54,7 @@ public class Base {
     private Player owner;
 
     @NotNull
+    @ManyToOne
     private Planet planet;
 
     @Transient
@@ -104,13 +104,6 @@ public class Base {
         setReports(emptyList());
         setPlanet(planet);
         setBuildingTasks(new PriorityQueue<>());
-    }
-
-    @PreRemove
-    private void cleanCurrentBase() {
-        if (this.getOwner().getCurrentBase().getId() == this.getId()) {
-            this.getOwner().setCurrentBase(null);
-        }
     }
 
     public long calcResourceStorageAvailableCapacity(Resource resource) {

@@ -71,6 +71,7 @@ public class Player {
     @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<PlanetScan> planetScans;
 
+    @OneToMany
     private List<RecipeInstance> recipes;
 
     public Player() {

@@ -1,10 +1,10 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.services.BaseService;
+import com.middlewar.api.services.SpyReportService;
 import com.middlewar.core.exception.BaseNotFoundException;
 import com.middlewar.core.exception.SpyReportCreationException;
 import com.middlewar.api.manager.ReportManager;
-import com.middlewar.api.services.impl.SpyReportServiceImpl;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.report.Report;
@@ -30,7 +30,7 @@ public class ReportManagerImpl implements ReportManager {
     private BaseService baseService;
 
     @Autowired
-    private SpyReportServiceImpl spyReportService;
+    private SpyReportService spyReportService;
 
     public List<Report> getAllReportsOfCurrentPlayer(@NotNull Player player) {
         player.getCurrentBase().getReports().sort(Collections.reverseOrder());

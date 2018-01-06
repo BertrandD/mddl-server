@@ -1,11 +1,11 @@
 package com.middlewar.api.manager;
 
+import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.RecipeService;
 import com.middlewar.core.exception.BadItemException;
 import com.middlewar.core.exception.ItemNotFoundException;
 import com.middlewar.core.exception.NotEnoughSlotsException;
 import com.middlewar.core.exception.RecipeCreationFailedException;
-import com.middlewar.api.services.impl.InventoryServiceImpl;
-import com.middlewar.api.services.impl.RecipeServiceImpl;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.RecipeInstance;
@@ -22,10 +22,10 @@ import java.util.List;
 public class RecipeManager {
 
     @Autowired
-    private InventoryServiceImpl inventoryService;
+    private InventoryService inventoryService;
 
     @Autowired
-    private RecipeServiceImpl recipeService;
+    private RecipeService recipeService;
 
     public RecipeInstance create(Player owner, String name, String structureID, List<String> componentsIds) {
         Structure structure = ItemData.getInstance().getStructure(structureID);

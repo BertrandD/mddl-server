@@ -51,7 +51,7 @@ public class BuildingData implements IXmlReader {
     @Override
     public synchronized void load() {
         _buildings.clear();
-        parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "stats/buildings"), true);
+        parseDirectory(new File("classpath:/data/stats/buildings"), true);
         log.info("Loaded " + _buildings.size() + " buildings Templates.");
     }
 

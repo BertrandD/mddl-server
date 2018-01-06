@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../middlewar-boot/src/main/resources/data/xsd/items.xsd">
-    <item id="cargo_test" nameId="cargo_test_n" type="CARGO" descriptionId="cargo_test_d" volume="5">
-        <properties>
-            <set name="capacity" value="500"/>
-        </properties>
-    </item>
-</list>

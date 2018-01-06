@@ -2,7 +2,6 @@ package com.middlewar.api.services;
 
 import com.middlewar.core.exception.BuildingRequirementMissingException;
 import com.middlewar.core.exception.ItemRequirementMissingException;
-import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.holders.BuildingHolder;
@@ -27,7 +26,7 @@ import java.util.HashMap;
 public class ValidatorService {
 
     @Autowired
-    private InventoryServiceImpl inventoryService;
+    private InventoryService inventoryService;
 
     /**
      * Used to validate a building construction / upgrade
@@ -41,7 +40,7 @@ public class ValidatorService {
         final Requirement requirements = building.getTemplate().getRequirements().get(building.getCurrentLevel() + 1);
         if (requirements == null) return;
 
-        inventoryService.refreshResources(base);
+        //inventoryService.refreshResources(base);
 
         if (!validateBuildings(base, requirements)) {
             throw new BuildingRequirementMissingException();
@@ -53,7 +52,7 @@ public class ValidatorService {
     }
 
     public void validateItemRequirements(Base base, Item item, HashMap<ItemInstance, Long> collector) {
-        inventoryService.refreshResources(base);
+        //inventoryService.refreshResources(base);
 
         if (!validateBuildings(base, item.getRequirement())) {
             throw new BuildingRequirementMissingException();
