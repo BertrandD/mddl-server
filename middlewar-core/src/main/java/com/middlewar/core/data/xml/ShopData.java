@@ -1,6 +1,5 @@
 package com.middlewar.core.data.xml;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.interfaces.IXmlReader;
 import com.middlewar.core.model.shop.ShopCategory;
 import com.middlewar.core.model.shop.ShopItem;

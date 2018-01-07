@@ -1,6 +1,5 @@
 package com.middlewar.core.data.xml;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.interfaces.IXmlReader;
 import lombok.extern.slf4j.Slf4j;

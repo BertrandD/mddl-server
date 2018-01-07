@@ -7,9 +7,9 @@ import com.middlewar.core.model.space.Moon;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.Star;
 import com.middlewar.core.utils.Rnd;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +28,13 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-@NoArgsConstructor
 public class WorldData {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @Value("${middlewar.data.world.location}")
+    private String fileLocation;
 
     private final List<AstralObject> _astralObjects = new ArrayList<>();
 
@@ -43,24 +45,18 @@ public class WorldData {
     @PostConstruct
     public void reload() {
         _astralObjects.clear();
-        parseConfigFile("classpath:data/world.json");
+        parseConfigFile(fileLocation);
         log.info("Loaded " + _astralObjects.size() + " astral objects");
-        if (_astralObjects.size() == 0) {
-            log.error("Universe not loaded ! The API will crash !");
-            // TODO: shutdown the server.
-        }
     }
 
     private void parseConfigFile(String configFile) {
         log.info("Loading World data file : " + configFile);
-
         final ConfigParser parser = new ConfigParser(configFile);
-
         _blackHole = computeData(parser.getData(), null);
     }
 
     @SuppressWarnings("unchecked")
-    private AstralObject computeData(HashMap<String, Object> data, AstralObject parent) {
+    private AstralObject computeData(Map<String, Object> data, AstralObject parent) {
         AstralObject astralObject;
         String name = (String) data.get("name");
         switch ((String) data.get("type")) {
@@ -149,18 +145,18 @@ public class WorldData {
         @SuppressWarnings("unchecked")
         ConfigParser(String fileName) {
             try {
-                File f = resourceLoader.getResource(fileName).getFile();
-                InputStream file = f.exists() ? new FileInputStream(f) : getClass().getResourceAsStream(fileName);
+                final File file = resourceLoader.getResource(fileName).getFile();
+                InputStream is = file.exists() ? new FileInputStream(file) : getClass().getResourceAsStream(fileName);
                 ObjectMapper mapper = new ObjectMapper();
 
-                _configData = mapper.readValue(file, HashMap.class);
+                _configData = mapper.readValue(is, HashMap.class);
             } catch (IOException e) {
                 log.error("World data cannot be loaded. Parse error on file : " + fileName);
                 e.printStackTrace();
             }
         }
 
-        HashMap<String, Object> getData() {
+        public Map<String, Object> getData() {
             return _configData;
         }
     }

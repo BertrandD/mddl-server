@@ -19,8 +19,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import javax.annotation.PostConstruct;
 import java.util.concurrent.Executor;
 
-@EnableScheduling
+
 @EnableAsync
+@EnableScheduling
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan("com")
