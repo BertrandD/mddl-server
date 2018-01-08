@@ -1,6 +1,5 @@
 package com.middlewar.core.data.xml;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.exception.BuildingTemplateNotFoundException;
@@ -27,10 +26,15 @@ import org.w3c.dom.Node;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.lang.ClassLoader.getSystemResource;
 
 /**
  * @author LEBOC Philippe
@@ -38,7 +42,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BuildingData implements IXmlReader {
 
-    private final HashMap<String, Building> _buildings = new HashMap<>();
+    private final Map<String, Building> _buildings = new HashMap<>();
 
     protected BuildingData() {
         load();
@@ -51,8 +55,12 @@ public class BuildingData implements IXmlReader {
     @Override
     public synchronized void load() {
         _buildings.clear();
-        parseDirectory(new File("classpath:/data/stats/buildings"), true);
-        log.info("Loaded " + _buildings.size() + " buildings Templates.");
+        try {
+            parseDirectory(Paths.get(getSystemResource("data/stats/buildings").toURI()).toFile(), true);
+            log.info("Loaded " + _buildings.size() + " buildings Templates.");
+        } catch (URISyntaxException e) {
+            log.error("Cannot load Buildings !", e);
+        }
     }
 
     @Override
