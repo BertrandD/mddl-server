@@ -26,5 +26,4 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
         response.setHeader(MAX_AGE_NAME, "3600");
         return true;
     }
-
 }

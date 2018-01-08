@@ -1,6 +1,5 @@
 package com.middlewar.controllers.statics;
 
-import com.middlewar.api.annotations.authentication.User;
 import com.middlewar.api.util.response.Response;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Account;
@@ -25,7 +24,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  * @author LEBOC Philippe
  */
-@User
 @RestController
 @RequestMapping(value = "/static/item", produces = "application/json")
 public class ItemController {

@@ -1,5 +1,6 @@
 package com.middlewar.boot.config;
 
+import com.middlewar.api.annotations.spring.profiles.Dev;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * @author Leboc Philippe.
+ * @author LEBOC Philippe
  */
+@Dev
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
