@@ -23,6 +23,6 @@ public class BuildingHolder {
 
     @JsonIgnore
     public Building getTemplate() {
-        return null; //BuildingData.getInstance().getBuilding(templateId); TODO
+        return BuildingData.getInstance().getBuilding(templateId);
     }
 }

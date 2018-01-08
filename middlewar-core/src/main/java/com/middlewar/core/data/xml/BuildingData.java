@@ -1,5 +1,6 @@
 package com.middlewar.core.data.xml;
 
+import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.exception.BuildingTemplateNotFoundException;
@@ -19,17 +20,11 @@ import com.middlewar.core.model.stats.BuildingStats;
 import com.middlewar.core.model.stats.Stats;
 import com.middlewar.core.utils.Evaluator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -41,26 +36,22 @@ import java.util.stream.Collectors;
  * @author LEBOC Philippe
  */
 @Slf4j
-@Component
 public class BuildingData implements IXmlReader {
 
     private final HashMap<String, Building> _buildings = new HashMap<>();
 
-    @Value("${middlewar.data.building.location}")
-    private String fileLocation;
+    protected BuildingData() {
+        load();
+    }
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+    public static BuildingData getInstance() {
+        return SingletonHolder._instance;
+    }
 
-    @PostConstruct
     @Override
     public synchronized void load() {
         _buildings.clear();
-        try {
-            parseDirectory(resourceLoader.getResource(fileLocation).getFile(), true);
-        } catch (IOException ex) {
-            log.error("Cannot parse building stats files");
-        }
+        parseDirectory(new File("classpath:/data/stats/buildings"), true);
         log.info("Loaded " + _buildings.size() + " buildings Templates.");
     }
 
@@ -292,6 +283,10 @@ public class BuildingData implements IXmlReader {
 
     public List<Building> getBuildings() {
         return new ArrayList<>(_buildings.values());
+    }
+
+    private static class SingletonHolder {
+        protected static final BuildingData _instance = new BuildingData();
     }
 
     private class FunctionHolder {
