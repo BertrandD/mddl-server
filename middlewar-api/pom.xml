@@ -54,6 +54,12 @@
             <artifactId>middlewar-core</artifactId>
             <version>0.11-SNAPSHOT</version>
         </dependency>
+        <!-- Others -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jsonwebtoken.version}</version>
+        </dependency>
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

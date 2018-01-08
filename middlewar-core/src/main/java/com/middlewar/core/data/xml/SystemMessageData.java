@@ -1,6 +1,5 @@
 package com.middlewar.core.data.xml;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.interfaces.IXmlReader;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class SystemMessageData implements IXmlReader {
     @Override
     public synchronized void load() {
         _english.clear();
-        parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "messages"), false);
+        parseDirectory(new File("classpath:/data/messages"), false);
         log.info("Loaded " + _english.size() + " English System Messages.");
     }
 

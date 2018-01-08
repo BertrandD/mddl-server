@@ -1,7 +1,7 @@
 package com.middlewar.controllers.statics;
 
 import com.middlewar.api.util.response.Response;
-import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.core.utils.SystemMessageId;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.model.buildings.Building;
 import org.springframework.web.bind.annotation.PathVariable;

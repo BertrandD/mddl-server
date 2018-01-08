@@ -1,85 +1,51 @@
 package com.middlewar.api.manager.impl;
 
-import com.middlewar.core.exceptions.ForbiddenNameException;
-import com.middlewar.core.exceptions.MaxPlayerCreationReachedException;
-import com.middlewar.core.exceptions.NoPlayerConnectedException;
-import com.middlewar.core.exceptions.PlayerCreationFailedException;
-import com.middlewar.core.exceptions.PlayerNotFoundException;
-import com.middlewar.core.exceptions.PlayerNotOwnedException;
-import com.middlewar.core.exceptions.UsernameAlreadyExistsException;
+import com.middlewar.api.services.AccountService;
+import com.middlewar.core.exception.MaxPlayerCreationReachedException;
+import com.middlewar.core.exception.PlayerCreationFailedException;
 import com.middlewar.api.manager.PlayerManager;
-import com.middlewar.api.services.impl.PlayerServiceImpl;
-import com.middlewar.api.util.response.SystemMessageId;
+import com.middlewar.api.services.PlayerService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
-import java.util.List;
-
-import static java.util.Collections.emptyList;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Bertrand
  */
-@Service
 @Slf4j
+@Service
 public class PlayerManagerImpl implements PlayerManager {
 
     @Autowired
-    private PlayerServiceImpl playerService;
+    private AccountService accountService;
 
-    public Player getCurrentPlayerForAccount(Account account) {
-        if (account.getCurrentPlayerId() == 0) {
-            throw new NoPlayerConnectedException();
-        } else {
-            final Player player = playerService.find(account.getCurrentPlayerId());
-            if (player == null) {
-                throw new PlayerNotFoundException();
-            }
-            return player;
-        }
-    }
+    @Autowired
+    private PlayerService playerService;
 
-    public Player getPlayerOfAccount(Account account, long id) {
-        Player player = account.getPlayers().stream().filter(k -> k.getId() == (id)).findFirst().orElse(null);
-        if (player == null) {
-            throw new PlayerNotOwnedException();
-        }
-        return player;
-    }
-
-    public Player create(Account account, String name) {
-        Assert.notNull(name, SystemMessageId.INVALID_PARAMETERS);
+    @Override
+    public Player create(@NotNull final Account account, @NotEmpty final String name) {
 
         if (account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
             throw new MaxPlayerCreationReachedException();
 
-        //if (playerService.findByName(name) != null) throw new UsernameAlreadyExistsException(); TODO
+        final Player player = playerService.save(new Player(account, name));
 
-        // Check if name is forbidden (Like 'fuck', 'admin', ...)
-        if (Config.FORBIDDEN_NAMES.length > 1) {
-            for (String st : Config.FORBIDDEN_NAMES) {
-                if (name.toLowerCase().contains(st.toLowerCase())) {
-                    log.info("Player creation failed for account [ " + account.getUsername() + " ] : Forbidden name.");
-                    throw new ForbiddenNameException();
-                }
-            }
-        }
+        if(player == null) throw new PlayerCreationFailedException();
 
-        // Create player
-        final Player player = playerService.create(account, name);
-        if (player == null) throw new PlayerCreationFailedException();
+        account.getPlayers().add(player);
+        account.setCurrentPlayerId(player.getId());
+        accountService.update(account);
+
+        // TODO: Check if name is forbidden (Like 'fuck', 'admin', ...)
 
         log.info("Player creation success : " + player.getName() + ".");
 
         return player;
-    }
-
-    public List<Player> findAll(Account account) {
-        return emptyList(); //playerService.findByAccount(account);
     }
 }

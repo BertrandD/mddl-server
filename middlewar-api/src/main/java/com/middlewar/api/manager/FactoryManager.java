@@ -1,11 +1,11 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.core.exceptions.BuildingNotFoundException;
-import com.middlewar.core.exceptions.BuildingRequirementMissingException;
-import com.middlewar.core.exceptions.ItemCreationException;
-import com.middlewar.core.exceptions.ItemNotFoundException;
-import com.middlewar.core.exceptions.ItemNotUnlockedException;
-import com.middlewar.core.exceptions.ItemRequirementMissingException;
+import com.middlewar.core.exception.BuildingNotFoundException;
+import com.middlewar.core.exception.BuildingRequirementMissingException;
+import com.middlewar.core.exception.ItemCreationException;
+import com.middlewar.core.exception.ItemNotFoundException;
+import com.middlewar.core.exception.ItemNotUnlockedException;
+import com.middlewar.core.exception.ItemRequirementMissingException;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.instances.ItemInstance;
 import org.hibernate.validator.constraints.NotEmpty;

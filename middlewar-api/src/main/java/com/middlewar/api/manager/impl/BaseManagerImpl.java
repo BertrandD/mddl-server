@@ -1,8 +1,8 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.annotations.model.BaseName;
-import com.middlewar.core.exceptions.BaseCreationException;
-import com.middlewar.core.exceptions.BaseNotFoundException;
+import com.middlewar.core.exception.BaseCreationException;
+import com.middlewar.core.exception.BaseNotFoundException;
 import com.middlewar.api.manager.BaseManager;
 import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.BaseService;

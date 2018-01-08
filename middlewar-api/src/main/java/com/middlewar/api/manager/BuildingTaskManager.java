@@ -1,7 +1,7 @@
 package com.middlewar.api.manager;
 
-import com.middlewar.api.services.impl.BuildingServiceImpl;
-import com.middlewar.api.services.impl.InventoryServiceImpl;
+import com.middlewar.api.services.BuildingService;
+import com.middlewar.api.services.InventoryService;
 import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.model.Base;
@@ -33,10 +33,10 @@ public class BuildingTaskManager {
     //private BuildingTaskService buildingTaskService;
 
     @Autowired
-    private BuildingServiceImpl buildingService;
+    private BuildingService buildingService;
 
     @Autowired
-    private InventoryServiceImpl inventoryService;
+    private InventoryService inventoryService;
 
     private ScheduledFuture<?> scheduledFuture;
     private BuildingTask currentTask;
@@ -131,8 +131,8 @@ public class BuildingTaskManager {
             log.info("End of upgrade for " + buildingTask.getBuilding().getTemplateId());
             buildingTask.setEndsAt(-1);
 
-            if (building.getTemplate().getType().equals(BuildingCategory.SILO))
-                inventoryService.refreshResources(building.getBase());
+            //if (building.getTemplate().getType().equals(BuildingCategory.SILO))
+            //    inventoryService.refreshResources(building.getBase());
 
             building.setCurrentLevel(buildingTask.getLevel());
             if (building.getCurrentLevel() == 1) {

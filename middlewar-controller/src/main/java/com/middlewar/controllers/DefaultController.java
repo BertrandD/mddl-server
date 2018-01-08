@@ -43,7 +43,7 @@ public class DefaultController implements ErrorController {
 
     @RequestMapping(value = "/reload", method = GET)
     public Response reload() {
-        BuildingData.getInstance().load();
+        //BuildingData.getInstance().load();
         ItemData.getInstance().load();
         return new Response();
     }

@@ -1,6 +1,5 @@
 package com.middlewar.core.data.xml;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.ItemType;
 import com.middlewar.core.enums.Lang;
 import com.middlewar.core.enums.Rank;
@@ -63,7 +62,7 @@ public class ItemData implements IXmlReader {
         _resources.clear();
         _commons.clear();
 
-        parseDirectory(new File(Config.DATA_ROOT_DIRECTORY + "stats/items"), true);
+        parseDirectory(new File("classpath:/data/stats/items"), true);
 
         log.info("Loaded " + _structures.size() + " structures templates.");
         log.info("Loaded " + _cargos.size() + " cargos templates.");

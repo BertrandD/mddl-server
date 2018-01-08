@@ -2,7 +2,7 @@ package com.middlewar.api.services.impl;
 
 import com.middlewar.api.services.BuildingService;
 import com.middlewar.core.data.xml.BuildingData;
-import com.middlewar.core.exceptions.BuildingCreationException;
+import com.middlewar.core.exception.BuildingCreationException;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.Building;
 import com.middlewar.core.model.instances.BuildingInstance;

@@ -1,13 +1,13 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.manager.FactoryManager;
-import com.middlewar.core.exceptions.BaseNotOwnedException;
-import com.middlewar.core.exceptions.BuildingNotFoundException;
-import com.middlewar.core.exceptions.ItemCreationException;
-import com.middlewar.core.exceptions.ItemNotFoundException;
-import com.middlewar.core.exceptions.ItemNotUnlockedException;
+import com.middlewar.api.services.InventoryService;
+import com.middlewar.core.exception.BaseNotOwnedException;
+import com.middlewar.core.exception.BuildingNotFoundException;
+import com.middlewar.core.exception.ItemCreationException;
+import com.middlewar.core.exception.ItemNotFoundException;
+import com.middlewar.core.exception.ItemNotUnlockedException;
 import com.middlewar.api.services.ValidatorService;
-import com.middlewar.api.services.impl.InventoryServiceImpl;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.Player;
@@ -36,7 +36,7 @@ public class FactoryManagerImpl implements FactoryManager {
     private static final String STRUCTURE_FACTORY = "structure_factory";
 
     @Autowired
-    private InventoryServiceImpl inventoryService;
+    private InventoryService inventoryService;
 
     @Autowired
     private ValidatorService validator;

@@ -13,3 +13,6 @@ target/
 LOG_FILE_IS_UNDEFINED
 /resources/
 ctx.json
+
+temp/
+http/

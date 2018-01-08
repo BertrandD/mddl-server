@@ -1,6 +1,5 @@
 package com.middlewar.core.data.xml;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.interfaces.IXmlReader;
 import com.middlewar.core.model.shop.ShopCategory;
 import com.middlewar.core.model.shop.ShopItem;
@@ -33,7 +32,7 @@ public class ShopData implements IXmlReader {
     @Override
     public synchronized void load() {
         shop.clear();
-        parseFile(new File(Config.DATA_ROOT_DIRECTORY + "shop.xml"));
+        parseFile(new File("classpath:/data/shop.xml"));
         log.info("Loaded " + shop.size() + " shop categories");
         long shopItemCount = 0;
         for (List<ShopItem> list : shop.values()) {

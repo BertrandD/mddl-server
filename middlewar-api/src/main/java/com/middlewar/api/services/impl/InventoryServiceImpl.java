@@ -1,6 +1,7 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.services.InventoryService;
+import com.middlewar.api.services.ItemService;
 import com.middlewar.api.services.ResourceService;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.interfaces.IInventory;
@@ -29,7 +30,7 @@ import javax.validation.constraints.NotNull;
 public class InventoryServiceImpl extends CrudServiceImpl<Inventory, Integer, InventoryRepository> implements InventoryService {
 
     @Autowired
-    private ItemServiceImpl itemService;
+    private ItemService itemService;
 
     @Autowired
     private ResourceService resourceService;

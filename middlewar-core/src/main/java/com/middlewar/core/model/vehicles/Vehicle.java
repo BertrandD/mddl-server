@@ -42,6 +42,7 @@ public abstract class Vehicle implements IShip {
     @NotNull
     private VehicleState state;
 
+    @ManyToOne
     private RecipeInstance recipeInstance;
 
     public Vehicle(Base base, RecipeInstance recipeInstance, long count) {

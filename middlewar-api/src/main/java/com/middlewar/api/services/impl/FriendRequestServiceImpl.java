@@ -1,7 +1,7 @@
 package com.middlewar.api.services.impl;
 
 import com.middlewar.api.services.FriendRequestService;
-import com.middlewar.core.exceptions.FriendRequestCreationException;
+import com.middlewar.core.exception.FriendRequestCreationException;
 import com.middlewar.core.model.Player;
 import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.repository.FriendRequestRepository;
