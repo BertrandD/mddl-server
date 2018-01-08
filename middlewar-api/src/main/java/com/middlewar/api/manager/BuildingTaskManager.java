@@ -2,8 +2,6 @@ package com.middlewar.api.manager;
 
 import com.middlewar.api.services.BuildingService;
 import com.middlewar.api.services.InventoryService;
-import com.middlewar.core.config.Config;
-import com.middlewar.core.enums.BuildingCategory;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.buildings.ModulableBuilding;
 import com.middlewar.core.model.instances.BuildingInstance;
@@ -100,7 +98,7 @@ public class BuildingTaskManager {
         final long now = TimeUtil.getCurrentTime();
         final BuildingTask lastInQueue = findTaskInQueue(building);
 
-        long buildTime = (long) (building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION, Config.BUILDTIME_MODIFIER));
+        long buildTime = (long) (building.getBuildTime() * building.getBase().getBaseStat().getValue(Stats.BUILD_COOLDOWN_REDUCTION, 1.0));
         long endupgrade = now + buildTime;
 
         if (lastInQueue == null) {
@@ -108,7 +106,7 @@ public class BuildingTaskManager {
             building.setEndsAt(endupgrade);
             newTask = new BuildingTask(building.getBase(), building, endupgrade, building.getCurrentLevel() + 1);
         } else {
-            endupgrade = lastInQueue.getEndsAt() + (long) (building.getBuildTime() * Config.BUILDTIME_MODIFIER);
+            endupgrade = lastInQueue.getEndsAt() + (long) (building.getBuildTime() * 1.0);
             newTask = new BuildingTask(building.getBase(), building, endupgrade, lastInQueue.getLevel() + 1);
         }
 

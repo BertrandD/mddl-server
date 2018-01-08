@@ -1,6 +1,5 @@
 package com.middlewar.api.services;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.enums.StatOp;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
@@ -21,7 +20,7 @@ public class ResourceService {
         // original production = 0
         base.getBaseStat().unlock(resource.getStat());
         // original max stored = BASE_INITIAL_MAX_RESOURCE_STORAGE
-        base.getBaseStat().unlock(resource.getStatMax(), Config.BASE_INITIAL_MAX_RESOURCE_STORAGE, StatOp.DIFF);
+        base.getBaseStat().unlock(resource.getStatMax(), 3000, StatOp.DIFF);
 
         return resource;
     }

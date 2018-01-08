@@ -1,6 +1,5 @@
 package com.middlewar.boot;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.data.xml.ItemData;
 import com.middlewar.core.data.xml.ShopData;
@@ -34,7 +33,6 @@ public class Application extends AsyncConfigurerSupport {
 
     @PostConstruct
     public void init() {
-        Config.load();
         SystemMessageData.getInstance();
         ItemData.getInstance();
         BuildingData.getInstance();

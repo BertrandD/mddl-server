@@ -5,7 +5,6 @@ import com.middlewar.core.exception.MaxPlayerCreationReachedException;
 import com.middlewar.core.exception.PlayerCreationFailedException;
 import com.middlewar.api.manager.PlayerManager;
 import com.middlewar.api.services.PlayerService;
-import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class PlayerManagerImpl implements PlayerManager {
     @Override
     public Player create(@NotNull final Account account, @NotEmpty final String name) {
 
-        if (account.getPlayers().size() >= Config.MAX_PLAYER_IN_ACCOUNT)
+        if (account.getPlayers().size() >= 100)
             throw new MaxPlayerCreationReachedException();
 
         final Player player = playerService.save(new Player(account, name));
