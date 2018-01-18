@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Set;
 
 import static com.middlewar.core.predicate.PlayerPredicate.hasId;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 /**
@@ -67,7 +66,7 @@ public class Account implements UserDetails {
         setUsername(username);
         setPassword(password);
         setAuthorities(new HashSet<>(authorities));
-        setPlayers(emptyList());
+        setPlayers(new ArrayList<>());
         setCurrentPlayerId(-1);
     }
 
