@@ -106,24 +106,6 @@ public class InventoryServiceImpl extends CrudServiceImpl<Inventory, Integer, In
         return true;
     }
 
-//    24/07/2017 : code used only in tests, so commented because seems to be useless. Delete it later if it's still useless !
-//    @Override
-//    public synchronized boolean consumeResource(Resource resource, final long amount) {
-//
-//        refreshResources(resource);
-//
-//        if(amount <= 0) return false;
-//
-//        final ItemInstance item = resource.getItem();
-//
-//        if(item.getCount() < amount) return false;
-//
-//        item.removeCount(amount);
-//
-//        resourceService.update(resource);
-//        return true;
-//    }
-
     public synchronized void refreshResources(final Base base) {
         if (base == null) return;
         base.getResources().forEach(this::refreshResources);

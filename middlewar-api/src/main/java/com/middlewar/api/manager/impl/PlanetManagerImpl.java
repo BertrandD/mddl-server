@@ -22,7 +22,6 @@ public class PlanetManagerImpl implements PlanetManager {
         // Pick a random planet from universe
         final Planet jsonPlanet = worldData.getRandomPlanet();
 
-        //return (Planet) astralObjectService.findOneByName(jsonPlanet.getName());
-        return null; // TODO
+        return jsonPlanet;
     }
 }
