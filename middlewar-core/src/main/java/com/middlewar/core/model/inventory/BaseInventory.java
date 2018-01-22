@@ -1,6 +1,5 @@
 package com.middlewar.core.model.inventory;
 
-import com.middlewar.core.config.Config;
 import com.middlewar.core.model.Base;
 import com.middlewar.core.model.instances.ItemInstance;
 import com.middlewar.core.model.stats.Stats;
@@ -31,7 +30,7 @@ public class BaseInventory extends Inventory {
 
     @Override
     public long getAvailableCapacity() {
-        return ((Number) getBase().getBaseStat().getValue(Stats.BASE_MAX_STORAGE_VOLUME, Config.BASE_INITIAL_MAX_RESOURCE_STORAGE)).longValue();
+        return ((Number) getBase().getBaseStat().getValue(Stats.BASE_MAX_STORAGE_VOLUME, 10000)).longValue();
     }
 
     @Override

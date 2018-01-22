@@ -8,9 +8,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import static com.middlewar.core.enums.Lang.FR;
+import static java.lang.ClassLoader.getSystemResource;
+import static java.nio.file.Paths.get;
 
 /**
  * @author LEBOC Philippe
@@ -31,8 +34,13 @@ public class SystemMessageData implements IXmlReader {
     @Override
     public synchronized void load() {
         _english.clear();
-        parseDirectory(new File("classpath:/data/messages"), false);
-        log.info("Loaded " + _english.size() + " English System Messages.");
+        try
+        {
+            parseDirectory(get(getSystemResource("data/messages").toURI()).toFile(), false);
+            log.info("Loaded " + _english.size() + " English System Messages.");
+        } catch (URISyntaxException e) {
+            log.error("Cannot parse System message data", e);
+        }
     }
 
     @Override

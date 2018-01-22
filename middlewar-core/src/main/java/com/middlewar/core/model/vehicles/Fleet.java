@@ -5,6 +5,7 @@ import com.middlewar.core.model.commons.Coordinates;
 import com.middlewar.core.model.stats.ObjectStat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,7 @@ import static java.util.Collections.emptyList;
 @Entity
 @Table(name = "fleets")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Fleet {
 
     @Id

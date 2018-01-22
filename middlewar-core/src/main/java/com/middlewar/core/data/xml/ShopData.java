@@ -9,9 +9,14 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.lang.ClassLoader.getSystemResource;
+import static java.nio.file.Paths.get;
 
 /**
  * @author LEBOC Philippe
@@ -19,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class ShopData implements IXmlReader {
 
-    private final HashMap<ShopCategory, List<ShopItem>> shop = new HashMap<>();
+    private final Map<ShopCategory, List<ShopItem>> shop = new HashMap<>();
 
     protected ShopData() {
         load();
@@ -32,13 +37,16 @@ public class ShopData implements IXmlReader {
     @Override
     public synchronized void load() {
         shop.clear();
-        parseFile(new File("classpath:/data/shop.xml"));
-        log.info("Loaded " + shop.size() + " shop categories");
-        long shopItemCount = 0;
-        for (List<ShopItem> list : shop.values()) {
-            shopItemCount += list.size();
+        try
+        {
+            parseFile(get(getSystemResource("data/shop.xml").toURI()).toFile());
+            log.info("Loaded " + shop.size() + " shop categories");
+            long shopItemCount = 0;
+            for (List<ShopItem> list : shop.values()) shopItemCount += list.size();
+            log.info("Loaded " + shopItemCount + " items in shop");
+        } catch (URISyntaxException e) {
+            log.error("Cannot parse shop items", e);
         }
-        log.info("Loaded " + shopItemCount + " items in shop");
     }
 
     @Override

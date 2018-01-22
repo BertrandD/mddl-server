@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 /**
@@ -14,6 +15,7 @@ import javax.persistence.OneToOne;
  */
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 public final class FleetInventory extends Inventory {
 

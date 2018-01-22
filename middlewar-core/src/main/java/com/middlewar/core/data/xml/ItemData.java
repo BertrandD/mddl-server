@@ -24,9 +24,14 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.lang.ClassLoader.getSystemResource;
 
 /**
  * @author LEBOC Philippe
@@ -34,14 +39,14 @@ import java.util.List;
 @Slf4j
 public class ItemData implements IXmlReader {
 
-    private final HashMap<String, GameItem> _all = new HashMap<>();
-    private final HashMap<String, Structure> _structures = new HashMap<>();
-    private final HashMap<String, Cargo> _cargos = new HashMap<>();
-    private final HashMap<String, Engine> _engines = new HashMap<>();
-    private final HashMap<String, Module> _modules = new HashMap<>();
-    private final HashMap<String, Weapon> _weapons = new HashMap<>();
-    private final HashMap<String, CommonItem> _resources = new HashMap<>();
-    private final HashMap<String, CommonItem> _commons = new HashMap<>();
+    private final Map<String, GameItem> _all = new HashMap<>();
+    private final Map<String, Structure> _structures = new HashMap<>();
+    private final Map<String, Cargo> _cargos = new HashMap<>();
+    private final Map<String, Engine> _engines = new HashMap<>();
+    private final Map<String, Module> _modules = new HashMap<>();
+    private final Map<String, Weapon> _weapons = new HashMap<>();
+    private final Map<String, CommonItem> _resources = new HashMap<>();
+    private final Map<String, CommonItem> _commons = new HashMap<>();
 
     protected ItemData() {
         load();
@@ -62,16 +67,20 @@ public class ItemData implements IXmlReader {
         _resources.clear();
         _commons.clear();
 
-        parseDirectory(new File("classpath:/data/stats/items"), true);
+        try {
+            parseDirectory(Paths.get(getSystemResource("data/stats/items").toURI()).toFile(), true);
 
-        log.info("Loaded " + _structures.size() + " structures templates.");
-        log.info("Loaded " + _cargos.size() + " cargos templates.");
-        log.info("Loaded " + _engines.size() + " engines templates.");
-        log.info("Loaded " + _modules.size() + " modules templates.");
-        log.info("Loaded " + _weapons.size() + " weapons templates.");
-        log.info("Loaded " + _resources.size() + " resources templates.");
-        log.info("Loaded " + _commons.size() + " commons templates.");
-        log.info("Loaded " + _all.size() + " items in total.");
+            log.info("Loaded " + _structures.size() + " structures templates.");
+            log.info("Loaded " + _cargos.size() + " cargos templates.");
+            log.info("Loaded " + _engines.size() + " engines templates.");
+            log.info("Loaded " + _modules.size() + " modules templates.");
+            log.info("Loaded " + _weapons.size() + " weapons templates.");
+            log.info("Loaded " + _resources.size() + " resources templates.");
+            log.info("Loaded " + _commons.size() + " commons templates.");
+            log.info("Loaded " + _all.size() + " items in total.");
+        } catch (URISyntaxException e) {
+            log.error("Cannot parse items !", e);
+        }
     }
 
     @Override
