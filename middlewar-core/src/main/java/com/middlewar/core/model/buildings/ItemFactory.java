@@ -38,7 +38,7 @@ public abstract class ItemFactory<T extends Item> extends Building {
 
     public boolean hasItem(int level, String itemId) {
         final List<T> items = getItemsByLevel(level);
-        return items != null && items.stream().filter(k -> k.getItemId().equals(itemId)).count() > 0;
+        return items != null && items.stream().anyMatch(k -> k.getItemId().equals(itemId));
     }
 
     public List<T> getItemsByLevel(int level) {

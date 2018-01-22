@@ -28,10 +28,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
-
-import static java.util.Collections.emptyList;
 
 /**
  * @author LEBOC Philippe
@@ -84,24 +83,24 @@ public class Base {
 
     public Base() {
         setBaseStat(new ObjectStat());
-        setShips(emptyList());
-        setFleets(emptyList());
-        setBuildings(emptyList());
-        setResources(emptyList());
-        setReports(emptyList());
+        setShips(new ArrayList<>());
+        setFleets(new ArrayList<>());
+        setBuildings(new ArrayList<>());
+        setResources(new ArrayList<>());
+        setReports(new ArrayList<>());
         setBuildingTasks(new PriorityQueue<>());
     }
 
     public Base(String name, Player owner, Planet planet) {
         setName(name);
         setOwner(owner);
-        setBuildings(emptyList());
+        setBuildings(new ArrayList<>());
         setBaseStat(new ObjectStat());
         setBaseInventory(new BaseInventory(this));
-        setResources(emptyList());
-        setShips(emptyList());
-        setFleets(emptyList());
-        setReports(emptyList());
+        setResources(new ArrayList<>());
+        setShips(new ArrayList<>());
+        setFleets(new ArrayList<>());
+        setReports(new ArrayList<>());
         setPlanet(planet);
         setBuildingTasks(new PriorityQueue<>());
     }

@@ -27,6 +27,9 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,12 +43,20 @@ public class BuildingData implements IXmlReader {
 
     private final HashMap<String, Building> _buildings = new HashMap<>();
 
-    @PostConstruct
+    protected BuildingData() {
+        load();
+    }
+
     @Override
     public synchronized void load() {
         _buildings.clear();
-        parseDirectory(new File("classpath:/data/stats/buildings"), true);
-        log.info("Loaded " + _buildings.size() + " buildings Templates.");
+        try {
+            final Path path = Paths.get(getClass().getClassLoader().getResource("data/stats/buildings").toURI());
+            parseDirectory(path.toFile(), true);
+            log.info("Loaded " + _buildings.size() + " buildings Templates.");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
