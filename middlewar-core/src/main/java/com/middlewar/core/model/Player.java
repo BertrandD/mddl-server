@@ -7,6 +7,7 @@ import com.middlewar.core.model.social.FriendRequest;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.PlanetScan;
 import com.middlewar.core.utils.TimeUtil;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 /**
  * @author LEBOC Philippe
@@ -38,6 +38,7 @@ import static java.util.Collections.emptyList;
 @Entity
 @Slf4j
 @Table(name = "players")
+@AllArgsConstructor
 public class Player {
 
     @Id
@@ -75,43 +76,44 @@ public class Player {
     private List<RecipeInstance> recipes;
 
     public Player() {
-        setBases(emptyList());
-        setFriends(emptyList());
-        setFriendRequests(emptyList());
-        setPlanetScans(emptyList());
-        setRecipes(emptyList());
+        this(
+            -1,
+            null,
+            null,
+            new ArrayList<>(),
+            null,
+            new ArrayList<>(),
+            new PlayerInventory(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>()
+        );
     }
 
     public Player(Account account, String name) {
-        setName(name);
-        setAccount(account);
-        setBases(emptyList());
-        setFriends(emptyList());
-        setFriendRequests(emptyList());
-        setPlanetScans(emptyList());
-        setInventory(new PlayerInventory(this));
-        setRecipes(emptyList());
+        this(
+            -1,
+            name,
+            account,
+            new ArrayList<>(),
+            null,
+            new ArrayList<>(),
+            new PlayerInventory(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>()
+        );
     }
 
-    public void addBase(@NotNull Base base) {
-        getBases().add(base);
-    }
-
-    public boolean addFriend(@NotNull Player friend) {
-        return friends != null && !getFriends().contains(friend) && getFriends().add(friend);
-    }
-
-    public boolean addRequest(@NotNull FriendRequest request) {
-        if(friendRequests != null && !friendRequests.contains(request)) {
-            friendRequests.add(request);
-            return true;
+    public void addBase(@NotNull final Base base) {
+        if(getBases() != null && !getBases().contains(base)) {
+            getBases().add(base);
+        } else {
+            log.warn("Trying to add base {} to Player {} but that base already exists", base.getId(), getId());
         }
-
-        log.warn("Cannot add FriendRequest " + request.getId() + " because of null or already exist");
-        return false;
     }
 
-    public void addPlanetScanned(Planet planet, Base base) {
+    public void addPlanetScanned(@NotNull Planet planet, @NotNull Base base) {
         final PlanetScan planetScan = new PlanetScan(planet);
         planetScan.getBaseScanned().put(base.getId(), new BasePlanetScanProjection(base));
         planetScan.setDate(TimeUtil.getCurrentTime());

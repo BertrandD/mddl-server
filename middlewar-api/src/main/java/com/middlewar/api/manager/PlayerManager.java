@@ -8,6 +8,7 @@ import com.middlewar.core.model.Account;
 import com.middlewar.core.model.Player;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -26,5 +27,5 @@ public interface PlayerManager {
      * @throws ForbiddenNameException            if the name is in the name blacklist
      * @throws PlayerCreationFailedException     if the player creation failed
      */
-    Player create(@NotNull final Account account, @NotEmpty final String name);
+    Player create(@NotNull @Valid final Account account, @NotEmpty final String name);
 }

@@ -10,5 +10,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public interface AccountService extends CrudService<Account, Integer>, UserDetailsService {
     Account findByUsername(@NotEmpty String username);
-    Account create(@NotEmpty String username, @Password String password);
+    Account create(@NotEmpty String username, @Password(message = "Wrong password") String password);
 }

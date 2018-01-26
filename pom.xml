@@ -25,6 +25,10 @@
         <slf4j.version>1.7.25</slf4j.version>
         <h2.version>1.4.196</h2.version>
         <jsonwebtoken.version>0.7.0</jsonwebtoken.version>
+        <!-- Validation -->
+        <validation-api.version>2.0.1.Final</validation-api.version>
+        <hibernate-validation.version>6.0.7.Final</hibernate-validation.version>
+        <hibernate-validation-annotation-processor.version>6.0.7.Final</hibernate-validation-annotation-processor.version>
     </properties>
 
     <modules>
@@ -46,6 +50,22 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validation.version}</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
+            <version>${hibernate-validation-annotation-processor.version}</version>
+        </dependency>-->
     </dependencies>
 
     <profiles>

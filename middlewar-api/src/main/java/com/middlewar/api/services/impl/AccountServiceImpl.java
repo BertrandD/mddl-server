@@ -1,8 +1,7 @@
 package com.middlewar.api.services.impl;
 
-import com.middlewar.core.exception.AccountAlreadyExistsException;
 import com.middlewar.api.services.AccountService;
-import com.middlewar.core.annotations.Password;
+import com.middlewar.core.exception.AccountAlreadyExistsException;
 import com.middlewar.core.model.Account;
 import com.middlewar.core.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +43,7 @@ public class AccountServiceImpl extends CrudServiceImpl<Account, Integer, Accoun
     }
 
     @Override
-    public Account create(@NotEmpty String username, @Password String password) {
+    public Account create(String username, String password) {
 
         if(repository.findByUsername(username) != null) {
             throw new AccountAlreadyExistsException();

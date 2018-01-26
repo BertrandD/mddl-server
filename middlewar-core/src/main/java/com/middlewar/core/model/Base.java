@@ -10,6 +10,7 @@ import com.middlewar.core.model.stats.StatCalculator;
 import com.middlewar.core.model.tasks.BuildingTask;
 import com.middlewar.core.model.vehicles.Fleet;
 import com.middlewar.core.model.vehicles.Ship;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -39,6 +40,7 @@ import java.util.PriorityQueue;
 @Setter
 @Entity
 @Table(name = "bases")
+@AllArgsConstructor
 public class Base {
 
     @Id
@@ -82,27 +84,37 @@ public class Base {
     private PriorityQueue<BuildingTask> buildingTasks;
 
     public Base() {
-        setBaseStat(new ObjectStat());
-        setShips(new ArrayList<>());
-        setFleets(new ArrayList<>());
-        setBuildings(new ArrayList<>());
-        setResources(new ArrayList<>());
-        setReports(new ArrayList<>());
-        setBuildingTasks(new PriorityQueue<>());
+        this(
+            -1,
+            null,
+            null,
+            null,
+            new ObjectStat(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            null,
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new PriorityQueue<>()
+        );
     }
 
-    public Base(String name, Player owner, Planet planet) {
-        setName(name);
-        setOwner(owner);
-        setBuildings(new ArrayList<>());
-        setBaseStat(new ObjectStat());
-        setBaseInventory(new BaseInventory(this));
-        setResources(new ArrayList<>());
-        setShips(new ArrayList<>());
-        setFleets(new ArrayList<>());
-        setReports(new ArrayList<>());
-        setPlanet(planet);
-        setBuildingTasks(new PriorityQueue<>());
+    public Base(final String name, final Player owner, final Planet planet) {
+        this(
+            -1,
+            name,
+            owner,
+            planet,
+            new ObjectStat(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            null,
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new PriorityQueue<>()
+        );
     }
 
     public long calcResourceStorageAvailableCapacity(Resource resource) {

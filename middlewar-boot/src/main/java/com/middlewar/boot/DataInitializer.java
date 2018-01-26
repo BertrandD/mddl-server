@@ -32,7 +32,7 @@ public class DataInitializer {
     @EventListener(ContextRefreshedEvent.class)
     public void initialize() {
 
-        final Account darkAccount = accountService.create("DarkAccount", "123456789");
+        final Account darkAccount = accountService.create("DarkAccount", "12345");
         final Account lightAccount = accountService.create("LightAccount", "123456789");
 
         final Player darkPlayer = playerManager.create(darkAccount, "Lilith");
