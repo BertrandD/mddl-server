@@ -23,18 +23,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.lang.ClassLoader.getSystemResource;
 
 /**
  * @author LEBOC Philippe
@@ -42,24 +41,21 @@ import static java.lang.ClassLoader.getSystemResource;
 @Slf4j
 public class BuildingData implements IXmlReader {
 
-    private final Map<String, Building> _buildings = new HashMap<>();
+    private final HashMap<String, Building> _buildings = new HashMap<>();
 
     protected BuildingData() {
         load();
-    }
-
-    public static BuildingData getInstance() {
-        return SingletonHolder._instance;
     }
 
     @Override
     public synchronized void load() {
         _buildings.clear();
         try {
-            parseDirectory(Paths.get(getSystemResource("data/stats/buildings").toURI()).toFile(), true);
+            final Path path = Paths.get(getClass().getClassLoader().getResource("data/stats/buildings").toURI());
+            parseDirectory(path.toFile(), true);
             log.info("Loaded " + _buildings.size() + " buildings Templates.");
         } catch (URISyntaxException e) {
-            log.error("Cannot load Buildings !", e);
+            e.printStackTrace();
         }
     }
 
@@ -293,10 +289,6 @@ public class BuildingData implements IXmlReader {
         return new ArrayList<>(_buildings.values());
     }
 
-    private static class SingletonHolder {
-        protected static final BuildingData _instance = new BuildingData();
-    }
-
     private class FunctionHolder {
         private int fromLevel;
         private int toLevel;
@@ -332,5 +324,14 @@ public class BuildingData implements IXmlReader {
             final String func = function.replace("$level", "" + level);
             return ((Number) Evaluator.getInstance().eval(func)).longValue();
         }
+    }
+
+    public static BuildingData getInstance() {
+        return SingletonHolder._instance;
+    }
+
+
+    private static class SingletonHolder {
+        protected static final BuildingData _instance = new BuildingData();
     }
 }

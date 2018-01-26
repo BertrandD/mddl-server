@@ -1,10 +1,11 @@
 package com.middlewar.api.manager.impl;
 
 import com.middlewar.api.annotations.model.BaseName;
+import com.middlewar.api.services.AstralObjectService;
+import com.middlewar.core.data.json.WorldData;
 import com.middlewar.core.exception.BaseCreationException;
 import com.middlewar.core.exception.BaseNotFoundException;
 import com.middlewar.api.manager.BaseManager;
-import com.middlewar.api.manager.PlanetManager;
 import com.middlewar.api.services.BaseService;
 import com.middlewar.core.data.xml.BuildingData;
 import com.middlewar.core.holders.BuildingHolder;
@@ -35,16 +36,29 @@ import static com.middlewar.core.predicate.BasePredicate.hasId;
 public class BaseManagerImpl implements BaseManager {
 
     @Autowired
+    private AstralObjectService astralObjectService;
+
+    @Autowired
     private BaseService baseService;
 
     @Autowired
-    private PlanetManager planetManager;
+    private WorldData world;
 
     @Override
     public Base create(@NotNull Player player, @BaseName String name) {
-        final Planet planet = planetManager.pickRandom();
 
         // TODO: Base creation conditions.
+
+        // Find a planet from the World
+        final Planet randomPlanet = world.getRandomPlanet();
+
+        // Check if the planet is already in database
+        Planet planet = astralObjectService.findPlanetByName(randomPlanet.getName());
+
+        // If it is a fresh planet, store it in database !
+        if(planet == null) {
+            planet = (Planet) astralObjectService.save(randomPlanet);
+        }
 
         final Base base = baseService.create(name, player, planet);
         if (base == null) throw new BaseCreationException();

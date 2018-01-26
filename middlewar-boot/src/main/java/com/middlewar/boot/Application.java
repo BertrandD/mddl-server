@@ -22,8 +22,8 @@ import java.util.concurrent.Executor;
 @EnableScheduling
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan("com")
-@EntityScan(basePackages = "com.middlewar.core.model")
+@ComponentScan("com.middlewar")
+@EntityScan(basePackages = "com.middlewar.core")
 @EnableJpaRepositories(basePackages = "com.middlewar.core.repository")
 public class Application extends AsyncConfigurerSupport {
 

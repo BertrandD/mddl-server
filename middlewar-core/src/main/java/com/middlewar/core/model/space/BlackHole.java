@@ -10,7 +10,12 @@ import javax.persistence.Entity;
 @Entity
 @NoArgsConstructor
 public class BlackHole extends AstralObject {
+
     public BlackHole(String name) {
         super(name, null);
+    }
+
+    public BlackHole(final String name, final AstralObject parent) {
+        super(name, parent);
     }
 }

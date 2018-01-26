@@ -2,11 +2,10 @@ package com.middlewar.core.data.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.middlewar.core.model.space.AstralObject;
-import com.middlewar.core.model.space.BlackHole;
-import com.middlewar.core.model.space.Moon;
 import com.middlewar.core.model.space.Planet;
 import com.middlewar.core.model.space.Star;
 import com.middlewar.core.utils.Rnd;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,16 +17,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author bertrand.
  */
 @Slf4j
 @Component
+@NoArgsConstructor
 public class WorldData {
 
     @Autowired
@@ -36,50 +41,34 @@ public class WorldData {
     @Value("${middlewar.data.world.location}")
     private String fileLocation;
 
-    private final List<AstralObject> _astralObjects = new ArrayList<>();
-
-    private AstralObject _blackHole;
-    private Map<String, Star> stars = new HashMap<>();
-    private Map<String, Planet> planets = new HashMap<>();
+    private AstralObject blackHole;
+    private List<AstralObject> objects = new ArrayList<>();
 
     @PostConstruct
-    public void reload() {
-        _astralObjects.clear();
+    public void init() {
         parseConfigFile(fileLocation);
-        log.info("Loaded " + _astralObjects.size() + " astral objects");
+        log.info("Loaded " + objects.size() + " astral objects");
     }
 
-    private void parseConfigFile(String configFile) {
+    private void parseConfigFile(final String configFile) {
         log.info("Loading World data file : " + configFile);
         final ConfigParser parser = new ConfigParser(configFile);
-        _blackHole = computeData(parser.getData(), null);
+        blackHole = computeData(parser.getData(), null);
     }
 
     @SuppressWarnings("unchecked")
-    private AstralObject computeData(Map<String, Object> data, AstralObject parent) {
-        AstralObject astralObject;
-        String name = (String) data.get("name");
-        switch ((String) data.get("type")) {
-            case "BlackHole":
-                astralObject = new BlackHole(name);
-                _astralObjects.add(astralObject);
-                break;
-            case "Planet":
-                astralObject = new Planet(name, parent);
-                _astralObjects.add(astralObject);
-                planets.put(astralObject.getName(), (Planet) astralObject);
-                break;
-            case "Star":
-                astralObject = new Star(name, parent);
-                _astralObjects.add(astralObject);
-                stars.put(astralObject.getName(), (Star) astralObject);
-                break;
-            case "Moon":
-                astralObject = new Moon(name, parent);
-                _astralObjects.add(astralObject);
-                break;
-            default:
-                return null;
+    private AstralObject computeData(final Map<String, Object> data, final AstralObject parent) {
+        final AstralObject astralObject;
+        final String name = (String) data.getOrDefault("name", "Universe Zero");
+        final String type = (String) data.getOrDefault("type", "BlackHole");
+
+        try {
+            final Constructor<?> constructor = Class.forName("com.middlewar.core.model.space." + type).getConstructor(String.class, AstralObject.class);
+            astralObject = (AstralObject) constructor.newInstance(name, parent);
+            objects.add(astralObject);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
 
         final HashMap<String, Number> stats = (HashMap<String, Number>) data.get("stats");
@@ -98,22 +87,26 @@ public class WorldData {
     }
 
     public AstralObject getWorld() {
-        return _blackHole;
+        return blackHole;
     }
 
-    public Star getRandomStar() {
-        final int starCnt = getWorld().getSatellites().size();
-        return (Star) getWorld().getSatellites().get(Rnd.get(0, starCnt - 1));
+    public List<AstralObject> getUnivers() {
+        return this.objects;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getWithFilter(Predicate<? super AstralObject> filter) {
+        return (List<T>) this.objects.stream().filter(filter).collect(toList());
     }
 
     public Planet getRandomPlanet() {
         Star star = null;
         int planetCnt = 0;
         int retryCount = 0;
-        final int MAX_RETRY = 10;
+        final int MAX_RETRY = 1000;
 
         while (planetCnt == 0 && retryCount < MAX_RETRY) {
-//            star = getRandomStar();
+            // star = getRandomStar();
             star = (Star) getWorld().getSatellites().get(1); // TODO : get random star, but don't let this method return null
             planetCnt = star.getSatellites().size();
 
@@ -128,14 +121,6 @@ public class WorldData {
         }
 
         return (Planet) star.getSatellites().get(Rnd.get(0, planetCnt - 1));
-    }
-
-    public Star getStar(String id) {
-        return stars.get(id);
-    }
-
-    public Planet getPlanet(String id) {
-        return planets.get(id);
     }
 
     private class ConfigParser {
